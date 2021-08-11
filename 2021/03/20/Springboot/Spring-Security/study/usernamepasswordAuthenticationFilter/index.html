@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    
+
+    
+    <title>Spring Security - UsernamePasswordAuthenticationFilter | Victor</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Spring Boot,Spring Security">
+    
+    <meta name="description" content="UsernamePasswordAuthenticationFilterAbstractAuthenticationProcessingFilter를 상속한 객체로 Username과 Password를 이용해 보안인증을 진행할 때 사용하는 Filter이다. 1. Authentication 객체 생성 사용자 요청으로 부터 username과 password를 가져온다. us">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Security - UsernamePasswordAuthenticationFilter">
+<meta property="og:url" content="https://ckck803.github.io/2021/03/20/Springboot/Spring-Security/study/usernamepasswordAuthenticationFilter/index.html">
+<meta property="og:site_name" content="Victor">
+<meta property="og:description" content="UsernamePasswordAuthenticationFilterAbstractAuthenticationProcessingFilter를 상속한 객체로 Username과 Password를 이용해 보안인증을 진행할 때 사용하는 Filter이다. 1. Authentication 객체 생성 사용자 요청으로 부터 username과 password를 가져온다. us">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/springboot/spring-boot-logo.png">
+<meta property="article:published_time" content="2021-03-20T13:25:35.000Z">
+<meta property="article:modified_time" content="2021-08-08T16:18:14.797Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Spring Boot">
+<meta property="article:tag" content="Spring Security">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/springboot/spring-boot-logo.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+    
+<link rel="stylesheet" href="http://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/rss2.xml" title="Victor" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">백문이 불여일타</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item">
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/OS/">OS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/">Programming</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/Programmers/">Programmers</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring5-MVC/">Spring5 MVC</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/">Spring Boot</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                                <li class="main-nav-list-item">
+                                    <a class="main-nav-list-link" href="/about/index.html">About</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Spring-Boot/">Spring Boot</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Spring-Boot/Spring-Security/">Spring Security</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-Springboot/Spring-Security/study/usernamepasswordAuthenticationFilter" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Spring Security - UsernamePasswordAuthenticationFilter
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2021/03/20/Springboot/Spring-Security/study/usernamepasswordAuthenticationFilter/" class="article-date">
+       <time datetime="2021-03-20T13:25:35.000Z" itemprop="datePublished">2021-03-20</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2021/03/20/Springboot/Spring-Security/study/usernamepasswordAuthenticationFilter/" class="article-date">
+     <time datetime="2021-08-08T16:18:14.797Z" itemprop="dateModified">2021-08-09</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a>, <a class="tag-link-link" href="/tags/Spring-Security/" rel="tag">Spring Security</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/springboot/spring-boot-logo.png"></p>
+<h1 id="UsernamePasswordAuthenticationFilter"><a href="#UsernamePasswordAuthenticationFilter" class="headerlink" title="UsernamePasswordAuthenticationFilter"></a>UsernamePasswordAuthenticationFilter</h1><p><strong>AbstractAuthenticationProcessingFilter</strong>를 상속한 객체로 Username과 Password를 이용해 보안인증을 진행할 때 사용하는 Filter이다.</p>
+<h2 id="1-Authentication-객체-생성"><a href="#1-Authentication-객체-생성" class="headerlink" title="1. Authentication 객체 생성"></a>1. Authentication 객체 생성</h2><ul>
+<li>사용자 요청으로 부터 username과 password를 가져온다.</li>
+<li>username과 password를 Authentication을 구현한 <strong>UsernamePasswordAuthenticationToken</strong> 객체를 생성</li>
+<li>생성된 <strong>Authentication</strong> 객체는 <strong>AuthenticationManager</strong> 객체를 통해 인증을 진행한다.</li>
+<li>Spring Security에서는 AuthenticationManager 객체를 구현한 <strong>ProviderManager</strong> 객체를 사용한다.</li>
+</ul>
+<p><em>UsernamePasswordAuthenticationFilter.java</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">attemptAuthentication</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.postOnly &amp;&amp; !request.getMethod().equals(<span class="string">&quot;POST&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> AuthenticationServiceException(<span class="string">&quot;Authentication method not supported: &quot;</span> + request.getMethod());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// reqeust로부터 username을 가져온다.</span></span><br><span class="line">    String username = obtainUsername(request);</span><br><span class="line">    username = (username != <span class="keyword">null</span>) ? username : <span class="string">&quot;&quot;</span>;</span><br><span class="line">    username = username.trim();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// request로부터 password를 가져온다.</span></span><br><span class="line">    String password = obtainPassword(request);</span><br><span class="line">    password = (password != <span class="keyword">null</span>) ? password : <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    UsernamePasswordAuthenticationToken authRequest = <span class="keyword">new</span> UsernamePasswordAuthenticationToken(username, password);</span><br><span class="line">    <span class="comment">// Allow subclasses to set the &quot;details&quot; property</span></span><br><span class="line">    setDetails(request, authRequest);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.getAuthenticationManager().authenticate(authRequest);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-ProviderManager를-통한-인증-진행"><a href="#2-ProviderManager를-통한-인증-진행" class="headerlink" title="2. ProviderManager를 통한 인증 진행"></a>2. ProviderManager를 통한 인증 진행</h2><p><strong>ProviderManager</strong> 객체는 인증을 직접 진행하는 하지 않는다. 대신, 인증 위한 다양한 <strong>AuthenticationProvider</strong> 객체들을 가지고 있고 AuthenticationProvider 객체에게 <strong>인증을 위임</strong>하는 형태로 인증을 진행한다.</p>
+<ul>
+<li>ProviderManager에서 적절한 AuthenticationProvider 객체를 가져온다.</li>
+<li>가져온 AuthenticationProvider를 이용해 Authentication객체 인증을 진행</li>
+<li>인증이 완료 되면 <strong>새로운 Authentication 객체</strong>를 반환하게 된다.</li>
+<li>만일 현재 ProviderManager에서 적절한 AuthenticationProvider 객체가 없다면 <strong>부모 ProviderManager</strong>로 이동해 인증을 시도한다.</li>
+</ul>
+<p><em>ProviderManager.java</em> <em>(인증 프로세스를 중심으로 보기 위해 예외처리와 관련된 부분은 삭제를 했다.)</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">    Class&lt;? extends Authentication&gt; toTest = authentication.getClass();</span><br><span class="line">    Authentication result = <span class="keyword">null</span>;</span><br><span class="line">    Authentication parentResult = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 인증을 진행하기 위한 AuthenticationProvider를 가져온다.</span></span><br><span class="line">    <span class="keyword">for</span> (AuthenticationProvider provider : getProviders()) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// AuthenticationProvider가 Authentication객체 인증을 지원하는지 확인</span></span><br><span class="line">        <span class="keyword">if</span> (!provider.supports(toTest)) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            result = provider.authenticate(authentication);</span><br><span class="line">            <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">// 기존의 Authentication 객체와 result를 이용해 새로운 Authentication 객체를 생성</span></span><br><span class="line">                copyDetails(authentication, result);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (AccountStatusException | InternalAuthenticationServiceException ex) &#123;</span><br><span class="line">            prepareException(ex, authentication);</span><br><span class="line">            <span class="keyword">throw</span> ex;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (AuthenticationException ex) &#123;</span><br><span class="line">            lastException = ex;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (result == <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.parent != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Allow the parent to try.</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            parentResult = <span class="keyword">this</span>.parent.authenticate(authentication);</span><br><span class="line">            result = parentResult;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (ProviderNotFoundException ex) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (AuthenticationException ex) &#123;</span><br><span class="line">            parentException = ex;</span><br><span class="line">            lastException = ex;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.eraseCredentialsAfterAuthentication &amp;&amp; (result <span class="keyword">instanceof</span> CredentialsContainer)) &#123;</span><br><span class="line">            <span class="comment">// 인증을 완료한 후에 Authentication 객체에서 Credentials와 같은 민감한 정보를 지운다.</span></span><br><span class="line">            ((CredentialsContainer) result).eraseCredentials();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (parentResult == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.eventPublisher.publishAuthenticationSuccess(result);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 인증이 완료된 Authentication 객체를 반환한다.</span></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 다양한 예외 처리들 생략 //</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="인증-전-Authentication-객체"><a href="#인증-전-Authentication-객체" class="headerlink" title="인증 전 Authentication 객체"></a>인증 전 Authentication 객체</h4><p>인증 전 Authenticatin 객체내의 <strong>principal</strong>에는 username이 <strong>credentials</strong>는 password가 들어있고, 인증 유무를 나타내는 authenticated 값이 false로 나타나 있다.</p>
+<p><img src="/images/springboot/security/spring-security/authentication.png"></p>
+<h4 id="인증-후-Authentication-객체"><a href="#인증-후-Authentication-객체" class="headerlink" title="인증 후 Authentication 객체"></a>인증 후 Authentication 객체</h4><p>인증을 진행한 후 인증 전과 다르게 Authenticatin 객체의 principal에는 <strong>User</strong> 객체가 들어갔고 authenticated 값이 true가 됐다. 최종적으로 반환 될 때는 Authenticatin 객체에서 credentials를 지우고 반환한다.</p>
+<p><img src="/images/springboot/security/spring-security/authentication-result.png"></p>
+<h4 id="ProviderManager-hierarchy"><a href="#ProviderManager-hierarchy" class="headerlink" title="ProviderManager hierarchy"></a>ProviderManager hierarchy</h4><p>각 ProviderManager에는 AuthenticationProvider 객체들이 있다. 만약 현재의 ProviderManager에 적절한 AuthenticationProvider가 없을 경우 parent ProviderManager로 이동하게 된다. parent ProviderManager 역시 AuthenticationProvider 객체들이 존재한다. 여기서의 parent는 상속 개념이 아니라 field값으로 parent를 가지고 있다.</p>
+<p><img src="/images/springboot/security/spring-security/providermanager-hierarchy.png"></p>
+<h2 id="3-인증-완료-후-작업"><a href="#3-인증-완료-후-작업" class="headerlink" title="3. 인증 완료 후 작업"></a>3. 인증 완료 후 작업</h2><p>인증이 완료된 후 작업으로는 Session에 대한 처리와 SecurityContextHolder에 Authentication 객체를 등록하는 일이 남아 있다.</p>
+<p><strong>AbstractAuthenticationProcessingFilter.java</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain chain)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!requiresAuthentication(request, response)) &#123;</span><br><span class="line">        chain.doFilter(request, response);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 인증이 완료 된 후 Authentication 객체를 반환받는다.</span></span><br><span class="line">        Authentication authenticationResult = attemptAuthentication(request, response);</span><br><span class="line">        <span class="keyword">if</span> (authenticationResult == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Session에 대한 설정을 한다. Session Id를 변경</span></span><br><span class="line">        <span class="keyword">this</span>.sessionStrategy.onAuthentication(authenticationResult, request, response);</span><br><span class="line">        <span class="comment">// Authentication success</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.continueChainBeforeSuccessfulAuthentication) &#123;</span><br><span class="line">            chain.doFilter(request, response);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// SecurityContextHlder에 Authentication 객체를 등록</span></span><br><span class="line">        successfulAuthentication(request, response, chain, authenticationResult);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (InternalAuthenticationServiceException failed) &#123;</span><br><span class="line">        <span class="keyword">this</span>.logger.error(<span class="string">&quot;An internal error occurred while trying to authenticate the user.&quot;</span>, failed);</span><br><span class="line">        unsuccessfulAuthentication(request, response, failed);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (AuthenticationException ex) &#123;</span><br><span class="line">        <span class="comment">// Authentication failed</span></span><br><span class="line">        unsuccessfulAuthentication(request, response, ex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="SecurityContextHolder에-Authentication-객체를-등록"><a href="#SecurityContextHolder에-Authentication-객체를-등록" class="headerlink" title="SecurityContextHolder에 Authentication 객체를 등록"></a>SecurityContextHolder에 Authentication 객체를 등록</h4><p>successfulAuthentication 메소드는 인증이 성공적으로 이루어 졌을 때 호출되는 메소드로 크게 3가지 작업을 진행한다.</p>
+<ul>
+<li><strong>SecurityContextHolder</strong>로부터 <strong>SecurityContext</strong> 객체를 가져와 Authentication 객체를 넣어준다.</li>
+<li><strong>Remember-Me</strong>에 대한 설정을 해준다.</li>
+<li>인증이 완료 되면 successHandler를 이용해 정상적으로 인증이 완료 됐을 때의 작업을 진행한다.<ul>
+<li>SecurityConfig에서 <strong>http.successHandler()</strong> 메소드로 등록한 Handler객체가 실행된다.</li>
+</ul>
+</li>
+</ul>
+<p><strong>AbstractAuthenticationProcessingFilter.java</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">successfulAuthentication</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain chain,</span></span></span><br><span class="line"><span class="params"><span class="function">        Authentication authResult)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">    SecurityContextHolder.getContext().setAuthentication(authResult);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.logger.isDebugEnabled()) &#123;</span><br><span class="line">        <span class="keyword">this</span>.logger.debug(LogMessage.format(<span class="string">&quot;Set SecurityContextHolder to %s&quot;</span>, authResult));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.rememberMeServices.loginSuccess(request, response, authResult);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.eventPublisher != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.eventPublisher.publishEvent(<span class="keyword">new</span> InteractiveAuthenticationSuccessEvent(authResult, <span class="keyword">this</span>.getClass()));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.successHandler.onAuthenticationSuccess(request, response, authResult);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2021/03/20/Springboot/Spring-Security/study/usernamepasswordAuthenticationFilter/" data-id="cks7izk3x009lby8b3hhq4kp1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Spring Security - UsernamePasswordAuthenticationFilter",
+        "image": "https://ckck803.github.io/images/springboot/spring-boot-logo.png",
+        "keywords": "Spring Boot Spring Security",
+        "genre": "Spring Boot Spring Security",
+        "datePublished": "2021-03-20",
+        "dateCreated": "2021-03-20",
+        "dateModified": "2021-08-09",
+        "url": "https://ckck803.github.io/2021/03/20/Springboot/Spring-Security/study/usernamepasswordAuthenticationFilter/",
+        "description": "
+UsernamePasswordAuthenticationFilterAbstractAuthenticationProcessingFilter를 상속한 객체로 Username과 Password를 이용해 보안인증을 진행할 때 사용하는 Filter이다.
+1. Authentication 객체 생성
+사용자 요청으로 부터 username과 password를 가져온다.
+us",
+        "wordCount": 1729
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2021/03/20/Springboot/Spring-Security/study/authentication/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            Spring Security - Authentication 객체와 저장 방식
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2021/03/20/algorithm/baekjoon/BFS/1194-%EB%8B%AC%EC%9D%B4%EC%B0%A8%EC%98%A4%EB%A5%B8%EB%8B%A4-%EA%B0%80%EC%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">1194-달이차오른다_가자</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/OS/">OS</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/">Beakjoon</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/BFS/">BFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JAVA/">JAVA</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JAVA/JPA/">JPA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Programmers/">Programmers</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Programmers/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Programmers/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Programmers/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Programmers/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Programmers/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring5-MVC/">Spring5 MVC</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/">Spring Boot</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Core/">Spring Core</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Core/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">스프링 핵심 원리 - 기본편</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Rest/">Spring Rest</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Rest/RESTful-Web-Services-%EA%B0%95%EC%9D%98/">RESTful Web Services 강의</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/">Spring Security</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-%EA%B0%95%EC%9D%98/">스프링 시큐리티 강의</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">23</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2021 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2021/03/20/Springboot/Spring-Security/study/usernamepasswordAuthenticationFilter/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>
