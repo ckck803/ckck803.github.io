@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/springboot/security/inflearn-whiteship-security/spring-security.png">
 <meta property="article:published_time" content="2021-03-19T13:25:35.000Z">
-<meta property="article:modified_time" content="2021-08-17T05:35:38.604Z">
+<meta property="article:modified_time" content="2021-08-17T05:39:33.006Z">
 <meta property="article:author" content="ckck803">
 <meta property="article:tag" content="Spring Boot">
 <meta property="article:tag" content="Spring Security">
@@ -199,7 +199,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2021/03/19/Springboot/Spring-Security/study/web-security-configurer/" class="article-date">
-     <time datetime="2021-08-17T05:35:38.604Z" itemprop="dateModified">2021-08-17</time>
+     <time datetime="2021-08-17T05:39:33.006Z" itemprop="dateModified">2021-08-17</time>
   </a>
 </div>
 
@@ -228,36 +228,36 @@
 
             <p><img src="/images/springboot/security/inflearn-whiteship-security/spring-security.png"></p>
 <h1 id="Spring-Security-WebSecurityConfigurerAdatper"><a href="#Spring-Security-WebSecurityConfigurerAdatper" class="headerlink" title="Spring Security - WebSecurityConfigurerAdatper"></a>Spring Security - WebSecurityConfigurerAdatper</h1><p>스프링 Scurity에 대한 설정은 <strong>WebSecurityConfigurer</strong> 인터페이스 구현하거나 <strong>WebSecurityConfigurerAdapter</strong> 클래스를 상속해 설정을 할 수 있다.</p>
-<h2 id="인증-방식-설정"><a href="#인증-방식-설정" class="headerlink" title="인증 방식 설정"></a>인증 방식 설정</h2><ul>
-<li><strong>configure(AuthenticationManagerBuilder auth)</strong><ul>
+<h2 id="인증-방식-설정"><a href="#인증-방식-설정" class="headerlink" title="인증 방식 설정"></a>인증 방식 설정</h2><blockquote>
+<p>configure(AuthenticationManagerBuilder auth)</p>
+</blockquote>
+<ul>
 <li><strong>인증 방식</strong>과 관련된 설정을 하기 위한 메소드</li>
 <li>AuthenticationManagerBuilder는 <strong>인증객체</strong>(AuthenticationManager)를 생성하기 위한 클래스이다.</li>
 <li>In Memory authentication나 UserDetailsService를 사용하는 <strong>다양한 인증 방식</strong>을 손 쉽게 구축할 수 있도록 지원한다.</li>
 </ul>
-</li>
-</ul>
 <p><em>configure(AuthenticationManagerBuilder auth)</em></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> CustomUserDetailsService customUserDetailsService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    auth.userDetailsService(customUserDetailsService);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="전역적인-Security-설정"><a href="#전역적인-Security-설정" class="headerlink" title="전역적인 Security 설정"></a>전역적인 Security 설정</h2><ul>
-<li><strong>configure(WebSecurity web)</strong><ul>
+<h2 id="전역적인-Security-설정"><a href="#전역적인-Security-설정" class="headerlink" title="전역적인 Security 설정"></a>전역적인 Security 설정</h2><blockquote>
+<p>configure(WebSecurity web)</p>
+</blockquote>
+<ul>
 <li><strong>전역적인 Security 설정</strong>을 하기 위해 사용하는 메소드</li>
 <li>정적 파일에 대한 보안 예외처리와 같이 Security Filter Chain에 대한 예외처리를 할 때 사용한다.</li>
 <li>WebSecurity 클래스는 Spring Security에서 <strong>FilterChainProxy</strong>를 생성한다.</li>
 </ul>
-</li>
-</ul>
 <p><em>configure(WebSecurity web)</em></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(WebSecurity web)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    web</span><br><span class="line">            .ignoring()</span><br><span class="line">            .antMatchers(<span class="string">&quot;/css/**&quot;</span>, <span class="string">&quot;/js/**&quot;</span>)</span><br><span class="line">            .antMatchers(<span class="string">&quot;/favicon.ico&quot;</span>, <span class="string">&quot;/resources/**&quot;</span>, <span class="string">&quot;/error&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Resource별로-Security를-설정"><a href="#Resource별로-Security를-설정" class="headerlink" title="Resource별로 Security를 설정"></a>Resource별로 Security를 설정</h2><ul>
-<li><strong>configure(HttpSecurity http)</strong><ul>
+<h2 id="Resource별로-Security를-설정"><a href="#Resource별로-Security를-설정" class="headerlink" title="Resource별로 Security를 설정"></a>Resource별로 Security를 설정</h2><blockquote>
+<p>configure(HttpSecurity http)</p>
+</blockquote>
+<ul>
 <li><strong>Resource</strong>별로 Security를 설정하기 위한 메소드이다.</li>
 <li>HttpSecurity 클래스를 통해 <strong>인증</strong>, <strong>인가</strong>와 관련된 <strong>Web 기반의 보안 설정</strong>을 할 수 있다.</li>
 <li>인증 : Form Login, Http Basic, OAuth2 Login 등</li>
 <li>인가 : Matchers, Role, Authenticate, permit 등</li>
-</ul>
-</li>
 </ul>
 <p><em>configure(HttpSecurity http)</em></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">// 인가</span></span><br><span class="line">    http</span><br><span class="line">            .authorizeRequests() <span class="comment">// 인가에 대한 설정을 한다.</span></span><br><span class="line">            .antMatchers(<span class="string">&quot;/loginPage&quot;</span>).permitAll() <span class="comment">// /loginPage 접근시에는 인증이 필요하지 않다.</span></span><br><span class="line">            .anyRequest().authenticated(); <span class="comment">// 다른 모든 리소스에 접그하기 위해서는 인증이 필요하다</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 인증</span></span><br><span class="line">    http</span><br><span class="line">            .formLogin() <span class="comment">// Form Login 방식의 인증을 사용한다.</span></span><br><span class="line">            .loginPage(<span class="string">&quot;/loginPage&quot;</span>) <span class="comment">// 로그인 페이지를 설정한다.</span></span><br><span class="line">            .defaultSuccessUrl(<span class="string">&quot;/&quot;</span>) <span class="comment">// Login을 성공한 후 / 페이지로 이동하게 된다.</span></span><br><span class="line">            .failureUrl(<span class="string">&quot;/loginPage&quot;</span>) <span class="comment">// 로그인 실패시 /loginPage로 이동하게 된다.</span></span><br><span class="line">            .usernameParameter(<span class="string">&quot;username&quot;</span>) <span class="comment">// 요청 파라미터에서 username을 usernameParameter로 사용한다.</span></span><br><span class="line">            .passwordParameter(<span class="string">&quot;password&quot;</span>) <span class="comment">// 요청 파라미터에서 password를 passwordParameter로 사용한다.</span></span><br><span class="line">            .loginProcessingUrl(<span class="string">&quot;/login_proc&quot;</span>) <span class="comment">// 로그인을 진행하기 위한 URL</span></span><br><span class="line">            <span class="comment">// 로그인이 성공했을 때 처리하기 위한 Handler</span></span><br><span class="line">            .successHandler(<span class="keyword">new</span> AuthenticationSuccessHandler() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationSuccess</span><span class="params">(HttpServletRequest httpServletRequest</span></span></span><br><span class="line"><span class="params"><span class="function">                        , HttpServletResponse httpServletResponse</span></span></span><br><span class="line"><span class="params"><span class="function">                        , Authentication authentication)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">                    httpServletResponse.sendRedirect(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="comment">// 로그인이 실패했을 때 처리하기 위한 Handler</span></span><br><span class="line">            .failureHandler(<span class="keyword">new</span> AuthenticationFailureHandler() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationFailure</span><span class="params">(HttpServletRequest httpServletRequest</span></span></span><br><span class="line"><span class="params"><span class="function">                        , HttpServletResponse httpServletResponse</span></span></span><br><span class="line"><span class="params"><span class="function">                        , AuthenticationException e)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">                    httpServletResponse.sendRedirect(<span class="string">&quot;/loginPage&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -280,7 +280,7 @@
 
 
 
-    <a data-url="https://ckck803.github.io/2021/03/19/Springboot/Spring-Security/study/web-security-configurer/" data-id="cksfmwts8009oxf8b7cky8e5v" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://ckck803.github.io/2021/03/19/Springboot/Spring-Security/study/web-security-configurer/" data-id="cksfn0lx4009qb28be7zrd45n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
