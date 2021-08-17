@@ -12,16 +12,16 @@
     
     <meta name="keywords" content>
     
-    <meta name="description" content="Spring Security 권한 계층 사용하기 - @RoleHierarcy우리는 일반적으로 ADMIN, MANAGER, USER 권한이 있다고 하면 Admin 권한으로 모든 자원에 접근이 가능하다고 생각하지만 Spring Security는 상하위 개념으로 인식하지 못하고 권한들을 독립적으로 인식해 MANAGER 권한, USER 권한에 접근할 수 없다.">
+    <meta name="description" content="Spring Security 권한 계층 사용하기 - @RoleHierarcy우리는 일반적으로 ADMIN, MANAGER, USER 권한이 있다고 하면 Admin 권한으로 모든 자원에 접근이 가능하다고 생각하지만 Spring Security는 상하위 개념으로 인식하지 못하고 권한들을 독립적으로 인식해 MANAGER 권한, USER 권한 리소스에 접근할 수">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Security 권한 계층 사용하기 - @RoleHierarcy">
 <meta property="og:url" content="https://ckck803.github.io/2021/08/16/Springboot/Spring-Security/Security/role-hierarchy/index.html">
 <meta property="og:site_name" content="Victor">
-<meta property="og:description" content="Spring Security 권한 계층 사용하기 - @RoleHierarcy우리는 일반적으로 ADMIN, MANAGER, USER 권한이 있다고 하면 Admin 권한으로 모든 자원에 접근이 가능하다고 생각하지만 Spring Security는 상하위 개념으로 인식하지 못하고 권한들을 독립적으로 인식해 MANAGER 권한, USER 권한에 접근할 수 없다.">
+<meta property="og:description" content="Spring Security 권한 계층 사용하기 - @RoleHierarcy우리는 일반적으로 ADMIN, MANAGER, USER 권한이 있다고 하면 Admin 권한으로 모든 자원에 접근이 가능하다고 생각하지만 Spring Security는 상하위 개념으로 인식하지 못하고 권한들을 독립적으로 인식해 MANAGER 권한, USER 권한 리소스에 접근할 수">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/springboot/security/inflearn-whiteship-security/spring-security.png">
 <meta property="article:published_time" content="2021-08-16T07:34:10.000Z">
-<meta property="article:modified_time" content="2021-08-17T08:13:50.800Z">
+<meta property="article:modified_time" content="2021-08-17T08:19:47.493Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/springboot/security/inflearn-whiteship-security/spring-security.png">
@@ -197,7 +197,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2021/08/16/Springboot/Spring-Security/Security/role-hierarchy/" class="article-date">
-     <time datetime="2021-08-17T08:13:50.800Z" itemprop="dateModified">2021-08-17</time>
+     <time datetime="2021-08-17T08:19:47.493Z" itemprop="dateModified">2021-08-17</time>
   </a>
 </div>
 
@@ -220,7 +220,7 @@
             
 
             <p><img src="/images/springboot/security/inflearn-whiteship-security/spring-security.png"></p>
-<h1 id="Spring-Security-권한-계층-사용하기-RoleHierarcy"><a href="#Spring-Security-권한-계층-사용하기-RoleHierarcy" class="headerlink" title="Spring Security 권한 계층 사용하기 - @RoleHierarcy"></a>Spring Security 권한 계층 사용하기 - @RoleHierarcy</h1><p>우리는 일반적으로 <strong>ADMIN</strong>, <strong>MANAGER</strong>, <strong>USER</strong> 권한이 있다고 하면 Admin 권한으로 모든 자원에 접근이 가능하다고 생각하지만 Spring Security는 상하위 개념으로 인식하지 못하고 권한들을 독립적으로 인식해 MANAGER 권한, USER 권한에 접근할 수 없다. 만약 접근하려고 하면 접근 권한과 관련된 <code>403(Forbidden) Error</code> 가 발생한다.</p>
+<h1 id="Spring-Security-권한-계층-사용하기-RoleHierarcy"><a href="#Spring-Security-권한-계층-사용하기-RoleHierarcy" class="headerlink" title="Spring Security 권한 계층 사용하기 - @RoleHierarcy"></a>Spring Security 권한 계층 사용하기 - @RoleHierarcy</h1><p>우리는 일반적으로 <strong>ADMIN</strong>, <strong>MANAGER</strong>, <strong>USER</strong> 권한이 있다고 하면 Admin 권한으로 모든 자원에 접근이 가능하다고 생각하지만 Spring Security는 상하위 개념으로 인식하지 못하고 권한들을 <strong>독립적</strong>으로 인식해 MANAGER 권한, USER 권한 리소스에 접근할 수 없다. 만약 접근하려고 하면 접근 권한과 관련된 <code>403(Forbidden) Error</code> 가 발생한다.</p>
 <p><img src="/images/springboot/security/spring-security/manager-403-forbiden.png"></p>
 <p>권한간 상하 관계를 적용하기 위해 Spring Security에서는 <strong>RoleHierarchy</strong> 인터페이스를 제공하고 구현체로는 <strong>RoleHierarchyImpl</strong> 를 제공한다.<br>권한을 적용하기 위해 <strong>RoleHierarchyVoter</strong> 객체에 <strong>RoleHierarchy</strong> 객체를 넣어줌으로써 권한 계층 구조를 사용할 수 있다.</p>
 <ul>
@@ -253,7 +253,7 @@
 
 
 
-    <a data-url="https://ckck803.github.io/2021/08/16/Springboot/Spring-Security/Security/role-hierarchy/" data-id="cksfsmqr7009i8n8bh9o1extt" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://ckck803.github.io/2021/08/16/Springboot/Spring-Security/Security/role-hierarchy/" data-id="cksfspm0e009hkp8bbfcq0raq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -332,8 +332,8 @@
         "dateModified": "2021-08-17",
         "url": "https://ckck803.github.io/2021/08/16/Springboot/Spring-Security/Security/role-hierarchy/",
         "description": "
-Spring Security 권한 계층 사용하기 - @RoleHierarcy우리는 일반적으로 ADMIN, MANAGER, USER 권한이 있다고 하면 Admin 권한으로 모든 자원에 접근이 가능하다고 생각하지만 Spring Security는 상하위 개념으로 인식하지 못하고 권한들을 독립적으로 인식해 MANAGER 권한, USER 권한에 접근할 수 없다. ",
-        "wordCount": 1350
+Spring Security 권한 계층 사용하기 - @RoleHierarcy우리는 일반적으로 ADMIN, MANAGER, USER 권한이 있다고 하면 Admin 권한으로 모든 자원에 접근이 가능하다고 생각하지만 Spring Security는 상하위 개념으로 인식하지 못하고 권한들을 독립적으로 인식해 MANAGER 권한, USER 권한 리소스에 접근할 수 ",
+        "wordCount": 1351
     }
 </script>
 
