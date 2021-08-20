@@ -9,7 +9,7 @@
     <atom:link href="https://ckck803.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>두려워하지 말고 앞으로 나아가자</description>
-    <pubDate>Tue, 17 Aug 2021 05:44:50 GMT</pubDate>
+    <pubDate>Fri, 20 Aug 2021 03:22:58 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -73,6 +73,38 @@
       
       
       <comments>https://ckck803.github.io/2021/08/16/Springboot/Spring-Security/Security/role-hierarchy/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>프로그래머스 - 메뉴 리뉴얼</title>
+      <link>https://ckck803.github.io/2021/08/09/algorithm/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC/</link>
+      <guid>https://ckck803.github.io/2021/08/09/algorithm/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC/</guid>
+      <pubDate>Mon, 09 Aug 2021 11:10:40 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;문제-풀이&quot;&gt;&lt;a href=&quot;#문제-풀이&quot; class=&quot;headerlink&quot; title=&quot;문제 풀이&quot;&gt;&lt;/a&gt;문제 풀이&lt;/h2&gt;&lt;p&gt;처음에 문자열 비교로 접근해 엄청 해멨다. 이 문제는 문자열 비교로 접근을 하는게 아니라 한 사람이 시킨</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="문제-풀이"><a href="#문제-풀이" class="headerlink" title="문제 풀이"></a>문제 풀이</h2><p>처음에 문자열 비교로 접근해 엄청 해멨다. 이 문제는 문자열 비교로 접근을 하는게 아니라 한 사람이 시킨 메뉴 코스를 이용해 만들 수 있는 경우의 수를 만들어 비교하는 문제다.</p><ol><li>코스드들을 사전 순서로 저장할 수 있도록 코스를 정렬해준다.</li><li>한 손님이 주문한 단품 메뉴들로 만들 수 있는 모든 코스 조합을 만들어준다.</li><li>코스내 메뉴 개수에 따라 가장 많이 선택된 횟수를 저장해 놓는다.</li><li>코스를 선택할때 코스내 메뉴가 메뉴 개수에서 가장 많이 선택된 횟수와 같다면 넣어준다.</li></ol><h3 id="모든-코스-조합을-만들어주는-함수"><a href="#모든-코스-조합을-만들어주는-함수" class="headerlink" title="모든 코스 조합을 만들어주는 함수"></a>모든 코스 조합을 만들어주는 함수</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">makeAllCourse</span><span class="params">(string subOrder, string order, <span class="keyword">int</span> depth)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (depth &gt; order.<span class="built_in">size</span>()) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (depth == order.<span class="built_in">size</span>() &amp;&amp; subOrder.<span class="built_in">size</span>() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (m.<span class="built_in">find</span>(subOrder) == m.<span class="built_in">end</span>()) &#123;</span><br><span class="line">            m[subOrder] = <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            m[subOrder] += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 현재 메뉴를 선택하고 다음 메뉴로 넘어간다.</span></span><br><span class="line">    <span class="built_in">makeAllCourse</span>(subOrder + order[depth], order, depth + <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// 현재 메뉴를 선택하지 않고 다음 메뉴로 넘어간다.</span></span><br><span class="line">    <span class="built_in">makeAllCourse</span>(subOrder, order, depth + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="전체-소스"><a href="#전체-소스" class="headerlink" title="전체 소스"></a>전체 소스</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">map&lt;string, <span class="keyword">int</span>&gt; m;</span><br><span class="line"><span class="keyword">int</span> maxValues[<span class="number">100</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">makeAllCourse</span><span class="params">(string subOrder, string order, <span class="keyword">int</span> depth)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (depth &gt; order.<span class="built_in">size</span>()) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (depth == order.<span class="built_in">size</span>() &amp;&amp; subOrder.<span class="built_in">size</span>() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (m.<span class="built_in">find</span>(subOrder) == m.<span class="built_in">end</span>()) &#123;</span><br><span class="line">            m[subOrder] = <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            m[subOrder] += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">makeAllCourse</span>(subOrder + order[depth], order, depth + <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">makeAllCourse</span>(subOrder, order, depth + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">vector&lt;string&gt; <span class="title">solution</span><span class="params">(vector&lt;string&gt; orders, vector&lt;<span class="keyword">int</span>&gt; course)</span> </span>&#123;</span><br><span class="line">    vector&lt;string&gt; answer;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; orders.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">        <span class="built_in">sort</span>(orders[i].<span class="built_in">begin</span>(), orders[i].<span class="built_in">end</span>());</span><br><span class="line">        <span class="built_in">makeAllCourse</span>(<span class="string">&quot;&quot;</span>, orders[i], <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = m.<span class="built_in">begin</span>(); iter != m.<span class="built_in">end</span>(); iter++) &#123;</span><br><span class="line">        <span class="keyword">int</span> courseCount = iter-&gt;first.<span class="built_in">length</span>();</span><br><span class="line">        maxValues[courseCount] = <span class="built_in">max</span>(maxValues[courseCount], iter-&gt;second);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = m.<span class="built_in">begin</span>(); iter != m.<span class="built_in">end</span>(); iter++) &#123;</span><br><span class="line">        <span class="keyword">int</span> courseCount = iter-&gt;first.<span class="built_in">length</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (iter-&gt;second == maxValues[courseCount] &amp;&amp; iter-&gt;second &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; course.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (courseCount == course[i]) &#123;</span><br><span class="line">                    answer.<span class="built_in">push_back</span>(iter-&gt;first);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content:encoded>
+      
+      
+      <category domain="https://ckck803.github.io/categories/Programming/">Programming</category>
+      
+      <category domain="https://ckck803.github.io/categories/Programming/Programmers/">Programmers</category>
+      
+      <category domain="https://ckck803.github.io/categories/Programming/Programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</category>
+      
+      
+      <category domain="https://ckck803.github.io/tags/Java/">Java</category>
+      
+      <category domain="https://ckck803.github.io/tags/Programmers/">Programmers</category>
+      
+      
+      <comments>https://ckck803.github.io/2021/08/09/algorithm/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC/#disqus_thread</comments>
       
     </item>
     
@@ -634,39 +666,6 @@
       
       
       <comments>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-bfs/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>백준 - DFS</title>
-      <link>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-dfs/</link>
-      <guid>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-dfs/</guid>
-      <pubDate>Thu, 25 Mar 2021 16:55:55 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;&lt;img src=&quot;/images/baekjoon/baekjoon.png&quot;&gt;&lt;/p&gt;
-&lt;h1 id=&quot;백준-DFS&quot;&gt;&lt;a href=&quot;#백준-DFS&quot; class=&quot;headerlink&quot; title=&quot;백준 DFS&quot;&gt;&lt;/a&gt;백준 DFS&lt;/h1&gt;&lt;h2 id=&quot;</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p><img src="/images/baekjoon/baekjoon.png"></p><h1 id="백준-DFS"><a href="#백준-DFS" class="headerlink" title="백준 DFS"></a>백준 DFS</h1><h2 id="DFS-깊이-우선-탐색"><a href="#DFS-깊이-우선-탐색" class="headerlink" title="DFS(깊이 우선 탐색)"></a>DFS(깊이 우선 탐색)</h2><table><thead><tr><th>문제</th><th>이름</th><th align="center">틀린횟수</th><th align="center">정리여부</th><th align="center">비고</th><th align="center">c++</th><th align="center">java</th><th align="center">python</th></tr></thead><tbody><tr><td>1260</td><td><a href="1260/README.md">DFS와 BFS</a></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>1325</td><td><a href="1325/README.md">효율적인 해킹</a></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>9466</td><td><a href="9466/README.md">텀 프로젝트</a></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>10026</td><td><a href="10026/README.md">적록색약</a></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>15649</td><td><a href="15649/README.md">N과 M(1)</a></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>15650</td><td><a href="15650/README.md">N과 M(2)</a></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>15651</td><td><a href="15651/README.md">N과 M(3)</a></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>15652</td><td><a href="15652/README.md">N과 M(4)</a></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table>]]></content:encoded>
-      
-      
-      <category domain="https://ckck803.github.io/categories/Programming/">Programming</category>
-      
-      <category domain="https://ckck803.github.io/categories/Programming/Beakjoon/">Beakjoon</category>
-      
-      <category domain="https://ckck803.github.io/categories/Programming/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</category>
-      
-      
-      <category domain="https://ckck803.github.io/tags/Beakjoon/">Beakjoon</category>
-      
-      <category domain="https://ckck803.github.io/tags/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</category>
-      
-      
-      <comments>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-dfs/#disqus_thread</comments>
       
     </item>
     
