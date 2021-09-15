@@ -9,8 +9,95 @@
     <atom:link href="https://ckck803.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>두려워하지 말고 앞으로 나아가자</description>
-    <pubDate>Sun, 29 Aug 2021 03:39:12 GMT</pubDate>
+    <pubDate>Wed, 15 Sep 2021 16:12:17 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>React Toast UI Editor 3 - 입력 내용 가져오기</title>
+      <link>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-3/</link>
+      <guid>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-3/</guid>
+      <pubDate>Tue, 14 Sep 2021 23:31:46 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;&lt;img src=&quot;/images/react/react.png&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;React-Toast-UI-Editor-3-입력-내용-가져오기&quot;&gt;&lt;a href=&quot;#React-Toast-UI-Editor-3-입력-내용-가져오기&quot; class=&quot;</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p><img src="/images/react/react.png"></p><h1 id="React-Toast-UI-Editor-3-입력-내용-가져오기"><a href="#React-Toast-UI-Editor-3-입력-내용-가져오기" class="headerlink" title="React Toast UI Editor 3 - 입력 내용 가져오기"></a>React Toast UI Editor 3 - 입력 내용 가져오기</h1><p>Editor에 입력된 내용을 저장하고 관리하기 위해서는 입력된 값을 받아와야 한다. Toast UI Editor에서는 useRef를 이용해 </p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> editorRef = useRef();</span><br></pre></td></tr></table></figure><h3 id="버튼-Event-Handler-만들기"><a href="#버튼-Event-Handler-만들기" class="headerlink" title="버튼 Event Handler 만들기"></a>버튼 Event Handler 만들기</h3><p>버튼을 만들어줘 버튼을 눌렀을 때 Editor에 입력된 내용을 반환해 주는 Evnet를 작성한다. 입력된 값을 받아올 때는 Ref 객체인 <code>editorRef</code> 를 이용해 Toast UI Editor 객체를 가져와 입력된 값을 받아올 수 있도록 한다.</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> handleClick = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(editorRef.current.getInstance().getMarkdown());</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>Button 클릭에 대한 이벤트 핸들러와 Editor 컴포넌트에 Ref 객체를 넣어준다.</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Editor</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">initialValue</span>=<span class="string">&quot;hello react editor world!&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">previewStyle</span>=<span class="string">&quot;vertical&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">height</span>=<span class="string">&quot;600px&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">initialEditType</span>=<span class="string">&quot;markdown&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">useCommandShortcut</span>=<span class="string">&#123;true&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">ref</span>=<span class="string">&#123;editorRef&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">plugins</span>=<span class="string">&#123;[codeSyntaxHighlight]&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">  /&gt;</span></span></span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;handleClick&#125;</span>&gt;</span>Markdown 반환하기<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure><h2 id="전체-소스"><a href="#전체-소스" class="headerlink" title="전체 소스"></a>전체 소스</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; useRef &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Toast UI Editor 모듈 추가</span></span><br><span class="line"><span class="keyword">import</span> &#123; Editor &#125; <span class="keyword">from</span> <span class="string">&quot;@toast-ui/react-editor&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;@toast-ui/editor/dist/toastui-editor.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SyntaxHighlight 모듈 추가</span></span><br><span class="line"><span class="keyword">import</span> codeSyntaxHighlight <span class="keyword">from</span> <span class="string">&quot;@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// prism 모듈 추가</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;prismjs/themes/prism.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Write = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> editorRef = useRef();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> handleClick = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(editorRef.current.getInstance().getMarkdown());</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">Editor</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">        <span class="attr">initialValue</span>=<span class="string">&quot;hello react editor world!&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">        <span class="attr">previewStyle</span>=<span class="string">&quot;vertical&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">        <span class="attr">height</span>=<span class="string">&quot;600px&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">        <span class="attr">initialEditType</span>=<span class="string">&quot;markdown&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">        <span class="attr">useCommandShortcut</span>=<span class="string">&#123;true&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">        <span class="attr">ref</span>=<span class="string">&#123;editorRef&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">        <span class="attr">plugins</span>=<span class="string">&#123;[codeSyntaxHighlight]&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">      /&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;handleClick&#125;</span>&gt;</span>Markdown 반환하기<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Write;</span><br></pre></td></tr></table></figure><p>Editor에 입력된 값들이 Markdown 반환하기 버튼을 누를 때마다 Console에 찍히는 것을 확인할 수 있다.</p><p><img src="/images/react/toast/return-markdown.png"></p><p><a href="https://github.com/nhn/tui.editor/tree/master/apps/react-editor">https://github.com/nhn/tui.editor/tree/master/apps/react-editor</a></p>]]></content:encoded>
+      
+      
+      <category domain="https://ckck803.github.io/categories/React/">React</category>
+      
+      <category domain="https://ckck803.github.io/categories/React/ToastUI/">ToastUI</category>
+      
+      
+      <category domain="https://ckck803.github.io/tags/React/">React</category>
+      
+      
+      <comments>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-3/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>React Toast UI Editor 2 - Syntax Highlight 적용하기</title>
+      <link>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-2/</link>
+      <guid>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-2/</guid>
+      <pubDate>Tue, 14 Sep 2021 22:31:46 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;&lt;img src=&quot;/images/react/react.png&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;React로-Toast-UI-Editor-2-Syntax-Highlight-적용하기&quot;&gt;&lt;a href=&quot;#React로-Toast-UI-Editor-2-Syntax</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p><img src="/images/react/react.png"></p><h1 id="React로-Toast-UI-Editor-2-Syntax-Highlight-적용하기"><a href="#React로-Toast-UI-Editor-2-Syntax-Highlight-적용하기" class="headerlink" title="React로 Toast UI Editor 2 - Syntax Highlight 적용하기"></a>React로 Toast UI Editor 2 - Syntax Highlight 적용하기</h1><p><a href="https://github.com/nhn/tui.editor/tree/master/plugins/code-syntax-highlight">https://github.com/nhn/tui.editor/tree/master/plugins/code-syntax-highlight</a></p><p>글을 쓰다보면 Post에 코드를 같이 올릴 경우가 많은데, 초기 Setting은 Code Highlight가 적용돼 있지 않는 것을 확인할 수 있었다. 아무래도 Code Highlight가 없어서 코드를 작성하게 되면 가독성도 좀 떨어지고 Post 작성할 맛도 안나서 Editor에 Code Highlight를 적용하려고 한다. </p><p><img src="/images/react/toast/syntax-highlight-before.png"></p><h3 id="패키지-추가"><a href="#패키지-추가" class="headerlink" title="패키지 추가"></a>패키지 추가</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add @toast-ui/editor-plugin-code-syntax-highlight</span><br><span class="line">yarn add prism</span><br></pre></td></tr></table></figure><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Toast UI Editor 모듈 추가</span></span><br><span class="line"><span class="keyword">import</span> &#123; Editor &#125; <span class="keyword">from</span> <span class="string">&quot;@toast-ui/react-editor&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;@toast-ui/editor/dist/toastui-editor.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SyntaxHighlight 모듈 추가</span></span><br><span class="line"><span class="keyword">import</span> codeSyntaxHighlight <span class="keyword">from</span> <span class="string">&quot;@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// prism 모듈 추가</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;prismjs/themes/prism.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Write = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">Editor</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">      <span class="attr">initialValue</span>=<span class="string">&quot;hello react editor world!&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">      <span class="attr">previewStyle</span>=<span class="string">&quot;vertical&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">      <span class="attr">height</span>=<span class="string">&quot;600px&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">      <span class="attr">initialEditType</span>=<span class="string">&quot;markdown&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">      <span class="attr">useCommandShortcut</span>=<span class="string">&#123;true&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">      <span class="attr">plugins</span>=<span class="string">&#123;[codeSyntaxHighlight]&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    /&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Write;</span><br></pre></td></tr></table></figure><p>Code Highlight가 적용된 것을 확인할 수 있다. 덕분에 가독성도 훨씬 좋아져 점점 맘에 들기 시작했다.</p><p><img src="/images/react/toast/syntax-highlight-after.png"></p>]]></content:encoded>
+      
+      
+      <category domain="https://ckck803.github.io/categories/React/">React</category>
+      
+      <category domain="https://ckck803.github.io/categories/React/ToastUI/">ToastUI</category>
+      
+      
+      <category domain="https://ckck803.github.io/tags/React/">React</category>
+      
+      
+      <comments>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-2/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>React로 Toast UI Editor 사용해보기</title>
+      <link>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-1/</link>
+      <guid>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-1/</guid>
+      <pubDate>Tue, 14 Sep 2021 21:31:46 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;&lt;img src=&quot;/images/react/react.png&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;React로-Toast-UI-Editor-사용해보기&quot;&gt;&lt;a href=&quot;#React로-Toast-UI-Editor-사용해보기&quot; class=&quot;headerlink&quot; </description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p><img src="/images/react/react.png"></p><h1 id="React로-Toast-UI-Editor-사용해보기"><a href="#React로-Toast-UI-Editor-사용해보기" class="headerlink" title="React로 Toast UI Editor 사용해보기"></a>React로 Toast UI Editor 사용해보기</h1><p>개인 프로젝트도 하고 싶고 나만의 블로그를 만들고 싶은 마음에 UI도 찾아보고 Editor도 찾고 있었었다. 개인적으로 Editor를 찾고 있던 기준은 첫번째는 Markdown 언어가 사용 가능해야 하고 두번째는 이미지 업로드가 가능한 Editor를 찾고 있던 와중에 NHN에서 제공하는 Toast UI Editor를 찾게 됐다. 기능들이 너무너무 맘에 들어 사용해보기로 했다.</p><p>Toast UI Editor에서는 내가 가장 원했던 Markdown 문법이 사용 가능 했고, 이미지 업로드도 가능 했다.!!! 그리고 코드블럭에 마음에 드는 Syntax Highlighter를 적용할 수 있는 장점과 다양한 기능들이 있어 너무나도 맘에 들었다.</p><p><img src="/images/react/toast/toast-ui-editor.png" alt="https://github.com/nhn/tui.editor"></p><h2 id="플러그인-설치하기"><a href="#플러그인-설치하기" class="headerlink" title="플러그인 설치하기"></a>플러그인 설치하기</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add @toast-ui/react-editor      </span><br></pre></td></tr></table></figure><p><em>Write.jsx</em></p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; Editor &#125; <span class="keyword">from</span> <span class="string">&quot;@toast-ui/react-editor&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;@toast-ui/editor/dist/toastui-editor.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Write = <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Editor</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">initialValue</span>=<span class="string">&quot;hello react editor world!&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">previewStyle</span>=<span class="string">&quot;vertical&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">height</span>=<span class="string">&quot;600px&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">initialEditType</span>=<span class="string">&quot;markdown&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">useCommandShortcut</span>=<span class="string">&#123;true&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">  /&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Write;</span><br></pre></td></tr></table></figure><p>마지막으로 App.js에 새로만든 Write.jsx 컴포넌트를 추가하면 화면에서 Toast UI가 나타나는 것을 확인할 수 있다.</p><p><em>App.js</em></p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Write <span class="keyword">from</span> <span class="string">&#x27;./Write&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;App&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">Write</span> /&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> App;</span><br></pre></td></tr></table></figure><p><img src="/images/react/toast/toastui-start.png"></p><h2 id="하단에-고정시키기"><a href="#하단에-고정시키기" class="headerlink" title="하단에 고정시키기"></a>하단에 고정시키기</h2><p>상단에 있으면 네비게이션바나 POST 제목을 추가하기 불편해 상단에 고정돼 있는 Editor를 하단으로 내려서 사용할 것이다. style 옵션을 통해 Toast UI Editor를 하단에 고정시킬 수 있다</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Write <span class="keyword">from</span> <span class="string">&#x27;./Write&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;App&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">position:</span> &quot;<span class="attr">fixed</span>&quot;, <span class="attr">bottom:</span> &quot;<span class="attr">0</span>&quot;, <span class="attr">width:</span> &quot;<span class="attr">100</span>%&quot; &#125;&#125;&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">Write</span> /&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> App;</span><br></pre></td></tr></table></figure><p><img src="/images/react/toast/under.png"></p>]]></content:encoded>
+      
+      
+      <category domain="https://ckck803.github.io/categories/React/">React</category>
+      
+      <category domain="https://ckck803.github.io/categories/React/ToastUI/">ToastUI</category>
+      
+      
+      <category domain="https://ckck803.github.io/tags/React/">React</category>
+      
+      
+      <comments>https://ckck803.github.io/2021/09/15/React/ToastUI/toastui-1/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>프로그래머스 - 문자열 압축 (Cpp)</title>
@@ -566,105 +653,6 @@
       
       
       <comments>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-sliding-window/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>백준 - 수학</title>
-      <link>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-math/</link>
-      <guid>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-math/</guid>
-      <pubDate>Thu, 25 Mar 2021 17:09:10 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;&lt;img src=&quot;/images/baekjoon/baekjoon.png&quot;&gt;&lt;/p&gt;
-&lt;h1 id=&quot;백준-수학&quot;&gt;&lt;a href=&quot;#백준-수학&quot; class=&quot;headerlink&quot; title=&quot;백준 - 수학&quot;&gt;&lt;/a&gt;백준 - 수학&lt;/h1&gt;&lt;h2 id=&quot;</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p><img src="/images/baekjoon/baekjoon.png"></p><h1 id="백준-수학"><a href="#백준-수학" class="headerlink" title="백준 - 수학"></a>백준 - 수학</h1><h2 id="수학"><a href="#수학" class="headerlink" title="수학"></a>수학</h2><table><thead><tr><th>문제</th><th>이름</th><th>링크</th><th align="center">정리여부</th><th align="center">비고</th></tr></thead><tbody><tr><td><a href="1085/">1085</a></td><td>직사각형에서 탈출</td><td><a href="https://www.acmicpc.net/problem/1085">https://www.acmicpc.net/problem/1085</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="1644/">1644</a></td><td>소수의 연속합</td><td><a href="https://www.acmicpc.net/problem/1644">https://www.acmicpc.net/problem/1644</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="1712/">1712</a></td><td>손익분기점</td><td><a href="https://www.acmicpc.net/problem/1712">https://www.acmicpc.net/problem/1712</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="1722/">1722</a></td><td>순열의 순서</td><td><a href="https://www.acmicpc.net/problem/1722">https://www.acmicpc.net/problem/1722</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="1978/">1978</a></td><td>알파벳</td><td><a href="https://www.acmicpc.net/problem/1978">https://www.acmicpc.net/problem/1978</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="1990/">1990</a></td><td>소수인팬린드롬</td><td><a href="https://www.acmicpc.net/problem/1990">https://www.acmicpc.net/problem/1990</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="2292/">2292</a></td><td>벌집</td><td><a href="https://www.acmicpc.net/problem/2292">https://www.acmicpc.net/problem/2292</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="2839/">2839</a></td><td>설탈배달</td><td><a href="https://www.acmicpc.net/problem/2839">https://www.acmicpc.net/problem/2839</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="2960/">2960</a></td><td>에라토스테네스의 체</td><td><a href="https://www.acmicpc.net/problem/2960">https://www.acmicpc.net/problem/2960</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="10819/">10819</a></td><td>차이를 최대로</td><td><a href="https://www.acmicpc.net/problem/10819">https://www.acmicpc.net/problem/10819</a></td><td align="center"></td><td align="center">순열, <code>next_permutation</code></td></tr><tr><td><a href="10950/">10950</a></td><td>A+B - 3</td><td><a href="https://www.acmicpc.net/problem/10950">https://www.acmicpc.net/problem/10950</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="10952/">10952</a></td><td>A+B - 5</td><td><a href="https://www.acmicpc.net/problem/10952">https://www.acmicpc.net/problem/10952</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="11021/">11021</a></td><td>A+B - 7</td><td><a href="https://www.acmicpc.net/problem/11021">https://www.acmicpc.net/problem/11021</a></td><td align="center"></td><td align="center"></td></tr><tr><td><a href="11022/">11022</a></td><td>A+B - 8</td><td><a href="https://www.acmicpc.net/problem/11022">https://www.acmicpc.net/problem/11022</a></td><td align="center"></td><td align="center"></td></tr></tbody></table>]]></content:encoded>
-      
-      
-      <category domain="https://ckck803.github.io/categories/Programming/">Programming</category>
-      
-      <category domain="https://ckck803.github.io/categories/Programming/Beakjoon/">Beakjoon</category>
-      
-      <category domain="https://ckck803.github.io/categories/Programming/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</category>
-      
-      
-      <category domain="https://ckck803.github.io/tags/Beakjoon/">Beakjoon</category>
-      
-      <category domain="https://ckck803.github.io/tags/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</category>
-      
-      
-      <comments>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-math/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>백준 - 비트마스킹</title>
-      <link>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-bitmasking/</link>
-      <guid>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-bitmasking/</guid>
-      <pubDate>Thu, 25 Mar 2021 17:07:50 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;&lt;img src=&quot;/images/baekjoon/baekjoon.png&quot;&gt;&lt;/p&gt;
-&lt;h1 id=&quot;백준-비트-마스킹&quot;&gt;&lt;a href=&quot;#백준-비트-마스킹&quot; class=&quot;headerlink&quot; title=&quot;백준 - 비트 마스킹&quot;&gt;&lt;/a&gt;백준 - 비트 </description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p><img src="/images/baekjoon/baekjoon.png"></p><h1 id="백준-비트-마스킹"><a href="#백준-비트-마스킹" class="headerlink" title="백준 - 비트 마스킹"></a>백준 - 비트 마스킹</h1><h2 id="비트-마스크"><a href="#비트-마스크" class="headerlink" title="비트 마스크"></a>비트 마스크</h2><table><thead><tr><th>문제</th><th>이름</th><th align="center">틀린 횟수</th><th align="center">정리여부</th><th align="center">비고</th></tr></thead><tbody><tr><td>2064</td><td><a href="2064/README.md">IP 주소</a></td><td align="center"></td><td align="center"></td><td align="center">토크나이징, 비트 연산</td></tr><tr><td>11723</td><td><a href="11723/README.md">집합</a></td><td align="center"></td><td align="center"></td><td align="center">기본유형</td></tr></tbody></table>]]></content:encoded>
-      
-      
-      <category domain="https://ckck803.github.io/categories/Programming/">Programming</category>
-      
-      <category domain="https://ckck803.github.io/categories/Programming/Beakjoon/">Beakjoon</category>
-      
-      <category domain="https://ckck803.github.io/categories/Programming/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</category>
-      
-      
-      <category domain="https://ckck803.github.io/tags/Beakjoon/">Beakjoon</category>
-      
-      <category domain="https://ckck803.github.io/tags/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</category>
-      
-      
-      <comments>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-bitmasking/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>백준 - 유니온 파인드</title>
-      <link>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-union-find/</link>
-      <guid>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-union-find/</guid>
-      <pubDate>Thu, 25 Mar 2021 17:06:18 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;&lt;img src=&quot;/images/baekjoon/baekjoon.png&quot;&gt;&lt;/p&gt;
-&lt;h1 id=&quot;백준-유니온-파인드&quot;&gt;&lt;a href=&quot;#백준-유니온-파인드&quot; class=&quot;headerlink&quot; title=&quot;백준 유니온 파인드&quot;&gt;&lt;/a&gt;백준 유니온 </description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p><img src="/images/baekjoon/baekjoon.png"></p><h1 id="백준-유니온-파인드"><a href="#백준-유니온-파인드" class="headerlink" title="백준 유니온 파인드"></a>백준 유니온 파인드</h1><h2 id="유니온-파인드"><a href="#유니온-파인드" class="headerlink" title="유니온 파인드"></a>유니온 파인드</h2><table><thead><tr><th>문제</th><th>이름</th><th align="center">틀린 횟수</th><th align="center">정리여부</th><th align="center">비고</th></tr></thead><tbody><tr><td>1717</td><td><a href="1717/README.md">집합의 표현</a></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>1976</td><td><a href="1976/README.md">여행가자</a></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>4195</td><td><a href="4195/README.md">친구 네트워크</a></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>10774</td><td><a href="10774/README.md">저지</a></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td>10775</td><td><a href="10775/README.md">공항</a></td><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table>]]></content:encoded>
-      
-      
-      <category domain="https://ckck803.github.io/categories/Programming/">Programming</category>
-      
-      <category domain="https://ckck803.github.io/categories/Programming/Beakjoon/">Beakjoon</category>
-      
-      <category domain="https://ckck803.github.io/categories/Programming/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</category>
-      
-      
-      <category domain="https://ckck803.github.io/tags/Beakjoon/">Beakjoon</category>
-      
-      <category domain="https://ckck803.github.io/tags/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</category>
-      
-      
-      <comments>https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-union-find/#disqus_thread</comments>
       
     </item>
     
