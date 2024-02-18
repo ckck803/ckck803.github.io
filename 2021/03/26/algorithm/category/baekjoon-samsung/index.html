@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>백준 - 삼성 기출문제 | Victor</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Beakjoon,다익스트라">
+    
+    <meta name="description" content="백준 삼성 기출문제삼성 기출 문제   문제 이름 링크 정리여부 비고    1012 유기농 배추 https:&#x2F;&#x2F;www.acmicpc.net&#x2F;problem&#x2F;1012     1600 말이 되고픈 원숭이 https:&#x2F;&#x2F;www.acmicpc.net&#x2F;problem&#x2F;1600     1707 이분 그래프 https:&#x2F;&#x2F;www.acmicpc.net&#x2F;problem&#x2F;1707">
+<meta property="og:type" content="article">
+<meta property="og:title" content="백준 - 삼성 기출문제">
+<meta property="og:url" content="https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-samsung/index.html">
+<meta property="og:site_name" content="Victor">
+<meta property="og:description" content="백준 삼성 기출문제삼성 기출 문제   문제 이름 링크 정리여부 비고    1012 유기농 배추 https:&#x2F;&#x2F;www.acmicpc.net&#x2F;problem&#x2F;1012     1600 말이 되고픈 원숭이 https:&#x2F;&#x2F;www.acmicpc.net&#x2F;problem&#x2F;1600     1707 이분 그래프 https:&#x2F;&#x2F;www.acmicpc.net&#x2F;problem&#x2F;1707">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/baekjoon/baekjoon.png">
+<meta property="article:published_time" content="2021-03-25T16:50:28.000Z">
+<meta property="article:modified_time" content="2024-02-18T16:19:54.512Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Beakjoon">
+<meta property="article:tag" content="다익스트라">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/baekjoon/baekjoon.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="Victor" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Programming-Lanuage/">Programming Lanuage</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/">Programming</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/React/">React</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/React/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/React/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/React/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/React/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/React/TypeScript/">TypeScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/React/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/React/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/">Spring Boot</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/Spring5-MVC/">Spring5 MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring-Boot/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Programming/">Programming</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Programming/Beakjoon/">Beakjoon</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Programming/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-algorithm/category/baekjoon-samsung" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        백준 - 삼성 기출문제
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2021/03/26/algorithm/category/baekjoon-samsung/" class="article-date">
+       <time datetime="2021-03-25T16:50:28.000Z" itemprop="datePublished">2021-03-26</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2021/03/26/algorithm/category/baekjoon-samsung/" class="article-date">
+     <time datetime="2024-02-18T16:19:54.512Z" itemprop="dateModified">2024-02-19</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Beakjoon/" rel="tag">Beakjoon</a>, <a class="tag-link-link" href="/tags/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/" rel="tag">다익스트라</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/baekjoon/baekjoon.png"></p>
+<h1 id="백준-삼성-기출문제"><a href="#백준-삼성-기출문제" class="headerlink" title="백준 삼성 기출문제"></a>백준 삼성 기출문제</h1><h2 id="삼성-기출-문제"><a href="#삼성-기출-문제" class="headerlink" title="삼성 기출 문제"></a>삼성 기출 문제</h2><table>
+<thead>
+<tr>
+<th>문제</th>
+<th>이름</th>
+<th>링크</th>
+<th align="center">정리여부</th>
+<th align="center">비고</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="1012/">1012</a></td>
+<td>유기농 배추</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1012">https://www.acmicpc.net/problem/1012</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="1600/">1600</a></td>
+<td>말이 되고픈 원숭이</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1600">https://www.acmicpc.net/problem/1600</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="1707/">1707</a></td>
+<td>이분 그래프</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1707">https://www.acmicpc.net/problem/1707</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="1726/">1726</a></td>
+<td>로봇</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1726">https://www.acmicpc.net/problem/1726</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="1939/">1939</a></td>
+<td>중량제한</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1939">https://www.acmicpc.net/problem/1939</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="1953/">1953</a></td>
+<td>팀 배분</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1953">https://www.acmicpc.net/problem/1953</a></td>
+<td align="center">O</td>
+<td align="center">이분 그래프</td>
+</tr>
+<tr>
+<td><a href="1963/">1963</a></td>
+<td>소수 경로</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1963">https://www.acmicpc.net/problem/1963</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="1967/">1967</a></td>
+<td>트리의 지름</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1967">https://www.acmicpc.net/problem/1967</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2146/">2146</a></td>
+<td>다리 만들기</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2146">https://www.acmicpc.net/problem/2146</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2206/">2206</a></td>
+<td>벽 부수고 이동하기</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2206">https://www.acmicpc.net/problem/2206</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2251/">2251</a></td>
+<td>물통</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2251">https://www.acmicpc.net/problem/2251</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2468/">2468</a></td>
+<td>안전 영역</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2468">https://www.acmicpc.net/problem/2468</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2573/">2573</a></td>
+<td>빙산</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2573">https://www.acmicpc.net/problem/2573</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2583/">2583</a></td>
+<td>영역 구하기</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2583">https://www.acmicpc.net/problem/2583</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2589/">2589</a></td>
+<td>보물섬</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2589">https://www.acmicpc.net/problem/2589</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2606/">2606</a></td>
+<td>바이러스</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2606">https://www.acmicpc.net/problem/2606</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2644/">2644</a></td>
+<td>촌수 계산</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2644">https://www.acmicpc.net/problem/2644</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2667/">2667</a></td>
+<td>단지번호 붙이기</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2667">https://www.acmicpc.net/problem/2667</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="2933/">2933</a></td>
+<td>미네랄</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2933">https://www.acmicpc.net/problem/2933</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="5014/">5014</a></td>
+<td>스타트와 링크</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/5014">https://www.acmicpc.net/problem/5014</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="5213/">5213</a></td>
+<td>과외맨</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/5213">https://www.acmicpc.net/problem/5213</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="5427/">5427</a></td>
+<td>불</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/5427">https://www.acmicpc.net/problem/5427</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="6087/">6087</a></td>
+<td>레이저 통신</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/6087">https://www.acmicpc.net/problem/6087</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="6593/">6593</a></td>
+<td>상범 빌딩</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/5427">https://www.acmicpc.net/problem/5427</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="7576/">7576</a></td>
+<td>토마토</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/7576">https://www.acmicpc.net/problem/7576</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="9019/">9019</a></td>
+<td>DSLR</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/9019">https://www.acmicpc.net/problem/9019</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="9205/">9205</a></td>
+<td>맥주 마시면서 걸어가기</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/9205">https://www.acmicpc.net/problem/9205</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="9372/">9372</a></td>
+<td>상근이의 여행</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/9372">https://www.acmicpc.net/problem/9372</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="12886/">12886</a></td>
+<td>돌 그룹</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/12886">https://www.acmicpc.net/problem/12886</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="16236/">16236</a></td>
+<td>아기 상어</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/16236">https://www.acmicpc.net/problem/16236</a></td>
+<td align="center">O</td>
+<td align="center"><code>bfs</code>를 통해 거리구하기</td>
+</tr>
+<tr>
+<td><a href="16397/">16397</a></td>
+<td>탈출</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/16397">https://www.acmicpc.net/problem/16397</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td><a href="17471/">17471</a></td>
+<td>게리맨더링</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/17471">https://www.acmicpc.net/problem/17471</a></td>
+<td align="center">O</td>
+<td align="center">조합, bfs</td>
+</tr>
+<tr>
+<td><a href="17836/">17836</a></td>
+<td>공주님을 구해라</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/17836">https://www.acmicpc.net/problem/17836</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h2 id="브루트-포스"><a href="#브루트-포스" class="headerlink" title="브루트 포스"></a>브루트 포스</h2><table>
+<thead>
+<tr>
+<th>문제</th>
+<th align="left">이름</th>
+<th>링크</th>
+<th align="center">정리여부</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="1051/">1051</a></td>
+<td align="left">숫자 직사각형</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1051">https://www.acmicpc.net/problem/1051</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="1065/">1065</a></td>
+<td align="left">한수</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1065">https://www.acmicpc.net/problem/1065</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="1182/">1182</a></td>
+<td align="left">부분수열의 합</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1182">https://www.acmicpc.net/problem/1182</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="1436/">1436</a></td>
+<td align="left">영화감독 슘</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1436">https://www.acmicpc.net/problem/1436</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="1748/">1748</a></td>
+<td align="left">수 이어쓰기1</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/1748">https://www.acmicpc.net/problem/1748</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="(2231/)">2231</a></td>
+<td align="left">분해 합</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2231">https://www.acmicpc.net/problem/2231</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="2309/">2309</a></td>
+<td align="left">일곱 난쟁이</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2309">https://www.acmicpc.net/problem/2309</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="2798/">2798</a></td>
+<td align="left">블랙잭</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/2798">https://www.acmicpc.net/problem/2798</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="3085/">3085</a></td>
+<td align="left">사탕 게임</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/3085">https://www.acmicpc.net/problem/3085</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="7568/">7568</a></td>
+<td align="left">덩치</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/7568">https://www.acmicpc.net/problem/7568</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="10448/">10448</a></td>
+<td align="left">유레카 이론</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/10448">https://www.acmicpc.net/problem/10448</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="12100/">12100</a></td>
+<td align="left">2048(Easy)</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/12100">https://www.acmicpc.net/problem/12100</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="12738/">12738</a></td>
+<td align="left">가장 긴 증가하는 부분 수열3</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/12738">https://www.acmicpc.net/problem/12738</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="13460/">13460</a></td>
+<td align="left">구슬 탈출2</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/13460">https://www.acmicpc.net/problem/13460</a></td>
+<td align="center">O</td>
+<td>while문을 이용한 <code>bfs</code></td>
+</tr>
+<tr>
+<td><a href="14502/">14502</a></td>
+<td align="left">연구소</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/14502">https://www.acmicpc.net/problem/14502</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="14888/">14888</a></td>
+<td align="left">연산자 끼워넣기</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/14888">https://www.acmicpc.net/problem/14888</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="14889/">14889</a></td>
+<td align="left">스타크와 링크</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/14889">https://www.acmicpc.net/problem/14889</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="15653/">15653</a></td>
+<td align="left">구슬 탈출4</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/15653">https://www.acmicpc.net/problem/15653</a></td>
+<td align="center">O</td>
+<td>while문을 이용한 <code>bfs</code></td>
+</tr>
+<tr>
+<td><a href="15683/">15683</a></td>
+<td align="left">감시</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/15683">https://www.acmicpc.net/problem/15683</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="15684/">15684</a></td>
+<td align="left">사다리 조작</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/15684">https://www.acmicpc.net/problem/15684</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="15686/">15686</a></td>
+<td align="left">치킨 배달</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/14686">https://www.acmicpc.net/problem/14686</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="16198/">16198</a></td>
+<td align="left">에너지 모으기</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/16198">https://www.acmicpc.net/problem/16198</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="17127/">17127</a></td>
+<td align="left">벚꽃이 정보섬에 피어난 이유</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/17127">https://www.acmicpc.net/problem/17127</a></td>
+<td align="center"></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="17142/">17142</a></td>
+<td align="left">연구소 3</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/17142">https://www.acmicpc.net/problem/17142</a></td>
+<td align="center">O</td>
+<td>조합, 경우의 수 탐색<code>bfs</code></td>
+</tr>
+<tr>
+<td><a href="17779/">17779</a></td>
+<td align="left">게리멘더링2</td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.acmicpc.net/problem/17779">https://www.acmicpc.net/problem/17779</a></td>
+<td align="center">O</td>
+<td>영역 나누어 탐색하기</td>
+</tr>
+</tbody></table>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-samsung/" data-id="clsrqgp8b00by1z8d6ied08b1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "백준 - 삼성 기출문제",
+        "image": "https://ckck803.github.io/images/baekjoon/baekjoon.png",
+        "keywords": "Beakjoon 다익스트라",
+        "genre": "Programming Beakjoon 카테고리",
+        "datePublished": "2021-03-26",
+        "dateCreated": "2021-03-26",
+        "dateModified": "2024-02-19",
+        "url": "https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-samsung/",
+        "description": "
+백준 삼성 기출문제삼성 기출 문제
+
+
+문제
+이름
+링크
+정리여부
+비고
+
+
+
+1012
+유기농 배추
+https://www.acmicpc.net/problem/1012
+
+
+
+
+1600
+말이 되고픈 원숭이
+https://www.acmicpc.net/problem/1600
+
+
+
+
+1707
+이분 그래프
+https://www.acmicpc.net/problem/1707",
+        "wordCount": 319
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2021/03/26/algorithm/category/baekjoon-string/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            백준 - 문자열 처리
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2021/03/26/algorithm/category/baekjoon-structure/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">백준 - 자료구조</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">48</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Programming-Lanuage/">Programming Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Programming-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">125</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Django/">Django</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JPA/">JPA</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/">Spring Boot</a><span class="category-list-count">311</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-AOP/">Spring AOP</a><span class="category-list-count">31</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-AOP/Spring-Advanced/">Spring Advanced</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%BB%B7/">포인트 컷</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">35</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Core/">Spring Core</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Core/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">스프링 핵심 원리 - 기본편</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">41</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Framework/File/">File</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/">Spring Security</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/Security/">Security</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/Security/Config/">Config</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/Security/Filter/">Filter</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/Spring5-MVC/">Spring5 MVC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">38</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">46</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2024 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-samsung/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
