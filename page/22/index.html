@@ -176,57 +176,6 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - K진수에서 소수 구하기 Python" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-19T11:10:40.000Z" itemprop="datePublished">2022-01-19</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">프로그래머스 - K진수에서 소수 구하기 Python</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/92335
-
-프로그래머스 - K진수에서 소수 구하기 Python
-
-def is_prime(value):    if value &lt;= 1:        return False    for i in range(2, int(value**0.5)+1):        if value % i == 0:            return False    return Truedef solution(n, k):    answer = 0    str_value = &#x27;&#x27;    stack = []    while n &gt; 0:        stack.append(n % k)        n = n//k    while len(stack) &gt; 0:        str_value += str(stack.pop())    sub_strs = str_value.split(&#x27;0&#x27;)    for i in sub_strs:        if i == &#x27;&#x27;:            continue        if is_prime(int(i)):            answer += 1    return answer
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2022/01/19/algorithm/programmers/string/92341-%EC%A3%BC%EC%B0%A8%EC%9A%94%EA%B8%88%EA%B3%84%EC%82%B0-python/" class="thumbnail">
     
     
@@ -266,6 +215,57 @@ def is_prime(value):    if value &lt;= 1:        return False    for i in range(
 프로그래머스 - 주차 요금 계산
 
 import mathlimit = 23*60 + 59def time_to_minute(time):    times = list(map(int, time.split(&#x27;:&#x27;)))    return times[0] * 60 + times[1]def calCost(base_time, base_fee, per_time, per_fee, interval):    if base_time &gt; interval:        return base_fee    return base_fee + math.ceil((interval-base_time)/per_time)*per_feedef solution(fees, records):    answer = []    fees = list(map(int, fees))    base_time = fees[0]    base_fee = fees[1]    per_time = fees[2]    per_fee = fees[3]    dict = &#123;&#125;    time_dict = &#123;&#125;    fee_dict = &#123;&#125;    for line in records:        words = line.split(&#x27; &#x27;)        time = time_to_minute(words[0])        car_number = words[1]        in_out = words[2]        if in_out == &#x27;IN&#x27;:            dict[car_number] = [time]        else:            dict[car_number].append(time)            in_out_times = dict[car_number]            if car_number in time_dict:                time_dict[car_number] += (in_out_times[1] - in_out_times[0])            else:                time_dict[car_number] = (in_out_times[1] - in_out_times[0])    for key, value in dict.items():        if len(value) == 1:            if key in time_dict:                time_dict[key] += (limit - value[0])            else:                time_dict[key] = (limit - value[0])    for key, value in time_dict.items():        fee = calCost(base_time, base_fee, per_time,                      per_fee, value)        if key in fee_dict:            fee_dict[key] += fee        else:            fee_dict[key] = fee    soredDict = sorted(fee_dict.items())    for value in soredDict:        answer.append(value[1])    return answer
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - K진수에서 소수 구하기 Python" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Programming/">Programming</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-19T11:10:40.000Z" itemprop="datePublished">2022-01-19</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">프로그래머스 - K진수에서 소수 구하기 Python</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/92335
+
+프로그래머스 - K진수에서 소수 구하기 Python
+
+def is_prime(value):    if value &lt;= 1:        return False    for i in range(2, int(value**0.5)+1):        if value % i == 0:            return False    return Truedef solution(n, k):    answer = 0    str_value = &#x27;&#x27;    stack = []    while n &gt; 0:        stack.append(n % k)        n = n//k    while len(stack) &gt; 0:        str_value += str(stack.pop())    sub_strs = str_value.split(&#x27;0&#x27;)    for i in sub_strs:        if i == &#x27;&#x27;:            continue        if is_prime(int(i)):            answer += 1    return answer
         </p>
     </div>
 </article>
@@ -578,6 +578,63 @@ Relected XSS
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 문자열 압축 Python" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Programming/">Programming</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-09T11:10:40.000Z" itemprop="datePublished">2022-01-09</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/">프로그래머스 - 문자열 압축 Python</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://programmers.co.kr/learn/courses/30/lessons/60057
+
+프로그래머스 - 문자열 압축 Cpp
+프로그래머스 - 문자열 압축 Python
+
+문제 풀이간단한 구현 문제다. 주어진 문자열을 substr 해서 문자열 비교를 통해 같은 문자열의 개수를 찾아내 압축된 문자열 형태로 만들어준 다음 압축된 문자열의 길이를 반환해주면 되는 문제다.
+문제 전체 소스def solution(s):    answer = &#x27;&#x27;    if len(s) == 1:        return len(s)    for i in range(1, len(s)//2 + 1):        sentence = &#x27;&#x27;        count = 0        word = s[:i]        for j in range(0, len(s), i):            if s[j:j+i] == word:                count += 1            else:                if count &gt; 1:                    sentence += (str(count) + word)                else:                    sentence += (word)                word = s[j:j+i]                count = 1        if count &gt; 1:            sentence += (str(count) + word)        else:            sentence += (word)        if len(answer) == 0:            answer = sentence        elif len(answer) &gt; len(sentence):            answer = sentence        print(answer)    return len(answer)
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-cpp/" class="thumbnail">
     
     
@@ -622,63 +679,6 @@ https://programmers.co.kr/learn/courses/30/lessons/60057
 int divideString(int length, string s) &#123;    string zipString = &quot;&quot;;    int i = 0;    // 문자열을 스캔하면서 substr 범위가 주어진 문자열을 넘는지 확인한다.    for (i = 0; i &lt; s.length() &amp;&amp; i + length &lt; s.length(); i = i + length) &#123;        int count = 0;        bool isErase = false;        string substr = s.substr(i, length);        string cmpstr = s.substr(i, length);        while (substr == cmpstr &amp;&amp; s.length() &gt; i) &#123;            count++;            i += length;            isErase = true;            substr = s.substr(i, length);        &#125;        if (isErase == true) &#123;            i -= length;        &#125;        if (count == 1) &#123;            zipString += cmpstr;        &#125; else &#123;            zipString += to_string(count);            zipString += cmpstr;        &#125;    &#125;    // 남겨진 문자열을 압축된 문자열에 그대로 추가한다.    for (int idx = i; idx &lt; s.length(); idx++) &#123;        zipString += s[i];    &#125;    return zipString.length();&#125;
 
 문제 전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;int divideString(int length, string s) &#123;    string zipString = &quot;&quot;;    int count = 0;    int i = 0;    for (i = 0; i &lt; s.length() &amp;&amp; i + length &lt; s.length(); i = i + length) &#123;        bool isErase = false;        string substr = s.substr(i, length);        string cmpstr = s.substr(i, length);        while (substr == cmpstr &amp;&amp; s.length() &gt; i) &#123;            count++;            i += length;            isErase = true;            substr = s.substr(i, length);        &#125;        if (isErase == true) &#123;            i -= length;        &#125;        if (count == 1) &#123;            zipString += cmpstr;        &#125; else &#123;            zipString += to_string(count);            zipString += cmpstr;        &#125;        count = 0;        cmpstr = &quot;&quot;;    &#125;    for (int idx = i; idx &lt; s.length(); idx++) &#123;        zipString += s[i];    &#125;    return zipString.length();&#125;int solution(string s) &#123;    int answer = 0;    int minValue = s.length();    for (int i = 1; i &lt;= s.length() / 2; i++) &#123;        int zipLength = divideString(i, s);        minValue = min(zipLength, minValue);    &#125;    answer = minValue;    return answer;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 문자열 압축 Python" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Programming/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-09T11:10:40.000Z" itemprop="datePublished">2022-01-09</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/">프로그래머스 - 문자열 압축 Python</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-https://programmers.co.kr/learn/courses/30/lessons/60057
-
-프로그래머스 - 문자열 압축 Cpp
-프로그래머스 - 문자열 압축 Python
-
-문제 풀이간단한 구현 문제다. 주어진 문자열을 substr 해서 문자열 비교를 통해 같은 문자열의 개수를 찾아내 압축된 문자열 형태로 만들어준 다음 압축된 문자열의 길이를 반환해주면 되는 문제다.
-문제 전체 소스def solution(s):    answer = &#x27;&#x27;    if len(s) == 1:        return len(s)    for i in range(1, len(s)//2 + 1):        sentence = &#x27;&#x27;        count = 0        word = s[:i]        for j in range(0, len(s), i):            if s[j:j+i] == word:                count += 1            else:                if count &gt; 1:                    sentence += (str(count) + word)                else:                    sentence += (word)                word = s[j:j+i]                count = 1        if count &gt; 1:            sentence += (str(count) + word)        else:            sentence += (word)        if len(answer) == 0:            answer = sentence        elif len(answer) &gt; len(sentence):            answer = sentence        print(answer)    return len(answer)
         </p>
     </div>
 </article>

@@ -1038,71 +1038,6 @@ Filter는 Client와 Servlet사이에 존재해 Client가 보내는 요청정보�
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
-            </div>
-            <div class="date"><time datetime="2021-10-10T17:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/">Spring Boot 요청 메시지 - Text</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            목차
-Spring MVC - ArgumentResolver 
-Spring MVC - HttpMessageConverter 
-Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
-Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
-Spring Boot 요청 메시지 - JSON
-Spring Boot 요청 메시지 - Text 
-Spring Boot 쿼리 파라미터, HTML Form 
-Spring Boot 기본 헤더 조회 
-Spring Boot API 예시 
-Spring Boot @RequestMapping 
-Spring Boot Logging
-
-Spring Boot 요청 메시지@PostMapping(&quot;/request-body-string-v1&quot;)public void requestBodyString(HttpServletRequest request, HttpServletResponse response) throws IOException &#123;    ServletInputStream inputStream = request.getInputStream();    String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    response.getWriter().write(&quot;ok&quot;);&#125;
-
-@PostMapping(&quot;/request-body-string-v2&quot;)public void requestBodyStringV2(InputStream inputStream, Writer responseWriter) throws IOException &#123;    String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    responseWriter.write(&quot;ok&quot;);&#125;
-
-HttpEntity 사용하기@PostMapping(&quot;/request-body-string-v3&quot;)public HttpEntity&lt;String&gt; requestBodyStringV3(HttpEntity&lt;String&gt; httpEntity) throws IOException &#123;    String messageBody = httpEntity.getBody();    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    return new HttpEntity&lt;&gt;(&quot;ok&quot;);&#125;
-
-RequestBody, ResponseBody 어노테이션 사용하기@ResponseBody@PostMapping(&quot;/request-body-string-v4&quot;)public String requestBodyStringV4(@RequestBody String messageBody) throws IOException &#123;    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    return &quot;ok&quot;;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-07-requestjson/" class="thumbnail">
     
     
@@ -1158,6 +1093,71 @@ DTO 사용하기@ResponseBody@PostMapping(&quot;/request-body-json-v3&quot;)publ
 
 
 @ResponseBody@PostMapping(&quot;/request-body-json-v4&quot;)public String requestBodyJsonV4(HttpEntity&lt;HelloData&gt; data) throws IOException &#123;    HelloData body = data.getBody();    log.info(&quot;username=&#123;&#125;, age=&#123;&#125;&quot;, body.getUsername(), body.getAge());    return &quot;ok&quot;;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
+            </div>
+            <div class="date"><time datetime="2021-10-10T17:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/">Spring Boot 요청 메시지 - Text</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            목차
+Spring MVC - ArgumentResolver 
+Spring MVC - HttpMessageConverter 
+Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
+Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
+Spring Boot 요청 메시지 - JSON
+Spring Boot 요청 메시지 - Text 
+Spring Boot 쿼리 파라미터, HTML Form 
+Spring Boot 기본 헤더 조회 
+Spring Boot API 예시 
+Spring Boot @RequestMapping 
+Spring Boot Logging
+
+Spring Boot 요청 메시지@PostMapping(&quot;/request-body-string-v1&quot;)public void requestBodyString(HttpServletRequest request, HttpServletResponse response) throws IOException &#123;    ServletInputStream inputStream = request.getInputStream();    String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    response.getWriter().write(&quot;ok&quot;);&#125;
+
+@PostMapping(&quot;/request-body-string-v2&quot;)public void requestBodyStringV2(InputStream inputStream, Writer responseWriter) throws IOException &#123;    String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    responseWriter.write(&quot;ok&quot;);&#125;
+
+HttpEntity 사용하기@PostMapping(&quot;/request-body-string-v3&quot;)public HttpEntity&lt;String&gt; requestBodyStringV3(HttpEntity&lt;String&gt; httpEntity) throws IOException &#123;    String messageBody = httpEntity.getBody();    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    return new HttpEntity&lt;&gt;(&quot;ok&quot;);&#125;
+
+RequestBody, ResponseBody 어노테이션 사용하기@ResponseBody@PostMapping(&quot;/request-body-string-v4&quot;)public String requestBodyStringV4(@RequestBody String messageBody) throws IOException &#123;    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    return &quot;ok&quot;;&#125;
         </p>
     </div>
 </article>

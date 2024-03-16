@@ -288,64 +288,6 @@ quiz&#x2F;models.py
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/05/10/django/mysite/django-27/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/django/django.png)" alt="Django - Comment (댓글) 작성창 구현하기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/05/10/django/mysite/django-27/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Programming/">Programming</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Programming/Django/">Django</a>
-            </div>
-            <div class="date"><time datetime="2022-05-10T01:47:30.000Z" itemprop="datePublished">2022-05-10</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/05/10/django/mysite/django-27/">Django - Comment (댓글) 작성창 구현하기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-Comment (댓글) 작성창 구현하기forms.py 파일 생성하기
-blog&#x2F;
-
-해당 돌더에 forms.py 파일을 생성한다.
-from .models import Commentfrom django import formsclass CommentForm(forms.ModelForm):    class Meta:        model = Comment        fields = &#123;&#x27;text&#x27;,&#125;
-
-테스트 코드 작성하기
-blog&#x2F;tests.py
-
-# 로그인하기login_success = self.client.login(username=&#x27;smith&#x27;, password=&#x27;nopassword&#x27;)self.assertTrue(login_success)# post를 이용하여 서버에 데이터를 보낸다.response = self.client.post(    post_000.get_absolute_url() + &#x27;new_comment/&#x27;,    &#123;&#x27;text&#x27;:&#x27;A test comment for the first comment&#x27;&#125;,    follow=True # redirect하는 것까지 확인을 해봐라)self.assertEqual(response.status_code, 200)
-
-views.py에 반영하기
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2022/05/10/django/mysite/django-26/" class="thumbnail">
     
     
@@ -393,6 +335,64 @@ blog&#x2F;templates&#x2F;blog&#x2F;post_detail.html
 admin 사이트에서 comment확인할 수 있게 반영하기
 blog&#x2F;admin.py
 
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/05/10/django/mysite/django-27/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/django/django.png)" alt="Django - Comment (댓글) 작성창 구현하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/05/10/django/mysite/django-27/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Programming/">Programming</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Programming/Django/">Django</a>
+            </div>
+            <div class="date"><time datetime="2022-05-10T01:47:30.000Z" itemprop="datePublished">2022-05-10</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/05/10/django/mysite/django-27/">Django - Comment (댓글) 작성창 구현하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+Comment (댓글) 작성창 구현하기forms.py 파일 생성하기
+blog&#x2F;
+
+해당 돌더에 forms.py 파일을 생성한다.
+from .models import Commentfrom django import formsclass CommentForm(forms.ModelForm):    class Meta:        model = Comment        fields = &#123;&#x27;text&#x27;,&#125;
+
+테스트 코드 작성하기
+blog&#x2F;tests.py
+
+# 로그인하기login_success = self.client.login(username=&#x27;smith&#x27;, password=&#x27;nopassword&#x27;)self.assertTrue(login_success)# post를 이용하여 서버에 데이터를 보낸다.response = self.client.post(    post_000.get_absolute_url() + &#x27;new_comment/&#x27;,    &#123;&#x27;text&#x27;:&#x27;A test comment for the first comment&#x27;&#125;,    follow=True # redirect하는 것까지 확인을 해봐라)self.assertEqual(response.status_code, 200)
+
+views.py에 반영하기
         </p>
     </div>
 </article>
