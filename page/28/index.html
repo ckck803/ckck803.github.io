@@ -222,20 +222,13 @@ Spring AOP Pointcut 표현식 - execution
 Spring 핵심원리 고급편 - Pointcut
 
 
-execution
-execution( [접근제어자] 리턴타입 [선언타입] 메서드이름 (파라미터) [예외] )
+Pointcut 표현식 - execution
+execution( [접근제어자] 리턴타입 [선언타입] 메소드이름(파라미터) [예외] )
 
 execution 는 Pointcut 표현식에서 가장 많이 사용되는 명시자 입니다. 
 execution 는 메소드의 접근 제어자, 리턴 타입, 메소드가 선언된 패키지, 클래스 정보, 메소드 파라미터, 예외처리 정보를 이용해 다양한 조건으로 Pointcut 을 적용할 수 있도록 제공합니다.
-execution(public String com.example.aop.member.MemberServiceImpl.hello(String))
-접근 제어자 : public 인 메소드
-리턴 타입 : String
-선언 타입 : com.example.aop.member.MemberServiceImpl
-메서드 이름 : hello
-파라미터 : String
-예외 : 생략
-
-@Testvoid exactMatch()&#123;    // public java.lang.String com.example.aop.member.MemberServiceImpl.hello(java.lang.String)    pointcut.setExpression(&quot;execution(public String com.example.aop.member.MemberServiceImpl.hello(String))&quot;);    assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();&#125;
+접근제어자, 선언타입, 예외의 경우는 생각이 가능합니다.
+execution 사용 예시execution(public String com.example.aop.member.MemberServiceImpl.hello(String))
         </p>
     </div>
 </article>
