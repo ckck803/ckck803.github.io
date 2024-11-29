@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/springboot/redis/redis.png">
 <meta property="article:published_time" content="2021-12-23T14:47:05.000Z">
-<meta property="article:modified_time" content="2024-11-28T14:24:09.603Z">
+<meta property="article:modified_time" content="2024-11-29T03:24:54.382Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/springboot/redis/redis.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2021/12/23/spring/spring-redis/springboot-redis/" class="article-date">
-     <time datetime="2024-11-28T14:24:09.603Z" itemprop="dateModified">2024-11-28</time>
+     <time datetime="2024-11-29T03:24:54.382Z" itemprop="dateModified">2024-11-29</time>
   </a>
 </div>
 
@@ -218,13 +218,13 @@
 <p>보통 Local 에서 테스트를 위해 많이 사용하며, 별도의 Redis 를 설치하지 않고 실행할 수 있게 해줍니다.</p>
 </blockquote>
 <p>보통 Redis를 사용하는 스프링 프로젝트를 Local에서 프로젝트 실행시 Redis를 선행적으로 설치해줘야 한다. 이 문제를 Embedded Redis를 사용해 프로젝트가 Local 환경에 의존적이지 않고 프로젝트 만으로 구동할 수 있도록 한다.</p>
-<h4 id="Embedded-Redis-사용을-위한-의존성-추가"><a href="#Embedded-Redis-사용을-위한-의존성-추가" class="headerlink" title="Embedded Redis 사용을 위한 의존성 추가"></a>Embedded Redis 사용을 위한 의존성 추가</h4><p><strong>build.gradle</strong> 에 다음 Embedded Redis 사용을 위한 의존성을 추가해줍니다.</p>
+<h4 id="1-Embedded-Redis-사용을-위한-의존성-추가"><a href="#1-Embedded-Redis-사용을-위한-의존성-추가" class="headerlink" title="1. Embedded Redis 사용을 위한 의존성 추가"></a>1. Embedded Redis 사용을 위한 의존성 추가</h4><p><strong>build.gradle</strong> 에 다음 Embedded Redis 사용을 위한 의존성을 추가해줍니다.</p>
 <figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">implementation <span class="string">&#x27;org.springframework.boot:spring-boot-starter-data-redis&#x27;</span></span><br><span class="line"><span class="comment">//embedded-redis</span></span><br><span class="line">compile <span class="attr">group:</span> <span class="string">&#x27;it.ozimov&#x27;</span>, <span class="attr">name:</span> <span class="string">&#x27;embedded-redis&#x27;</span>, <span class="attr">version:</span> <span class="string">&#x27;0.7.2&#x27;</span></span><br></pre></td></tr></table></figure>
 
-<p><strong>application.yml</strong> 에 local 환경에서 Redis 접속을 위한 설정을 추가해줍니다. </p>
+<h4 id="2-Local-Redis-접속을-위한-Profile-추가"><a href="#2-Local-Redis-접속을-위한-Profile-추가" class="headerlink" title="2. Local Redis 접속을 위한 Profile 추가"></a>2. Local Redis 접속을 위한 Profile 추가</h4><p><strong>application.yml</strong> 에 local 환경에서 Redis 접속을 위한 설정을 추가해줍니다. </p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">local</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="string">localhost</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="Embedded-Redis-에-대한-설정"><a href="#Embedded-Redis-에-대한-설정" class="headerlink" title="Embedded Redis 에 대한 설정"></a>Embedded Redis 에 대한 설정</h4><p>Embedded Redis 를 띄우기 위한 설정을 해줍니다. 보통 Embedded Redis 는 테스트 용도로 띄우기 때문에 Port 설정을 이미 설정된 Redis 접속 포트로 실행시켜줍니다.</p>
+<h4 id="3-Embedded-Redis-에-대한-설정"><a href="#3-Embedded-Redis-에-대한-설정" class="headerlink" title="3. Embedded Redis 에 대한 설정"></a>3. Embedded Redis 에 대한 설정</h4><p>Embedded Redis 를 띄우기 위한 설정을 해줍니다. 보통 Embedded Redis 는 테스트 용도로 띄우기 때문에 Port 설정을 이미 설정된 Redis 접속 포트로 실행시켜줍니다.</p>
 <p>어플리케이션 종료시 Embedded Redis 를 종료 시켜주기 위한 설정을 잡아줍니다. @PreDestroy 는 어플리케이션 종료 전에 Embedded Redis 가 종료될 수 있게 해줍니다.</p>
 <p>Profile 어노테이션을 통해 <strong>-Dspring.profiles.active&#x3D;local</strong> 옵션이 주어졌을 때 해당 설정을 사용할 수 있다</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Profile(&quot;local&quot;)</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EmbeddedRedisConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;spring.redis.port&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> redisPort;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> RedisServer redisServer;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">redisServer</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        redisServer = <span class="keyword">new</span> <span class="title class_">RedisServer</span>(redisPort);</span><br><span class="line">        redisServer.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PreDestroy</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">stopRedis</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(redisServer != <span class="literal">null</span>)&#123;</span><br><span class="line">            redisServer.stop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -243,7 +243,7 @@
 
 
 
-    <a data-url="https://ckck803.github.io/2021/12/23/spring/spring-redis/springboot-redis/" data-id="cm41ep94l00r16x8ddlsg68fi" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://ckck803.github.io/2021/12/23/spring/spring-redis/springboot-redis/" data-id="cm426o37b00vwk78d08mh6le8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -319,7 +319,7 @@
         "genre": "Spring Redis",
         "datePublished": "2021-12-23",
         "dateCreated": "2021-12-23",
-        "dateModified": "2024-11-28",
+        "dateModified": "2024-11-29",
         "url": "https://ckck803.github.io/2021/12/23/spring/spring-redis/springboot-redis/",
         "description": "
 참고https://www.baeldung.com/spring-embedded-redis
@@ -327,11 +327,11 @@ Embeded Redis 사용하기
 보통 Local 에서 테스트를 위해 많이 사용하며, 별도의 Redis 를 설치하지 않고 실행할 수 있게 해줍니다.
 
 보통 Redis를 사용하는 스프링 프로젝트를 Local에서 프로젝트 실행시 Redis를 선행적으로 설치해줘야 한다. 이 문제를 Embedded Redis를 사용해 프로젝트가 Local 환경에 의존적이지 않고 프로젝트 만으로 구동할 수 있도록 한다.
-Embedded Redis 사용을 위한 의존성 추가build.gradle 에 다음 Embedded Redis 사용을 위한 의존성을 추가해줍니다.
+1. Embedded Redis 사용을 위한 의존성 추가build.gradle 에 다음 Embedded Redis 사용을 위한 의존성을 추가해줍니다.
 implementation &#x27;org.springframework.boot:spring-boot-starter-data-redis&#x27;//embedded-rediscompile group: &#x27;it.ozimov&#x27;, name: &#x27;embedded-redis&#x27;, version: &#x27;0.7.2&#x27;
 
-application.yml 에 local 환경에서 Redis 접속을 위한 설정을 추가해줍니다. ",
-        "wordCount": 1594
+2. Local Redis 접속을 위한 Profile 추가",
+        "wordCount": 1614
     }
 </script>
 

@@ -176,17 +176,17 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/12/27/computer-science/network/http/http-version/" class="thumbnail">
+        <a href="/2021/12/27/computer-science/network/http/http-message/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/computer-science/network/http/http.png)" alt="네트워크 - HTTP Version" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/computer-science/network/http/http-message.png)" alt="네트워크 - HTTP 메시지 구조" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/27/computer-science/network/http/http-version/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/27/computer-science/network/http/http-message/">0</span>
     
 </span>
 
@@ -204,13 +204,13 @@
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/27/computer-science/network/http/http-version/">네트워크 - HTTP Version</a>
+        <a href="/2021/12/27/computer-science/network/http/http-message/">네트워크 - HTTP 메시지 구조</a>
         </h1>
     
 
         <p class="article-excerpt">
             
-HTTP Version
+
 네트워크 - OSI 7 계층과 TCP&#x2F;IP 5계층
 네트워크 - HTTP
 네트워크 - HTTP Version
@@ -218,19 +218,14 @@ HTTP Version
 네트워크 - HTTPS
 Post not found: computer-science/network/tcp
 
-HTTP&#x2F;0.9
-간단하게 HTML 객체 를 받아오기 위해 만들어진 프로토콜이다.
-때문에 GET메서드 만을 지원한다.
-멀티미디어 콘텐츠에 대한 MIME 타입이나, HTTP 해더, 버전 번호는 지원하지 않는다.
+HTTP 메시지 구조
+HyperText Transfer Protocol 의 약자로 HTML 문서를 전송하기 위해 만들어진 규약조건이다.HTTP는 TCP&#x2F;IP 기반으로 되어있다.
 
-HTTP&#x2F;1.0
-버전 번호, HTTP 헤더, 추가 메서드, 멀티미디어 객체 처리를 추가했다.
-웹페이지와 상호작용하는 폼을 실현
-하나의 커넥션에 하나의 요청과 하나의 응답만 가능
+HTTP 통신 방식HTTP는 기본적으로 요청&#x2F;응답 구조
+Client 요청 MessageJson 데이터
+curl –http1.1 http://localhost:8888/greeting -v -H “Content-Type: application&#x2F;json” -d ‘{“hello”:”json”}’
 
-요청GET /greeting HTTP/1.0Host: localhost:18888Connection: closeAccept: */*User-Agent: curl/7.71.1
-
-응답
+POST /greeting HTTP/1.1Host: localhost:8888Accept: */*Content-Length: 16Content-Type: application/jsonUser-Agent: curl/7.71.1&#123;&quot;hello&quot;:&quot;json&quot;&#125;
         </p>
     </div>
 </article>

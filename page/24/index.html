@@ -637,57 +637,6 @@ https://programmers.co.kr/learn/courses/30/lessons/92342
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - K진수에서 소수 구하기 Python" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-19T11:10:40.000Z" itemprop="datePublished">2022-01-19</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">프로그래머스 - K진수에서 소수 구하기 Python</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/92335
-
-프로그래머스 - K진수에서 소수 구하기 Python
-
-def is_prime(value):    if value &lt;= 1:        return False    for i in range(2, int(value**0.5)+1):        if value % i == 0:            return False    return Truedef solution(n, k):    answer = 0    str_value = &#x27;&#x27;    stack = []    while n &gt; 0:        stack.append(n % k)        n = n//k    while len(stack) &gt; 0:        str_value += str(stack.pop())    sub_strs = str_value.split(&#x27;0&#x27;)    for i in sub_strs:        if i == &#x27;&#x27;:            continue        if is_prime(int(i)):            answer += 1    return answer
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2022/01/19/algorithm/programmers/string/92341-%EC%A3%BC%EC%B0%A8%EC%9A%94%EA%B8%88%EA%B3%84%EC%82%B0-python/" class="thumbnail">
     
     
@@ -727,6 +676,57 @@ def is_prime(value):    if value &lt;= 1:        return False    for i in range(
 프로그래머스 - 주차 요금 계산
 
 import mathlimit = 23*60 + 59def time_to_minute(time):    times = list(map(int, time.split(&#x27;:&#x27;)))    return times[0] * 60 + times[1]def calCost(base_time, base_fee, per_time, per_fee, interval):    if base_time &gt; interval:        return base_fee    return base_fee + math.ceil((interval-base_time)/per_time)*per_feedef solution(fees, records):    answer = []    fees = list(map(int, fees))    base_time = fees[0]    base_fee = fees[1]    per_time = fees[2]    per_fee = fees[3]    dict = &#123;&#125;    time_dict = &#123;&#125;    fee_dict = &#123;&#125;    for line in records:        words = line.split(&#x27; &#x27;)        time = time_to_minute(words[0])        car_number = words[1]        in_out = words[2]        if in_out == &#x27;IN&#x27;:            dict[car_number] = [time]        else:            dict[car_number].append(time)            in_out_times = dict[car_number]            if car_number in time_dict:                time_dict[car_number] += (in_out_times[1] - in_out_times[0])            else:                time_dict[car_number] = (in_out_times[1] - in_out_times[0])    for key, value in dict.items():        if len(value) == 1:            if key in time_dict:                time_dict[key] += (limit - value[0])            else:                time_dict[key] = (limit - value[0])    for key, value in time_dict.items():        fee = calCost(base_time, base_fee, per_time,                      per_fee, value)        if key in fee_dict:            fee_dict[key] += fee        else:            fee_dict[key] = fee    soredDict = sorted(fee_dict.items())    for value in soredDict:        answer.append(value[1])    return answer
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - K진수에서 소수 구하기 Python" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-19T11:10:40.000Z" itemprop="datePublished">2022-01-19</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">프로그래머스 - K진수에서 소수 구하기 Python</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/92335
+
+프로그래머스 - K진수에서 소수 구하기 Python
+
+def is_prime(value):    if value &lt;= 1:        return False    for i in range(2, int(value**0.5)+1):        if value % i == 0:            return False    return Truedef solution(n, k):    answer = 0    str_value = &#x27;&#x27;    stack = []    while n &gt; 0:        stack.append(n % k)        n = n//k    while len(stack) &gt; 0:        str_value += str(stack.pop())    sub_strs = str_value.split(&#x27;0&#x27;)    for i in sub_strs:        if i == &#x27;&#x27;:            continue        if is_prime(int(i)):            answer += 1    return answer
         </p>
     </div>
 </article>

@@ -176,17 +176,17 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/01/17/algorithm/programmers/string/92334-%EC%8B%A0%EA%B3%A0%EA%B2%B0%EA%B3%BC%EB%B0%9B%EA%B8%B0-cpp/" class="thumbnail">
+        <a href="/2022/01/17/algorithm/programmers/string/92334-%EC%8B%A0%EA%B3%A0%EA%B2%B0%EA%B3%BC%EB%B0%9B%EA%B8%B0-python/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 신고 결과 받기 Cpp" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 신고 결과 받기 Python" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/17/algorithm/programmers/string/92334-%EC%8B%A0%EA%B3%A0%EA%B2%B0%EA%B3%BC%EB%B0%9B%EA%B8%B0-cpp/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/17/algorithm/programmers/string/92334-%EC%8B%A0%EA%B3%A0%EA%B2%B0%EA%B3%BC%EB%B0%9B%EA%B8%B0-python/">0</span>
     
 </span>
 
@@ -204,7 +204,7 @@
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/17/algorithm/programmers/string/92334-%EC%8B%A0%EA%B3%A0%EA%B2%B0%EA%B3%BC%EB%B0%9B%EA%B8%B0-cpp/">프로그래머스 - 신고 결과 받기 Cpp</a>
+        <a href="/2022/01/17/algorithm/programmers/string/92334-%EC%8B%A0%EA%B3%A0%EA%B2%B0%EA%B3%BC%EB%B0%9B%EA%B8%B0-python/">프로그래머스 - 신고 결과 받기 Python</a>
         </h1>
     
 
@@ -215,7 +215,7 @@
 프로그래머스 - 신고 결과 받기 Cpp
 프로그래머스 - 신고 결과 받기 Python
 
-#include &lt;bits/stdc++.h&gt;using namespace std;vector&lt;string&gt; split(string line) &#123;    vector&lt;string&gt; v;    int point = 0;    for (int i = 0; i &lt; line.size(); i++) &#123;        if (line[i] == &#x27; &#x27;) &#123;            point = i;            break;        &#125;    &#125;    v.push_back(line.substr(0, point));    v.push_back(line.substr(point + 1));    return v;&#125;vector&lt;int&gt; solution(vector&lt;string&gt; id_list, vector&lt;string&gt; report, int k) &#123;    vector&lt;int&gt; answer = vector&lt;int&gt;(id_list.size(), 0);    map&lt;string, set&lt;string&gt;&gt; m;    for (string line : report) &#123;        vector&lt;string&gt; v = split(line);        string id = v[0];        string report_id = v[1];        m[v[1]].insert(v[0]);    &#125;    for (auto iter = m.begin(); iter != m.end(); iter++) &#123;        if (iter-&gt;second.size() &gt;= k) &#123;            set&lt;string&gt;&amp; s = iter-&gt;second;            for (auto s_iter = s.begin(); s_iter != s.end(); s_iter++) &#123;                int index = find(id_list.begin(), id_list.end(), *s_iter) - id_list.begin();                answer[index]++;            &#125;        &#125;    &#125;    return answer;&#125;
+def solution(id_list, report, k):    answer = [0] * len(id_list)    dict = &#123;id: set() for id in id_list&#125;    for line in set(report):        args = line.split(&#x27; &#x27;)        dict[args[1]].add(args[0])    print(dict)    for key, value in dict.items():        if len(value) &gt;= k:            for i in value:                answer[id_list.index(i)] += 1    return answer
         </p>
     </div>
 </article>
