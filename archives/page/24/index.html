@@ -331,6 +331,79 @@ mappedBy 속성을 이용해 연관된 Entity 클래스 내 field 이름을 넣�
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/11/05/jpa/jpa-programming/mapping/jpa-mapping-1/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/mapping/table-mapping.jpg)" alt="JPA 연관 관계 - 객체 관계 모델링하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/11/05/jpa/jpa-programming/mapping/jpa-mapping-1/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/JPA/">JPA</a>
+            </div>
+            <div class="date"><time datetime="2021-11-04T20:31:46.000Z" itemprop="datePublished">2021-11-05</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/11/05/jpa/jpa-programming/mapping/jpa-mapping-1/">JPA 연관 관계 - 객체 관계 모델링하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            목차
+JPA 연관 관계 - 고아 객체
+JPA 연관 관계 - 즉시로딩과 지연로딩
+JPA 연관 관계 - 프록시 객체
+JPA 연관 관계 - @MappedSuperclass
+JPA 연관 관계 - 상속 관계 Mapping
+JPA 연관 관계 - 영속성 전이 Cascade
+JPA 연관 관계 - 양방향 연관관계와 연관과계의 주인
+JPA 연관 관계 - 양방향 연관관계
+JPA 연관 관계 - 객체 지향 스럽게 모델링 하기
+JPA 연관 관계 - 객체 관계 모델링하기
+JPA 연관 관계
+
+외래키를 객체 내 Field 값 으로 모델링
+
+
+@Entitypublic class Team &#123;    @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)    @Column(name = &quot;TEAM_ID&quot;)    private Long id;    @Column    private String name;&#125;
+
+@Entitypublic class Member &#123;    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)    @Column(name = &quot;MEMBER_ID&quot;)    private long id;    @Column(name = &quot;USERNAME&quot;)    private String username;    @Column(name = &quot;TEAM_ID&quot;)    private Long teamId; // 외래키를 Field 값으로 갖는다.&#125;
+
+Member 가 소속된 Team 정보 가져오기
+Member 가 소속된 Team 정보를 가져오기 위해서는 
+Member Id를 이용해 해당 Member 객체를 가져와 저장된 Team Id를 가져온 후 
+해당 Team Id를 이용해 Member가 소속된 Team 을 조회해야 한다.
+
+Team team = new Team();team.setName(&quot;TeamA&quot;);entityManager.persist(team);Member member = new Member();member.setUsername(&quot;member1&quot;);member.setTeamId(team.getId());entityManager.persist(member);Member findMember = entityManager.find(Member.class, member.getId());Long findTeamId = findMember.getTeamId();Team findTeam = entityManager.find(Team.class, findTeamId);
+
+객체 지향 스럽지 못한 모델링
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/11/05/jpa/jpa-programming/mapping/jpa-mapping-2/" class="thumbnail">
     
     
@@ -394,79 +467,6 @@ N:1 연관 관계를 명시할 때는 @ManyToOne 과 @JoinColumn 을 이용해 �
 
 
 Member 가 소속된 Team 정보 가져오기
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/11/05/jpa/jpa-programming/mapping/jpa-mapping-1/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/mapping/table-mapping.jpg)" alt="JPA 연관 관계 - 객체 관계 모델링하기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/11/05/jpa/jpa-programming/mapping/jpa-mapping-1/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/JPA/">JPA</a>
-            </div>
-            <div class="date"><time datetime="2021-11-04T20:31:46.000Z" itemprop="datePublished">2021-11-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/11/05/jpa/jpa-programming/mapping/jpa-mapping-1/">JPA 연관 관계 - 객체 관계 모델링하기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            목차
-JPA 연관 관계 - 고아 객체
-JPA 연관 관계 - 즉시로딩과 지연로딩
-JPA 연관 관계 - 프록시 객체
-JPA 연관 관계 - @MappedSuperclass
-JPA 연관 관계 - 상속 관계 Mapping
-JPA 연관 관계 - 영속성 전이 Cascade
-JPA 연관 관계 - 양방향 연관관계와 연관과계의 주인
-JPA 연관 관계 - 양방향 연관관계
-JPA 연관 관계 - 객체 지향 스럽게 모델링 하기
-JPA 연관 관계 - 객체 관계 모델링하기
-JPA 연관 관계
-
-외래키를 객체 내 Field 값 으로 모델링
-
-
-@Entitypublic class Team &#123;    @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)    @Column(name = &quot;TEAM_ID&quot;)    private Long id;    @Column    private String name;&#125;
-
-@Entitypublic class Member &#123;    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)    @Column(name = &quot;MEMBER_ID&quot;)    private long id;    @Column(name = &quot;USERNAME&quot;)    private String username;    @Column(name = &quot;TEAM_ID&quot;)    private Long teamId; // 외래키를 Field 값으로 갖는다.&#125;
-
-Member 가 소속된 Team 정보 가져오기
-Member 가 소속된 Team 정보를 가져오기 위해서는 
-Member Id를 이용해 해당 Member 객체를 가져와 저장된 Team Id를 가져온 후 
-해당 Team Id를 이용해 Member가 소속된 Team 을 조회해야 한다.
-
-Team team = new Team();team.setName(&quot;TeamA&quot;);entityManager.persist(team);Member member = new Member();member.setUsername(&quot;member1&quot;);member.setTeamId(team.getId());entityManager.persist(member);Member findMember = entityManager.find(Member.class, member.getId());Long findTeamId = findMember.getTeamId();Team findTeam = entityManager.find(Team.class, findTeamId);
-
-객체 지향 스럽지 못한 모델링
         </p>
     </div>
 </article>

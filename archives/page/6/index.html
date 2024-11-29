@@ -1026,17 +1026,17 @@ https://tetrate.io/blog/minimizing-cross-zone-traffic-charges-with-istio/
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2023/02/19/devops/argocd/argocd-01-install/" class="thumbnail">
+        <a href="/2023/02/19/k8s/namespace/namespace/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/devops/argocd/argocd.png)" alt="Helm 을 이용해 AgroCD 설치하기" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/k8s/k8s.png)" alt="쿠버네티스 - Namespace" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/19/devops/argocd/argocd-01-install/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/19/k8s/namespace/namespace/">0</span>
     
 </span>
 
@@ -1047,29 +1047,39 @@ https://tetrate.io/blog/minimizing-cross-zone-traffic-charges-with-istio/
         
         <div class="article-meta">
             <div class="category">
-            <a class="article-category-link" href="/categories/DevOps/">DevOps</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a>
+            <a class="article-category-link" href="/categories/Kubernetes/">Kubernetes</a>
             </div>
             <div class="date"><time datetime="2023-02-18T21:31:46.000Z" itemprop="datePublished">2023-02-19</time></div>
         </div>
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2023/02/19/devops/argocd/argocd-01-install/">Helm 을 이용해 AgroCD 설치하기</a>
+        <a href="/2023/02/19/k8s/namespace/namespace/">쿠버네티스 - Namespace</a>
         </h1>
     
 
         <p class="article-excerpt">
             
-참고
-https://argo-cd.readthedocs.io/en/stable/
+목차
+쿠버네티스 - Namespace
+쿠버네티스 - Ingress
+Post not found: k8s/deployment/deployment
+Post not found: k8s/replicaset/replicaset
+쿠버네티스 - Node
+쿠버네티스 - Pod
+Post not found: k8s/k8s
 
-Argo CLI 설치하기brew install argocd
+Namespace 란?
+쿠번네티스 Cluster 들을 논리적으로 나누기 위한 수단.
 
-Argo CLI 접속argocd login &lt;argo server 가 설치된 URL&gt; --username &lt;username&gt; --password &lt;password&gt;
 
-비밀번호 변경argocd account update-password
+Namespace 를 이용하면 Pod, Service, Volumn 과 같은 다양한 리소스를 분리하고 격리할 수 있다.
 
-Kubernetes Cluster 추가
+Namespace 생성kubectl create namespace your-namespace-name
+
+apiVersion: v1kind: Namespacemetadata:  name: [Namespace 이름]
+
+kubectl apply -f namespace.yaml
         </p>
     </div>
 </article>
@@ -1086,17 +1096,17 @@ Kubernetes Cluster 추가
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2023/02/19/devops/nexus/nexus-helm-01-install/" class="thumbnail">
+        <a href="/2023/02/19/k8s/istio/istio-topology-aware-hints/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/devops/nexus/nexus-logo.webp)" alt="Helm 을 이용해 Nexus 설치하기" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/k8s/k8s.png)" alt="Istio - 토폴로지 인지 힌트" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/19/devops/nexus/nexus-helm-01-install/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/19/k8s/istio/istio-topology-aware-hints/">0</span>
     
 </span>
 
@@ -1107,25 +1117,35 @@ Kubernetes Cluster 추가
         
         <div class="article-meta">
             <div class="category">
-            <a class="article-category-link" href="/categories/DevOps/">DevOps</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/DevOps/Nexus/">Nexus</a>
+            <a class="article-category-link" href="/categories/Kubernetes/">Kubernetes</a>
             </div>
             <div class="date"><time datetime="2023-02-18T21:31:46.000Z" itemprop="datePublished">2023-02-19</time></div>
         </div>
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2023/02/19/devops/nexus/nexus-helm-01-install/">Helm 을 이용해 Nexus 설치하기</a>
+        <a href="/2023/02/19/k8s/istio/istio-topology-aware-hints/">Istio - 토폴로지 인지 힌트</a>
         </h1>
     
 
         <p class="article-excerpt">
             
-참고1. Helm Repository 추가helm repo add sonatype https://sonatype.github.io/helm3-charts/
+목차
+Post not found: k8s/namespace
+Post not found: k8s/ingress
+Post not found: k8s/deployment
+Post not found: k8s/replicaset
+Post not found: k8s/node
+Post not found: k8s/pod
 
-2. Nexus InstallapiVersion: storage.k8s.io/v1kind: StorageClass metadata:   name: &lt;storage class 이름&gt;  namespace: &lt;namespace 명&gt;volumeBindingMode: Immediateprovisioner: ebs.csi.aws.comparameters:  type: gp3reclaimPolicy: RetainallowVolumeExpansion: true# reclaimPolicy: Delete
+참고
+https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/kubernetes-versions.html
+https://kubernetes.io/ko/docs/concepts/services-networking/topology-aware-hints/
+https://tetrate.io/blog/minimizing-cross-zone-traffic-charges-with-istio/
 
-values.yamlStorageClass 정보 추가
-...persistence:  enabled: true  accessMode: ReadWriteOnce  existingClaim:  # annotations:  #  &quot;helm.sh/resource-policy&quot;: keep  storageClass: &quot;nexus-ebs&quot;  storageSize: 20Gi  # If PersistentDisk already exists you can create a PV for it by including the 2 following keypairs.  # pdName: nexus-data-disk  # fsType: ext4tolerations: []
+쿠버네티스 Node Zone 확인kubectl get nodes -L topology.kubernetes.io/zone
+
+Istio 에 토폴로지 인지 힌트 추가apiVersion: v1kind: Servicemetadata:  annotations:    # topology-aware-hints 추가    service.kubernetes.io/topology-aware-hints: auto  name: istiod  namespace: istio-system
         </p>
     </div>
 </article>

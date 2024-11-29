@@ -481,66 +481,6 @@ private final CustomUserDetailsService customUserDetailsService;@Overrideprotect
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/03/15/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/1918-%ED%9B%84%EC%9C%84%ED%91%9C%EA%B8%B0%EC%8B%9D/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 1406 - 후위표기식" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/03/15/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/1918-%ED%9B%84%EC%9C%84%ED%91%9C%EA%B8%B0%EC%8B%9D/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2021-03-15T11:10:40.000Z" itemprop="datePublished">2021-03-15</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/03/15/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/1918-%ED%9B%84%EC%9C%84%ED%91%9C%EA%B8%B0%EC%8B%9D/">백준 1406 - 후위표기식</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-https://www.acmicpc.net/problem/1918
-문제 해설문제를 해결할 때 후위 표기식에 대한 명확한 이해와 연산자 우선순위에 대해 고려 해야 한다.
-연산자를 별도의 stack에 쌓아가면서 후위 표기식을 만든다. stack에 연산자를 넣기 전에 연산자 비교를 통해 stack에 넣을 려는 연산자 우선순위 보다 stack에 있는 연산자의 우선순위가 작을 때까지 계속해서 stack에서 연산자를 꺼내 후위 표기식에 추가해준다.
-연산자 우선순위
-(가 제일 높은 우선순위다.
-* 와 /가 그 다음 우선순위
-+ 와 -가 다음 우선순위를 갖고 있다.
-)가 제일 낮은 우선순위다. (를 만날때까지 모든 연산자를 stack에서 꺼낸다.
-
-소스 코드#include &lt;bits/stdc++.h&gt;using namespace std;string str;string result;int main(void) &#123;    cin &gt;&gt; str;    stack&lt;char&gt; operation;    for (int i = 0; i &lt; str.length(); i++) &#123;        char cntChar = str[i];        if (cntChar == &#x27;(&#x27;) &#123;            operation.push(cntChar);        &#125; else if (cntChar == &#x27;*&#x27; || cntChar == &#x27;/&#x27;) &#123;            while (!operation.empty() &amp;&amp; (operation.top() == &#x27;*&#x27; || operation.top() == &#x27;/&#x27;)) &#123;                result += operation.top();                operation.pop();            &#125;            operation.push(cntChar);        &#125; else if (cntChar == &#x27;+&#x27; || cntChar == &#x27;-&#x27;) &#123;            while (!operation.empty() &amp;&amp; (operation.top() != &#x27;(&#x27;)) &#123;                result += operation.top();                operation.pop();            &#125;            operation.push(cntChar);        &#125; else if (cntChar == &#x27;)&#x27;) &#123;            while (!operation.empty() &amp;&amp; operation.top() != &#x27;(&#x27;) &#123;                result += operation.top();                operation.pop();            &#125;            operation.pop();        &#125; else &#123;            result += cntChar;        &#125;    &#125;    while (!operation.empty()) &#123;        result += operation.top();        operation.pop();    &#125;    cout &lt;&lt; result &lt;&lt; &#x27;\n&#x27;;    return 0;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2021/03/15/algorithm/programmers/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/67257-%EC%88%98%EC%8B%9D%EC%B5%9C%EB%8C%80%ED%99%94-Cpp/" class="thumbnail">
     
     
@@ -602,6 +542,66 @@ Stack에 우선순위가 같거나 큰 연산자가 없을 경우에는 Stack에
 
 
 
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/03/15/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/1918-%ED%9B%84%EC%9C%84%ED%91%9C%EA%B8%B0%EC%8B%9D/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 1406 - 후위표기식" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/03/15/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/1918-%ED%9B%84%EC%9C%84%ED%91%9C%EA%B8%B0%EC%8B%9D/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2021-03-15T11:10:40.000Z" itemprop="datePublished">2021-03-15</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/03/15/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/1918-%ED%9B%84%EC%9C%84%ED%91%9C%EA%B8%B0%EC%8B%9D/">백준 1406 - 후위표기식</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://www.acmicpc.net/problem/1918
+문제 해설문제를 해결할 때 후위 표기식에 대한 명확한 이해와 연산자 우선순위에 대해 고려 해야 한다.
+연산자를 별도의 stack에 쌓아가면서 후위 표기식을 만든다. stack에 연산자를 넣기 전에 연산자 비교를 통해 stack에 넣을 려는 연산자 우선순위 보다 stack에 있는 연산자의 우선순위가 작을 때까지 계속해서 stack에서 연산자를 꺼내 후위 표기식에 추가해준다.
+연산자 우선순위
+(가 제일 높은 우선순위다.
+* 와 /가 그 다음 우선순위
++ 와 -가 다음 우선순위를 갖고 있다.
+)가 제일 낮은 우선순위다. (를 만날때까지 모든 연산자를 stack에서 꺼낸다.
+
+소스 코드#include &lt;bits/stdc++.h&gt;using namespace std;string str;string result;int main(void) &#123;    cin &gt;&gt; str;    stack&lt;char&gt; operation;    for (int i = 0; i &lt; str.length(); i++) &#123;        char cntChar = str[i];        if (cntChar == &#x27;(&#x27;) &#123;            operation.push(cntChar);        &#125; else if (cntChar == &#x27;*&#x27; || cntChar == &#x27;/&#x27;) &#123;            while (!operation.empty() &amp;&amp; (operation.top() == &#x27;*&#x27; || operation.top() == &#x27;/&#x27;)) &#123;                result += operation.top();                operation.pop();            &#125;            operation.push(cntChar);        &#125; else if (cntChar == &#x27;+&#x27; || cntChar == &#x27;-&#x27;) &#123;            while (!operation.empty() &amp;&amp; (operation.top() != &#x27;(&#x27;)) &#123;                result += operation.top();                operation.pop();            &#125;            operation.push(cntChar);        &#125; else if (cntChar == &#x27;)&#x27;) &#123;            while (!operation.empty() &amp;&amp; operation.top() != &#x27;(&#x27;) &#123;                result += operation.top();                operation.pop();            &#125;            operation.pop();        &#125; else &#123;            result += cntChar;        &#125;    &#125;    while (!operation.empty()) &#123;        result += operation.top();        operation.pop();    &#125;    cout &lt;&lt; result &lt;&lt; &#x27;\n&#x27;;    return 0;&#125;
         </p>
     </div>
 </article>

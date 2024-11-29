@@ -779,17 +779,17 @@ StringStringBuilderStringBuffer
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/12/02/computer-science/java/garbage-collection/" class="thumbnail">
+        <a href="/2021/12/02/java/jwt/jwt-01/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/java/gc-heap.png)" alt="JAVA - Garbage Collection(가비지 컬렉션)" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/springboot/security/JWT/JWT.png)" alt="JAVA - JWT" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/02/computer-science/java/garbage-collection/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/02/java/jwt/jwt-01/">0</span>
     
 </span>
 
@@ -800,53 +800,35 @@ StringStringBuilderStringBuffer
         
         <div class="article-meta">
             <div class="category">
-            <a class="article-category-link" href="/categories/CS/">CS</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a>
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/JAVA/">JAVA</a>
             </div>
             <div class="date"><time datetime="2021-12-02T14:16:32.000Z" itemprop="datePublished">2021-12-02</time></div>
         </div>
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/02/computer-science/java/garbage-collection/">JAVA - Garbage Collection(가비지 컬렉션)</a>
+        <a href="/2021/12/02/java/jwt/jwt-01/">JAVA - JWT</a>
         </h1>
     
 
         <p class="article-excerpt">
-            목차
-Post not found: computer-science/java/gc-tunning
-JAVA - Garbage Collection(가비지 컬렉션)
-JAVA - JVM (자바 가상 머신)
+            
+JAVA - JWT
+Jwts.builder(JwtBuilder) 를 이용해 Token 을 생성하고 Jwts.parserBuilder(JwtParserBuilder) 를 이용해 전달 받은 Token 을 Parsing 한다.
 
-JAVA - Garbage Collection(가비지 컬렉션)
-동적 할당 받은 메모리 중에서 사용하지 않는 메모리를 해제해 메모리 누수를 막는 메모리 관리 기법
+public class JwtMain &#123;    public static void main(String args[]) &#123;        String jwt = Jwts.builder()                .setSubject(&quot;test&quot;)                .compact();        Jwt&lt;Header, Claims&gt; headerClaimsJwt = Jwts.parserBuilder()                .build()                .parseClaimsJwt(jwt);                // Token 정보를 가져온다.        System.out.println(&quot;token : &quot; + jwt);        // JWT Header 정보를 가져온다.        System.out.println(&quot;JWT Header : &quot; + headerClaimsJwt.getHeader());        // JWT Body(Claims) 정보를 가져온다.        System.out.println(&quot;JWT Claims : &quot; + headerClaimsJwt.getBody());    &#125;&#125;
 
 
-memory leak 을 없앨 수 있다.
+Token 에 서명을 진행하지 않았기 때문에 Signature 부분이 빠져있는 것을 확인할 수 있다.
 
-GC Root가 될 수 있는 대상들
-
-Stack 영역의 데이터
-Static 데이터
-JNI에 의해 생성된 객체들
-
-Mark And Sweep 알고리즘
-참조가 유효한 Object를 Reachable 참조가 유효하지 않은 Object를 Unreachable 이라고 부른다.
+token : eyJhbGciOiJub25lIn0.eyJzdWIiOiJ0ZXN0In0.JWT Header : &#123;alg=none&#125;JWT Claims : &#123;sub=test&#125;
 
 
-Mark
-GC Root로부터 모든 변수를 스캔하면서 각각 어떤 객체를 참조하고 있는지 찾아서 마킹하는 과정
-Mark 과정에서 Reachable 한 객체와 Unreachable 한 객체를 스캔한다
+JWT 암호화 (JWS)
+JwtBuilder 객체는 signWith 메소드를 이용해 Key 값과 암호 알고리즘 을 인자값으로 넘겨줘 서명한다.
+서명의 유효성은 JwtParserBuilder 객체가 setSigningKey 메소드를 이용해 전달받은 Token 이 유효한지 확인한다.
 
-
-Sweep
-Unreachable한 객체를 Heap 에서 제거하는 과정
-
-
-Compact
-Sweep 후 분산된 객체들을 모아 메모리 단편화 가 이뤄지는 것을 막아준다.
-
-
-
+public class JwsMain &#123;    public static String key = &quot;amF2YS1hcHBsaWNhdGlvbi1zZWN1cmUtc3R1ZHktand0LXNlY3JldGtleS1pcy1zaG91bGQtYmUtYmlnZ2VyLXRoYW4tNTEyYml0cw==&quot;;    public static Long tokenValidityInMilliseconds = 100000L;    public static void main(String args[]) &#123;        Key secretKey = Keys.hmacShaKeyFor(key.getBytes());        String jwt = Jwts.builder()                .setSubject(&quot;test&quot;)                .signWith(secretKey, SignatureAlgorithm.HS512) // JWT 를 암호화 하기 위한 secret 과 알고리즘을 넣어준다.                .compact();        Jws&lt;Claims&gt; claimsJws = Jwts.parserBuilder()                .setSigningKey(secretKey)                .build()                .parseClaimsJws(jwt);        Header header = claimsJws.getHeader();        Claims body = claimsJws.getBody();        System.out.println(&quot;token : &quot; + jwt);        System.out.println(&quot;JWT Header : &quot; + header);        System.out.println(&quot;JWT Claims : &quot; + body);    &#125;&#125;
         </p>
     </div>
 </article>

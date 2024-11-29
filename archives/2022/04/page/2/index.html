@@ -883,77 +883,6 @@ public List&lt;Order&gt; findAllWithMemberDelivery()&#123;    return em.createQu
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/04/18/jpa/jpa-programming/jpql/jpql/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/jpa.png)" alt="JPA JPQL (Java Persistence Query Language)" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/18/jpa/jpa-programming/jpql/jpql/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/JPA/">JPA</a>
-            </div>
-            <div class="date"><time datetime="2022-04-17T19:31:46.000Z" itemprop="datePublished">2022-04-18</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/18/jpa/jpa-programming/jpql/jpql/">JPA JPQL (Java Persistence Query Language)</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-JPA JPQL - Fetch Join
-JPA JPQL - Projection (Select)
-JPA JPQL (Java Persistence Query Language)
-JPA - 객체지향 쿼리 언어
-
-JPQL
-JPQL 은 객체지향 쿼리 언어 로 테이블 을 대상으로 쿼리하는 것이 아니라 엔티티 객체 를 대상으로 쿼리한다.JPQL 은 SQL 을 추상화 해서 특정 데이터 베이스 SQL 에 의존하지 않는다.
-
-JPQL 문법
-select m from Memeber as m where m.age &gt; 18
-
-
-Entity 와 속성 은 대소문자 구분 O (Member, age)
-JPQL 키워드 는 대소문자 구분 X (select, from, where)
-엔티티 이름 사용, 테이블 이름이 아님
-별칭(alias) 은 필수 (m)
-
-TypeQuery, Query
-반환 타입 형태에 따라 사용하는 타입이 다르다.
-
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2022/04/18/jpa/jpa-programming/jpql/object-query/" class="thumbnail">
     
     
@@ -1016,6 +945,77 @@ JPQL 은 엔티티 객체를 대상으로 쿼리
 SQL 은 데이터 베이스 테이블을 대상으로 쿼리
 
 public class JpaMain &#123;    public static void main(String[] ars) &#123;        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(&quot;hello&quot;);        EntityManager em = entityManagerFactory.createEntityManager();        EntityTransaction transaction = em.getTransaction();        transaction.begin();        try &#123;            String qlString = &quot;select m from Member m where m.username like &#x27;%kim%&#x27;&quot;;            List&lt;Member&gt; result = em.createQuery(qlString, Member.class)                    .getResultList();        &#125; catch (Exception e) &#123;            transaction.rollback();        &#125; finally &#123;            em.close();        &#125;        entityManagerFactory.close();    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/18/jpa/jpa-programming/jpql/jpql/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/jpa.png)" alt="JPA JPQL (Java Persistence Query Language)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/18/jpa/jpa-programming/jpql/jpql/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/JPA/">JPA</a>
+            </div>
+            <div class="date"><time datetime="2022-04-17T19:31:46.000Z" itemprop="datePublished">2022-04-18</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/18/jpa/jpa-programming/jpql/jpql/">JPA JPQL (Java Persistence Query Language)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+JPA JPQL - Fetch Join
+JPA JPQL - Projection (Select)
+JPA JPQL (Java Persistence Query Language)
+JPA - 객체지향 쿼리 언어
+
+JPQL
+JPQL 은 객체지향 쿼리 언어 로 테이블 을 대상으로 쿼리하는 것이 아니라 엔티티 객체 를 대상으로 쿼리한다.JPQL 은 SQL 을 추상화 해서 특정 데이터 베이스 SQL 에 의존하지 않는다.
+
+JPQL 문법
+select m from Memeber as m where m.age &gt; 18
+
+
+Entity 와 속성 은 대소문자 구분 O (Member, age)
+JPQL 키워드 는 대소문자 구분 X (select, from, where)
+엔티티 이름 사용, 테이블 이름이 아님
+별칭(alias) 은 필수 (m)
+
+TypeQuery, Query
+반환 타입 형태에 따라 사용하는 타입이 다르다.
+
         </p>
     </div>
 </article>
