@@ -1079,17 +1079,17 @@ values.yamlStorageClass 정보 추가
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2023/02/19/k8s/namespace/namespace/" class="thumbnail">
+        <a href="/2023/02/19/k8s/istio/istio-topology-aware-hints/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/k8s/k8s.png)" alt="쿠버네티스 - Namespace" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/k8s/k8s.png)" alt="Istio - 토폴로지 인지 힌트" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/19/k8s/namespace/namespace/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/19/k8s/istio/istio-topology-aware-hints/">0</span>
     
 </span>
 
@@ -1107,32 +1107,28 @@ values.yamlStorageClass 정보 추가
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2023/02/19/k8s/namespace/namespace/">쿠버네티스 - Namespace</a>
+        <a href="/2023/02/19/k8s/istio/istio-topology-aware-hints/">Istio - 토폴로지 인지 힌트</a>
         </h1>
     
 
         <p class="article-excerpt">
             
 목차
-쿠버네티스 - Namespace
-쿠버네티스 - Ingress
-Post not found: k8s/deployment/deployment
-Post not found: k8s/replicaset/replicaset
-쿠버네티스 - Node
-쿠버네티스 - Pod
-Post not found: k8s/k8s
+Post not found: k8s/namespace
+Post not found: k8s/ingress
+Post not found: k8s/deployment
+Post not found: k8s/replicaset
+Post not found: k8s/node
+Post not found: k8s/pod
 
-Namespace 란?
-쿠번네티스 Cluster 들을 논리적으로 나누기 위한 수단.
+참고
+https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/kubernetes-versions.html
+https://kubernetes.io/ko/docs/concepts/services-networking/topology-aware-hints/
+https://tetrate.io/blog/minimizing-cross-zone-traffic-charges-with-istio/
 
+쿠버네티스 Node Zone 확인kubectl get nodes -L topology.kubernetes.io/zone
 
-Namespace 를 이용하면 Pod, Service, Volumn 과 같은 다양한 리소스를 분리하고 격리할 수 있다.
-
-Namespace 생성kubectl create namespace your-namespace-name
-
-apiVersion: v1kind: Namespacemetadata:  name: [Namespace 이름]
-
-kubectl apply -f namespace.yaml
+Istio 에 토폴로지 인지 힌트 추가apiVersion: v1kind: Servicemetadata:  annotations:    # topology-aware-hints 추가    service.kubernetes.io/topology-aware-hints: auto  name: istiod  namespace: istio-system
         </p>
     </div>
 </article>
@@ -1282,5 +1278,20 @@ kubectl apply -f namespace.yaml
 <script src="/js/main.js"></script>
 
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

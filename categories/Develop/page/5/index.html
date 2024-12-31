@@ -176,17 +176,17 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/04/18/jpa/jpa-programming/jpql/projection-select/" class="thumbnail">
+        <a href="/2022/04/18/jpa/jpa-programming/jpql/object-query/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/JPA/jpa.png)" alt="JPA JPQL - Projection (Select)" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/JPA/jpa.png)" alt="JPA - 객체지향 쿼리 언어" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/18/jpa/jpa-programming/jpql/projection-select/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/18/jpa/jpa-programming/jpql/object-query/">0</span>
     
 </span>
 
@@ -204,7 +204,7 @@
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/18/jpa/jpa-programming/jpql/projection-select/">JPA JPQL - Projection (Select)</a>
+        <a href="/2022/04/18/jpa/jpa-programming/jpql/object-query/">JPA - 객체지향 쿼리 언어</a>
         </h1>
     
 
@@ -216,11 +216,28 @@ JPA JPQL - Projection (Select)
 JPA JPQL (Java Persistence Query Language)
 JPA - 객체지향 쿼리 언어
 
-Projection 대상
-Entity, 임베디드 타입, 스칼라 타입(숫자, 문자등 기본 타입)
+객체 지향 쿼리 언어 종류
+JPQL
+JPA Criteria
+QueryDSL
+네이티브 SQL
+JDBC API 직접 사용, MyBatis, SrpignjdbcTemplate 함께 사용
 
-// Entity select m from Member m// Entity select m.team from Member m// 임베디드 타입select m.address from Member m// 스칼라 타입select m.username, m.age from Member m
+JPQL
+JPA 를 사용하면 엔티티 객체 를 중심으로 개발
+문제는 검색 쿼리
+검색을 할때도 테이블이 나닌 엔티티 객체 를 대상으로 검색
+모든 DB 데이터를 객체로 변화해서 검색하는 것은 불가능
+애플리케이션이 필요한 데이터만 DB 에서 불러오려면 결국 검색 조건인 포함된 SQL 이 필요
 
+
+
+JPA 는 SQL 을 추상화한 JPQL 이라는 객체지향 쿼리 언어 제공
+SQL 과 문법 유사, SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN 지원
+JPQL 은 엔티티 객체를 대상으로 쿼리
+SQL 은 데이터 베이스 테이블을 대상으로 쿼리
+
+public class JpaMain &#123;    public static void main(String[] ars) &#123;        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(&quot;hello&quot;);        EntityManager em = entityManagerFactory.createEntityManager();        EntityTransaction transaction = em.getTransaction();        transaction.begin();        try &#123;            String qlString = &quot;select m from Member m where m.username like &#x27;%kim%&#x27;&quot;;            List&lt;Member&gt; result = em.createQuery(qlString, Member.class)                    .getResultList();        &#125; catch (Exception e) &#123;            transaction.rollback();        &#125; finally &#123;            em.close();        &#125;        entityManagerFactory.close();    &#125;&#125;
         </p>
     </div>
 </article>
@@ -1250,5 +1267,20 @@ check : 해당 숫자가 뽑혔는지 판단하기 위한 배열
 <script src="/js/main.js"></script>
 
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

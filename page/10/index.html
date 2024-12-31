@@ -228,6 +228,72 @@ values.yamlStorageClass 정보 추가
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2023/02/19/k8s/istio/istio-topology-aware-hints/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/k8s/k8s.png)" alt="Istio - 토폴로지 인지 힌트" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/19/k8s/istio/istio-topology-aware-hints/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Kubernetes/">Kubernetes</a>
+            </div>
+            <div class="date"><time datetime="2023-02-18T21:31:46.000Z" itemprop="datePublished">2023-02-19</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2023/02/19/k8s/istio/istio-topology-aware-hints/">Istio - 토폴로지 인지 힌트</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Post not found: k8s/namespace
+Post not found: k8s/ingress
+Post not found: k8s/deployment
+Post not found: k8s/replicaset
+Post not found: k8s/node
+Post not found: k8s/pod
+
+참고
+https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/kubernetes-versions.html
+https://kubernetes.io/ko/docs/concepts/services-networking/topology-aware-hints/
+https://tetrate.io/blog/minimizing-cross-zone-traffic-charges-with-istio/
+
+쿠버네티스 Node Zone 확인kubectl get nodes -L topology.kubernetes.io/zone
+
+Istio 에 토폴로지 인지 힌트 추가apiVersion: v1kind: Servicemetadata:  annotations:    # topology-aware-hints 추가    service.kubernetes.io/topology-aware-hints: auto  name: istiod  namespace: istio-system
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2023/02/19/k8s/namespace/namespace/" class="thumbnail">
     
     
@@ -282,72 +348,6 @@ Namespace 생성kubectl create namespace your-namespace-name
 apiVersion: v1kind: Namespacemetadata:  name: [Namespace 이름]
 
 kubectl apply -f namespace.yaml
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2023/02/19/k8s/istio/istio-topology-aware-hints/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/k8s/k8s.png)" alt="Istio - 토폴로지 인지 힌트" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/19/k8s/istio/istio-topology-aware-hints/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Kubernetes/">Kubernetes</a>
-            </div>
-            <div class="date"><time datetime="2023-02-18T21:31:46.000Z" itemprop="datePublished">2023-02-19</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2023/02/19/k8s/istio/istio-topology-aware-hints/">Istio - 토폴로지 인지 힌트</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Post not found: k8s/namespace
-Post not found: k8s/ingress
-Post not found: k8s/deployment
-Post not found: k8s/replicaset
-Post not found: k8s/node
-Post not found: k8s/pod
-
-참고
-https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/kubernetes-versions.html
-https://kubernetes.io/ko/docs/concepts/services-networking/topology-aware-hints/
-https://tetrate.io/blog/minimizing-cross-zone-traffic-charges-with-istio/
-
-쿠버네티스 Node Zone 확인kubectl get nodes -L topology.kubernetes.io/zone
-
-Istio 에 토폴로지 인지 힌트 추가apiVersion: v1kind: Servicemetadata:  annotations:    # topology-aware-hints 추가    service.kubernetes.io/topology-aware-hints: auto  name: istiod  namespace: istio-system
         </p>
     </div>
 </article>
@@ -953,5 +953,20 @@ StatefulSet은 쿠버네티스 클러스터의 안정성과 신뢰성을 향상�
 <script src="/js/main.js"></script>
 
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
