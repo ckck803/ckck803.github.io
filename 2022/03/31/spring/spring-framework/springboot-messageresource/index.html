@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/springboot/spring-boot-logo.png">
 <meta property="article:published_time" content="2022-03-30T19:31:46.000Z">
-<meta property="article:modified_time" content="2024-12-21T16:26:32.510Z">
+<meta property="article:modified_time" content="2025-01-01T11:19:23.606Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/springboot/spring-boot-logo.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2022/03/31/spring/spring-framework/springboot-messageresource/" class="article-date">
-     <time datetime="2024-12-21T16:26:32.510Z" itemprop="dateModified">2024-12-22</time>
+     <time datetime="2025-01-01T11:19:23.606Z" itemprop="dateModified">2025-01-01</time>
   </a>
 </div>
 
@@ -248,7 +248,7 @@
 <figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">created.message</span>=<span class="string">Successfully &#123;0&#125; is created</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="MessageSource-인터페이스"><a href="#MessageSource-인터페이스" class="headerlink" title="MessageSource 인터페이스"></a>MessageSource 인터페이스</h2><p><strong>MessageSource</strong> 객체를 사용해 message.properties 에 저장된 Message 를 읽어올 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MessageSource</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    String <span class="title function_">getMessage</span><span class="params">(String code, <span class="meta">@Nullable</span> Object[] args, <span class="meta">@Nullable</span> String defaultMessage, Locale locale)</span>;</span><br><span class="line">    String <span class="title function_">getMessage</span><span class="params">(String code, <span class="meta">@Nullable</span> Object[] args, Locale locale)</span> <span class="keyword">throws</span> NoSuchMessageException;</span><br><span class="line">    String <span class="title function_">getMessage</span><span class="params">(MessageSourceResolvable resolvable, Locale locale)</span> <span class="keyword">throws</span> NoSuchMessageException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>MessageSource.java</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MessageSource</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    String <span class="title function_">getMessage</span><span class="params">(String code, <span class="meta">@Nullable</span> Object[] args, <span class="meta">@Nullable</span> String defaultMessage, Locale locale)</span>;</span><br><span class="line">    String <span class="title function_">getMessage</span><span class="params">(String code, <span class="meta">@Nullable</span> Object[] args, Locale locale)</span> <span class="keyword">throws</span> NoSuchMessageException;</span><br><span class="line">    String <span class="title function_">getMessage</span><span class="params">(MessageSourceResolvable resolvable, Locale locale)</span> <span class="keyword">throws</span> NoSuchMessageException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <h3 id="MessageSource-Bean-생성"><a href="#MessageSource-Bean-생성" class="headerlink" title="MessageSource Bean 생성"></a>MessageSource Bean 생성</h3><p><code>ResourceBundleMessageSource</code> 를 이용해 Resource 에 저장된 message.properties 파일을 읽어온 후 MessageSource Bean 을 만들어준다.</p>
@@ -271,7 +271,7 @@
 <p>Spring 은 Locale 정보를 읽어올 수 있게 <strong>LocalResolver</strong> 라는 인터페이스를 제공한다. </p>
 </blockquote>
 <p><strong>LocalResolver</strong> 객체를 이용해 <strong>Locale</strong> 객체가 만들어 지면 해당 객체를 이용해 <strong>LocaleContext</strong> 객체가 만들어지고  <code>LocaleContextHolder</code> 라는 저장소에 저장된다. LocaleContextHolder 은 LocaleContext 를 <strong>ThreadLocal</strong> 을 이용해 관리하기 때문에 <strong>Thread Safe</strong> 하게 Locale 정보를 저장할 수 있다. </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">LocaleResolver</span> &#123;</span><br><span class="line">    Locale <span class="title function_">resolveLocale</span><span class="params">(HttpServletRequest request)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setLocale</span><span class="params">(HttpServletRequest request, <span class="meta">@Nullable</span> HttpServletResponse response, <span class="meta">@Nullable</span> Locale locale)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>LocaleResolver.java</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">LocaleResolver</span> &#123;</span><br><span class="line">    Locale <span class="title function_">resolveLocale</span><span class="params">(HttpServletRequest request)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setLocale</span><span class="params">(HttpServletRequest request, <span class="meta">@Nullable</span> HttpServletResponse response, <span class="meta">@Nullable</span> Locale locale)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -279,7 +279,7 @@
 <p>Accept Header 기반으로 Locale 정보를 읽어오는 Resolver</p>
 </blockquote>
 <p>LocaleResolver 의 대표적인 구현체는 Request Header 로부터 Locale 정보를 읽어오는 <strong>AcceptHeaderLocaleResolver</strong> 가 있다. AcceptHeaderLocaleResolver 객체는 <strong>LocaleContextHolder</strong> 에 Locale 정보를 저장하지 않는다.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Locale <span class="title function_">resolveLocale</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">    <span class="type">Locale</span> <span class="variable">defaultLocale</span> <span class="operator">=</span> getDefaultLocale();</span><br><span class="line">    <span class="keyword">if</span> (defaultLocale != <span class="literal">null</span> &amp;&amp; request.getHeader(<span class="string">&quot;Accept-Language&quot;</span>) == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> defaultLocale;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">Locale</span> <span class="variable">requestLocale</span> <span class="operator">=</span> request.getLocale();</span><br><span class="line">    List&lt;Locale&gt; supportedLocales = getSupportedLocales();</span><br><span class="line">    <span class="keyword">if</span> (supportedLocales.isEmpty() || supportedLocales.contains(requestLocale)) &#123;</span><br><span class="line">        <span class="keyword">return</span> requestLocale;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">Locale</span> <span class="variable">supportedLocale</span> <span class="operator">=</span> findSupportedLocale(request, supportedLocales);</span><br><span class="line">    <span class="keyword">if</span> (supportedLocale != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> supportedLocale;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (defaultLocale != <span class="literal">null</span> ? defaultLocale : requestLocale);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>AcceptHeaderLocaleResolver.java</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Locale <span class="title function_">resolveLocale</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">    <span class="type">Locale</span> <span class="variable">defaultLocale</span> <span class="operator">=</span> getDefaultLocale();</span><br><span class="line">    <span class="keyword">if</span> (defaultLocale != <span class="literal">null</span> &amp;&amp; request.getHeader(<span class="string">&quot;Accept-Language&quot;</span>) == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> defaultLocale;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">Locale</span> <span class="variable">requestLocale</span> <span class="operator">=</span> request.getLocale();</span><br><span class="line">    List&lt;Locale&gt; supportedLocales = getSupportedLocales();</span><br><span class="line">    <span class="keyword">if</span> (supportedLocales.isEmpty() || supportedLocales.contains(requestLocale)) &#123;</span><br><span class="line">        <span class="keyword">return</span> requestLocale;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">Locale</span> <span class="variable">supportedLocale</span> <span class="operator">=</span> findSupportedLocale(request, supportedLocales);</span><br><span class="line">    <span class="keyword">if</span> (supportedLocale != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> supportedLocale;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (defaultLocale != <span class="literal">null</span> ? defaultLocale : requestLocale);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         </div>
         <footer class="article-footer">
             
@@ -362,7 +362,7 @@
         "genre": "Spring Spring Boot Spring Framework",
         "datePublished": "2022-03-31",
         "dateCreated": "2022-03-31",
-        "dateModified": "2024-12-22",
+        "dateModified": "2025-01-01",
         "url": "https://ckck803.github.io/2022/03/31/spring/spring-framework/springboot-messageresource/",
         "description": "
 목차
@@ -485,7 +485,7 @@ MessageSource
                 <h1 class="logo-wrap">
                     <a href="/" class="logo"></a>
                 </h1>
-                <p>&copy; 2024 ckck803</p>
+                <p>&copy; 2025 ckck803</p>
                 
                 <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
                 

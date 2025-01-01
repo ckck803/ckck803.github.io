@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/springboot/spring-boot-logo.png">
 <meta property="article:published_time" content="2022-03-01T13:25:35.000Z">
-<meta property="article:modified_time" content="2024-12-22T00:28:42.355Z">
+<meta property="article:modified_time" content="2025-01-01T11:16:55.223Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/springboot/spring-boot-logo.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2022/03/01/spring/spring-websocket/chatting/chatting-01/" class="article-date">
-     <time datetime="2024-12-22T00:28:42.355Z" itemprop="dateModified">2024-12-22</time>
+     <time datetime="2025-01-01T11:16:55.223Z" itemprop="dateModified">2025-01-01</time>
   </a>
 </div>
 
@@ -225,7 +225,7 @@
 <p>ChannelInterceptor 인터페이스를 구현해 Socket 통신 상태를 로그로 찍어 확인한다.</p>
 <figure class="highlight java"><figcaption><span>StompHandler.java</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StompHandler</span> <span class="keyword">implements</span> <span class="title class_">ChannelInterceptor</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Message&lt;?&gt; preSend(Message&lt;?&gt; message, MessageChannel channel) &#123;</span><br><span class="line">        <span class="type">StompHeaderAccessor</span> <span class="variable">accessor</span> <span class="operator">=</span> StompHeaderAccessor.wrap(message);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(StompCommand.CONNECT.equals(accessor.getCommand()))&#123;</span><br><span class="line">            log.info(<span class="string">&quot;CONNECT&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(StompCommand.SUBSCRIBE.equals(accessor.getCommand()))&#123;</span><br><span class="line">            log.info(<span class="string">&quot;SUBSCRIBE&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(StompCommand.DISCONNECT.equals(accessor.getCommand()))&#123;</span><br><span class="line">            log.info(<span class="string">&quot;DISCONNECT&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Web-Socket-설정"><a href="#Web-Socket-설정" class="headerlink" title="Web Socket 설정"></a>Web Socket 설정</h2><blockquote>
+<h2 id="WebSocket-설정"><a href="#WebSocket-설정" class="headerlink" title="WebSocket 설정"></a>WebSocket 설정</h2><blockquote>
 <p>STOMP 를 사용하기 위한 설정은 <code>WebSocketMessageBrokerConfigurer</code> 와 <code>@EnableWebSocketMessageBroker</code> 를 이용해 진행한다.</p>
 </blockquote>
 <ul>
@@ -366,7 +366,7 @@
         "genre": "Spring Spring WebSocket",
         "datePublished": "2022-03-01",
         "dateCreated": "2022-03-01",
-        "dateModified": "2024-12-22",
+        "dateModified": "2025-01-01",
         "url": "https://ckck803.github.io/2022/03/01/spring/spring-websocket/chatting/chatting-01/",
         "description": "
 Spring boot Web Socket - Chat 프로그램 만들기 1참고
@@ -379,7 +379,7 @@ Message Interceptor 정의하기
 ChannelInterceptor 는  Message 를 MessageChannel 로 보내기 전과 Message 가 MessageChannel 로 보낸 후 추가적일 로직을 수행할 수 있게 도와주는 Interface 다.
 
 ChannelInterceptor 인터페이스를 구현해 Socket 통신 상태를 로그로 찍어 확인한다.",
-        "wordCount": 2466
+        "wordCount": 2464
     }
 </script>
 
@@ -471,7 +471,7 @@ ChannelInterceptor 인터페이스를 구현해 Socket 통신 상태를 로그�
                 <h1 class="logo-wrap">
                     <a href="/" class="logo"></a>
                 </h1>
-                <p>&copy; 2024 ckck803</p>
+                <p>&copy; 2025 ckck803</p>
                 
                 <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
                 
