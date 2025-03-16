@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/k8s/k8s.png">
 <meta property="article:published_time" content="2025-02-19T21:31:46.000Z">
-<meta property="article:modified_time" content="2025-03-16T16:43:04.891Z">
+<meta property="article:modified_time" content="2025-03-16T17:04:58.449Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/k8s/k8s.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2025/02/20/k8s/kubeadm-install/" class="article-date">
-     <time datetime="2025-03-16T16:43:04.891Z" itemprop="dateModified">2025-03-17</time>
+     <time datetime="2025-03-16T17:04:58.449Z" itemprop="dateModified">2025-03-17</time>
   </a>
 </div>
 
@@ -246,14 +246,13 @@
 <h3 id="1-4-containerd-설정"><a href="#1-4-containerd-설정" class="headerlink" title="1.4 containerd 설정"></a>1.4 containerd 설정</h3><p>쿠버네티스에서 사용하는 containerd 를 설정을 변경합니다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">mkdir</span> -p /etc/containerd </span><br><span class="line">sudo containerd config default | sudo <span class="built_in">tee</span> /etc/containerd/config.toml </span><br><span class="line"><span class="comment"># config.toml 파일에서 SystemdCgroup 값을 변경합니다.</span></span><br><span class="line">sudo sed -i <span class="string">&#x27;s/SystemdCgroup = false/SystemdCgroup = true/&#x27;</span> /etc/containerd/config.toml </span><br><span class="line">sudo systemctl restart containerd</span><br></pre></td></tr></table></figure>
 
-<h2 id="✅-2-쿠버네티스-설치"><a href="#✅-2-쿠버네티스-설치" class="headerlink" title="✅ 2. 쿠버네티스 설치"></a>✅ 2. 쿠버네티스 설치</h2><h3 id="Kubernetes-저장소-추가"><a href="#Kubernetes-저장소-추가" class="headerlink" title="Kubernetes 저장소 추가"></a>Kubernetes 저장소 추가</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo <span class="built_in">tee</span> /etc/apt/keyrings/kubernetes-apt-keyring.asc &gt; /dev/null</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /&quot;</span> | sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/kubernetes.list &gt; /dev/null</span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+<h2 id="✅-2-쿠버네티스-설치에-필요한-패키지-설치"><a href="#✅-2-쿠버네티스-설치에-필요한-패키지-설치" class="headerlink" title="✅ 2. 쿠버네티스 설치에 필요한 패키지 설치"></a>✅ 2. 쿠버네티스 설치에 필요한 패키지 설치</h2><p>쿠버네티스 설치에 필요한 패키지를 다운 받을 수 있도록 아래 명령어를 이용해 apt 저장소에 GPG 키와 Kubernetes 저장소를 추가해줍니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># GPG 키 다운로드 및 저장</span></span><br><span class="line">curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo <span class="built_in">tee</span> /etc/apt/keyrings/kubernetes-apt-keyring.asc &gt; /dev/null</span><br><span class="line"><span class="comment"># apt 저장소에 쿠버네티스 저장소 추가</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /&quot;</span> | sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/kubernetes.list &gt; /dev/null</span><br><span class="line"><span class="comment"># 위 내용이 반영될 수 있도록 apt 저장소를 업데이트합니다.</span></span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
 
-<h3 id="kubeadm-kubelet-kubectl-설치"><a href="#kubeadm-kubelet-kubectl-설치" class="headerlink" title="kubeadm, kubelet, kubectl 설치"></a>kubeadm, kubelet, kubectl 설치</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 설치 가능한 버전 확인</span></span><br><span class="line">sudo apt-cache madison kubeadm</span><br><span class="line"><span class="comment"># 버전을 명시해서 설치가능</span></span><br><span class="line">sudo apt-get install -y kubelet=1.27.16-1.1 kubeadm=1.27.16-1.1 kubectl=1.27.16-1.1</span><br><span class="line">sudo apt-mark hold kubelet kubeadm kubectl</span><br></pre></td></tr></table></figure>
+<p>쿠버네티스 저장소가 추가 됐으면 apt 명령어를 이용해 kubelet, kubeadm, kubectl 을 설치해줍니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 설치 가능한 버전 확인</span></span><br><span class="line">sudo apt-cache madison kubeadm</span><br><span class="line"><span class="comment"># 버전을 명시해서 설치가능</span></span><br><span class="line">sudo apt-get install -y kubelet=1.27.16-1.1 kubeadm=1.27.16-1.1 kubectl=1.27.16-1.1</span><br><span class="line">sudo apt-mark hold kubelet kubeadm kubectl</span><br></pre></td></tr></table></figure>
 
-
-
-
-<h3 id="Kubernetes-클러스터-초기화"><a href="#Kubernetes-클러스터-초기화" class="headerlink" title="Kubernetes 클러스터 초기화"></a>Kubernetes 클러스터 초기화</h3><p>kubeadm init 명령어를 이용해 쿠버네티스 컨트롤 플레인 노드를 초기화 시켜 줍니다. </p>
+<h2 id="✅-3-Kubernetes-클러스터-초기화"><a href="#✅-3-Kubernetes-클러스터-초기화" class="headerlink" title="✅ 3. Kubernetes 클러스터 초기화"></a>✅ 3. Kubernetes 클러스터 초기화</h2><p>kubelet, kubeadm, kubectl 가 완료되면 kubeadm init 명령어를 이용해 쿠버네티스 컨트롤 플레인 노드를 초기화 시켜줍니다.</p>
 <p>kubeadm init 추가적인 파라미터를 확인하고 싶을 경우 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/">쿠버네티스 공식 문서</a> 에서 확인할 수 있습니다.</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo kubeadm init --pod-network-cidr=10.0.0.0/16 --v=5</span><br><span class="line"><span class="comment"># 외부 Listening 할 수 있는 IP 가 있는 경우 </span></span><br><span class="line">sudo kubeadm init --control-plane-endpoint=&lt;접속_IP&gt; --pod-network-cidr=&lt;Pod_네트워크_범위&gt;</span><br></pre></td></tr></table></figure>
 
@@ -265,14 +264,16 @@
 <h4 id="쿠버네티스-설정파일-생성"><a href="#쿠버네티스-설정파일-생성" class="headerlink" title="쿠버네티스 설정파일 생성"></a>쿠버네티스 설정파일 생성</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p <span class="variable">$HOME</span>/.kube </span><br><span class="line">sudo <span class="built_in">cp</span> -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config </span><br><span class="line">sudo <span class="built_in">chown</span> $(<span class="built_in">id</span> -u):$(<span class="built_in">id</span> -g) <span class="variable">$HOME</span>/.kube/config</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="✅-3-CNI-Container-Network-Interface-설치"><a href="#✅-3-CNI-Container-Network-Interface-설치" class="headerlink" title="✅ 3. CNI (Container Network Interface) 설치"></a>✅ 3. CNI (Container Network Interface) 설치</h2><p>클러스터 내부의 Pod 들이 서로 통신할 수 있도록 CNI 를 설치합니다.</p>
+<h2 id="✅-4-CNI-Container-Network-Interface-설치"><a href="#✅-4-CNI-Container-Network-Interface-설치" class="headerlink" title="✅ 4. CNI (Container Network Interface) 설치"></a>✅ 4. CNI (Container Network Interface) 설치</h2><p>클러스터 내부의 Pod 들이 서로 통신할 수 있도록 CNI 를 설치합니다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> cni</span><br><span class="line"><span class="built_in">cd</span> cni</span><br><span class="line"></span><br><span class="line">wget https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/tigera-operator.yaml</span><br><span class="line">wget https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/custom-resources.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment"># cidr 대역을 worker node 대역으로 변경</span></span><br><span class="line">vi custom-resources.yaml</span><br><span class="line"></span><br><span class="line">kubectl create -f tigera-operator.yaml</span><br><span class="line">kubectl create -f custom-resources.yaml</span><br></pre></td></tr></table></figure>
 
 <h3 id="쿠버네티스-설치-점검-확인"><a href="#쿠버네티스-설치-점검-확인" class="headerlink" title="쿠버네티스 설치 점검 확인"></a>쿠버네티스 설치 점검 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dpkg -l | grep kube</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hi  kubeadm                                       1.29.13-1.1                              amd64        Command-line utility <span class="keyword">for</span> administering a Kubernetes cluster</span><br><span class="line">hi  kubectl                                       1.29.13-1.1                              amd64        Command-line utility <span class="keyword">for</span> interacting with a Kubernetes cluster</span><br><span class="line">hi  kubelet                                       1.29.13-1.1                              amd64        Node agent <span class="keyword">for</span> Kubernetes clusters</span><br><span class="line">ii  kubernetes-cni                                1.3.0-1.1                                amd64        Binaries required to provision kubernetes container networking</span><br></pre></td></tr></table></figure>
 
-<h2 id="✅-4-Control-Plain-Taint-삭제"><a href="#✅-4-Control-Plain-Taint-삭제" class="headerlink" title="✅ 4. Control Plain Taint 삭제"></a>✅ 4. Control Plain Taint 삭제</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type     Reason            Age    From               Message</span><br><span class="line">  ----     ------            ----   ----               -------</span><br><span class="line">  Warning  FailedScheduling  3m     default-scheduler  0/1 nodes are available: 1 node(s) had untolerated taint &#123;node-role.kubernetes.io/control-plane: &#125;. preemption: 0/1 nodes are available: 1 Preemption is not helpful <span class="keyword">for</span> scheduling.</span><br></pre></td></tr></table></figure>
+<h2 id="✅-5-Control-Plain-Taint-삭제"><a href="#✅-5-Control-Plain-Taint-삭제" class="headerlink" title="✅ 5. Control Plain Taint 삭제"></a>✅ 5. Control Plain Taint 삭제</h2><p>쿠버네티스를 초기화하게되면 Control Plane 노드에 Pod 설치를 못하도록 (Schedule 이 불가능) Taint 설정이 들어가 있습니다.</p>
+<p>Control Plane 에도 Pod 설치가 가능하게 (Schedule 이 가능하게) 하려면 해당 노드에 걸려있는 Taint 설정을 해지해줘야 합니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type     Reason            Age    From               Message</span><br><span class="line">  ----     ------            ----   ----               -------</span><br><span class="line">  Warning  FailedScheduling  3m     default-scheduler  0/1 nodes are available: 1 node(s) had untolerated taint &#123;node-role.kubernetes.io/control-plane: &#125;. preemption: 0/1 nodes are available: 1 Preemption is not helpful <span class="keyword">for</span> scheduling.</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kubectl taint nodes --all node-role.kubernetes.io/master-</span><br><span class="line">kubectl taint nodes --all node-role.kubernetes.io/control-plane-</span><br></pre></td></tr></table></figure>
 
@@ -313,7 +314,7 @@
 
 
 
-    <a data-url="https://ckck803.github.io/2025/02/20/k8s/kubeadm-install/" data-id="cm8bv7i4g007k9b8d0fk5ei0d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://ckck803.github.io/2025/02/20/k8s/kubeadm-install/" data-id="cm8bvzv1k001hjp8d2xg00iux" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -409,7 +410,7 @@ https://www.youtube.com/watch?v=Wr6nrBRqYYE
 📝 회고Vitality 팀에 있을때 EKS 로 구축된 시스템을 운영했었습니다. 지금은 해당 팀이 해체 되면서 운영하고 있지는 않지만 그때 내부적으로 진행했던 프로젝트들의 기억을 되살리고자 포스트로 남기려고 합니다.
 🤔 쿠버네티스 운영환경 선택지속적으로 쿠버네티스 환경을 운영도 하면서 공부도 하고 싶어 여러가지 환경을 검토해봤는데, EKS 는 일단 컨트롤 플레인 자체만으로도 한달에 7만원 정도가 나와 Pass (너무 비싸 😭), 로컬 PC 에 Minikube 를 이용하는 방법은 노트북을 너무 핫하게 만드는 방법이라 Pass
 요즘 알리에서 미니 PC 가 싸게 풀리고 있고 시스템 초기 구입 비용 빼면 운용하는데는 매월 전기세만 내면 돼 크게 부담이 안될 것 같아 미니 PC 를 이용한 서버를 구축하기로 했습니다.",
-        "wordCount": 1999
+        "wordCount": 2076
     }
 </script>
 
