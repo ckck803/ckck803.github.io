@@ -176,6 +176,621 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/08/24/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72412-%EC%88%9C%EC%9C%84%EA%B2%80%EC%83%89-Java/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 순위 검색 (JAVA)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/24/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72412-%EC%88%9C%EC%9C%84%EA%B2%80%EC%83%89-Java/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2021-08-24T11:10:40.000Z" itemprop="datePublished">2021-08-24</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/24/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72412-%EC%88%9C%EC%9C%84%EA%B2%80%EC%83%89-Java/">프로그래머스 - 순위 검색 (JAVA)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://programmers.co.kr/learn/courses/30/lessons/72412
+문제 풀이이 문제는 그냥 문자열대 문자열로 부딪히게 되면 시간 초과가 날 수 밖에 없는 문제다. 선형적으로 풀면 info 배열의 최대 크기는 5만, query 배열의 최대 크기는 10만 이므로 최대 50억 연산을 하게 되므로 효율성 측면에서 문제가 생긴다.결국 이 문제는 어떤 방법을 이용해 검색할 것인가가 가장 큰 관건이 된다. 선형적인 탐색을 하는 방법이 아닌 O(logn)의 시간 복잡도를 갖는 자료구조 혹은 탐색 기법을 이용하는 방법으로 문제를 접근해야 한다. 동시에 만들 수 있는 문장의 경우의 수를 고려해줘야 한다. 복합적인 문제라 쉽지 않다.
+처음에 각 문자열내 문자들을 파싱해서 map에다가 저장을 해야 하나?…. 그러면 탐색을 어떻게 해야하지?… 하면서 문제 접근을 못하다가 다른 분 풀이를 살짝 참고 했는데 문자열 자체를 map의 key값으로 넣는 것을 보고 힌트를 얻어 문제를 접근할 수 있었다.
+
+info 내 문자열을 정재해 띄어쓰기는 문장을 만들어준다.
+key로 정재된 문장을 value로는 같은 key를 갖는 문장에 대한 값들을 보관하기 위해 List형태로 넣어준다.
+info 내 문장들이 map으로 다 들어갔으면 Binary Search를 사용하기 위해 오름 차순으로 정렬 해준다.
+query 내 문자열을 정재해 준다.
+info에서 구분자는 띄어쓰기 였지만 query에서 구분자는 and와 띄어쓰기다.
+‘-‘를 만나게 되면 만들 수 있는 문장의 모든 경우의 수를 만들어준다.
+
+
+정재된 문자를 갖고 info에 값이 있는지 확인한다.
+값이 있으면 List에서 query에서 요구하는 값 이상이 되는 사람 수를 찾는다.(Lower Bound)
+쿼리가 여러개인 경우는 각각의 경우들을 모두 찾아서 더해준다.
+
+
+찾은 결과를 answer에 넣어 반환한다.
+
+info 내 문자열을 정재하기public void infoToMap(String[] info) &#123;    for (int i = 0; i &lt; info.length; i++) &#123;        String[] words = info[i].split(&quot; &quot;);        StringBuilder sb = new StringBuilder();        int score = Integer.parseInt(words[words.length - 1]);        for (int j = 0; j &lt; words.length - 1; j++) &#123;            sb.append(words[j]);        &#125;        String key = sb.toString();        infos.computeIfAbsent(key, k -&gt; new ArrayList&lt;&gt;()).add(score);    &#125;&#125;
+
+map 내 List값들을 오름차순으로 정렬하기infos.forEach((key, value) -&gt; &#123;    value.sort(null);&#125;);
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/08/24/spring/spring-data-jpa/05-spring-data-jpa-query-param/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/spring-data-jpa/spring-data-jpa.png)" alt="Spring Data JPA - Query 파라미터 바인딩" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/24/spring/spring-data-jpa/05-spring-data-jpa-query-param/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a>
+            </div>
+            <div class="date"><time datetime="2021-08-24T05:39:59.000Z" itemprop="datePublished">2021-08-24</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/24/spring/spring-data-jpa/05-spring-data-jpa-query-param/">Spring Data JPA - Query 파라미터 바인딩</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Data JPA - 벌크성 수정 쿼리
+Spring Data JPA - Convertor
+Spring Data JPA - Auditing
+Spring Data JPA - Paging Request Paramater
+Spring Data JPA - 페이징과 정렬
+Post not found: spring/spring-data-jpa/07-spring-data-jpa
+Spring Data JPA - 반환 타입
+Spring Data JPA - Query 파라미터 바인딩
+Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기
+Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기
+Spring Data JPA - 메소드 이름으로 쿼리 생성하기
+Spring Data JPA - 시작하기
+
+JPQL에 파라미터 바인딩Param 어노테이션을 이용해 쿼리문내 파라미터들을 바인딩 해준다.
+@Query(&quot;select m from Member m where m.username = :username and m.age = :age&quot;)List&lt;Member&gt; findUser(@Param(&quot;username&quot;) String username, @Param(&quot;age&quot;) int age);
+
+컬렉션 파리미터 바인딩Collection 타입으로 in 절 지원
+@Query(&quot;select m from Member m where m.username in :names&quot;)List&lt;Member&gt; findByNames(@Param(&quot;names&quot;) List&lt;String&gt; names);
+
+
+
+@Testpublic void findByNames()&#123;    Member member1 = new Member(&quot;AAA&quot;, 10);    Member member2 = new Member(&quot;BBB&quot;, 20);    memberRepository.save(member1);    memberRepository.save(member2);    List&lt;Member&gt; result = memberRepository.findByNames(Arrays.asList(&quot;AAA&quot;, &quot;BBB&quot;));    for (Member member : result) &#123;        System.out.println(&quot;Member : &quot; + member);    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/08/23/spring/spring-data-jpa/04-spring-data-jpa-query/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/spring-data-jpa/spring-data-jpa.png)" alt="Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/23/spring/spring-data-jpa/04-spring-data-jpa-query/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a>
+            </div>
+            <div class="date"><time datetime="2021-08-23T05:39:59.000Z" itemprop="datePublished">2021-08-23</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/23/spring/spring-data-jpa/04-spring-data-jpa-query/">Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Data JPA - 벌크성 수정 쿼리
+Spring Data JPA - Convertor
+Spring Data JPA - Auditing
+Spring Data JPA - Paging Request Paramater
+Spring Data JPA - 페이징과 정렬
+Post not found: spring/spring-data-jpa/07-spring-data-jpa
+Spring Data JPA - 반환 타입
+Spring Data JPA - Query 파라미터 바인딩
+Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기
+Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기
+Spring Data JPA - 메소드 이름으로 쿼리 생성하기
+Spring Data JPA - 시작하기
+
+@Query 를 이용한 조회 결과를 특정 값으로 반환하기
+DB로 부터 조회한 결과에서 객체의 특정 값만 가져오고 싶은 경우 객체에서 feild값을 조회 하듯이 객체.field 형식으로 명시해주면 해당 값을 가져올 수 있다. 반환 형식으로는 해당 field의 데이터 형식에 맞춰주면 된다.
+@Query(&quot;select m.username from Member m&quot;)List&lt;String&gt; findUsernameList();
+
+public interface MemberRepository extends JpaRepository&lt;Member, Long&gt; &#123;    List&lt;Member&gt; findByUsernameAndAgeGreaterThan(String username, int age);    @Query(&quot;select m from Member m where m.username = :username and m.age = :age&quot;)    List&lt;Member&gt; findUser(@Param(&quot;username&quot;) String username, @Param(&quot;age&quot;) int age);    @Query(&quot;select m.username from Member m&quot;)    List&lt;String&gt; findUsernameList();&#125;
+
+
+@Testpublic void findUsernameList() &#123;    Member m1 = new Member(&quot;AAA&quot;, 10);    Member m2 = new Member(&quot;BBB&quot;, 20);    memberRepository.save(m1);    memberRepository.save(m2);    List&lt;String&gt; memberNames = memberRepository.findUsernameList();    for (String name : memberNames) &#123;        System.out.println(&quot;Username : &quot; + name);    &#125;&#125;
+
+DTO를 사용해 @Query 작성하기일반적으로 DB에서 데이터를 조회할 때 Entity 모든 값보다는 필요한 값 몇가지만을 가져오는 경우가 많다. 이렇게 필요한 데이터 만을 가져올 수 있도록 DTO class를 정의하고 DTO를 이용해 Entity에서 필요한 데이터만을 조회하는 방법이 더 효율적으로 데이터를 가져오는 방식이다. DTO를 이용해 해당 Entity에서 필요한 데이터만을 조회할 수 있도록 구현해보자!
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/08/23/spring/spring-data-jpa/03-spring-data-jpa-jpql/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/spring-data-jpa/spring-data-jpa.png)" alt="Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/23/spring/spring-data-jpa/03-spring-data-jpa-jpql/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a>
+            </div>
+            <div class="date"><time datetime="2021-08-23T03:39:59.000Z" itemprop="datePublished">2021-08-23</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/23/spring/spring-data-jpa/03-spring-data-jpa-jpql/">Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Data JPA - 벌크성 수정 쿼리
+Spring Data JPA - Convertor
+Spring Data JPA - Auditing
+Spring Data JPA - Paging Request Paramater
+Spring Data JPA - 페이징과 정렬
+Post not found: spring/spring-data-jpa/07-spring-data-jpa
+Spring Data JPA - 반환 타입
+Spring Data JPA - Query 파라미터 바인딩
+Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기
+Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기
+Spring Data JPA - 메소드 이름으로 쿼리 생성하기
+Spring Data JPA - 시작하기
+
+JPQL (Java Persistence Query Lange) 사용하기
+Table 대상이 아닌 Etity(객체) 를 대상으로 작성하는 객체 지향 쿼리
+
+
+특정 데이터 베이스 SQL에 의존하지 않는 장점이 있다.
+EntityManager 객체 createQuery 메소드를 사용해 쿼리문을 만들어 줄 수 있다.
+select 문으로 데이터 조회 후 List, Stream, 단건 데이터 3가지 방식으로 결과를 가져올 수 있다.
+
+
+
+
+메소드
+설명
+
+
+
+getResultList
+select 문 실행후 여러 Row 결과 데이터를 List로 반환한다.
+
+
+getResultStream
+select 문 실행후 여러 Row 결과 데이터를 Stream 으로 반환한다.
+
+
+getSingleResult
+select 문 실행후 한 Row 결과 데이터를 반환한다.
+
+
+// Readpublic List&lt;Member&gt; findAll() &#123;    // JPQL    List&lt;Member&gt; result = em.createQuery(&quot;select m from Member m&quot;, Member.class)            .getResultList();    return result;&#125;
+
+public long count() &#123;    return em.createQuery(&quot;select count(m) from Member m&quot;, Long.class)            .getSingleResult();&#125;
+
+
+public List&lt;Member&gt; findByUsernameAndAgeGreaterThan(String username, int age) &#123;    return em.createQuery(&quot;select m from Member m &quot; +            &quot;where m.username = :username &quot; +            &quot;and m.age &gt; :age&quot;)            .setParameter(&quot;username&quot;, username)            .setParameter(&quot;age&quot;, age)            .getResultList();&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/08/22/spring/spring-data-jpa/02-spring-data-jpa-methodname/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/spring-data-jpa/spring-data-jpa.png)" alt="Spring Data JPA - 메소드 이름으로 쿼리 생성하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/22/spring/spring-data-jpa/02-spring-data-jpa-methodname/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a>
+            </div>
+            <div class="date"><time datetime="2021-08-22T14:29:59.000Z" itemprop="datePublished">2021-08-22</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/22/spring/spring-data-jpa/02-spring-data-jpa-methodname/">Spring Data JPA - 메소드 이름으로 쿼리 생성하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Data JPA - 벌크성 수정 쿼리
+Spring Data JPA - Convertor
+Spring Data JPA - Auditing
+Spring Data JPA - Paging Request Paramater
+Spring Data JPA - 페이징과 정렬
+Post not found: spring/spring-data-jpa/07-spring-data-jpa
+Spring Data JPA - 반환 타입
+Spring Data JPA - Query 파라미터 바인딩
+Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기
+Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기
+Spring Data JPA - 메소드 이름으로 쿼리 생성하기
+Spring Data JPA - 시작하기
+
+메소드 이름으로 쿼리 생성하기https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
+@Testpublic void findByUsernameAndAgeGreaterThen()&#123;    Member member1 = new Member(&quot;AAA&quot;, 10);    Member member2 = new Member(&quot;AAA&quot;, 20);    memberJpaRepository.save(member1);    memberJpaRepository.save(member2);    List&lt;Member&gt; result = memberJpaRepository.findByUsernameAndAgeGreaterThan(&quot;AAA&quot;, 15);    assertThat(result.get(0).getUsername()).isEqualTo(&quot;AAA&quot;);    assertThat(result.get(0).getAge()).isEqualTo(20);    assertThat(result.size()).isEqualTo(1);&#125;
+
+List&lt;Member&gt; findByUsernameAndAgeGreaterThan(String username, int age);
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/08/22/spring/spring-data-jpa/01-spring-data-jpa/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/spring-data-jpa/spring-data-jpa.png)" alt="Spring Data JPA - 시작하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/22/spring/spring-data-jpa/01-spring-data-jpa/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a>
+            </div>
+            <div class="date"><time datetime="2021-08-22T13:39:59.000Z" itemprop="datePublished">2021-08-22</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/22/spring/spring-data-jpa/01-spring-data-jpa/">Spring Data JPA - 시작하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Data JPA - 벌크성 수정 쿼리
+Spring Data JPA - Convertor
+Spring Data JPA - Auditing
+Spring Data JPA - Paging Request Paramater
+Spring Data JPA - 페이징과 정렬
+Post not found: spring/spring-data-jpa/07-spring-data-jpa
+Spring Data JPA - 반환 타입
+Spring Data JPA - Query 파라미터 바인딩
+Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기
+Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기
+Spring Data JPA - 메소드 이름으로 쿼리 생성하기
+Spring Data JPA - 시작하기
+
+Spring Data JPA 시작하기JPA를 사용해 Repository 구성하기스프링에서 EntityManager 는 다른 Bean들과는 다르게 PersistenceContext 어노테이션을 이용해 객체를 주입 받는다.EntityManager 를 이용해 간단하게 CRUD를 구현할 수 있다.
+
+persist : Create
+remove : Delete
+find : Read
+
+@Repositorypublic class MemberRepository&#123;    @PersistenceContext    private EntityManager em;    // Create    public Member save(Member member)&#123;        em.persist(member); // DB 에 데이터 저장        return member;    &#125;    // Delete    public void delete(Member member) &#123;        em.remove(member); // DB 에 저장된 데이터 삭제    &#125;    // Read    public Member find(Long id)&#123;        Member member = em.find(Member.class, id); // DB 에 저장된 데이터 조회        return member;    &#125;&#125;
+
+스프링에서 제공하는 JpaRepository를 사용스프링에서 제공하는 JpaRepository 를 사용하게 되면 기본적인 CRUD 기능을 만들어주기 때문에 보다 간편하게 데이터를 조회할 수 있다.
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/08/22/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC-Java/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 메뉴 리뉴얼 (JAVA)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/22/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC-Java/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2021-08-22T11:10:40.000Z" itemprop="datePublished">2021-08-22</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/22/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC-Java/">프로그래머스 - 메뉴 리뉴얼 (JAVA)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://programmers.co.kr/learn/courses/30/lessons/72411
+문제 풀이처음에 문자열 비교로 접근해 엄청 해멨다. 이 문제는 문자열 비교로 접근을 하는게 아니라 한 사람이 시킨 메뉴 코스를 이용해 만들 수 있는 경우의 수를 만들어 비교하는 문제다.
+
+코스를 사전 순서로 저장할 수 있도록 주문을 정렬해준다.
+한 손님이 주문한 단품 메뉴들로 만들 수 있는 모든 코스 조합을 만들어준다.
+코스내 메뉴 개수에 따라 가장 많이 선택된 횟수를 저장해 놓는다.
+코스를 선택할때 코스내 메뉴가 메뉴 개수에서 가장 많이 선택된 횟수와 같다면 넣어준다.
+
+모든 코스를 만들어주는 함수public void findAllCourse(String order, String subOrder, int depth) &#123;    if (depth == order.length()) &#123;        if (subOrder.length() &gt; 1) &#123;            if (map.containsKey(subOrder)) &#123;                int value = map.get(subOrder);                map.put(subOrder, value + 1);            &#125; else &#123;                map.put(subOrder, 1);            &#125;        &#125;        return;    &#125;    findAllCourse(order, subOrder + order.charAt(depth), depth + 1);    findAllCourse(order, subOrder, depth + 1);&#125;
+
+전체 소스import java.io.*;import java.util.*;class Solution &#123;    Map&lt;String, Integer&gt; map = new TreeMap&lt;&gt;();    public void findAllCourse(String order, String subOrder, int depth) &#123;        if (depth == order.length()) &#123;            if (subOrder.length() &gt; 1) &#123;                if (map.containsKey(subOrder)) &#123;                    int value = map.get(subOrder);                    map.put(subOrder, value + 1);                &#125; else &#123;                    map.put(subOrder, 1);                &#125;            &#125;            return;        &#125;        findAllCourse(order, subOrder + order.charAt(depth), depth + 1);        findAllCourse(order, subOrder, depth + 1);    &#125;    public String[] solution(String[] orders, int[] course) &#123;        for (String order : orders) &#123;            // 문자열내 문자들을 사전 순서대로 정렬            char[] charArr = order.toCharArray();            Arrays.sort(charArr);            String sortedOrder = new String(charArr);            // 주문한 메뉴들로 만들 수 있는 모든 코스 조합을 만들어준다.            findAllCourse(sortedOrder, &quot;&quot;, 0);        &#125;        int[] maxValues = new int[101];        ArrayList&lt;String&gt; result = new ArrayList&lt;&gt;();        map.forEach((key, value) -&gt; maxValues[key.length()] = Math.max(maxValues[key.length()], value));        map.forEach((key, value) -&gt; &#123;            if (value &gt;= maxValues[key.length()] &amp;&amp; value &gt; 1) &#123;                for (int i = 0; i &lt; course.length; i++) &#123;                    if (course[i] == key.length()) &#123;                        result.add(key);                    &#125;                &#125;            &#125;        &#125;);        String[] answer = new String[result.size()];        int index = 0;        for (String s : result) &#123;            answer[index++] = s;        &#125;        return answer;    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/08/20/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC-Cpp/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 메뉴 리뉴얼 (Cpp)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/20/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC-Cpp/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2021-08-20T11:10:40.000Z" itemprop="datePublished">2021-08-20</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/20/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/72411-%EB%A9%94%EB%89%B4%EB%A6%AC%EB%89%B4%EC%96%BC-Cpp/">프로그래머스 - 메뉴 리뉴얼 (Cpp)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://programmers.co.kr/learn/courses/30/lessons/72411
+문제 풀이처음에 문자열 비교로 접근해 엄청 해멨다. 이 문제는 문자열 비교로 접근을 하는게 아니라 한 사람이 시킨 메뉴 코스를 이용해 만들 수 있는 경우의 수를 만들어 비교하는 문제다.
+
+코스를 사전 순서로 저장할 수 있도록 주문을 정렬해준다.
+한 손님이 주문한 단품 메뉴들로 만들 수 있는 모든 코스 조합을 만들어준다.
+코스내 메뉴 개수에 따라 가장 많이 선택된 횟수를 저장해 놓는다.
+코스를 선택할때 코스내 메뉴가 메뉴 개수에서 가장 많이 선택된 횟수와 같다면 넣어준다.
+
+모든 코스 조합을 만들어주는 함수void makeAllCourse(string subOrder, string order, int depth) &#123;    if (depth &gt; order.size()) &#123;        return;    &#125;    if (depth == order.size() &amp;&amp; subOrder.size() &gt; 1) &#123;        if (m.find(subOrder) == m.end()) &#123;            m[subOrder] = 1;        &#125; else &#123;            m[subOrder] += 1;        &#125;    &#125;    // 현재 메뉴를 선택하고 다음 메뉴로 넘어간다.    makeAllCourse(subOrder + order[depth], order, depth + 1);    // 현재 메뉴를 선택하지 않고 다음 메뉴로 넘어간다.    makeAllCourse(subOrder, order, depth + 1);&#125;
+
+전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;map&lt;string, int&gt; m;int maxValues[100];void makeAllCourse(string subOrder, string order, int depth) &#123;    if (depth &gt; order.size()) &#123;        return;    &#125;    if (depth == order.size() &amp;&amp; subOrder.size() &gt; 1) &#123;        if (m.find(subOrder) == m.end()) &#123;            m[subOrder] = 1;        &#125; else &#123;            m[subOrder] += 1;        &#125;    &#125;    makeAllCourse(subOrder + order[depth], order, depth + 1);    makeAllCourse(subOrder, order, depth + 1);&#125;vector&lt;string&gt; solution(vector&lt;string&gt; orders, vector&lt;int&gt; course) &#123;    vector&lt;string&gt; answer;    for (int i = 0; i &lt; orders.size(); i++) &#123;        sort(orders[i].begin(), orders[i].end());        makeAllCourse(&quot;&quot;, orders[i], 0);    &#125;    for (auto iter = m.begin(); iter != m.end(); iter++) &#123;        int courseCount = iter-&gt;first.length();        maxValues[courseCount] = max(maxValues[courseCount], iter-&gt;second);    &#125;    for (auto iter = m.begin(); iter != m.end(); iter++) &#123;        int courseCount = iter-&gt;first.length();        if (iter-&gt;second == maxValues[courseCount] &amp;&amp; iter-&gt;second &gt;= 2) &#123;            for (int i = 0; i &lt; course.size(); i++) &#123;                if (courseCount == course[i]) &#123;                    answer.push_back(iter-&gt;first);                &#125;            &#125;        &#125;    &#125;    return answer;&#125;
+
+
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/08/17/algorithm/baekjoon/BFS/2178-%EB%AF%B8%EB%A1%9C%ED%83%90%EC%83%89/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 2178 - 미로탐색" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/17/algorithm/baekjoon/BFS/2178-%EB%AF%B8%EB%A1%9C%ED%83%90%EC%83%89/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2021-08-17T06:19:42.000Z" itemprop="datePublished">2021-08-17</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/08/17/algorithm/baekjoon/BFS/2178-%EB%AF%B8%EB%A1%9C%ED%83%90%EC%83%89/">백준 2178 - 미로탐색</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+링크https://www.acmicpc.net/problem/2178
+문제 풀이기본적인 BFS 문제다. 조건에 맞춰 값을 읽어온 후 탐색을 진행하면 원하는 값을 얻을 수 있다.
+전체 소스import java.io.BufferedReader;import java.io.IOError;import java.io.IOException;import java.io.InputStreamReader;import java.util.LinkedList;import java.util.Queue;public class Main &#123;    public static int height, width;    public static int[] dx = &#123; 0, 0, 1, -1 &#125;;    public static int[] dy = &#123; 1, -1, 0, 0 &#125;;    public static int[][] map;    public static int bfs() &#123;        Queue&lt;int[]&gt; q = new LinkedList&lt;&gt;();        boolean check[][] = new boolean[height + 1][width + 1];        q.offer(new int[] &#123; 0, 0 &#125;);        check[0][0] = true;        int count = 0;        while (!q.isEmpty()) &#123;            int qSize = q.size();            count++;            while (qSize-- &gt; 0) &#123;                int[] point = q.remove();                int cntY = point[0];                int cntX = point[1];                if (cntY == height - 1 &amp;&amp; cntX == width - 1) &#123;                    return count;                &#125;                for (int i = 0; i &lt; 4; i++) &#123;                    int nY = cntY + dy[i];                    int nX = cntX + dx[i];                    if (0 &lt;= nY &amp;&amp; nY &lt; height &amp;&amp; 0 &lt;= nX &amp;&amp; nX &lt; width) &#123;                        if (check[nY][nX] == false &amp;&amp; map[nY][nX] == 1) &#123;                            check[nY][nX] = true;                            q.offer(new int[] &#123; nY, nX &#125;);                        &#125;                    &#125;                &#125;            &#125;        &#125;        return count;    &#125;    public static void main(String args[]) throws IOException &#123;        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));        String[] inputValues = br.readLine().split(&quot; &quot;);        height = Integer.parseInt(inputValues[0]);        width = Integer.parseInt(inputValues[1]);        map = new int[height + 1][width + 1];        for (int h = 0; h &lt; height; h++) &#123;            String inputValue = br.readLine();            for (int w = 0; w &lt; width; w++) &#123;                // System.out.println(inputValue.charAt(w));                map[h][w] = inputValue.charAt(w) - &#x27;0&#x27;;            &#125;        &#125;        int count = bfs();        System.out.println(count);        br.close();    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/08/16/spring/spring-security/security/role-hierarchy/" class="thumbnail">
     
     
@@ -236,531 +851,6 @@ RoleHierarchyVoter 인가 처리시 RoleHierarchy 내 저장된 권한간 계층
     </div>
 </article>
     
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/08/09/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-python/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 신규 아이디 추천 (Python)" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/09/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-python/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2021-08-09T11:10:40.000Z" itemprop="datePublished">2021-08-09</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/08/09/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-python/">프로그래머스 - 신규 아이디 추천 (Python)</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/72410
-
-프로그래머스 - 신규 아이디 추천 (Java)
-프로그래머스 - 신규 아이디 추천 (Python)
-
-def solution(new_id):    answer = &#x27;&#x27;    lowerLine = new_id.lower()    for i in lowerLine:        if i.isalpha() or i.isdigit() or i in [&#x27;-&#x27;, &#x27;_&#x27;, &#x27;.&#x27;]:            answer += i    while &#x27;..&#x27; in answer:        answer = answer.replace(&#x27;..&#x27;, &#x27;.&#x27;)    if len(answer) &gt; 1:        if answer[0] == &#x27;.&#x27;:            answer = answer[1:]    elif len(answer) == 1 and answer[0] == &#x27;.&#x27;:        answer = &#x27;&#x27;    if len(answer) &gt; 1:        if answer[-1] == &#x27;.&#x27;:            answer = answer[:-1]    elif len(answer) == 1 and answer[-1] == &#x27;.&#x27;:        answer = &#x27;&#x27;    if len(answer) == 0:        answer += &#x27;a&#x27;    if len(answer) &gt; 15:        answer = answer[:15]        if answer[-1] == &#x27;.&#x27;:            answer = answer[:-1]    while len(answer) &lt;= 2:        answer += answer[-1]    return answer
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/08/03/algorithm/programmers/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/81303-%ED%91%9C%ED%8E%B8%EC%A7%91-Cpp/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 표 편집 (Cpp)" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/08/03/algorithm/programmers/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/81303-%ED%91%9C%ED%8E%B8%EC%A7%91-Cpp/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2021-08-03T11:10:40.000Z" itemprop="datePublished">2021-08-03</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/08/03/algorithm/programmers/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/81303-%ED%91%9C%ED%8E%B8%EC%A7%91-Cpp/">프로그래머스 - 표 편집 (Cpp)</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-https://programmers.co.kr/learn/courses/30/lessons/81303
-문제 해설자료구조 Set에 대한 확실한 이해가 있어야 해결할 수 있는 문제,Set의 다양한 함수를 사용할 수 있는 좋은 문제다.
-전체 소스 코드#include &lt;bits/stdc++.h&gt;using namespace std;bool check[1000010];set&lt;int&gt; arr;stack&lt;int&gt; deletedData;int executeCmd(int point, string cmd) &#123;    char commond = cmd[0];    auto iter = arr.find(point);    string str;    int value;    if (commond == &#x27;U&#x27; || commond == &#x27;D&#x27;) &#123;        for (int i = 2; i &lt; cmd.size(); i++) &#123;            str += cmd[i];        &#125;        value = stoi(str);    &#125;    if (commond == &#x27;U&#x27;) &#123;        for (int i = 0; i &lt; value; i++) &#123;            iter--;        &#125;    &#125;    if (commond == &#x27;D&#x27;) &#123;        for (int i = 0; i &lt; value; i++) &#123;            iter++;        &#125;    &#125;    if (commond == &#x27;C&#x27;) &#123;        deletedData.push(*iter);        iter = arr.erase(iter);        if (iter == arr.end()) &#123;            iter--;        &#125;    &#125;    if (commond == &#x27;Z&#x27;) &#123;        if (!deletedData.empty()) &#123;            int value = deletedData.top();            deletedData.pop();            arr.insert(value);        &#125;    &#125;    return *iter;&#125;void insertNumber(int n) &#123;    for (int i = 0; i &lt; n; i++) &#123;        arr.insert(i);    &#125;&#125;void scanSet() &#123;    for (auto iter = arr.begin(); iter != arr.end(); iter++) &#123;        int index = *iter;        check[index] = true;    &#125;&#125;string solution(int n, int k, vector&lt;string&gt; cmd) &#123;    string answer = &quot;&quot;;    insertNumber(n);    int point = k;    for (int i = 0; i &lt; cmd.size(); i++) &#123;        point = executeCmd(point, cmd[i]);    &#125;    scanSet();    for (int i = 0; i &lt; n; i++) &#123;        if (check[i]) &#123;            answer += &#x27;O&#x27;;        &#125; else &#123;            answer += &#x27;X&#x27;;        &#125;    &#125;    return answer;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/04/20/kafka/spring-cloud-kafka/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/kafka/kafka.png)" alt="카프카 사용하기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/20/kafka/spring-cloud-kafka/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Kafka/">Kafka</a>
-            </div>
-            <div class="date"><time datetime="2021-04-19T16:58:03.000Z" itemprop="datePublished">2021-04-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/04/20/kafka/spring-cloud-kafka/">카프카 사용하기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-카프카 명령어주키퍼 실행
-./bin/zookeeper-server-start.sh config/zookeeper.properties
-
-카프카 실행
-./bin/kafka-server-start.sh config/server.properties
-
-카프카 토픽관리토픽을 새로 생성하고 싶으면 kafka-topics 명령어에 --create 옵셩을 통해 새로운 토픽을 생성할 수 있습니다.
-./bin/kafka-topics.sh \    --create \    --topic quickstart-events \    --bootstrap-server localhost:9092
-
-카프카에 저장된 모든 토픽 정보를 보고 싶을 경우  --list 옵셩을 통해 확인할 수 있습니다.
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/04/17/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/SET/1181-%EB%8B%A8%EC%96%B4%EC%A0%95%EB%A0%AC/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 3015 - 단어 정렬" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/17/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/SET/1181-%EB%8B%A8%EC%96%B4%EC%A0%95%EB%A0%AC/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2021-04-17T01:53:25.000Z" itemprop="datePublished">2021-04-17</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/04/17/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/SET/1181-%EB%8B%A8%EC%96%B4%EC%A0%95%EB%A0%AC/">백준 3015 - 단어 정렬</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-https://www.acmicpc.net/problem/1181
-백준 3015 단어 정렬문제 풀이자료구조 Set을 사용하기 좋은 문제이다. 다만 Set에서 사용하는 정렬방식을 조건에 맞게 변형해줄 필요가 있다.
-소스코드#include &lt;bits/stdc++.h&gt;using namespace std;set&lt;pair&lt;int, string&gt;&gt; s;int n;int main(void) &#123;    cin.tie(0);    cout.tie(0);    ios_base::sync_with_stdio(false);    cin &gt;&gt; n;    while (n--) &#123;        string word;        cin &gt;&gt; word;        s.insert(&#123;word.length(), word&#125;);    &#125;    for (auto iter = s.begin(); iter != s.end(); iter++) &#123;        cout &lt;&lt; iter-&gt;second &lt;&lt; &#x27;\n&#x27;;    &#125;    return 0;&#125;
-
-자바 소스 코드Comparator 인터페이스를 이용해 set의 정렬기준을 사용자가 정의한 정렬기준으로 변경할 수 있다. Comparator 인터페이스를 사용하게 되면 compare 메소드를 오버라이딩해 원하는 정렬 기준을 적용할 수 있다.
-import java.io.BufferedReader;import java.io.IOException;import java.io.InputStreamReader;import java.util.Comparator;import java.util.Set;import java.util.TreeSet;public class Main &#123;    public static void main(String args[]) throws IOException &#123;        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));        int count = Integer.parseInt(br.readLine());        Set&lt;String&gt; words = new TreeSet&lt;String&gt;(new Comparator&lt;String&gt;() &#123;            @Override            public int compare(String o1, String o2) &#123;                if (o1.length() &lt; o2.length()) &#123;                    return -1;                &#125; else if (o1.length() &gt; o2.length()) &#123;                    return 1;                &#125; else &#123;                    return o1.compareTo(o2);                &#125;            &#125;        &#125;);        for (int countIdx = 0; countIdx &lt; count; countIdx++) &#123;            String word = br.readLine();            words.add(word);        &#125;        words.stream().forEach(x -&gt; System.out.println(x));    &#125;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/04/15/algorithm/baekjoon/%E1%84%89%E1%85%B5%E1%84%86%E1%85%B2%E1%86%AF%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%89%E1%85%A7%E1%86%AB/12100-2048/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 12100 - 2048" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/15/algorithm/baekjoon/%E1%84%89%E1%85%B5%E1%84%86%E1%85%B2%E1%86%AF%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%89%E1%85%A7%E1%86%AB/12100-2048/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2021-04-15T13:39:03.000Z" itemprop="datePublished">2021-04-15</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/04/15/algorithm/baekjoon/%E1%84%89%E1%85%B5%E1%84%86%E1%85%B2%E1%86%AF%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%89%E1%85%A7%E1%86%AB/12100-2048/">백준 12100 - 2048</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-https://www.acmicpc.net/problem/12100
-백준 12100 - 2048문제 풀이보드를 상하좌우로 움직이면서 블록이 최대값이 나올 수 있는 경우를 찾는 문제이다. 한 보드를 상하좌우로 움직이고 원래데로 되돌린 후 다시 시도하기 위해 백트레킹 기법이 필요하다.
-
-블록을 상하좌우중 한 방향으로 움직인다.
-5번 움직이면 블록을 스캔해 최대값을 찾는다.
-이전 단계로 되돌린 후 다른방향으로 움직이면서 최대값을 찾아본다.
-
-
-문제 예외 처리
-
-한번 합처진 블록은 연속적으로 합처질 수 없다.
-합처지는 순서는 이동하려고 하는 쪽의 칸이 먼저 합쳐진다.
-
-
-소스 코드#include &lt;bits/stdc++.h&gt;using namespace std;int maxValue = 0;int board[22][22];int boardSize = 0;void initBoard(int size) &#123;    for (int i = 0; i &lt; size; i++) &#123;        for (int j = 0; j &lt; size; j++) &#123;            cin &gt;&gt; board[i][j];        &#125;    &#125;&#125;void moveTop() &#123;    int check[22][22];    for (int col = 0; col &lt; boardSize; col++) &#123;        for (int row = 0; row &lt; boardSize; row++) &#123;            check[col][row] = false;        &#125;    &#125;    for (int row = 0; row &lt; boardSize; row++) &#123;        for (int col = 0; col &lt; boardSize; col++) &#123;            int cntRow = row;            int cntCol = col;            if (board[cntRow][cntCol] == 0) &#123;                continue;            &#125;            while (cntRow - 1 &gt;= 0 &amp;&amp; (board[cntRow - 1][cntCol] == board[cntRow][cntCol] || board[cntRow - 1][cntCol] == 0)) &#123;                if (board[cntRow - 1][cntCol] == board[cntRow][cntCol]) &#123;                    if (check[cntRow - 1][cntCol] == false &amp;&amp; check[cntRow][cntCol] == false) &#123;                        board[cntRow - 1][cntCol] += board[cntRow][cntCol];                        check[cntRow - 1][cntCol] = true;                        board[cntRow][cntCol] = 0;                    &#125; else &#123;                        break;                    &#125;                &#125; else &#123;                    swap(board[cntRow - 1][cntCol], board[cntRow][cntCol]);                &#125;                cntRow--;            &#125;        &#125;    &#125;&#125;void moveButton() &#123;    int check[22][22];    for (int col = 0; col &lt; boardSize; col++) &#123;        for (int row = 0; row &lt; boardSize; row++) &#123;            check[col][row] = false;        &#125;    &#125;    for (int row = boardSize - 1; row &gt;= 0; row--) &#123;        for (int col = 0; col &lt; boardSize; col++) &#123;            int cntCol = col;            int cntRow = row;            if (board[cntRow][cntCol] == 0) &#123;                continue;            &#125;            while (cntRow + 1 &lt; boardSize &amp;&amp; (board[cntRow + 1][cntCol] == board[cntRow][cntCol] || board[cntRow + 1][cntCol] == 0)) &#123;                if (board[cntRow + 1][cntCol] == board[cntRow][cntCol]) &#123;                    if (check[cntRow + 1][cntCol] == false &amp;&amp; check[cntRow][cntCol] == false) &#123;                        board[cntRow + 1][cntCol] += board[cntRow][cntCol];                        check[cntRow + 1][cntCol] = true;                        board[cntRow][cntCol] = 0;                    &#125; else &#123;                        break;                    &#125;                &#125; else &#123;                    swap(board[cntRow + 1][cntCol], board[cntRow][cntCol]);                &#125;                cntRow++;            &#125;        &#125;    &#125;&#125;void moveLeft() &#123;    int check[22][22];    for (int col = 0; col &lt; boardSize; col++) &#123;        for (int row = 0; row &lt; boardSize; row++) &#123;            check[col][row] = false;        &#125;    &#125;    for (int col = 0; col &lt; boardSize; col++) &#123;        for (int row = 0; row &lt; boardSize; row++) &#123;            int cntCol = col;            int cntRow = row;            if (board[cntRow][cntCol] == 0) &#123;                continue;            &#125;            while (cntCol - 1 &gt;= 0 &amp;&amp; (board[cntRow][cntCol - 1] == board[cntRow][cntCol] || board[cntRow][cntCol - 1] == 0)) &#123;                if (board[cntRow][cntCol - 1] == board[cntRow][cntCol]) &#123;                    if (check[cntRow][cntCol - 1] == false &amp;&amp; check[cntRow][cntCol] == false) &#123;                        board[cntRow][cntCol - 1] += board[cntRow][cntCol];                        check[cntRow][cntCol - 1] = true;                        board[cntRow][cntCol] = 0;                    &#125; else &#123;                        break;                    &#125;                &#125; else &#123;                    swap(board[cntRow][cntCol - 1], board[cntRow][cntCol]);                &#125;                cntCol--;            &#125;        &#125;    &#125;&#125;void moveRight() &#123;    int check[22][22];    for (int col = 0; col &lt; boardSize; col++) &#123;        for (int row = 0; row &lt; boardSize; row++) &#123;            check[col][row] = false;        &#125;    &#125;    for (int col = boardSize - 1; col &gt;= 0; col--) &#123;        for (int row = 0; row &lt; boardSize; row++) &#123;            int cntRow = row;            int cntCol = col;            if (board[cntRow][cntCol] == 0) &#123;                continue;            &#125;            while (cntCol + 1 &lt; boardSize &amp;&amp; (board[cntRow][cntCol + 1] == board[cntRow][cntCol] || board[cntRow][cntCol + 1] == 0)) &#123;                if (board[cntRow][cntCol + 1] == board[cntRow][cntCol]) &#123;                    if (check[cntRow][cntCol + 1] == false &amp;&amp; check[cntRow][cntCol] == false) &#123;                        board[cntRow][cntCol + 1] += board[cntRow][cntCol];                        check[cntRow][cntCol + 1] = true;                        board[cntRow][cntCol] = 0;                    &#125; else &#123;                        break;                    &#125;                &#125; else &#123;                    swap(board[cntRow][cntCol], board[cntRow][cntCol + 1]);                &#125;                cntCol++;            &#125;        &#125;    &#125;&#125;void returnBoard(int (*board)[22], int (*copy)[22]) &#123;    for (int i = 0; i &lt; boardSize; i++) &#123;        for (int j = 0; j &lt; boardSize; j++) &#123;            board[i][j] = copy[i][j];        &#125;    &#125;&#125;void moveBoard(int depth) &#123;    int copyBoard[22][22];    for (int i = 0; i &lt; boardSize; i++) &#123;        for (int j = 0; j &lt; boardSize; j++) &#123;            copyBoard[i][j] = board[i][j];        &#125;    &#125;    if (depth == 5) &#123;        for (int i = 0; i &lt; boardSize; i++) &#123;            for (int j = 0; j &lt; boardSize; j++) &#123;                if (board[i][j] &gt; maxValue) &#123;                    maxValue = board[i][j];                &#125;            &#125;        &#125;        return;    &#125;    moveTop();    moveBoard(depth + 1);    returnBoard(board, copyBoard);    moveButton();    moveBoard(depth + 1);    returnBoard(board, copyBoard);    moveLeft();    moveBoard(depth + 1);    returnBoard(board, copyBoard);    moveRight();    moveBoard(depth + 1);    returnBoard(board, copyBoard);&#125;int main(void) &#123;    cin &gt;&gt; boardSize;    initBoard(boardSize);    moveBoard(0);    cout &lt;&lt; maxValue &lt;&lt; &#x27;\n&#x27;;    return 0;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 1920 - 수 찾기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2021-04-04T08:21:14.000Z" itemprop="datePublished">2021-04-04</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/">백준 1920 - 수 찾기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-백준 1920 - 수 찾기문제 풀이범위 1~10만개의 숫자들 중에서 M개의 주어진 값이 존재하는지 확인하는 문제이다. 일반적인 탐색을 진행할 경우 O(N*N)의 시간복잡도를 갖게 되므로 O(logN)의 시간복잡도를 갖는 이분 탐색을 이용해 문제를 해결하도록 한다.
-전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;int binarySearch(vector&lt;int&gt;&amp; arr, int value) &#123;    int begin = 0;    int end = arr.size() - 1;    while (begin &lt;= end) &#123;        int mid = (begin + end) / 2;        int midValue = arr[mid];        if (value == midValue) &#123;            return 1;        &#125; else if (value &gt; midValue) &#123;            begin = mid + 1;        &#125; else &#123;            end = mid - 1;        &#125;    &#125;    return 0;&#125;vector&lt;int&gt; solution(vector&lt;int&gt; arr, vector&lt;int&gt; values) &#123;    vector&lt;int&gt; results;    for (int valuesIndex = 0; valuesIndex &lt; values.size(); valuesIndex++) &#123;        int result = binarySearch(arr, values[valuesIndex]);        results.push_back(result);    &#125;    return results;&#125;int main(void) &#123;    int n, m;    vector&lt;int&gt; arr;    vector&lt;int&gt; values;    cin &gt;&gt; n;    arr = vector&lt;int&gt;(n);    for (int i = 0; i &lt; n; i++) &#123;        cin &gt;&gt; arr[i];    &#125;    sort(arr.begin(), arr.end());    cin &gt;&gt; m;    values = vector&lt;int&gt;(m);    for (int i = 0; i &lt; m; i++) &#123;        cin &gt;&gt; values[i];    &#125;    vector&lt;int&gt; results = solution(arr, values);    for (int value : results) &#123;        cout &lt;&lt; value &lt;&lt; &#x27;\n&#x27;;    &#125;    return 0;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/2343-%EA%B8%B0%ED%83%80%EB%A0%88%EC%8A%A8/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 2343 - 기타 레슨" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/04/algorithm/baekjoon/BinarySearch/2343-%EA%B8%B0%ED%83%80%EB%A0%88%EC%8A%A8/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2021-04-04T08:21:14.000Z" itemprop="datePublished">2021-04-04</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/2343-%EA%B8%B0%ED%83%80%EB%A0%88%EC%8A%A8/">백준 2343 - 기타 레슨</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-백준 2343 - 기타 레슨https://www.acmicpc.net/problem/2343
-문제 풀이탐색 범위는 (1~10억)이고 연산을 N번 해야 함으로 O(N) or O(NlogN)의 시간복잡도 내에 문제를 해결해야 한다. 탐색 시간을 줄이기 위해서 O(logN)시간 복잡도 내에 탐색을 끝낼 수 있는 이분탐색을 이용해 문제를 해결해야 한다.
-이 문제의 함정은 조건 중 순서가 뒤바뀌면 안된다는 조껀이 있기 때문에 레슨이 들어온 순서를 sorting할 경우 틀리게 된다.
-
-begin을 1로 end를 들어온 값의 합을 준다.
-begin과 end 범위 내에서 이분 탐색을 진행한다.
-이분탐색을 진행하면서 블루레이를 녹화할 수 있는 영상의 길이가 한 영상의 길이보다 작으면 begin을 움직인다.
-블루레이에 녹화하는 갯수가 블루레이보다 총 갯수보다 작거나 같을 경우 end를 움직인다.
-블루레이에 녹화하는 갯수가 블루레이보다 작을 경우 begin을 움직인다.
-
-전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;bool cmp(vector&lt;int&gt; arr, int mid, int M) &#123;    int sum = 0;    int count = 1;    for (int arrIndex = 0; arrIndex &lt; arr.size(); arrIndex++) &#123;        int value = arr[arrIndex];        if (value &gt; mid) &#123;            return true;        &#125;        if (sum + value &lt;= mid) &#123;            sum += value;        &#125; else &#123;            count += 1;            sum = value;        &#125;    &#125;    // 길이가 너무 짧다. begin을 늘려줘야 한다.    return count &gt; M;&#125;int binarySearch(vector&lt;int&gt; arr, int N, int M) &#123;    int begin = 1;    int end = 0;    for (int arrIndex = 0; arrIndex &lt; arr.size(); arrIndex++) &#123;        end += arr[arrIndex];    &#125;    while (begin &lt;= end) &#123;        int mid = (begin + end) / 2;        if (cmp(arr, mid, M)) &#123;            begin = mid + 1;        &#125; else &#123;            end = mid - 1;        &#125;    &#125;    return begin;&#125;int solution(vector&lt;int&gt; arr, int N, int M) &#123;    int result = 0;    result = binarySearch(arr, N, M);    return result;&#125;int main(void) &#123;    int N, M;    vector&lt;int&gt; arr;    cin &gt;&gt; N &gt;&gt; M;    arr = vector&lt;int&gt;(N);    for (int i = 0; i &lt; N; i++) &#123;        cin &gt;&gt; arr[i];    &#125;    cout &lt;&lt; solution(arr, N, M) &lt;&lt; &#x27;\n&#x27;;    return 0;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/04/03/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/3015-%EC%98%A4%EC%95%84%EC%8B%9C%EC%8A%A4_%EC%9E%AC%EA%B2%B0%ED%95%A9/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 3015 - 오아시스 재결합" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/03/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/3015-%EC%98%A4%EC%95%84%EC%8B%9C%EC%8A%A4_%EC%9E%AC%EA%B2%B0%ED%95%A9/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2021-04-03T11:10:40.000Z" itemprop="datePublished">2021-04-03</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/04/03/algorithm/baekjoon/%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A9/STACK/3015-%EC%98%A4%EC%95%84%EC%8B%9C%EC%8A%A4_%EC%9E%AC%EA%B2%B0%ED%95%A9/">백준 3015 - 오아시스 재결합</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-백준 3015 - 오아시스 재결합https://www.acmicpc.net/problem/1920
-문제 해설입력되는 값이 총 50만개이다. 이 문제는 O(N) or O(NlogN)의 시간복잡도를 갖고 해결을 해야하는 문제이다.
-
-현재 값을 이전 값과 비교해가면서 문제를 해결 하는 방식이다.
-스택의 역할은 서로불 수 있는 값의 쌍을 저장하기 위한 역할을 한다.
-스택내의 값은 점점 작은 값이 추가 되야 한다.
-들어오는 값이 top보다 클 경우 
-들어오는 값보다 큰 값이 나타날 때까지 pop을 진행하면서 
-pop을 진행할 때 해당 인원수 만큼 값을 더해준다.
-
-
-
-같은 값이 들어올 경우을 어떻게 해결하는 것이 이 문제의 어려운 점이다.
-
-자료구조 pair를 이용한다.
-first에는 사람의 키를 second에는 같은 키인 사람의 수를 저장한다.
-키가 같은 사람이 들어올 경우
-같은 키를 갖는 사람만큼 값을 추가해주고
-사람수를 + 1 해주고 해당 키를 다시 push해준다.
-
-
-
-소스 코드#include &lt;bits/stdc++.h&gt;using namespace std;long long solution(vector&lt;int&gt; heights) &#123;    stack&lt;pair&lt;int, int&gt;&gt; st;    long long result = 0;    for (int heightsIndex = 0; heightsIndex &lt; heights.size(); heightsIndex++) &#123;        int height = heights[heightsIndex];        while (!st.empty() &amp;&amp; height &gt; st.top().first) &#123;            result += st.top().second;            st.pop();        &#125;        if (!st.empty()) &#123;            if (st.top().first == height) &#123;                pair&lt;int, int&gt; temp = st.top();                st.pop();                result += temp.second;                if (!st.empty()) &#123;                    result += 1;                &#125;                st.push(&#123;height, temp.second + 1&#125;);            &#125; else &#123;                result += 1;                st.push(&#123;height, 1&#125;);            &#125;        &#125; else &#123;            st.push(&#123;height, 1&#125;);        &#125;    &#125;    return result;&#125;int main(void) &#123;    int numOfPeople;    vector&lt;int&gt; heights;    cin &gt;&gt; numOfPeople;    for (int peopleIndex = 0; peopleIndex &lt; numOfPeople; peopleIndex++) &#123;        int height;        cin &gt;&gt; height;        heights.push_back(height);    &#125;    cout &lt;&lt; solution(heights) &lt;&lt; &#x27;\n&#x27;;    return 0;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/03/26/algorithm/category/baekjoon-segment-tree/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 - 세그먼트 트리" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/03/26/algorithm/category/baekjoon-segment-tree/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2021-03-25T17:12:13.000Z" itemprop="datePublished">2021-03-26</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/03/26/algorithm/category/baekjoon-segment-tree/">백준 - 세그먼트 트리</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-백준 세그먼트 트리세그먼트 트리
-
-
-문제
-이름
-틀린 횟수
-정리여부
-비고
-
-
-
-2042
-구간 합 구하기
-
-
-기본 유형
-
-
-
-        </p>
-    </div>
-</article>
-    
         </div>
     
 
@@ -769,8 +859,8 @@ first에는 사람의 키를 second에는 같은 키인 사람의 수를 저장�
 
 
     <nav id="page-nav">
-        <span class="pages">Page 50 of 62</span>
-        <a class="extend prev" rel="prev" href="/page/49/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="extend next" rel="next" href="/page/51/">&raquo;</a>
+        <span class="pages">Page 50 of 63</span>
+        <a class="extend prev" rel="prev" href="/page/49/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/51/">&raquo;</a>
     </nav>
 
 
@@ -803,7 +893,7 @@ first에는 사람의 키를 second에는 같은 키인 사람의 수를 저장�
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Gitea/">Gitea</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Harbor/">Harbor</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nexus/">Nexus</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">53</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">273</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut/">Pointcut</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D/">Pointcut 표현식</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Gitea/">Gitea</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Harbor/">Harbor</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nexus/">Nexus</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">44</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">273</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut/">Pointcut</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D/">Pointcut 표현식</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
         </div>
     </div>
 

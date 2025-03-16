@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>[쿠버네티스 DevOps 구축] - OpenSearch 설치하기 | Victor</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content>
+    
+    <meta name="description" content="목차 [쿠버네티스 DevOps 구축] - OpenSearch 설치하기 [쿠버네티스 DevOps 구축] - Prometheus 와 Grafana 설치하기 [쿠버네티스 DevOps 구축] - Keycloak 설치하기 [쿠버네티스 DevOps 구축] - Ingress Nginx Controller 설치하기 [쿠버네티스 DevOps 구축] - Local PC 쿠">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[쿠버네티스 DevOps 구축] - OpenSearch 설치하기">
+<meta property="og:url" content="https://ckck803.github.io/2025/02/22/devops/infra/k8s-infra-opensearch/index.html">
+<meta property="og:site_name" content="Victor">
+<meta property="og:description" content="목차 [쿠버네티스 DevOps 구축] - OpenSearch 설치하기 [쿠버네티스 DevOps 구축] - Prometheus 와 Grafana 설치하기 [쿠버네티스 DevOps 구축] - Keycloak 설치하기 [쿠버네티스 DevOps 구축] - Ingress Nginx Controller 설치하기 [쿠버네티스 DevOps 구축] - Local PC 쿠">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/devops/opensearch/opensearch.png">
+<meta property="article:published_time" content="2025-02-22T06:31:46.000Z">
+<meta property="article:modified_time" content="2025-03-16T16:13:22.745Z">
+<meta property="article:author" content="ckck803">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/devops/opensearch/opensearch.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="Victor" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Gitea/">Gitea</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Harbor/">Harbor</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jenkins/">Jenkins</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nexus/">Nexus</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Kubernetes/">Kubernetes</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-devops/infra/k8s-infra-opensearch" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        [쿠버네티스 DevOps 구축] - OpenSearch 설치하기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/02/22/devops/infra/k8s-infra-opensearch/" class="article-date">
+       <time datetime="2025-02-22T06:31:46.000Z" itemprop="datePublished">2025-02-22</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/02/22/devops/infra/k8s-infra-opensearch/" class="article-date">
+     <time datetime="2025-03-16T16:13:22.745Z" itemprop="dateModified">2025-03-17</time>
+  </a>
+</div>
+
+
+                
+
+                
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/devops/opensearch/opensearch.png"></p>
+<h2 id="목차"><a href="#목차" class="headerlink" title="목차"></a>목차</h2><ul>
+<li><a href="/2025/02/22/devops/infra/k8s-infra-opensearch/" title="[쿠버네티스 DevOps 구축] - OpenSearch 설치하기">[쿠버네티스 DevOps 구축] - OpenSearch 설치하기</a></li>
+<li><a href="/2025/02/22/devops/infra/k8s-infra-prometheus-grafana/" title="[쿠버네티스 DevOps 구축] - Prometheus 와 Grafana 설치하기">[쿠버네티스 DevOps 구축] - Prometheus 와 Grafana 설치하기</a></li>
+<li><a href="/2025/02/21/devops/keycloak/k8s-infra-keyclock/" title="[쿠버네티스 DevOps 구축] - Keycloak 설치하기">[쿠버네티스 DevOps 구축] - Keycloak 설치하기</a></li>
+<li><a href="/2025/02/22/devops/infra/k8s-infra-nginx-ingress-controller/" title="[쿠버네티스 DevOps 구축] - Ingress Nginx Controller 설치하기">[쿠버네티스 DevOps 구축] - Ingress Nginx Controller 설치하기</a></li>
+<li><a href="/2025/02/20/k8s/local-path-provisioner/" title="[쿠버네티스 DevOps 구축] - Local PC 쿠버네티스 동적 프로비저닝을 위한 StorageClass 설치">[쿠버네티스 DevOps 구축] - Local PC 쿠버네티스 동적 프로비저닝을 위한 StorageClass 설치</a></li>
+<li><a href="/2025/02/20/k8s/kubeadm-install/" title="[쿠버네티스 DevOps 구축] - Local PC 에 쿠버네티스 설치하기">[쿠버네티스 DevOps 구축] - Local PC 에 쿠버네티스 설치하기</a></li>
+</ul>
+<h2 id="참고"><a href="#참고" class="headerlink" title="참고"></a>참고</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.pages.kr/2844">https://blog.pages.kr/2844</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://opendistro.github.io/for-elasticsearch-docs/docs/security/access-control/api/#reserved-and-hidden-resources">https://opendistro.github.io/for-elasticsearch-docs/docs/security/access-control/api/#reserved-and-hidden-resources</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://forum.opensearch.org/t/default-password-reset/102/10">https://forum.opensearch.org/t/default-password-reset/102/10</a></li>
+<li>Admin Password 변경<ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/opendistro-for-elasticsearch/opendistro-build/issues/558">https://github.com/opendistro-for-elasticsearch/opendistro-build/issues/558</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/yaml/#internal_usersyml">https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/yaml/#internal_usersyml</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/opensearch-project/helm-charts/issues/161">https://github.com/opensearch-project/helm-charts/issues/161</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="✅-OpenSearch-설치"><a href="#✅-OpenSearch-설치" class="headerlink" title="✅ OpenSearch 설치"></a>✅ OpenSearch 설치</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Helm Repo 추가</span></span><br><span class="line">helm repo add opensearch https://opensearch-project.github.io/helm-charts/</span><br><span class="line"><span class="comment"># OpenSearch 설치</span></span><br><span class="line">helm upgrade --install opensearch \</span><br><span class="line">  -f ./values-opensearch.yaml opensearch/opensearch \</span><br><span class="line">  -n logging --create-namespace</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Release <span class="string">&quot;opensearch&quot;</span> has been upgraded. Happy Helming!</span><br><span class="line">NAME: opensearch</span><br><span class="line">LAST DEPLOYED: Thu Jan 18 15:55:28 2024</span><br><span class="line">NAMESPACE: logging</span><br><span class="line">STATUS: deployed</span><br><span class="line">REVISION: 2</span><br><span class="line">TEST SUITE: None</span><br><span class="line">NOTES:</span><br><span class="line">Watch all cluster members come up.</span><br><span class="line">  $ kubectl get pods --namespace=logging -l app.kubernetes.io/component=opensearch-cluster-master -w</span><br></pre></td></tr></table></figure>
+
+<h2 id="✅-OpenSearch-Dashboard-설치"><a href="#✅-OpenSearch-Dashboard-설치" class="headerlink" title="✅ OpenSearch Dashboard 설치"></a>✅ OpenSearch Dashboard 설치</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">helm upgrade --install opensearch-dashboard \</span><br><span class="line">  -f ./values-opensearch-dashboards.yaml opensearch/opensearch-dashboards \</span><br><span class="line">  -n logging --create-namespace</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Release <span class="string">&quot;opensearch&quot;</span> has been upgraded. Happy Helming!</span><br><span class="line">NAME: opensearch</span><br><span class="line">LAST DEPLOYED: Thu Feb  6 23:13:09 2025</span><br><span class="line">NAMESPACE: logging</span><br><span class="line">STATUS: deployed</span><br><span class="line">REVISION: 2</span><br><span class="line">TEST SUITE: None</span><br><span class="line">NOTES:</span><br><span class="line">1. Get the application URL by running these commands:</span><br><span class="line">  <span class="built_in">export</span> POD_NAME=$(kubectl get pods --namespace logging -l <span class="string">&quot;app.kubernetes.io/name=opensearch-dashboards,app.kubernetes.io/instance=opensearch&quot;</span> -o jsonpath=<span class="string">&quot;&#123;.items[0].metadata.name&#125;&quot;</span>)</span><br><span class="line">  <span class="built_in">export</span> CONTAINER_PORT=$(kubectl get pod --namespace logging <span class="variable">$POD_NAME</span> -o jsonpath=<span class="string">&quot;&#123;.spec.containers[0].ports[0].containerPort&#125;&quot;</span>)</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Visit http://127.0.0.1:8080 to use your application&quot;</span></span><br><span class="line">  kubectl --namespace logging port-forward <span class="variable">$POD_NAME</span> 8080:<span class="variable">$CONTAINER_PORT</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="OpenSearch-Demo-User"><a href="#OpenSearch-Demo-User" class="headerlink" title="OpenSearch Demo User"></a>OpenSearch Demo User</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.search-guard.com/latest/demo-users-roles">https://docs.search-guard.com/latest/demo-users-roles</a></li>
+</ul>
+<h2 id="Admin-비밀번호-변경"><a href="#Admin-비밀번호-변경" class="headerlink" title="Admin 비밀번호 변경"></a>Admin 비밀번호 변경</h2><p>필요한 명령어 및 파일 위치</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">/usr/share/elasticsearch/plugins/opendistro_security/tools/hash.sh</span><br><span class="line">/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml</span><br><span class="line">/usr/share/elasticsearch/plugins/opendistro_security/tools/securityadmin.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">securityConfig:</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">config:</span></span><br><span class="line">    <span class="attr">securityConfigSecret:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="attr">dataComplete:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">data:</span></span><br><span class="line">      <span class="attr">internal_users.yml:</span> <span class="string">|-</span></span><br><span class="line"><span class="string">        _meta:</span></span><br><span class="line"><span class="string">          type: &quot;internalusers&quot;</span></span><br><span class="line"><span class="string">          config_version: 2</span></span><br><span class="line"><span class="string">        admin:</span></span><br><span class="line"><span class="string">          hash: &quot;YWtxanF0azFxMnczZTRyIUA=&quot;</span></span><br><span class="line"><span class="string">          reserved: true</span></span><br><span class="line"><span class="string">        backend_roles:</span></span><br><span class="line"><span class="string">        - &quot;admin&quot;</span></span><br><span class="line"><span class="string">        description: &quot;Demo admin user&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="문제-Not-yet-initialized-you-may-need-to-run-securityadmin"><a href="#문제-Not-yet-initialized-you-may-need-to-run-securityadmin" class="headerlink" title="문제 - Not yet initialized (you may need to run securityadmin)"></a>문제 - Not yet initialized (you may need to run securityadmin)</h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[2023-12-30T15:22:45,111][ERROR][o.o.s.a.BackendRegistry  ] [opensearch-cluster-master-0] Not yet initialized (you may need to run securityadmin)</span><br><span class="line">[2023-12-30T15:22:45,115][ERROR][o.o.s.a.BackendRegistry  ] [opensearch-cluster-master-0] Not yet initialized (you may need to run securityadmin)</span><br><span class="line">[2023-12-30T15:22:45,118][ERROR][o.o.s.a.BackendRegistry  ] [opensearch-cluster-master-0] Not yet initialized (you may need to run securityadmin)</span><br><span class="line">[2023-12-30T15:22:45,120][ERROR][o.o.s.a.BackendRegistry  ] [opensearch-cluster-master-0] Not yet initialized (you may need to run securityadmin)</span><br><span class="line">[2023-12-30T15:22:47,614][ERROR][o.o.s.a.BackendRegistry  ] [opensearch-cluster-master-0] Not yet initialized (you may need to run securityadmin)</span><br><span class="line">[2023-12-30T15:22:47,617][ERROR][o.o.s.a.BackendRegistry  ] [opensearch-cluster-master-0] Not yet initialized (you may need to run securityadmin)</span><br><span class="line">[2023-12-30T15:22:47,620][ERROR][o.o.s.a.BackendRegistry  ] [opensearch-cluster-master-0] Not yet initialized (you may need to run securityadmin)</span><br><span class="line">[2023-12-30T15:22:47,623][ERROR][o.o.s.a.BackendRegistry  ] [opensearch-cluster-master-0] Not yet initialized (you may need to run securityadmin)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">kubectl -n logging <span class="built_in">exec</span> -it opensearch-cluster-master-0 -- /usr/share/opensearch/plugins/opensearch-security/tools/hash.sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>pod 내에서</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">/usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh \</span><br><span class="line">  -<span class="built_in">cd</span> /usr/share/opensearch/config/opensearch-security/ \</span><br><span class="line">  -icl \</span><br><span class="line">  -nhnv \</span><br><span class="line">  -cacert /usr/share/opensearch/config/root-ca.pem \</span><br><span class="line">  -cert /usr/share/opensearch/config/kirk.pem \</span><br><span class="line">  -key /usr/share/opensearch/config/kirk-key.pem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>쿠버네티스 명령어로 실행</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">kubectl <span class="built_in">exec</span> \</span><br><span class="line">    -n logging \</span><br><span class="line">    -it opensearch-cluster-master-0 \</span><br><span class="line">    -- /usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh \</span><br><span class="line">    -<span class="built_in">cd</span> /usr/share/opensearch/config/opensearch-security/ \</span><br><span class="line">    -icl \</span><br><span class="line">    -nhnv \</span><br><span class="line">    -cacert /usr/share/opensearch/config/root-ca.pem \</span><br><span class="line">    -cert /usr/share/opensearch/config/kirk.pem \</span><br><span class="line">    -key /usr/share/opensearch/config/kirk-key.pem</span><br></pre></td></tr></table></figure>
+
+<h4 id="securityConfig-internalUsersSecret-을-이용한-Admin-비밀번호-변경"><a href="#securityConfig-internalUsersSecret-을-이용한-Admin-비밀번호-변경" class="headerlink" title="securityConfig.internalUsersSecret 을 이용한 Admin 비밀번호 변경"></a>securityConfig.internalUsersSecret 을 이용한 Admin 비밀번호 변경</h4><p>비밀번호 Hash 값 생성</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">kubectl -n logging <span class="built_in">exec</span> -it opensearch-cluster-master-0 -- /usr/share/opensearch/plugins/opensearch-security/tools/hash.sh</span><br></pre></td></tr></table></figure>
+
+<p>Secret 파일 생성</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Secret</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">opensearch-internal-users</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">logging</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">Opaque</span></span><br><span class="line"><span class="attr">stringData:</span></span><br><span class="line">  <span class="attr">internal_users.yml:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    ---</span></span><br><span class="line"><span class="string">    # This is the internal user database</span></span><br><span class="line"><span class="string">    # The hash value is a bcrypt hash and can be generated using:</span></span><br><span class="line"><span class="string">    # $ plugins/opensearch-security/tools/hash.sh -p &lt;new-password&gt;</span></span><br><span class="line"><span class="string"></span>    </span><br><span class="line">    <span class="attr">_meta:</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">&quot;internalusers&quot;</span></span><br><span class="line">      <span class="attr">config_version:</span> <span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Define your internal users here</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">## internal users</span></span><br><span class="line">    <span class="attr">admin:</span></span><br><span class="line">      <span class="attr">hash:</span> <span class="string">&quot;$2y$12$yGwPWlea1ghTu9NFl00h6.SqRJY1G.MuFyX8PTQnwUnYaGgUsFKBu&quot;</span></span><br><span class="line">      <span class="attr">reserved:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">backend_roles:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;admin&quot;</span></span><br><span class="line">      <span class="attr">description:</span> <span class="string">&quot;admin user&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>securityConfig.internalUsersSecret 에 Secret 이름 설정</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">securityConfig:</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">&quot;/usr/share/opensearch/config/opensearch-security&quot;</span></span><br><span class="line">  <span class="attr">actionGroupsSecret:</span></span><br><span class="line">  <span class="attr">configSecret:</span></span><br><span class="line">  <span class="attr">internalUsersSecret:</span> <span class="string">opensearch-internal-users</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="✅-OpenSearch-Dashboards-basePath-및-Ingress-설정"><a href="#✅-OpenSearch-Dashboards-basePath-및-Ingress-설정" class="headerlink" title="✅ OpenSearch Dashboards basePath 및 Ingress 설정"></a>✅ OpenSearch Dashboards basePath 및 Ingress 설정</h2><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">config:</span></span><br><span class="line">  <span class="attr">opensearch_dashboards.yml:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    server:</span></span><br><span class="line"><span class="string">      host: &#x27;0.0.0.0&#x27;</span></span><br><span class="line"><span class="string">      basePath: &quot;/logging&quot;</span></span><br><span class="line"><span class="string">      rewriteBasePath: true</span></span><br><span class="line"><span class="string">    opensearch:</span></span><br><span class="line"><span class="string">      hosts: [https://localhost:9200]</span></span><br><span class="line"><span class="string">      ssl.verificationMode: none</span></span><br><span class="line"><span class="string">      username: kibanaserver</span></span><br><span class="line"><span class="string">      password: kibanaserver</span></span><br><span class="line"><span class="string">      requestHeadersWhitelist: [authorization, securitytenant]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">    <span class="attr">opensearch_security.multitenancy:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">opensearch_security.multitenancy.tenants:</span></span><br><span class="line">      <span class="attr">preferred:</span> [<span class="string">Private</span>, <span class="string">Global</span>]</span><br><span class="line">    <span class="attr">opensearch_security:</span></span><br><span class="line">      <span class="attr">readonly_mode.roles:</span> [<span class="string">kibana_read_only</span>]</span><br><span class="line">      <span class="attr">cookie.secure:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Ingress-설정"><a href="#Ingress-설정" class="headerlink" title="Ingress 설정"></a>Ingress 설정</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">logging</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">logging</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">      <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/logging</span></span><br><span class="line">          <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">          <span class="attr">backend:</span></span><br><span class="line">            <span class="attr">service:</span></span><br><span class="line">              <span class="attr">name:</span> <span class="string">opensearch-dashboards</span></span><br><span class="line">              <span class="attr">port:</span></span><br><span class="line">                <span class="attr">number:</span> <span class="number">5601</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="✅-KeyCloak-OpenSearch-연동"><a href="#✅-KeyCloak-OpenSearch-연동" class="headerlink" title="✅ KeyCloak OpenSearch 연동"></a>✅ KeyCloak OpenSearch 연동</h2><ul>
+<li>참고<ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://velog.io/@ziggy/Keyclock-%EA%B5%AC%EC%B6%95-%EB%B0%8F-Opensearch-%EC%97%B0%EB%8F%99">https://velog.io/@ziggy/Keyclock-%EA%B5%AC%EC%B6%95-%EB%B0%8F-Opensearch-%EC%97%B0%EB%8F%99</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://opensearch.org/docs/latest/security/authentication-backends/openid-connect/">https://opensearch.org/docs/latest/security/authentication-backends/openid-connect/</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://opensearch.org/docs/latest/security/authentication-backends/openid-connect/#opensearch-security-configuration">https://opensearch.org/docs/latest/security/authentication-backends/openid-connect/#opensearch-security-configuration</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://opensearch.org/docs/latest/security/authentication-backends/openid-connect/#opensearch-dashboards-single-sign-on">https://opensearch.org/docs/latest/security/authentication-backends/openid-connect/#opensearch-dashboards-single-sign-on</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://forum.opensearch.org/t/opensearch-integration-with-keycloak-using-k8s-opster-operator/15388/5">https://forum.opensearch.org/t/opensearch-integration-with-keycloak-using-k8s-opster-operator/15388/5</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="1-OpenSearch-Client-생성"><a href="#1-OpenSearch-Client-생성" class="headerlink" title="1. OpenSearch Client 생성"></a>1. OpenSearch Client 생성</h3><p><img src="/images/devops/keycloak/opensearch/client_opensearch.png"></p>
+<p><img src="/images/devops/keycloak/opensearch/client_opensearch_2.png"></p>
+<p><img src="/images/devops/keycloak/opensearch/client_opensearch_3.png"></p>
+<h3 id="2-KeyCloak-OpenSearch-User-Client-Role-생성"><a href="#2-KeyCloak-OpenSearch-User-Client-Role-생성" class="headerlink" title="2. KeyCloak OpenSearch User Client Role 생성"></a>2. KeyCloak OpenSearch User Client Role 생성</h3><p><img src="/images/devops/keycloak/opensearch/client_opensearch_scopes.png"></p>
+<p><img src="/images/devops/keycloak/opensearch/client_opensearch_role.png"></p>
+<h3 id="3-OpenSearch-연동-및-설정파일-생성"><a href="#3-OpenSearch-연동-및-설정파일-생성" class="headerlink" title="3. OpenSearch 연동 및 설정파일 생성"></a>3. OpenSearch 연동 및 설정파일 생성</h3><h4 id="3-1-KeyClock-Connect-URL-확인"><a href="#3-1-KeyClock-Connect-URL-확인" class="headerlink" title="3.1 KeyClock Connect URL 확인"></a>3.1 KeyClock Connect URL 확인</h4><p><img src="/images/devops/keycloak/ddanzit_endpoints.png"></p>
+<p><img src="/images/devops/keycloak/connect_url.png" alt="connect_url"></p>
+<h4 id="3-2-OpenSearch-Client-Credential-확인"><a href="#3-2-OpenSearch-Client-Credential-확인" class="headerlink" title="3.2 OpenSearch Client Credential 확인"></a>3.2 OpenSearch Client Credential 확인</h4><p><img src="/images/devops/keycloak/opensearch/opensearch_credential.png" alt="client 의 credential 확인"></p>
+<h4 id="3-3-config-yml-생성"><a href="#3-3-config-yml-생성" class="headerlink" title="3.3 config.yml 생성"></a>3.3 config.yml 생성</h4><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://forum.opensearch.org/t/opensearch-saml-ad-working-but-with-no-basic-authorization-header-warning/13883/2">https://forum.opensearch.org/t/opensearch-saml-ad-working-but-with-no-basic-authorization-header-warning/13883/2</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://forum.opensearch.org/t/openid-401-unauthorized-with-keycloak/10364/2">https://forum.opensearch.org/t/openid-401-unauthorized-with-keycloak/10364/2</a></li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Secret</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">opensearch-openid-keycloak</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">logging</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">Opaque</span></span><br><span class="line"><span class="attr">stringData:</span></span><br><span class="line">  <span class="attr">config.yml:</span> <span class="string">|-</span></span><br><span class="line"><span class="string">    _meta:</span></span><br><span class="line"><span class="string">      type: &quot;config&quot;</span></span><br><span class="line"><span class="string">      config_version: 2</span></span><br><span class="line"><span class="string">    config:</span></span><br><span class="line"><span class="string">      dynamic:</span></span><br><span class="line"><span class="string">        authz: &#123;&#125;</span></span><br><span class="line"><span class="string">        authc:</span></span><br><span class="line"><span class="string">          openid_auth_domain:</span></span><br><span class="line"><span class="string">            http_enabled: true</span></span><br><span class="line"><span class="string">            transport_enabled: true</span></span><br><span class="line"><span class="string">            order: 0</span></span><br><span class="line"><span class="string">            http_authenticator:</span></span><br><span class="line"><span class="string">              type: openid</span></span><br><span class="line"><span class="string">              challenge: false</span></span><br><span class="line"><span class="string">              config:</span></span><br><span class="line"><span class="string">                subject_key: preferred_username</span></span><br><span class="line"><span class="string">                roles_key: roles</span></span><br><span class="line"><span class="string">                openid_connect_url: http://auth.crunchychoco.com/realms/ddanzit/.well-known/openid-configuration</span></span><br><span class="line"><span class="string">                skip_users:</span></span><br><span class="line"><span class="string">                  - kibanaserver</span></span><br><span class="line"><span class="string">                  - admin</span></span><br><span class="line"><span class="string">            authentication_backend:</span></span><br><span class="line"><span class="string">              type: noop</span></span><br><span class="line"><span class="string">          basic_internal_auth_domain:</span></span><br><span class="line"><span class="string">            http_enabled: true</span></span><br><span class="line"><span class="string">            transport_enabled: true</span></span><br><span class="line"><span class="string">            order: 1</span></span><br><span class="line"><span class="string">            http_authenticator:</span></span><br><span class="line"><span class="string">              type: basic</span></span><br><span class="line"><span class="string">              challenge: false</span></span><br><span class="line"><span class="string">            authentication_backend:</span></span><br><span class="line"><span class="string">              type: internal</span></span><br></pre></td></tr></table></figure>
+
+<p>config.yml 을 통해 인증 방식과 순서를 설정하면 dashboard 에서 설정된 인증 방식을 확인할 수 있습니다.</p>
+<p><img src="/images/devops/keycloak/opensearch/opensearch_authentication_order.png"></p>
+<p><img src="/images/devops/keycloak/opensearch/http_configuration.png"></p>
+<h4 id="3-4-Opensearch-values-yaml-수정"><a href="#3-4-Opensearch-values-yaml-수정" class="headerlink" title="3.4 Opensearch values.yaml 수정"></a>3.4 Opensearch values.yaml 수정</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">securityConfig:</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">configSecret:</span> <span class="string">opensearch-openid-keycloak</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-5-opensearch-dashboards-yml-수정"><a href="#3-5-opensearch-dashboards-yml-수정" class="headerlink" title="3.5 opensearch_dashboards.yml 수정"></a>3.5 opensearch_dashboards.yml 수정</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="string">&#x27;0.0.0.0&#x27;</span></span><br><span class="line"><span class="attr">opensearch:</span></span><br><span class="line">    <span class="attr">hosts:</span> [<span class="string">https://opensearch-cluster-master:9200</span>]</span><br><span class="line">    <span class="attr">ssl.verificationMode:</span> <span class="string">none</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">kibanaserver</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">kibanaserver</span></span><br><span class="line">    <span class="attr">requestHeadersWhitelist:</span> [<span class="string">authorization</span>, <span class="string">securitytenant</span>]</span><br><span class="line"></span><br><span class="line"><span class="attr">opensearch_security.multitenancy:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">opensearch_security.multitenancy.tenants:</span></span><br><span class="line">    <span class="attr">preferred:</span> [<span class="string">Private</span>, <span class="string">Global</span>]</span><br><span class="line"><span class="attr">opensearch_security:</span></span><br><span class="line">    <span class="attr">readonly_mode.roles:</span> [<span class="string">kibana_read_only</span>]</span><br><span class="line">    <span class="attr">cookie.secure:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="attr">opensearch_security.auth.type:</span> [<span class="string">&quot;openid&quot;</span>]</span><br><span class="line"><span class="attr">opensearch_security.openid.connect_url:</span> <span class="string">&quot;http://auth.crunchychoco.com/realms/ddanzit/.well-known/openid-configuration&quot;</span></span><br><span class="line"><span class="attr">opensearch_security.openid.client_id:</span> <span class="string">&quot;opensearch&quot;</span></span><br><span class="line"><span class="attr">opensearch_security.openid.client_secret:</span> <span class="string">&quot;9EH2nHCcpKk05F8l8TUsqnEslA26h2KU&quot;</span></span><br><span class="line"><span class="attr">opensearch_security.openid.base_redirect_url:</span> <span class="string">&quot;http://logging.crunchychoco.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/devops/keycloak/opensearch/keycloak_opensearch.png"></p>
+<h4 id="3-6-OpenSearch-SSO-및-Basic-Auth-사용-설정"><a href="#3-6-OpenSearch-SSO-및-Basic-Auth-사용-설정" class="headerlink" title="3.6 OpenSearch SSO 및 Basic Auth 사용 설정"></a>3.6 OpenSearch SSO 및 Basic Auth 사용 설정</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">opensearch_security.auth.type:</span> [<span class="string">&quot;basicauth&quot;</span>,<span class="string">&quot;openid&quot;</span>]</span><br><span class="line"><span class="attr">opensearch_security.auth.multiple_auth_enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/devops/keycloak/opensearch/opensearch_basic_auth.png"></p>
+<h4 id="3-7-skeycloak-인증-테스트"><a href="#3-7-skeycloak-인증-테스트" class="headerlink" title="3.7 skeycloak 인증 테스트"></a>3.7 skeycloak 인증 테스트</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> CLIENT_ID=opensearch</span><br><span class="line"><span class="built_in">export</span> CLIENT_SECRET=<span class="string">&#x27;9EH2nHCcpKk05F8l8TUsqnEslA26h2KU&#x27;</span></span><br><span class="line"><span class="built_in">export</span> PW=<span class="string">&#x27;1q2w3e4r!@#&#x27;</span></span><br><span class="line"></span><br><span class="line">RESULT=$(curl -k --noproxy <span class="string">&#x27;*&#x27;</span> -d <span class="string">&#x27;username=ddanzit&#x27;</span> -d <span class="string">&quot;password=<span class="variable">$PW</span>&quot;</span> -d <span class="string">&#x27;grant_type=password&#x27;</span> -d <span class="string">&quot;client_id=<span class="variable">$CLIENT_ID</span>&quot;</span> -d <span class="string">&quot;client_secret=<span class="variable">$CLIENT_SECRET</span>&quot;</span> -d <span class="string">&#x27;scope=openid&#x27;</span> <span class="string">&#x27;http://auth.crunchychoco.com/realms/ddanzit/protocol/openid-connect/token&#x27;</span>)</span><br><span class="line"></span><br><span class="line">TOKEN=$(<span class="built_in">echo</span> <span class="variable">$RESULT</span> | sed <span class="string">&#x27;s/.*access_token&quot;:&quot;\([^&quot;]*\).*/\1/&#x27;</span>)</span><br><span class="line"></span><br><span class="line">curl -H <span class="string">&quot;Authorization: Bearer <span class="variable">$TOKEN</span>&quot;</span> http://auth.crunchychoco.com/realms/ddanzit/protocol/openid-connect/userinfo</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;sub&quot;</span>: <span class="string">&quot;ce6f75ba-26fb-4cf4-9e7d-06f20d7d749f&quot;</span>,</span><br><span class="line">    <span class="string">&quot;email_verified&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;동우 양&quot;</span>,</span><br><span class="line">    <span class="string">&quot;preferred_username&quot;</span>: <span class="string">&quot;kwangill&quot;</span>,</span><br><span class="line">    <span class="string">&quot;given_name&quot;</span>: <span class="string">&quot;동우&quot;</span>,</span><br><span class="line">    <span class="string">&quot;family_name&quot;</span>: <span class="string">&quot;양&quot;</span>,</span><br><span class="line">    <span class="string">&quot;email&quot;</span>: <span class="string">&quot;askain@hanmail.net&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-8-keycloak-Json-Web-Token-JWT-내용-확인"><a href="#3-8-keycloak-Json-Web-Token-JWT-내용-확인" class="headerlink" title="3.8 keycloak Json Web Token(JWT) 내용 확인"></a>3.8 keycloak Json Web Token(JWT) 내용 확인</h4><figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;exp&quot;</span><span class="punctuation">:</span> <span class="number">1705381539</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;iat&quot;</span><span class="punctuation">:</span> <span class="number">1705381239</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;jti&quot;</span><span class="punctuation">:</span> <span class="string">&quot;e6cf69c7-f674-4a10-bfbc-444d3c19ad25&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;iss&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://auth.crunchychoco.com/realms/ddanzit&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;aud&quot;</span><span class="punctuation">:</span> <span class="string">&quot;account&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sub&quot;</span><span class="punctuation">:</span> <span class="string">&quot;4eac345b-bfb9-4c4f-aba3-d52af277bbf0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;typ&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Bearer&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;azp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;opensearch&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;session_state&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c7c47cf3-34bf-40d5-891a-6d5ae52cc855&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;acr&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;allowed-origins&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;realm_access&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;roles&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;default-roles-ddanzit&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;offline_access&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;admin&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;uma_authorization&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;Admin&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;resource_access&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;account&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;roles&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;manage-account&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;manage-account-links&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;view-profile&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scope&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openid email profile&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c7c47cf3-34bf-40d5-891a-6d5ae52cc855&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;email_verified&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;동우 양&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;preferred_username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ddanzit&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;given_name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;동우&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;family_name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;양&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ckck803@naver.com&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="No-‘Basic-Authorization’-header-send-401-and-‘WWW-Authenticate-Basic’"><a href="#No-‘Basic-Authorization’-header-send-401-and-‘WWW-Authenticate-Basic’" class="headerlink" title="No ‘Basic Authorization’ header, send 401 and ‘WWW-Authenticate Basic’"></a>No ‘Basic Authorization’ header, send 401 and ‘WWW-Authenticate Basic’</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://forum.opensearch.org/t/opensearch-dashboards-getting-no-basic-authorization-header-send-401-and-www-authenticate-basic-when-trying-to-login-via-sso/16101/7">https://forum.opensearch.org/t/opensearch-dashboards-getting-no-basic-authorization-header-send-401-and-www-authenticate-basic-when-trying-to-login-via-sso/16101/7</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://forum.search-guard.com/t/no-basic-authorization-header-send-401-and-www-authenticate-basic-while-using-openid-and-basic-auth-domain/1930">https://forum.search-guard.com/t/no-basic-authorization-header-send-401-and-www-authenticate-basic-while-using-openid-and-basic-auth-domain/1930</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://opensearch.org/docs/latest/security/configuration/security-admin/">https://opensearch.org/docs/latest/security/configuration/security-admin/</a></li>
+</ul>
+<p>위와 같은 에러가 발생한다면 <code>securityadmin.sh</code> 를 이용하여 설정파일을 적용한다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kubectl <span class="built_in">exec</span> \</span><br><span class="line">    -n logging \</span><br><span class="line">    -it opensearch-cluster-master-0 \</span><br><span class="line">    -- /usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh \</span><br><span class="line">    -<span class="built_in">cd</span> /usr/share/opensearch/config/opensearch-security/ \</span><br><span class="line">    -icl \</span><br><span class="line">    -nhnv \</span><br><span class="line">    -cacert /usr/share/opensearch/config/root-ca.pem \</span><br><span class="line">    -cert /usr/share/opensearch/config/kirk.pem \</span><br><span class="line">    -key /usr/share/opensearch/config/kirk-key.pem</span><br></pre></td></tr></table></figure>
+
+<h2 id="FATAL-Error-Multiple-Authentication-Mode-is-disabled-To-enable-this-feature-please-set-up-opensearch-security-auth-multiple-auth-enabled-true"><a href="#FATAL-Error-Multiple-Authentication-Mode-is-disabled-To-enable-this-feature-please-set-up-opensearch-security-auth-multiple-auth-enabled-true" class="headerlink" title="FATAL  Error: Multiple Authentication Mode is disabled. To enable this feature, please set up opensearch_security.auth.multiple_auth_enabled: true"></a>FATAL  Error: Multiple Authentication Mode is disabled. To enable this feature, please set up opensearch_security.auth.multiple_auth_enabled: true</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">opensearch_security.auth.multiple_auth_enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/02/22/devops/infra/k8s-infra-opensearch/" data-id="cm8bufh0z00id3t8d154cecjx" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "[쿠버네티스 DevOps 구축] - OpenSearch 설치하기",
+        "image": "https://ckck803.github.io/images/devops/opensearch/opensearch.png",
+        "keywords": "",
+        "genre": "Kubernetes",
+        "datePublished": "2025-02-22",
+        "dateCreated": "2025-02-22",
+        "dateModified": "2025-03-17",
+        "url": "https://ckck803.github.io/2025/02/22/devops/infra/k8s-infra-opensearch/",
+        "description": "
+목차
+[쿠버네티스 DevOps 구축] - OpenSearch 설치하기
+[쿠버네티스 DevOps 구축] - Prometheus 와 Grafana 설치하기
+[쿠버네티스 DevOps 구축] - Keycloak 설치하기
+[쿠버네티스 DevOps 구축] - Ingress Nginx Controller 설치하기
+[쿠버네티스 DevOps 구축] - Local PC 쿠버네티스 동적 프로비저닝을 위한 StorageClass 설치
+[쿠버네티스 DevOps 구축] - Local PC 에 쿠버네티스 설치하기
+
+참고
+https://blog.pages.kr/2844
+https://opendistro.github.io/for-elasticsearch-docs/docs/security/access-control/api/#reserved-and-hidden-resources
+https://forum.opensearch.org/t/default-password-reset/102/10
+Admin Password 변경
+https://github.com/opendistro-for-elasticsearch/opendistro-build/issues/558
+https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/yaml/#internal_usersyml
+https://github.com/opensearch-project/helm-charts/issues/161
+
+
+
+✅ OpenSearch 설치# Helm Repo 추가helm repo add opensearch https://opensearch-project.github.io/helm-charts/# OpenSearch 설치helm upgrade --install opensearch \  -f ./values-opensearch.yaml opensearch/opensearch \  -n logging --create-namespace
+
+Release &quot;opensearch&quot; has been upgraded. Happy Helming!NAME: opensearchLAST DEPLOYED: Thu Jan 18 15:55:28 2024NAMESPACE: loggingSTATUS: deployedREVISION: 2TEST SUITE: NoneNOTES:Watch all cluster members come up.  $ kubectl get pods --namespace=logging -l app.kubernetes.io/component=opensearch-cluster-master -w
+
+✅ OpenSearch Dashboard 설치helm upgrade --install opensearch-dashboard \  -f ./values-opensearch-dashboards.yaml opensearch/opensearch-dashboards \  -n logging --create-namespace",
+        "wordCount": 2779
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/03/05/vue/router/vue-unplugin-vue-router/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            [Vue 3] - unplugin-vue-router 사용하기
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/02/22/devops/infra/k8s-infra-prometheus-grafana/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">[쿠버네티스 DevOps 구축] - Prometheus 와 Grafana 설치하기</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Gitea/">Gitea</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Harbor/">Harbor</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nexus/">Nexus</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">44</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">273</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut/">Pointcut</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D/">Pointcut 표현식</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2025 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/02/22/devops/infra/k8s-infra-opensearch/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

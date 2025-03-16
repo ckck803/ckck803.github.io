@@ -176,6 +176,504 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-cpp/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 문자열 압축 Cpp" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-cpp/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-09T11:10:40.000Z" itemprop="datePublished">2022-01-09</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-cpp/">프로그래머스 - 문자열 압축 Cpp</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://programmers.co.kr/learn/courses/30/lessons/60057
+
+프로그래머스 - 문자열 압축 Cpp
+프로그래머스 - 문자열 압축 Python
+
+문제 풀이간단한 구현 문제다. 주어진 문자열을 substr 해서 문자열 비교를 통해 같은 문자열의 개수를 찾아내 압축된 문자열 형태로 만들어준 다음 압축된 문자열의 길이를 반환해주면 되는 문제다.
+문자열 압축하기주어진 문자열을 스캔하면서 고려해야 하는 조건이 첫번째는 substr 하려는 범위가 주어진 문자열의 범위를 넘어서면 안된다는 것이다. 두번째는 substr 범위가 주어진 문자열의 범위를 넘어선 경우 압축된 문자열에 그대로 추가해줘야 한다는 것이다.
+int divideString(int length, string s) &#123;    string zipString = &quot;&quot;;    int i = 0;    // 문자열을 스캔하면서 substr 범위가 주어진 문자열을 넘는지 확인한다.    for (i = 0; i &lt; s.length() &amp;&amp; i + length &lt; s.length(); i = i + length) &#123;        int count = 0;        bool isErase = false;        string substr = s.substr(i, length);        string cmpstr = s.substr(i, length);        while (substr == cmpstr &amp;&amp; s.length() &gt; i) &#123;            count++;            i += length;            isErase = true;            substr = s.substr(i, length);        &#125;        if (isErase == true) &#123;            i -= length;        &#125;        if (count == 1) &#123;            zipString += cmpstr;        &#125; else &#123;            zipString += to_string(count);            zipString += cmpstr;        &#125;    &#125;    // 남겨진 문자열을 압축된 문자열에 그대로 추가한다.    for (int idx = i; idx &lt; s.length(); idx++) &#123;        zipString += s[i];    &#125;    return zipString.length();&#125;
+
+문제 전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;int divideString(int length, string s) &#123;    string zipString = &quot;&quot;;    int count = 0;    int i = 0;    for (i = 0; i &lt; s.length() &amp;&amp; i + length &lt; s.length(); i = i + length) &#123;        bool isErase = false;        string substr = s.substr(i, length);        string cmpstr = s.substr(i, length);        while (substr == cmpstr &amp;&amp; s.length() &gt; i) &#123;            count++;            i += length;            isErase = true;            substr = s.substr(i, length);        &#125;        if (isErase == true) &#123;            i -= length;        &#125;        if (count == 1) &#123;            zipString += cmpstr;        &#125; else &#123;            zipString += to_string(count);            zipString += cmpstr;        &#125;        count = 0;        cmpstr = &quot;&quot;;    &#125;    for (int idx = i; idx &lt; s.length(); idx++) &#123;        zipString += s[i];    &#125;    return zipString.length();&#125;int solution(string s) &#123;    int answer = 0;    int minValue = s.length();    for (int i = 1; i &lt;= s.length() / 2; i++) &#123;        int zipLength = divideString(i, s);        minValue = min(zipLength, minValue);    &#125;    answer = minValue;    return answer;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 문자열 압축 Python" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-09T11:10:40.000Z" itemprop="datePublished">2022-01-09</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/">프로그래머스 - 문자열 압축 Python</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://programmers.co.kr/learn/courses/30/lessons/60057
+
+프로그래머스 - 문자열 압축 Cpp
+프로그래머스 - 문자열 압축 Python
+
+문제 풀이간단한 구현 문제다. 주어진 문자열을 substr 해서 문자열 비교를 통해 같은 문자열의 개수를 찾아내 압축된 문자열 형태로 만들어준 다음 압축된 문자열의 길이를 반환해주면 되는 문제다.
+문제 전체 소스def solution(s):    answer = &#x27;&#x27;    if len(s) == 1:        return len(s)    for i in range(1, len(s)//2 + 1):        sentence = &#x27;&#x27;        count = 0        word = s[:i]        for j in range(0, len(s), i):            if s[j:j+i] == word:                count += 1            else:                if count &gt; 1:                    sentence += (str(count) + word)                else:                    sentence += (word)                word = s[j:j+i]                count = 1        if count &gt; 1:            sentence += (str(count) + word)        else:            sentence += (word)        if len(answer) == 0:            answer = sentence        elif len(answer) &gt; len(sentence):            answer = sentence        print(answer)    return len(answer)
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/09/algorithm/baekjoon/samsung/13460-%EA%B5%AC%EC%8A%AC%ED%83%88%EC%B6%9C2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 13460 - 구슬 탈출 2" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/09/algorithm/baekjoon/samsung/13460-%EA%B5%AC%EC%8A%AC%ED%83%88%EC%B6%9C2/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2022-01-09T06:16:03.000Z" itemprop="datePublished">2022-01-09</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/09/algorithm/baekjoon/samsung/13460-%EA%B5%AC%EC%8A%AC%ED%83%88%EC%B6%9C2/">백준 13460 - 구슬 탈출 2</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://www.acmicpc.net/problem/13460
+
+백준 13460 - 구슬 탈출 2
+
+백준 13460 - 구슬 탈출 2문제스타트링크에서 판매하는 어린이용 장난감 중에서 가장 인기가 많은 제품은 구슬 탈출이다. 구슬 탈출은 직사각형 보드에 빨간 구슬과 파란 구슬을 하나씩 넣은 다음, 빨간 구슬을 구멍을 통해 빼내는 게임이다.
+보드의 세로 크기는 N, 가로 크기는 M이고, 편의상 1×1크기의 칸으로 나누어져 있다. 가장 바깥 행과 열은 모두 막혀져 있고, 보드에는 구멍이 하나 있다. 빨간 구슬과 파란 구슬의 크기는 보드에서 1×1크기의 칸을 가득 채우는 사이즈이고, 각각 하나씩 들어가 있다. 게임의 목표는 빨간 구슬을 구멍을 통해서 빼내는 것이다. 이때, 파란 구슬이 구멍에 들어가면 안 된다.
+이때, 구슬을 손으로 건드릴 수는 없고, 중력을 이용해서 이리 저리 굴려야 한다. 왼쪽으로 기울이기, 오른쪽으로 기울이기, 위쪽으로 기울이기, 아래쪽으로 기울이기와 같은 네 가지 동작이 가능하다.
+각각의 동작에서 공은 동시에 움직인다. 빨간 구슬이 구멍에 빠지면 성공이지만, 파란 구슬이 구멍에 빠지면 실패이다. 빨간 구슬과 파란 구슬이 동시에 구멍에 빠져도 실패이다. 빨간 구슬과 파란 구슬은 동시에 같은 칸에 있을 수 없다. 또, 빨간 구슬과 파란 구슬의 크기는 한 칸을 모두 차지한다. 기울이는 동작을 그만하는 것은 더 이상 구슬이 움직이지 않을 때 까지이다.
+보드의 상태가 주어졌을 때, 최소 몇 번 만에 빨간 구슬을 구멍을 통해 빼낼 수 있는지 구하는 프로그램을 작성하시오.
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/05/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 키패드누르기 Python" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/05/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-05T11:10:40.000Z" itemprop="datePublished">2022-01-05</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/05/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-python/">프로그래머스 - 키패드누르기 Python</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
+
+프로그래머스 - 키패드누르기 Cpp
+프로그래머스 - 키패드누르기 Python
+
+def solution(numbers, hand):    answer = &#x27;&#x27;    left_hands = [1, 4, 7]    right_hands = [3, 6, 9]    middle = [2, 5, 8, 0]    key_pad = &#123;        1: [0, 0], 2: [0, 1], 3: [0, 2],        4: [1, 0], 5: [1, 1], 6: [1, 2],        7: [2, 0], 8: [2, 1], 9: [2, 2],        0: [3, 1],    &#125;    left_position = [3, 0]    right_position = [3, 2]    for key in numbers:        if key in left_hands:            left_position = key_pad[key]            answer += &#x27;L&#x27;        elif key in right_hands:            right_position = key_pad[key]            answer += &#x27;R&#x27;        else:            # print(key_pad[key][0])            left_dist = abs(                left_position[0] - key_pad[key][0]) + abs(left_position[1] - key_pad[key][1])            right_dist = abs(                right_position[0] - key_pad[key][0]) + abs(right_position[1] - key_pad[key][1])            if left_dist == right_dist:                if hand == &#x27;right&#x27;:                    right_position = key_pad[key]                    answer += &quot;R&quot;                else:                    left_position = key_pad[key]                    answer += &quot;L&quot;            elif left_dist &lt; right_dist:                left_position = key_pad[key]                answer += &#x27;L&#x27;            else:                right_position = key_pad[key]                answer += &#x27;R&#x27;    return answer
+
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/05/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-java/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 신규 아이디 추천 (Java)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/05/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-java/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-05T11:10:40.000Z" itemprop="datePublished">2022-01-05</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/05/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-java/">프로그래머스 - 신규 아이디 추천 (Java)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/72410
+
+프로그래머스 - 신규 아이디 추천 (Java)
+프로그래머스 - 신규 아이디 추천 (Python)
+
+문제 풀이주어진 조건에 맞춰 하나하나씩 구현하면 되는 문제다. 문자열 관련 정규 표현식을 이용하면 더욱 깔끔하게 문제를 해결 할 수 있다.
+전체 소스class Solution &#123;    public String solution(String new_id) &#123;        String id = new_id.toLowerCase();        id = id.replaceAll(&quot;[^-_.a-z0-9]&quot;, &quot;&quot;);        id = id.replaceAll(&quot;[.]&#123;2,&#125;&quot;, &quot;.&quot;);        id = id.replaceAll(&quot;^[.]|[.]$&quot;, &quot;&quot;);        if (id.equals(&quot;&quot;)) &#123;            id += &quot;a&quot;;        &#125;        if (id.length() &gt;= 16) &#123;            id = id.substring(0, 15);            id = id.replaceAll(&quot;[.]$&quot;, &quot;&quot;);        &#125;        while (id.length() &lt;= 2) &#123;            id += id.charAt(id.length() - 1);        &#125;        return id;    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 로또의 최고 순위와 최저 순위 Python" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-04T11:10:40.000Z" itemprop="datePublished">2022-01-04</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-python/">프로그래머스 - 로또의 최고 순위와 최저 순위 Python</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
+
+프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp
+프로그래머스 - 로또의 최고 순위와 최저 순위 Java
+프로그래머스 - 로또의 최고 순위와 최저 순위 Python
+
+def ranking(cnt):    if cnt == 6:        return 1    elif cnt == 5:        return 2    elif cnt == 4:        return 3    elif cnt == 3:        return 4    elif cnt == 2:        return 5    else:        return 6def cmp(lottos, win_nums):    answer = []    cnt = 0    zeros = 0    for i in lottos:        if i == 0:            zeros += 1        elif i in win_nums:            cnt += 1    answer.append(ranking(cnt+zeros))    answer.append(ranking(cnt))    return answerdef solution(lottos, win_nums):    answer = cmp(lottos, win_nums)    return answer
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-java/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 로또의 최고 순위와 최저 순위 Java" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-java/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-04T10:10:40.000Z" itemprop="datePublished">2022-01-04</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-java/">프로그래머스 - 로또의 최고 순위와 최저 순위 Java</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
+
+프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp
+프로그래머스 - 로또의 최고 순위와 최저 순위 Java
+프로그래머스 - 로또의 최고 순위와 최저 순위 Python
+
+class Solution &#123;    private int findScore(int value) &#123;        if (value == 6) &#123;            return 1;        &#125; else if (value == 5) &#123;            return 2;        &#125; else if (value == 4) &#123;            return 3;        &#125; else if (value == 3) &#123;            return 4;        &#125; else if (value == 2) &#123;            return 5;        &#125; else &#123;            return 6;        &#125;    &#125;    private int[] cmpStrings(int[] lottos, int[] win_nums) &#123;        int[] result = new int[2];        int length = lottos.length;        int zeroCnt = 0;        int sameCnt = 0;        for (int i = 0; i &lt; length; i++) &#123;            if (lottos[i] == 0) &#123;                zeroCnt++;                continue;            &#125;            for (int j = 0; j &lt; length; j++) &#123;                if (lottos[i] == win_nums[j]) &#123;                    sameCnt++;                &#125;            &#125;        &#125;        result[0] = findScore(sameCnt + zeroCnt);        result[1] = findScore(sameCnt);        return result;    &#125;    public int[] solution(int[] lottos, int[] win_nums) &#123;        int[] answer = new int[2];        answer = cmpStrings(lottos, win_nums);        return answer;    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-cpp/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-cpp/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-04T09:10:40.000Z" itemprop="datePublished">2022-01-04</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-cpp/">프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
+
+프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp
+프로그래머스 - 로또의 최고 순위와 최저 순위 Java
+프로그래머스 - 로또의 최고 순위와 최저 순위 Python
+
+#include &lt;bits/stdc++.h&gt;using namespace std;int findScore(int value) &#123;    if (value == 6) &#123;        return 1;    &#125; else if (value == 5) &#123;        return 2;    &#125; else if (value == 4) &#123;        return 3;    &#125; else if (value == 3) &#123;        return 4;    &#125; else if (value == 2) &#123;        return 5;    &#125; else &#123;        return 6;    &#125;&#125;vector&lt;int&gt; cmpString(vector&lt;int&gt;&amp; lottos, vector&lt;int&gt;&amp; win_nums) &#123;    vector&lt;int&gt; result;    int zeroCnt = 0;    int sameCnt = 0;    for (int i = 0; i &lt; 6; i++) &#123;        if (lottos[i] == 0) &#123;            zeroCnt++;            continue;        &#125;        for (int j = 0; j &lt; 6; j++) &#123;            if (lottos[i] == win_nums[j]) &#123;                sameCnt++;            &#125;        &#125;    &#125;    result.push_back(findScore(sameCnt + zeroCnt));    result.push_back(findScore(sameCnt));    return result;&#125;vector&lt;int&gt; solution(vector&lt;int&gt; lottos, vector&lt;int&gt; win_nums) &#123;    vector&lt;int&gt; answer;    answer = cmpString(lottos, win_nums);    return answer;&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/03/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-cpp/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 키패드누르기 Cpp" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/03/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-cpp/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-03T11:10:40.000Z" itemprop="datePublished">2022-01-03</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/03/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-cpp/">프로그래머스 - 키패드누르기 Cpp</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
+
+프로그래머스 - 키패드누르기 Cpp
+프로그래머스 - 키패드누르기 Python
+
+#include &lt;iostream&gt;#include &lt;map&gt;#include &lt;queue&gt;#include &lt;string&gt;#include &lt;vector&gt;using namespace std;bool isLeft(int number) &#123;    if (number == 1 || number == 4 || number == 7) &#123;        return true;    &#125;    return false;&#125;bool isRight(int number) &#123;    if (number == 3 || number == 6 || number == 9) &#123;        return true;    &#125;    return false;&#125;bool isMiddle(int number) &#123;    if (number == 2 || number == 5 || number == 8 || number == 0) &#123;        return true;    &#125;    return false;&#125;string solution(vector&lt;int&gt; numbers, string hand) &#123;    string answer = &quot;&quot;;    map&lt;int, pair&lt;int, int&gt;&gt; keypad;    keypad[1] = &#123;0, 0&#125;, keypad[2] = &#123;0, 1&#125;, keypad[3] = &#123;0, 2&#125;;    keypad[4] = &#123;1, 0&#125;, keypad[5] = &#123;1, 1&#125;, keypad[6] = &#123;1, 2&#125;;    keypad[7] = &#123;2, 0&#125;, keypad[8] = &#123;2, 1&#125;, keypad[9] = &#123;2, 2&#125;;    keypad[0] = &#123;3, 1&#125;;    pair&lt;int, int&gt; left_point = &#123;3, 0&#125;;    pair&lt;int, int&gt; right_point = &#123;3, 2&#125;;    cout &lt;&lt; keypad[2].first &lt;&lt; &quot; &quot; &lt;&lt; keypad[2].second &lt;&lt; endl;    for (int number : numbers) &#123;        if (isLeft(number)) &#123;            left_point = keypad[number];            answer.append(&quot;L&quot;);        &#125;        if (isRight(number)) &#123;            right_point = keypad[number];            answer.append(&quot;R&quot;);        &#125;        if (isMiddle(number)) &#123;            pair&lt;int, int&gt; key_point = keypad[number];            int left_dist = abs(key_point.first - left_point.first) + abs(key_point.second - left_point.second);            int right_dist = abs(key_point.first - right_point.first) + abs(key_point.second - right_point.second);            if (left_dist == right_dist) &#123;                if (hand == &quot;right&quot;) &#123;                    right_point = keypad[number];                    answer.append(&quot;R&quot;);                &#125; else &#123;                    left_point = keypad[number];                    answer.append(&quot;L&quot;);                &#125;            &#125; else if (left_dist &lt; right_dist) &#123;                left_point = keypad[number];                answer.append(&quot;L&quot;);            &#125; else &#123;                right_point = keypad[number];                answer.append(&quot;R&quot;);            &#125;        &#125;    &#125;    return answer;&#125;
+
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2022/01/01/react/redux/redux-04-saga/" class="thumbnail">
     
     
@@ -234,10 +732,14 @@ import React from &quot;react&quot;;import &#123; useSelector, useDispatch &#125
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -291,13 +793,11 @@ import React from &#x27;react&#x27;;import ReactDOM from &#x27;react-dom&#x27;;i
     </div>
 </article>
     
-        </div>
-    
 
     
     
         
-            </div></section>
+            </div></div></section>
         
         
         <section class="archives-wrap">
@@ -577,605 +1077,13 @@ Stateless (무상태) 프로토콜
         </div>
     
 
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/27/computer-science/network/http/oci7-tcpip5/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/computer-science/network/http/OCI-TCPIP.png)" alt="네트워크 - OSI 7 계층과 TCP/IP 5계층" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/27/computer-science/network/http/oci7-tcpip5/">0</span>
-    
-</span>
 
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/CS/">CS</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/CS/Network/">Network</a>
-            </div>
-            <div class="date"><time datetime="2021-12-27T03:16:32.000Z" itemprop="datePublished">2021-12-27</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/27/computer-science/network/http/oci7-tcpip5/">네트워크 - OSI 7 계층과 TCP/IP 5계층</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-네트워크 - OSI 7 계층과 TCP&#x2F;IP 5계층
-네트워크 - HTTP
-네트워크 - HTTP Version
-네트워크 - HTTP 메시지 구조
-네트워크 - HTTPS
-Post not found: computer-science/network/tcp
-
-네트워크 - OSI 7 계층과 TCP&#x2F;IP 5계층
-OCI 7 계층
-다양한 컴퓨터 시스템이 표준 프로토콜을 사용하여 통신할 수 있도록 국제 표준화 기구(ISO) 에서 만든 개념 모델이다.
-
-
-OSI 표준 모형은 7계층으로 이루어져 있다.
-계층별로 역할을 분리해서 각 계층이 독립적으로 기능을 수행하고, 계층 간 통신을 통해 전체 통신 프로세스를 가능하게 한다.
-
-
-TCP&#x2F;IP 5 계층 프로토콜
-프로토콜 : source와 target간의 데이터를 어떻게 주고 받을 지에 대한 규약(방법)이다. 크게는 동기식 과 비동기식 으로 나뉘게 된다.
-
-
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/23/spring/spring-redis/springboot-redis/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/redis/redis.png)" alt="Spring - Embeded Redis 사용하기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/23/spring/spring-redis/springboot-redis/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a>
-            </div>
-            <div class="date"><time datetime="2021-12-23T14:47:05.000Z" itemprop="datePublished">2021-12-23</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/23/spring/spring-redis/springboot-redis/">Spring - Embeded Redis 사용하기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring - M1 맥북에서 Embeded Redis 사용하기
-Spring - Embeded Redis 사용하기
-
-참고https://www.baeldung.com/spring-embedded-redis
-Embeded Redis 사용하기
-보통 Local 에서 테스트를 위해 많이 사용하며, 별도의 Redis 를 설치하지 않고 실행할 수 있게 해줍니다.
-
-보통 Redis를 사용하는 스프링 프로젝트를 Local에서 프로젝트 실행시 Redis를 선행적으로 설치해줘야 한다. 이 문제를 Embedded Redis를 사용해 프로젝트가 Local 환경에 의존적이지 않고 프로젝트 만으로 구동할 수 있도록 한다.
-1. Embedded Redis 사용을 위한 의존성 추가build.gradle 에 다음 Embedded Redis 사용을 위한 의존성을 추가해줍니다.
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-this-target/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/advanced/aspect/aop.jpg)" alt="Spring AOP Pointcut 표현식 - this, target" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-this-target/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a>
-            </div>
-            <div class="date"><time datetime="2021-12-20T06:31:07.000Z" itemprop="datePublished">2021-12-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-this-target/">Spring AOP Pointcut 표현식 - this, target</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring AOP Pointcut 표현식 - this, target
-Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달
-Spring AOP Pointcut 표현식 - bean
-Spring AOP Pointcut 표현식 - @args
-Spring AOP Pointcut 표현식 - @annotation
-Spring AOP Pointcut 표현식 - @target, @within
-Spring AOP Pointcut 표현식 - args
-Spring AOP Pointcut 표현식 - within
-Spring AOP Pointcut 표현식 - execution
-Spring 핵심원리 고급편 - Pointcut
-
-포인트컷 표현식 - this, targetthis 와 target 은 객체를 대상으로 AOP 를 적용할 때 사용하는 포인트컷 표현식입니다. 두 표현식 모두 상위 타입이나 인터페이스를 이용해 AOP 를 적용할 수 있습니다.
-this 는 스프링 빈으로 등록돼 있는 프록시 객체를 대상으로 Advice 를 적용합니다. 때문에 스프링에서 프록시 객체를 생성하는 전략에 따라 AOP 가 다르게 적용될 수 있습니다. 
-target 은 실제 객체를 대상으로 Advice 를 적용합니다.
-this 와 target 작동방식 확인을 위한 테스트 코드@AutowiredMemberService memberService;@Testvoid success() &#123;    log.info(&quot;memberService Proxy=&#123;&#125;&quot;, memberService.getClass());    memberService.hello(&quot;helloA&quot;);&#125;@Aspectstatic class ThisTargetAspect &#123;    //부모 타입 허용    @Around(&quot;this(hello.aop.member.MemberService)&quot;)    public Object doThisInterface(ProceedingJoinPoint joinPoint) throws Throwable &#123;        log.info(&quot;[this-interface] &#123;&#125;&quot;, joinPoint.getSignature());        return joinPoint.proceed();    &#125;    //부모 타입 허용    @Around(&quot;target(hello.aop.member.MemberService)&quot;)    public Object doTargetInterface(ProceedingJoinPoint joinPoint) throws Throwable &#123;        log.info(&quot;[target-interface] &#123;&#125;&quot;, joinPoint.getSignature());        return joinPoint.proceed();    &#125;    @Around(&quot;this(hello.aop.member.MemberServiceImpl)&quot;)    public Object doThis(ProceedingJoinPoint joinPoint) throws Throwable &#123;        log.info(&quot;[this-impl] &#123;&#125;&quot;, joinPoint.getSignature());        return joinPoint.proceed();    &#125;    @Around(&quot;target(hello.aop.member.MemberServiceImpl)&quot;)    public Object doTarget(ProceedingJoinPoint joinPoint) throws Throwable &#123;        log.info(&quot;[target-impl] &#123;&#125;&quot;, joinPoint.getSignature());        return joinPoint.proceed();    &#125;&#125;
-
-JDK 동적 프록시를 이용한 프록시 객체 생성
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-parameter/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/advanced/aspect/aop.jpg)" alt="Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-parameter/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a>
-            </div>
-            <div class="date"><time datetime="2021-12-20T05:31:07.000Z" itemprop="datePublished">2021-12-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-parameter/">Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring AOP Pointcut 표현식 - this, target
-Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달
-Spring AOP Pointcut 표현식 - bean
-Spring AOP Pointcut 표현식 - @args
-Spring AOP Pointcut 표현식 - @annotation
-Spring AOP Pointcut 표현식 - @target, @within
-Spring AOP Pointcut 표현식 - args
-Spring AOP Pointcut 표현식 - within
-Spring AOP Pointcut 표현식 - execution
-Spring 핵심원리 고급편 - Pointcut
-
-Advice 에 매게변수 전달포인트 컷 포현식을 사용해서 AOP 가 적용되는 객체나 메소들의 정보를 Advice 내 매개변수로 정보들을 전달 할 수 있습니다.
-Advice 로 매개변수로 정보들을 넘기기 위해서는 포인트컷의 이름과 매개변수 이름이 같아야 합니다. 또한, 값이 들어올때 타입이 매개변수에서 정의한 타입으로 제한이 됩니다.
-AOP 적용 확인을 위한 테스트 코드@AutowiredMemberService memberService;@Testvoid success() &#123;    log.info(&quot;memberService Proxy=&#123;&#125;&quot;, memberService.getClass());    memberService.hello(&quot;helloA&quot;);&#125;
-
-
-메소드 매개변수값 정보를 Advice 에 전달args 를 이용하면 메소드에 전달된 매개변수의 값 정보를 가져올 수 있습니다.
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-bean/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/advanced/aspect/aop.jpg)" alt="Spring AOP Pointcut 표현식 - bean" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-bean/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a>
-            </div>
-            <div class="date"><time datetime="2021-12-20T04:31:07.000Z" itemprop="datePublished">2021-12-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-bean/">Spring AOP Pointcut 표현식 - bean</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring AOP Pointcut 표현식 - this, target
-Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달
-Spring AOP Pointcut 표현식 - bean
-Spring AOP Pointcut 표현식 - @args
-Spring AOP Pointcut 표현식 - @annotation
-Spring AOP Pointcut 표현식 - @target, @within
-Spring AOP Pointcut 표현식 - args
-Spring AOP Pointcut 표현식 - within
-Spring AOP Pointcut 표현식 - execution
-Spring 핵심원리 고급편 - Pointcut
-
-beanbean 표현식은 스프링에서만 사용한 포인트컷 지시자로 Bean 이름으로 Advice 적용 여부를 판단합니다. 
-@Slf4j@Import(BeanTest.BeanAspect.class)@SpringBootTestpublic class BeanTest &#123;    @Autowired    OrderService orderService;    @Test    void success()&#123;        orderService.orderItem(&quot;itemA&quot;);    &#125;    @Aspect    static class BeanAspect&#123;        // orderService 빈과 Repository 로 끝나는 빈들에 Advice 를 적용합니다.        @Around(&quot;bean(orderService) || bean(*Repository)&quot;)        public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable &#123;            log.info(&quot;[bean] &#123;&#125;&quot;, joinPoint.getSignature());            return joinPoint.proceed();        &#125;    &#125;&#125;
-
-
-2021-12-21 00:13:43.463  INFO 35836 --- [    Test worker] com.example.aop.pointcut.BeanTest        : [bean] void com.example.aop.order.OrderService.orderItem(String)2021-12-21 00:13:43.474  INFO 35836 --- [    Test worker] com.example.aop.order.OrderService       : [orderService] 실행2021-12-21 00:13:43.475  INFO 35836 --- [    Test worker] com.example.aop.pointcut.BeanTest        : [bean] String com.example.aop.order.OrderRepository.save(String)2021-12-21 00:13:43.480  INFO 35836 --- [    Test worker] com.example.aop.order.OrderRepository    : [orderRepository] 실행
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-annotation/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/advanced/aspect/aop.jpg)" alt="Spring AOP Pointcut 표현식 - @annotation" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-annotation/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a>
-            </div>
-            <div class="date"><time datetime="2021-12-20T03:31:07.000Z" itemprop="datePublished">2021-12-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-annotation/">Spring AOP Pointcut 표현식 - @annotation</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring AOP Pointcut 표현식 - this, target
-Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달
-Spring AOP Pointcut 표현식 - bean
-Spring AOP Pointcut 표현식 - @args
-Spring AOP Pointcut 표현식 - @annotation
-Spring AOP Pointcut 표현식 - @target, @within
-Spring AOP Pointcut 표현식 - args
-Spring AOP Pointcut 표현식 - within
-Spring AOP Pointcut 표현식 - execution
-Spring 핵심원리 고급편 - Pointcut
-
-@annotation
-메서드가 주어진 어노테이션을 가지고 있는 조인 포인트를 매칭
-
-@annotation 은 특정 어노테이션이 적용된 메소드 를 기준으로 Advice 를 적용합니다.
-Custom Annotation 생성@Target(ElementType.METHOD)@Retention(RetentionPolicy.RUNTIME)public @interface MethodAop &#123;    String value();&#125;
-
-Advisor 생성어노테이션을 이용해 Advice 적용하기 위해 @annotation 에 어노테이션 패키지 경로를 지정합니다.
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-args/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/advanced/aspect/aop.jpg)" alt="Spring AOP Pointcut 표현식 - @args" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-args/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a>
-            </div>
-            <div class="date"><time datetime="2021-12-20T03:31:07.000Z" itemprop="datePublished">2021-12-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-args/">Spring AOP Pointcut 표현식 - @args</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring AOP Pointcut 표현식 - this, target
-Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달
-Spring AOP Pointcut 표현식 - bean
-Spring AOP Pointcut 표현식 - @args
-Spring AOP Pointcut 표현식 - @annotation
-Spring AOP Pointcut 표현식 - @target, @within
-Spring AOP Pointcut 표현식 - args
-Spring AOP Pointcut 표현식 - within
-Spring AOP Pointcut 표현식 - execution
-Spring 핵심원리 고급편 - Pointcut
-
-@args
-메서드내 매개변수에 특정 어노테이션을 가지고 있는 경우 조인 포인트를 매칭
-
-@args 는 메서드내 매개변수가 특정 어노테이션을 가지고 있는 경우 Advice 를 적용합니다. 런타임 시점에서 해당 어노테이션이 실제로 존재하는지 확인합니다.
-커스텀 어노테이션@Target(ElementType.PARAMETER)@Retention(RetentionPolicy.RUNTIME)public @interface MyAnnotation &#123;&#125;
-
-Advisor 생성매개변수가 @MyAnnotation 를 가질 경우 advice 를 적용하기 위해 Adivsor 를 생성합니다.
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-target-within/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/advanced/aspect/aop.jpg)" alt="Spring AOP Pointcut 표현식 - @target, @within" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-target-within/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a>
-            </div>
-            <div class="date"><time datetime="2021-12-20T02:31:07.000Z" itemprop="datePublished">2021-12-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-target-within/">Spring AOP Pointcut 표현식 - @target, @within</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring AOP Pointcut 표현식 - this, target
-Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달
-Spring AOP Pointcut 표현식 - bean
-Spring AOP Pointcut 표현식 - @args
-Spring AOP Pointcut 표현식 - @annotation
-Spring AOP Pointcut 표현식 - @target, @within
-Spring AOP Pointcut 표현식 - args
-Spring AOP Pointcut 표현식 - within
-Spring AOP Pointcut 표현식 - execution
-Spring 핵심원리 고급편 - Pointcut
-
-@target 과 @within
-클래스에 특정 어노테이션이 적용된 경우 조인 포인트를 매칭
-
-@target 과 @within 은 어노테이션을 기준으로 AOP를 적용하기 위해 사용되는 Pointcut 표현식입니다. 특정 어노테이션이 적용된 클래스내 모든 메서드에 AOP 를 적용합니다.
-@target 은 런타임 객체의 실제 타입 을 기준으로 매칭합니다. 이 과정에서 해당 객체의 부모 클래스나 인터페이스에 선언된 어노테이션도 포함하여 검사하기 때문에 부모 타입의 메서드까지 Advice 를 다 적용합니다.
-@within 경우 컴파일 시점 에 특정 클래스 에 어노테이션이 선언되었는지를 기준으로 확인하기 때문에 정의된 클래스내 메서드에만 Advice 를 적용합니다.
-
-Custon Annotation 생성
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-args/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/advanced/aspect/aop.jpg)" alt="Spring AOP Pointcut 표현식 - args" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-args/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a>
-            </div>
-            <div class="date"><time datetime="2021-12-20T01:31:07.000Z" itemprop="datePublished">2021-12-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-args/">Spring AOP Pointcut 표현식 - args</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring AOP Pointcut 표현식 - this, target
-Spring AOP Pointcut 표현식 - Advice 에 매게변수 전달
-Spring AOP Pointcut 표현식 - bean
-Spring AOP Pointcut 표현식 - @args
-Spring AOP Pointcut 표현식 - @annotation
-Spring AOP Pointcut 표현식 - @target, @within
-Spring AOP Pointcut 표현식 - args
-Spring AOP Pointcut 표현식 - within
-Spring AOP Pointcut 표현식 - execution
-Spring 핵심원리 고급편 - Pointcut
-
-Pointcut 표현식 - args
-args 는 메서드의 매개변수를 기준으로 AOP 를 적용
-
-args는 메서드의 매개변수를 기준으로 매칭하기 위한 표현식입니다. 메서드의 매개변수 타입이나 값을 기준으로 특정 메서드에만 AOP를 적용할 수 있습니다.
-테스트를 위한 객체@ClassAop@Componentpublic class MemberServiceImpl implements MemberService &#123;    @Override    @MethodAop(&quot;test value&quot;)    public String hello(String param) &#123;        return &quot;ok&quot;;    &#125;    private String internal(String param) &#123;        return &quot;ok&quot;;    &#125;&#125;
-
-args 를 이용해 적용 여부 판단@BeforeEachpublic void init() throws NoSuchMethodException &#123;    helloMethod = MemberServiceImpl.class.getMethod(&quot;hello&quot;, String.class);&#125;private AspectJExpressionPointcut pointcut(String expression) &#123;    AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();    pointcut.setExpression(expression);    return pointcut;&#125;@Testvoid args() &#123;    // hello(String)과 매칭    assertThat(pointcut(&quot;args(String)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();    // Object 는 String 의 상위 타입          assertThat(pointcut(&quot;args(Object)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();    assertThat(pointcut(&quot;args()&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isFalse();    assertThat(pointcut(&quot;args(..)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();    assertThat(pointcut(&quot;args(*)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();    assertThat(pointcut(&quot;args(String,..)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();&#125;
-        </p>
-    </div>
-</article>
-    
-
-
-    </div></div></section>
+    </div></section>
 
 
     <nav id="page-nav">
-        <span class="pages">Page 18 of 41</span>
-        <a class="extend prev" rel="prev" href="/archives/page/17/">&laquo;</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/16/">16</a><a class="page-number" href="/archives/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/archives/page/19/">19</a><a class="page-number" href="/archives/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/41/">41</a><a class="extend next" rel="next" href="/archives/page/19/">&raquo;</a>
+        <span class="pages">Page 18 of 42</span>
+        <a class="extend prev" rel="prev" href="/archives/page/17/">&laquo;</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/16/">16</a><a class="page-number" href="/archives/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/archives/page/19/">19</a><a class="page-number" href="/archives/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/42/">42</a><a class="extend next" rel="next" href="/archives/page/19/">&raquo;</a>
     </nav>
 
 
@@ -1208,7 +1116,7 @@ args 를 이용해 적용 여부 판단@BeforeEachpublic void init() throws NoSu
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Gitea/">Gitea</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Harbor/">Harbor</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nexus/">Nexus</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">53</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">273</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut/">Pointcut</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D/">Pointcut 표현식</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Gitea/">Gitea</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Harbor/">Harbor</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nexus/">Nexus</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">44</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">273</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut/">Pointcut</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D/">Pointcut 표현식</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
         </div>
     </div>
 

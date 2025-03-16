@@ -176,6 +176,518 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2022/02/13/algorithm/baekjoon/%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AE%E1%84%8B%E1%85%B4%E1%84%89%E1%85%AE/15650-N%EA%B3%BCM-cpp/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 15650 - N 과 M (2) - 순열" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/02/13/algorithm/baekjoon/%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AE%E1%84%8B%E1%85%B4%E1%84%89%E1%85%AE/15650-N%EA%B3%BCM-cpp/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2022-02-13T12:10:40.000Z" itemprop="datePublished">2022-02-13</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/02/13/algorithm/baekjoon/%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AE%E1%84%8B%E1%85%B4%E1%84%89%E1%85%AE/15650-N%EA%B3%BCM-cpp/">백준 15650 - N 과 M (2) - 순열</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+백준 15650 - N 과 M (2) - 순열
+Post not found: algorithm/baekjoon/경우의수/15649-N과M-cpp
+Post not found: algorithm/baekjoon/경우의수/15650-N과M-cpp
+
+링크https://www.acmicpc.net/problem/2606
+문제 풀이
+주어진 N 개에서 M 개를 뽑는 경우의 수를 다루는 조합 문제
+
+
+백트레킹 을 이용해 만들 수 있는 모든 경우의 수를 만들어 줬다.
+다만, 조합은 순서와 상관 없이 뽑은 상태가 같으면 같은 Case 로 분류가 된다.
+때문에 현재 뽑은 위치(idx) 에서 앞에 있는 것들만 뽑게 하면 같은 경우의 수가 나오는 것을 방지할 수 있다.
+
+전체 소스 코드#include &lt;iostream&gt;#include &lt;vector&gt;#define endl &#x27;\n&#x27;using namespace std;vector&lt;int&gt; v;vector&lt;bool&gt; check;// idx : 수열 탐색 현재 시작 위치를 알려주기 위한 변수// depth : 재귀 문이 몇번 호출 됐는지 확인하기 위한 변수// n : 수열 탐색의 마지막 위치를 확인하기 위한 값// m : 재귀 문을 최대 호출할 수 있는 횟수void nCr(int idx, int depth, int n, int m) &#123;    if (depth == m) &#123;        for (int value : v) &#123;            cout &lt;&lt; value &lt;&lt; &quot; &quot;;        &#125;        cout &lt;&lt; endl;        return;    &#125;    for (int i = idx; i &lt; n; i++) &#123;        if (check[i] == true) &#123;            continue;        &#125;        check[i] = true;        v[depth] = i + 1;        nCr(i + 1, depth + 1, n, m);        check[i] = false;    &#125;&#125;int main(void) &#123;    cin.tie(0);    cout.tie(0);    ios_base::sync_with_stdio(false);    int n, m;    cin &gt;&gt; n &gt;&gt; m;    v = vector&lt;int&gt;(m);    check = vector&lt;bool&gt;(n);    nCr(0, 0, n, m);    return 0;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/02/13/algorithm/baekjoon/%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AE%E1%84%8B%E1%85%B4%E1%84%89%E1%85%AE/15649-N%EA%B3%BCM-cpp/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 15649 - N 과 M (1) - 순열" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/02/13/algorithm/baekjoon/%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AE%E1%84%8B%E1%85%B4%E1%84%89%E1%85%AE/15649-N%EA%B3%BCM-cpp/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2022-02-13T11:10:40.000Z" itemprop="datePublished">2022-02-13</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/02/13/algorithm/baekjoon/%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AE%E1%84%8B%E1%85%B4%E1%84%89%E1%85%AE/15649-N%EA%B3%BCM-cpp/">백준 15649 - N 과 M (1) - 순열</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+백준 15649 - N 과 M (1)
+Post not found: algorithm/baekjoon/경우의수/15649-N과M-cpp
+Post not found: algorithm/baekjoon/경우의수/15650-N과M-cpp
+
+링크https://www.acmicpc.net/problem/2606
+문제 풀이
+주어진 N 개에서 M 개를 뽑아 나열하는 순열 문제.
+
+백트래킹 을 이용해 만들 수 있는 모든 수열의 경우의 수 를 만들어 준다. check 를 이용해 똑같은 숫자를 여러 번 뽑는 중복 행위를 판단하고 v 배열을 통해 한 수열이 만들어지면 출력하도록 한다.
+
+v : 뽑은 숫자를 저장하기 위한 배열
+check : 해당 숫자가 뽑혔는지 판단하기 위한 배열
+
+전체 소스 코드
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/02/13/computer-science/network/security/sql-injection/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/computer-science/network/security/sql-injection-site.jpeg)" alt="SQL injection" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/02/13/computer-science/network/security/sql-injection/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/CS/">CS</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/CS/Network/">Network</a>
+            </div>
+            <div class="date"><time datetime="2022-02-12T16:16:32.000Z" itemprop="datePublished">2022-02-13</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/02/13/computer-science/network/security/sql-injection/">SQL injection</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+SQL injection 이란 보안상의 허점을 이용해 사용자가 정의한 SQL 문외 조작된 SQL 을 주입하고 실행시켜 데이터베이스에 저장된 중요한 정보를 가져오는 공격 기법을 의미한다.
+
+
+Error Based SQL injection
+논리적 에러를 이용한 SQL injection
+
+
+잘못된 SQL 을 이용해 고의로 에러를 발생시는 공격 기법이다.
+예외로 던저진 Message 를 통해 테이블 명과 컬럼과 같은 테이블 정보 를 얻어낼 수 있다.
+SQL 구문 정보를 변경해 사용자 인증을 우회해 접속할 수 있다.
+
+
+Union Based SQL injection
+Union 명령을 이용한 SQL injection
+
+
+정상적으로 실행하는 쿼리와 정보를 탈취하기 위한 쿼리문을 Union 연산자를 통해 실행시킨다.
+데이터 형식과 컬럼 수가 일치하면 Union 연산자를 이용해 데이터를 가져올 수 있다.
+
+SELECT uid FROM user_table WHERE uid=&#x27;&#x27; UNION SELECT upw FROM user_table WHERE uid=&#x27;admin&#x27; -- and...
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/02/12/algorithm/baekjoon/BFS/1012-%EC%9C%A0%EA%B8%B0%EB%86%8D%EB%B0%B0%EC%B6%94-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 1012 - 유기농 배추 (Python)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/02/12/algorithm/baekjoon/BFS/1012-%EC%9C%A0%EA%B8%B0%EB%86%8D%EB%B0%B0%EC%B6%94-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2022-02-12T11:10:40.000Z" itemprop="datePublished">2022-02-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/02/12/algorithm/baekjoon/BFS/1012-%EC%9C%A0%EA%B8%B0%EB%86%8D%EB%B0%B0%EC%B6%94-python/">백준 1012 - 유기농 배추 (Python)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+백준 1012 - 유기농 배추 (Python)링크https://www.acmicpc.net/problem/2606
+전체 소스 코드def bfs(y, x):    q = []    q.append([y, x])    check[y][x] = True    while q:        cntY, cntX = q.pop()        for i in range(4):            ny = cntY + dy[i]            nx = cntX + dx[i]            if 0 &gt; ny or ny &gt;= col or 0 &gt; nx or nx &gt;= row:                continue            if check[ny][nx] == False and field[ny][nx] == 1:                q.append([ny, nx])                check[ny][nx] = Truetest_case = int(input())row = 0col = 0k = 0field = []check = []dy = [1, -1, 0, 0]dx = [0, 0, 1, -1]for t in range(test_case):    row, col, k = map(int, input().split())    field = [[0] * row for _ in range(col)]    check = [[False] * row for _ in range(col)]    count = 0    for i in range(k):        x, y = map(int, input().split())        field[y][x] = 1    for i in range(col):        for j in range(row):            if check[i][j] == False and field[i][j] == 1:                count += 1                bfs(i, j)    print(count)
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/02/12/algorithm/baekjoon/BFS/2606-%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 2606 - 바이러스 (Python)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/02/12/algorithm/baekjoon/BFS/2606-%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2022-02-12T11:10:40.000Z" itemprop="datePublished">2022-02-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/02/12/algorithm/baekjoon/BFS/2606-%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4-python/">백준 2606 - 바이러스 (Python)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+백준 2606 - 바이러스 (Python)링크https://www.acmicpc.net/problem/2606
+전체 소스 코드def bfs(start_node):    q = []    q.append(start_node)    check[start_node] = True    count = 0    while q:        node = q.pop(0)        for i in range(1, node_num+1):            if check[i] == False and field[node][i] == 1:                q.append(i)                count += 1                check[i] = True    return countnode_num = int(input())line_num = int(input())field = [[0]*(node_num+1)for i in range(node_num+1)]check = [False]*(node_num+1)for i in range(line_num):    a, b = map(int, input().split())    field[a][b] = 1    field[b][a] = 1print(bfs(1))
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/02/12/algorithm/baekjoon/BFS/2667-%EB%8B%A8%EC%A7%80%EB%B2%88%ED%98%B8%EB%B6%99%EC%9D%B4%EA%B8%B0-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 2606 - 단지번호 붙이기 (Python)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/02/12/algorithm/baekjoon/BFS/2667-%EB%8B%A8%EC%A7%80%EB%B2%88%ED%98%B8%EB%B6%99%EC%9D%B4%EA%B8%B0-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2022-02-12T11:10:40.000Z" itemprop="datePublished">2022-02-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/02/12/algorithm/baekjoon/BFS/2667-%EB%8B%A8%EC%A7%80%EB%B2%88%ED%98%B8%EB%B6%99%EC%9D%B4%EA%B8%B0-python/">백준 2606 - 단지번호 붙이기 (Python)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+백준 2667 - 단지번호 붙이기 (Python)링크https://www.acmicpc.net/problem/2667
+전체 소스 코드def bfs(y, x):    q = []    q.append([y, x])    check[y][x] = True    count = 0    while len(q) &gt; 0:        count += 1        cntY = q[0][0]        cntX = q[0][1]        q.pop(0)        for i in range(4):            ny = cntY + dy[i]            nx = cntX + dx[i]            if 0 &gt; ny or ny &gt;= n or 0 &gt; nx or nx &gt;= n:                continue            if check[ny][nx] == False and field[ny][nx] != 0:                check[ny][nx] = True                q.append([ny, nx])    values.append(count)dy = [1, -1, 0, 0]dx = [0, 0, 1, -1]n = int(input())color = 0values = []check = [[False] * n for i in range(n)]field = [[0] * n for i in range(n)]for i in range(n):    line = input()    for j in range(len(line)):        field[i][j] = int(line[j])for i in range(n):    for j in range(n):        if check[i][j] == False and field[i][j] != 0:            color += 1            bfs(i, j)values.sort()print(color)for i in values:    print(i)
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/26/database/mysql/create-user/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/database/mysql/MySQL.png)" alt="MySQL - 사용자 생성" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/26/database/mysql/create-user/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/MySQL/">MySQL</a>
+            </div>
+            <div class="date"><time datetime="2022-01-26T11:10:40.000Z" itemprop="datePublished">2022-01-26</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/26/database/mysql/create-user/">MySQL - 사용자 생성</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+MySQL - 사용자 생성show databases;
+
+
+
+use mysql;
+
+계정 생성 쿼리-- 내부에서만 사용할 계정 생성CREATE USER &#x27;계정 아이디&#x27;@&#x27;localhost&#x27; IDENTIFIED BY &#x27;비밀번호&#x27;;-- 외부에서 사용할 계정 생성CREATE USER &#x27;계정 아이디&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;비밀번호&#x27;;
+
+권한 부여-- GRANT ALL PRIVILEGES ON *.* TO &#x27;계정 아이디&#x27;@&#x27;%&#x27;;flush privileges;quit$$
+
+
+CREATE DATABASE study_db default CHARACTER SET UTF8;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/21/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/92342-%EC%96%91%EA%B6%81%EB%8C%80%ED%9A%8C-cpp/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 양궁 대회 (Cpp)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/21/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/92342-%EC%96%91%EA%B6%81%EB%8C%80%ED%9A%8C-cpp/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-21T11:10:40.000Z" itemprop="datePublished">2022-01-21</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/21/algorithm/programmers/%EA%B2%BD%EC%9A%B0%EC%9D%98%EC%88%98/92342-%EC%96%91%EA%B6%81%EB%8C%80%ED%9A%8C-cpp/">프로그래머스 - 양궁 대회 (Cpp)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+https://programmers.co.kr/learn/courses/30/lessons/92342
+
+프로그래머스 - 키패드누르기 Cpp
+프로그래머스 - 키패드누르기 Python
+
+유의 사항
+화살을 맞춘 개수를 저장하고 정렬하는데 있어서 주의해야 한다.
+정렬에 대한 가중치가 앞자리가 아닌 뒷자리 에 있으므로 값을 저장할 때 뒤집어서 저장한 후
+내림 차순으로 정렬해 가장 큰 값을 가져와 해당 값을 뒤집으면 가장 낮은 점수를 많이 맞춘 순서대로 정렬된 값을 가져올 수 있다.
+
+#include &lt;bits/stdc++.h&gt;using namespace std;int max_diff = -1;vector&lt;string&gt; scores;int getValue(int idx) &#123;    return 10 - idx;&#125;void calScore(vector&lt;int&gt; apeach, vector&lt;int&gt; ryan) &#123;    int diff = 0;    int total_apeach = 0;    int total_ryan = 0;    for (int i = 0; i &lt; 11; i++) &#123;        if (apeach[i] == 0 &amp;&amp; ryan[i] == 0) &#123;            continue;        &#125;        if (apeach[i] &gt;= ryan[i]) &#123;            total_apeach += getValue(i);        &#125; else &#123;            total_ryan += getValue(i);        &#125;    &#125;    if (total_ryan &gt; total_apeach) &#123;        diff = total_ryan - total_apeach;    &#125; else &#123;        return;    &#125;    string str;    for (int i : ryan) &#123;        str += i + &#x27;0&#x27;;    &#125;    reverse(str.begin(), str.end());    if (diff &gt; max_diff) &#123;        max_diff = diff;        scores.clear();        scores.push_back(str);    &#125; else if (diff == max_diff) &#123;        scores.push_back(str);    &#125;&#125;void back_tracking(int depth, int idx, int n, vector&lt;int&gt;&amp; apeach, vector&lt;int&gt;&amp; ryan) &#123;    if (idx &gt; 10) &#123;        return;    &#125;    if (depth == n) &#123;        calScore(apeach, ryan);        return;    &#125;    ryan[idx] += 1;    back_tracking(depth + 1, idx, n, apeach, ryan);    ryan[idx] -= 1;    back_tracking(depth, idx + 1, n, apeach, ryan);&#125;vector&lt;int&gt; solution(int n, vector&lt;int&gt; info) &#123;    vector&lt;int&gt; answer;    vector&lt;int&gt; ryan = vector&lt;int&gt;(11, 0);    back_tracking(0, 0, n, info, ryan);    if (max_diff == -1) &#123;        answer.push_back(-1);    &#125; else &#123;        sort(scores.begin(), scores.end(), greater&lt;string&gt;());        string str = scores[0];        reverse(str.begin(), str.end());        for (int i = 0; i &lt; str.size(); i++) &#123;            answer.push_back(str[i] - &#x27;0&#x27;);        &#125;    &#125;    return answer;&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - K진수에서 소수 구하기 Python" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
+            </div>
+            <div class="date"><time datetime="2022-01-19T11:10:40.000Z" itemprop="datePublished">2022-01-19</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/01/19/algorithm/programmers/string/92335-k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C%EC%86%8C%EC%88%98%EA%B5%AC%ED%95%98%EA%B8%B0-python/">프로그래머스 - K진수에서 소수 구하기 Python</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/92335
+
+프로그래머스 - K진수에서 소수 구하기 Python
+
+def is_prime(value):    if value &lt;= 1:        return False    for i in range(2, int(value**0.5)+1):        if value % i == 0:            return False    return Truedef solution(n, k):    answer = 0    str_value = &#x27;&#x27;    stack = []    while n &gt; 0:        stack.append(n % k)        n = n//k    while len(stack) &gt; 0:        str_value += str(stack.pop())    sub_strs = str_value.split(&#x27;0&#x27;)    for i in sub_strs:        if i == &#x27;&#x27;:            continue        if is_prime(int(i)):            answer += 1    return answer
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2022/01/19/algorithm/programmers/string/92341-%EC%A3%BC%EC%B0%A8%EC%9A%94%EA%B8%88%EA%B3%84%EC%82%B0-python/" class="thumbnail">
     
     
@@ -219,10 +731,14 @@ import mathlimit = 23*60 + 59def time_to_minute(time):    times = list(map(int, 
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -271,14 +787,10 @@ import mathlimit = 23*60 + 59def time_to_minute(time):    times = list(map(int, 
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -327,10 +839,14 @@ def solution(id_list, report, k):    answer = [0] * len(id_list)    dict = &#123
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -385,14 +901,10 @@ URL의 Protocol, Host, Port 를 합친 것을 의미한다.
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -452,10 +964,14 @@ CSRF 를 위한 조건
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -518,515 +1034,13 @@ Relected XSS
         </div>
     
 
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-cpp/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 문자열 압축 Cpp" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-cpp/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-09T11:10:40.000Z" itemprop="datePublished">2022-01-09</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-cpp/">프로그래머스 - 문자열 압축 Cpp</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-https://programmers.co.kr/learn/courses/30/lessons/60057
-
-프로그래머스 - 문자열 압축 Cpp
-프로그래머스 - 문자열 압축 Python
-
-문제 풀이간단한 구현 문제다. 주어진 문자열을 substr 해서 문자열 비교를 통해 같은 문자열의 개수를 찾아내 압축된 문자열 형태로 만들어준 다음 압축된 문자열의 길이를 반환해주면 되는 문제다.
-문자열 압축하기주어진 문자열을 스캔하면서 고려해야 하는 조건이 첫번째는 substr 하려는 범위가 주어진 문자열의 범위를 넘어서면 안된다는 것이다. 두번째는 substr 범위가 주어진 문자열의 범위를 넘어선 경우 압축된 문자열에 그대로 추가해줘야 한다는 것이다.
-int divideString(int length, string s) &#123;    string zipString = &quot;&quot;;    int i = 0;    // 문자열을 스캔하면서 substr 범위가 주어진 문자열을 넘는지 확인한다.    for (i = 0; i &lt; s.length() &amp;&amp; i + length &lt; s.length(); i = i + length) &#123;        int count = 0;        bool isErase = false;        string substr = s.substr(i, length);        string cmpstr = s.substr(i, length);        while (substr == cmpstr &amp;&amp; s.length() &gt; i) &#123;            count++;            i += length;            isErase = true;            substr = s.substr(i, length);        &#125;        if (isErase == true) &#123;            i -= length;        &#125;        if (count == 1) &#123;            zipString += cmpstr;        &#125; else &#123;            zipString += to_string(count);            zipString += cmpstr;        &#125;    &#125;    // 남겨진 문자열을 압축된 문자열에 그대로 추가한다.    for (int idx = i; idx &lt; s.length(); idx++) &#123;        zipString += s[i];    &#125;    return zipString.length();&#125;
-
-문제 전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;int divideString(int length, string s) &#123;    string zipString = &quot;&quot;;    int count = 0;    int i = 0;    for (i = 0; i &lt; s.length() &amp;&amp; i + length &lt; s.length(); i = i + length) &#123;        bool isErase = false;        string substr = s.substr(i, length);        string cmpstr = s.substr(i, length);        while (substr == cmpstr &amp;&amp; s.length() &gt; i) &#123;            count++;            i += length;            isErase = true;            substr = s.substr(i, length);        &#125;        if (isErase == true) &#123;            i -= length;        &#125;        if (count == 1) &#123;            zipString += cmpstr;        &#125; else &#123;            zipString += to_string(count);            zipString += cmpstr;        &#125;        count = 0;        cmpstr = &quot;&quot;;    &#125;    for (int idx = i; idx &lt; s.length(); idx++) &#123;        zipString += s[i];    &#125;    return zipString.length();&#125;int solution(string s) &#123;    int answer = 0;    int minValue = s.length();    for (int i = 1; i &lt;= s.length() / 2; i++) &#123;        int zipLength = divideString(i, s);        minValue = min(zipLength, minValue);    &#125;    answer = minValue;    return answer;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 문자열 압축 Python" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-09T11:10:40.000Z" itemprop="datePublished">2022-01-09</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/09/algorithm/programmers/string/60057-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%95%95%EC%B6%95-python/">프로그래머스 - 문자열 압축 Python</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-https://programmers.co.kr/learn/courses/30/lessons/60057
-
-프로그래머스 - 문자열 압축 Cpp
-프로그래머스 - 문자열 압축 Python
-
-문제 풀이간단한 구현 문제다. 주어진 문자열을 substr 해서 문자열 비교를 통해 같은 문자열의 개수를 찾아내 압축된 문자열 형태로 만들어준 다음 압축된 문자열의 길이를 반환해주면 되는 문제다.
-문제 전체 소스def solution(s):    answer = &#x27;&#x27;    if len(s) == 1:        return len(s)    for i in range(1, len(s)//2 + 1):        sentence = &#x27;&#x27;        count = 0        word = s[:i]        for j in range(0, len(s), i):            if s[j:j+i] == word:                count += 1            else:                if count &gt; 1:                    sentence += (str(count) + word)                else:                    sentence += (word)                word = s[j:j+i]                count = 1        if count &gt; 1:            sentence += (str(count) + word)        else:            sentence += (word)        if len(answer) == 0:            answer = sentence        elif len(answer) &gt; len(sentence):            answer = sentence        print(answer)    return len(answer)
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/09/algorithm/baekjoon/samsung/13460-%EA%B5%AC%EC%8A%AC%ED%83%88%EC%B6%9C2/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 13460 - 구슬 탈출 2" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/09/algorithm/baekjoon/samsung/13460-%EA%B5%AC%EC%8A%AC%ED%83%88%EC%B6%9C2/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2022-01-09T06:16:03.000Z" itemprop="datePublished">2022-01-09</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/09/algorithm/baekjoon/samsung/13460-%EA%B5%AC%EC%8A%AC%ED%83%88%EC%B6%9C2/">백준 13460 - 구슬 탈출 2</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-https://www.acmicpc.net/problem/13460
-
-백준 13460 - 구슬 탈출 2
-
-백준 13460 - 구슬 탈출 2문제스타트링크에서 판매하는 어린이용 장난감 중에서 가장 인기가 많은 제품은 구슬 탈출이다. 구슬 탈출은 직사각형 보드에 빨간 구슬과 파란 구슬을 하나씩 넣은 다음, 빨간 구슬을 구멍을 통해 빼내는 게임이다.
-보드의 세로 크기는 N, 가로 크기는 M이고, 편의상 1×1크기의 칸으로 나누어져 있다. 가장 바깥 행과 열은 모두 막혀져 있고, 보드에는 구멍이 하나 있다. 빨간 구슬과 파란 구슬의 크기는 보드에서 1×1크기의 칸을 가득 채우는 사이즈이고, 각각 하나씩 들어가 있다. 게임의 목표는 빨간 구슬을 구멍을 통해서 빼내는 것이다. 이때, 파란 구슬이 구멍에 들어가면 안 된다.
-이때, 구슬을 손으로 건드릴 수는 없고, 중력을 이용해서 이리 저리 굴려야 한다. 왼쪽으로 기울이기, 오른쪽으로 기울이기, 위쪽으로 기울이기, 아래쪽으로 기울이기와 같은 네 가지 동작이 가능하다.
-각각의 동작에서 공은 동시에 움직인다. 빨간 구슬이 구멍에 빠지면 성공이지만, 파란 구슬이 구멍에 빠지면 실패이다. 빨간 구슬과 파란 구슬이 동시에 구멍에 빠져도 실패이다. 빨간 구슬과 파란 구슬은 동시에 같은 칸에 있을 수 없다. 또, 빨간 구슬과 파란 구슬의 크기는 한 칸을 모두 차지한다. 기울이는 동작을 그만하는 것은 더 이상 구슬이 움직이지 않을 때 까지이다.
-보드의 상태가 주어졌을 때, 최소 몇 번 만에 빨간 구슬을 구멍을 통해 빼낼 수 있는지 구하는 프로그램을 작성하시오.
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/05/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-python/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 키패드누르기 Python" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/05/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-python/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-05T11:10:40.000Z" itemprop="datePublished">2022-01-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/05/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-python/">프로그래머스 - 키패드누르기 Python</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
-
-프로그래머스 - 키패드누르기 Cpp
-프로그래머스 - 키패드누르기 Python
-
-def solution(numbers, hand):    answer = &#x27;&#x27;    left_hands = [1, 4, 7]    right_hands = [3, 6, 9]    middle = [2, 5, 8, 0]    key_pad = &#123;        1: [0, 0], 2: [0, 1], 3: [0, 2],        4: [1, 0], 5: [1, 1], 6: [1, 2],        7: [2, 0], 8: [2, 1], 9: [2, 2],        0: [3, 1],    &#125;    left_position = [3, 0]    right_position = [3, 2]    for key in numbers:        if key in left_hands:            left_position = key_pad[key]            answer += &#x27;L&#x27;        elif key in right_hands:            right_position = key_pad[key]            answer += &#x27;R&#x27;        else:            # print(key_pad[key][0])            left_dist = abs(                left_position[0] - key_pad[key][0]) + abs(left_position[1] - key_pad[key][1])            right_dist = abs(                right_position[0] - key_pad[key][0]) + abs(right_position[1] - key_pad[key][1])            if left_dist == right_dist:                if hand == &#x27;right&#x27;:                    right_position = key_pad[key]                    answer += &quot;R&quot;                else:                    left_position = key_pad[key]                    answer += &quot;L&quot;            elif left_dist &lt; right_dist:                left_position = key_pad[key]                answer += &#x27;L&#x27;            else:                right_position = key_pad[key]                answer += &#x27;R&#x27;    return answer
-
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/05/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-java/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 신규 아이디 추천 (Java)" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/05/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-java/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-05T11:10:40.000Z" itemprop="datePublished">2022-01-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/05/algorithm/programmers/string/72410-%EC%8B%A0%EA%B7%9C%EC%95%84%EC%9D%B4%EB%94%94%EC%B6%94%EC%B2%9C-java/">프로그래머스 - 신규 아이디 추천 (Java)</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/72410
-
-프로그래머스 - 신규 아이디 추천 (Java)
-프로그래머스 - 신규 아이디 추천 (Python)
-
-문제 풀이주어진 조건에 맞춰 하나하나씩 구현하면 되는 문제다. 문자열 관련 정규 표현식을 이용하면 더욱 깔끔하게 문제를 해결 할 수 있다.
-전체 소스class Solution &#123;    public String solution(String new_id) &#123;        String id = new_id.toLowerCase();        id = id.replaceAll(&quot;[^-_.a-z0-9]&quot;, &quot;&quot;);        id = id.replaceAll(&quot;[.]&#123;2,&#125;&quot;, &quot;.&quot;);        id = id.replaceAll(&quot;^[.]|[.]$&quot;, &quot;&quot;);        if (id.equals(&quot;&quot;)) &#123;            id += &quot;a&quot;;        &#125;        if (id.length() &gt;= 16) &#123;            id = id.substring(0, 15);            id = id.replaceAll(&quot;[.]$&quot;, &quot;&quot;);        &#125;        while (id.length() &lt;= 2) &#123;            id += id.charAt(id.length() - 1);        &#125;        return id;    &#125;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-python/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 로또의 최고 순위와 최저 순위 Python" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-python/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-04T11:10:40.000Z" itemprop="datePublished">2022-01-04</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-python/">프로그래머스 - 로또의 최고 순위와 최저 순위 Python</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
-
-프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp
-프로그래머스 - 로또의 최고 순위와 최저 순위 Java
-프로그래머스 - 로또의 최고 순위와 최저 순위 Python
-
-def ranking(cnt):    if cnt == 6:        return 1    elif cnt == 5:        return 2    elif cnt == 4:        return 3    elif cnt == 3:        return 4    elif cnt == 2:        return 5    else:        return 6def cmp(lottos, win_nums):    answer = []    cnt = 0    zeros = 0    for i in lottos:        if i == 0:            zeros += 1        elif i in win_nums:            cnt += 1    answer.append(ranking(cnt+zeros))    answer.append(ranking(cnt))    return answerdef solution(lottos, win_nums):    answer = cmp(lottos, win_nums)    return answer
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-java/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 로또의 최고 순위와 최저 순위 Java" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-java/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-04T10:10:40.000Z" itemprop="datePublished">2022-01-04</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-java/">프로그래머스 - 로또의 최고 순위와 최저 순위 Java</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
-
-프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp
-프로그래머스 - 로또의 최고 순위와 최저 순위 Java
-프로그래머스 - 로또의 최고 순위와 최저 순위 Python
-
-class Solution &#123;    private int findScore(int value) &#123;        if (value == 6) &#123;            return 1;        &#125; else if (value == 5) &#123;            return 2;        &#125; else if (value == 4) &#123;            return 3;        &#125; else if (value == 3) &#123;            return 4;        &#125; else if (value == 2) &#123;            return 5;        &#125; else &#123;            return 6;        &#125;    &#125;    private int[] cmpStrings(int[] lottos, int[] win_nums) &#123;        int[] result = new int[2];        int length = lottos.length;        int zeroCnt = 0;        int sameCnt = 0;        for (int i = 0; i &lt; length; i++) &#123;            if (lottos[i] == 0) &#123;                zeroCnt++;                continue;            &#125;            for (int j = 0; j &lt; length; j++) &#123;                if (lottos[i] == win_nums[j]) &#123;                    sameCnt++;                &#125;            &#125;        &#125;        result[0] = findScore(sameCnt + zeroCnt);        result[1] = findScore(sameCnt);        return result;    &#125;    public int[] solution(int[] lottos, int[] win_nums) &#123;        int[] answer = new int[2];        answer = cmpStrings(lottos, win_nums);        return answer;    &#125;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-cpp/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-cpp/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-04T09:10:40.000Z" itemprop="datePublished">2022-01-04</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/04/algorithm/programmers/string/77484-%EB%A1%9C%EB%98%90%EC%9D%98%EC%B5%9C%EA%B3%A0%EC%88%9C%EC%9C%84%EC%99%80%EC%B5%9C%EC%A0%80%EC%88%9C%EC%9C%84-cpp/">프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
-
-프로그래머스 - 로또의 최고 순위와 최저 순위 Cpp
-프로그래머스 - 로또의 최고 순위와 최저 순위 Java
-프로그래머스 - 로또의 최고 순위와 최저 순위 Python
-
-#include &lt;bits/stdc++.h&gt;using namespace std;int findScore(int value) &#123;    if (value == 6) &#123;        return 1;    &#125; else if (value == 5) &#123;        return 2;    &#125; else if (value == 4) &#123;        return 3;    &#125; else if (value == 3) &#123;        return 4;    &#125; else if (value == 2) &#123;        return 5;    &#125; else &#123;        return 6;    &#125;&#125;vector&lt;int&gt; cmpString(vector&lt;int&gt;&amp; lottos, vector&lt;int&gt;&amp; win_nums) &#123;    vector&lt;int&gt; result;    int zeroCnt = 0;    int sameCnt = 0;    for (int i = 0; i &lt; 6; i++) &#123;        if (lottos[i] == 0) &#123;            zeroCnt++;            continue;        &#125;        for (int j = 0; j &lt; 6; j++) &#123;            if (lottos[i] == win_nums[j]) &#123;                sameCnt++;            &#125;        &#125;    &#125;    result.push_back(findScore(sameCnt + zeroCnt));    result.push_back(findScore(sameCnt));    return result;&#125;vector&lt;int&gt; solution(vector&lt;int&gt; lottos, vector&lt;int&gt; win_nums) &#123;    vector&lt;int&gt; answer;    answer = cmpString(lottos, win_nums);    return answer;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/01/03/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-cpp/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/algorithm/programmers/programmers.png)" alt="프로그래머스 - 키패드누르기 Cpp" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/01/03/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-cpp/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a>
-            </div>
-            <div class="date"><time datetime="2022-01-03T11:10:40.000Z" itemprop="datePublished">2022-01-03</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/01/03/algorithm/programmers/string/67256-%ED%82%A4%ED%8C%A8%EB%93%9C%EB%88%84%EB%A5%B4%EA%B8%B0-cpp/">프로그래머스 - 키패드누르기 Cpp</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-문제 링크 : https://programmers.co.kr/learn/courses/30/lessons/77484
-
-프로그래머스 - 키패드누르기 Cpp
-프로그래머스 - 키패드누르기 Python
-
-#include &lt;iostream&gt;#include &lt;map&gt;#include &lt;queue&gt;#include &lt;string&gt;#include &lt;vector&gt;using namespace std;bool isLeft(int number) &#123;    if (number == 1 || number == 4 || number == 7) &#123;        return true;    &#125;    return false;&#125;bool isRight(int number) &#123;    if (number == 3 || number == 6 || number == 9) &#123;        return true;    &#125;    return false;&#125;bool isMiddle(int number) &#123;    if (number == 2 || number == 5 || number == 8 || number == 0) &#123;        return true;    &#125;    return false;&#125;string solution(vector&lt;int&gt; numbers, string hand) &#123;    string answer = &quot;&quot;;    map&lt;int, pair&lt;int, int&gt;&gt; keypad;    keypad[1] = &#123;0, 0&#125;, keypad[2] = &#123;0, 1&#125;, keypad[3] = &#123;0, 2&#125;;    keypad[4] = &#123;1, 0&#125;, keypad[5] = &#123;1, 1&#125;, keypad[6] = &#123;1, 2&#125;;    keypad[7] = &#123;2, 0&#125;, keypad[8] = &#123;2, 1&#125;, keypad[9] = &#123;2, 2&#125;;    keypad[0] = &#123;3, 1&#125;;    pair&lt;int, int&gt; left_point = &#123;3, 0&#125;;    pair&lt;int, int&gt; right_point = &#123;3, 2&#125;;    cout &lt;&lt; keypad[2].first &lt;&lt; &quot; &quot; &lt;&lt; keypad[2].second &lt;&lt; endl;    for (int number : numbers) &#123;        if (isLeft(number)) &#123;            left_point = keypad[number];            answer.append(&quot;L&quot;);        &#125;        if (isRight(number)) &#123;            right_point = keypad[number];            answer.append(&quot;R&quot;);        &#125;        if (isMiddle(number)) &#123;            pair&lt;int, int&gt; key_point = keypad[number];            int left_dist = abs(key_point.first - left_point.first) + abs(key_point.second - left_point.second);            int right_dist = abs(key_point.first - right_point.first) + abs(key_point.second - right_point.second);            if (left_dist == right_dist) &#123;                if (hand == &quot;right&quot;) &#123;                    right_point = keypad[number];                    answer.append(&quot;R&quot;);                &#125; else &#123;                    left_point = keypad[number];                    answer.append(&quot;L&quot;);                &#125;            &#125; else if (left_dist &lt; right_dist) &#123;                left_point = keypad[number];                answer.append(&quot;L&quot;);            &#125; else &#123;                right_point = keypad[number];                answer.append(&quot;R&quot;);            &#125;        &#125;    &#125;    return answer;&#125;
-
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
 
     </div></section>
 
 
     <nav id="page-nav">
-        <span class="pages">Page 17 of 41</span>
-        <a class="extend prev" rel="prev" href="/archives/page/16/">&laquo;</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/15/">15</a><a class="page-number" href="/archives/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/archives/page/18/">18</a><a class="page-number" href="/archives/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/41/">41</a><a class="extend next" rel="next" href="/archives/page/18/">&raquo;</a>
+        <span class="pages">Page 17 of 42</span>
+        <a class="extend prev" rel="prev" href="/archives/page/16/">&laquo;</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/15/">15</a><a class="page-number" href="/archives/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/archives/page/18/">18</a><a class="page-number" href="/archives/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/42/">42</a><a class="extend next" rel="next" href="/archives/page/18/">&raquo;</a>
     </nav>
 
 
@@ -1059,7 +1073,7 @@ class Solution &#123;    private int findScore(int value) &#123;        if (valu
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Gitea/">Gitea</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Harbor/">Harbor</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nexus/">Nexus</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">53</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">273</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut/">Pointcut</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D/">Pointcut 표현식</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/ArgoCD/">ArgoCD</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Gitea/">Gitea</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Harbor/">Harbor</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nexus/">Nexus</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">44</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">273</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut/">Pointcut</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D/">Pointcut 표현식</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
         </div>
     </div>
 
