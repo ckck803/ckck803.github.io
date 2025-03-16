@@ -635,6 +635,64 @@ Message Key 가 없는 Record 들은 Partition 에 적절히 분배된다.
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2022/03/02/kafka/kafka-producer/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/kafka/kafka.png)" alt="Kafka Producer" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/03/02/kafka/kafka-producer/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Kafka/">Kafka</a>
+            </div>
+            <div class="date"><time datetime="2022-03-02T13:25:35.000Z" itemprop="datePublished">2022-03-02</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/03/02/kafka/kafka-producer/">Kafka Producer</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+카프카 프로듀서카프카 프로듀서는 브로커에 존재하는 토픽에 메시지를 전달하는 역할을 담당합니다.
+
+Topic 에 해당하는 메시지를 생성 후 해당 Topic으로 데이터를 publish 한다.
+
+또한, 메시지 전송이 실패할 경우, 재전송을 한다.
+카프카 프로듀서는 브로커로 메시지를 보낼때 파티션 Key 도 함께 보낼 수 있습니다. 브로커는 파티션 Key 의 유무에 따라 데이터를 저장하는 방식이 달라집니다.
+파티션 Key 가 null 인 데이터 전송Topic 에 Partition 이 한개인 경우는 데이터들이 순차적으로 쌓이게 된다. Topic 에 Partition 이 여러개인 경우 Round Robin 형식으로 데이터가 쌓이게 된다.
+파티션 Key 를 전송할 경우Kafka 는 Key 를 특정한 Hash 값으로 변형 시켜 Partition 과 1:1 매칭을 시킵니다. 각 파티션에 동일 Key 의 Value 만 쌓이게 된다. Partition 의 개수와 Key 의 개수가 일치하지 않는 경우 Key 와 Partition 의 매칭이 깨지게 돼 Key 와 Partition 연결은 보장되지 않습니다.
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2022/03/02/kafka/kafka-replication/" class="thumbnail">
     
     
@@ -698,64 +756,6 @@ Replication 이 1인 경우
 Partition 이 한개고 Replication 이 1인 Topic 이 존재하고 Broker 가 3대라면 Broker 3대 중 1대에 해당 Topic 정보가 저장된다.
 
 
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/03/02/kafka/kafka-producer/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/kafka/kafka.png)" alt="Kafka Producer" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/03/02/kafka/kafka-producer/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Kafka/">Kafka</a>
-            </div>
-            <div class="date"><time datetime="2022-03-02T13:25:35.000Z" itemprop="datePublished">2022-03-02</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/03/02/kafka/kafka-producer/">Kafka Producer</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-카프카 프로듀서카프카 프로듀서는 브로커에 존재하는 토픽에 메시지를 전달하는 역할을 담당합니다.
-
-Topic 에 해당하는 메시지를 생성 후 해당 Topic으로 데이터를 publish 한다.
-
-또한, 메시지 전송이 실패할 경우, 재전송을 한다.
-카프카 프로듀서는 브로커로 메시지를 보낼때 파티션 Key 도 함께 보낼 수 있습니다. 브로커는 파티션 Key 의 유무에 따라 데이터를 저장하는 방식이 달라집니다.
-파티션 Key 가 null 인 데이터 전송Topic 에 Partition 이 한개인 경우는 데이터들이 순차적으로 쌓이게 된다. Topic 에 Partition 이 여러개인 경우 Round Robin 형식으로 데이터가 쌓이게 된다.
-파티션 Key 를 전송할 경우Kafka 는 Key 를 특정한 Hash 값으로 변형 시켜 Partition 과 1:1 매칭을 시킵니다. 각 파티션에 동일 Key 의 Value 만 쌓이게 된다. Partition 의 개수와 Key 의 개수가 일치하지 않는 경우 Key 와 Partition 의 매칭이 깨지게 돼 Key 와 Partition 연결은 보장되지 않습니다.
         </p>
     </div>
 </article>

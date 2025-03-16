@@ -232,6 +232,68 @@ npx tailwindcss init
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2025/03/05/vue/pinia/vue-pinia/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/vue/vue-2.png)" alt="[Vue 3] - Pinia 사용하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2025/03/05/vue/pinia/vue-pinia/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Vue/">Vue</a>
+            </div>
+            <div class="date"><time datetime="2025-03-05T11:10:40.000Z" itemprop="datePublished">2025-03-05</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2025/03/05/vue/pinia/vue-pinia/">[Vue 3] - Pinia 사용하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+1. Pinia 설치npm install pinia
+
+2. Pinia 모듈 추가하기main.tsimport &#123; createApp &#125; from &#x27;vue&#x27;;import &#123; createPinia &#125; from &#x27;pinia&#x27;;import App from &#x27;./App.vue&#x27;;const app = createApp(App);const pinia = createPinia();app.use(pinia);app.mount(&#x27;#app&#x27;);
+
+
+store/counterStore.js pinia store 를 생성해줍니다.
+import &#123; defineStore &#125; from &#x27;pinia&#x27;;export const useCounterStore = defineStore(&#x27;counter&#x27;, &#123;  state: () =&gt; (&#123;    count: 0,  &#125;),  getters: &#123;    doubleCount: (state) =&gt; state.count * 2,  &#125;,  actions: &#123;    increment() &#123;      this.count++;    &#125;,    decrement() &#123;      this.count--;    &#125;,  &#125;,&#125;);
+
+
+
+&lt;template&gt;  &lt;div class=&quot;app&quot;&gt;    &lt;h1&gt;Counter: &#123;&#123; counter &#125;&#125;&lt;/h1&gt;    &lt;h2&gt;Double Count: &#123;&#123; doubleCounter &#125;&#125;&lt;/h2&gt;    &lt;button @click=&quot;increment&quot;&gt;Increment&lt;/button&gt;    &lt;button @click=&quot;decrement&quot;&gt;Decrement&lt;/button&gt;  &lt;/div&gt;&lt;/template&gt;&lt;script&gt;import &#123; useCounterStore &#125; from &#x27;./store/counterStore&#x27;;import &#123; defineComponent &#125; from &#x27;vue&#x27;;export default defineComponent(&#123;  setup() &#123;    const counterStore = useCounterStore();    return &#123;      counter: counterStore.count,      doubleCounter: counterStore.doubleCount,      increment: counterStore.increment,      decrement: counterStore.decrement,    &#125;;  &#125;,&#125;);&lt;/script&gt;&lt;style&gt;.app &#123;  text-align: center;  margin-top: 50px;&#125;button &#123;  margin: 5px;&#125;&lt;/style&gt;
+
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2025/03/05/vue/router/vue-unplugin-vue-router/" class="thumbnail">
     
     
@@ -269,68 +331,10 @@ npx tailwindcss init
 참고https://github.com/posva/unplugin-vue-router
 vue 에서는 새로운 페이지를 생성할때마다 vue-router 에 직접 등록해줘야 하는 번거로움이 있습니다. 이런 수고스러움을 좀 덜고자 찾아보니 vue 에서도 next 나 nuxt 처럼 파일 기반으로 라우팅을 할 수 있게 지원해주는 모듈을 찾게 됐습니다. 
 1.  unplugin-vue-router 모듈을 설치npm i -D unplugin-vue-router
-2.  vite.config.ts 에 다음 내용을 추가해 줍니다.import &#123; defineConfig &#125; from &#x27;vite&#x27;import vue from &#x27;@vitejs/plugin-vue&#x27;import VueRouter from &#x27;unplugin-vue-router/vite&#x27;;// https://vitejs.dev/config/export default defineConfig(&#123;  plugins: [vue(), VueRouter(&#123;&#125;)],&#125;)
-3. tsconfig.json 설정 정보 추가&#123;  &quot;compilerOptions&quot;: &#123;    // ...    &quot;moduleResolution&quot;: &quot;Bundler&quot;,    // ...    &quot;types&quot;: [&quot;unplugin-vue-router/client&quot;],  &#125;  // ...  &quot;include&quot;: [    // ...    &quot;./typed-router.d.ts&quot;  ],&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
 
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2025/03/05/vue/pinia/vue-pinia/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/vue/vue-2.png)" alt="[Vue 3] - Pinia 사용하기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2025/03/05/vue/pinia/vue-pinia/">0</span>
-    
-</span>
+2.  vite.config.ts 에 다음 내용을 추가해 줍니다.vite.config.tsimport &#123; defineConfig &#125; from &#x27;vite&#x27;import vue from &#x27;@vitejs/plugin-vue&#x27;import VueRouter from &#x27;unplugin-vue-router/vite&#x27;;// https://vitejs.dev/config/export default defineConfig(&#123;  plugins: [vue(), VueRouter(&#123;&#125;)],&#125;)
 
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Vue/">Vue</a>
-            </div>
-            <div class="date"><time datetime="2025-03-05T11:10:40.000Z" itemprop="datePublished">2025-03-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2025/03/05/vue/pinia/vue-pinia/">[Vue 3] - Pinia 사용하기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-1. Pinia 설치npm install pinia
-
-2. Pinia 설정store/counterStore.js pinia store 를 생성해줍니다.
-import &#123; defineStore &#125; from &#x27;pinia&#x27;;export const useCounterStore = defineStore(&#x27;counter&#x27;, &#123;  state: () =&gt; (&#123;    count: 0,  &#125;),  getters: &#123;    doubleCount: (state) =&gt; state.count * 2,  &#125;,  actions: &#123;    increment() &#123;      this.count++;    &#125;,    decrement() &#123;      this.count--;    &#125;,  &#125;,&#125;);
-
-import &#123; createApp &#125; from &#x27;vue&#x27;;import &#123; createPinia &#125; from &#x27;pinia&#x27;;import App from &#x27;./App.vue&#x27;;const app = createApp(App);const pinia = createPinia();app.use(pinia);app.mount(&#x27;#app&#x27;);
-
-
-&lt;template&gt;  &lt;div class=&quot;app&quot;&gt;    &lt;h1&gt;Counter: &#123;&#123; counter &#125;&#125;&lt;/h1&gt;    &lt;h2&gt;Double Count: &#123;&#123; doubleCounter &#125;&#125;&lt;/h2&gt;    &lt;button @click=&quot;increment&quot;&gt;Increment&lt;/button&gt;    &lt;button @click=&quot;decrement&quot;&gt;Decrement&lt;/button&gt;  &lt;/div&gt;&lt;/template&gt;&lt;script&gt;import &#123; useCounterStore &#125; from &#x27;./store/counterStore&#x27;;import &#123; defineComponent &#125; from &#x27;vue&#x27;;export default defineComponent(&#123;  setup() &#123;    const counterStore = useCounterStore();    return &#123;      counter: counterStore.count,      doubleCounter: counterStore.doubleCount,      increment: counterStore.increment,      decrement: counterStore.decrement,    &#125;;  &#125;,&#125;);&lt;/script&gt;&lt;style&gt;.app &#123;  text-align: center;  margin-top: 50px;&#125;button &#123;  margin: 5px;&#125;&lt;/style&gt;
-
+3. tsconfig.json 설정 정보 추가tsconfig.json&#123;  &quot;compilerOptions&quot;: &#123;    // ...    &quot;moduleResolution&quot;: &quot;Bundler&quot;,    // ...    &quot;types&quot;: [&quot;unplugin-vue-router/client&quot;],  &#125;  // ...  &quot;include&quot;: [    // ...    &quot;./typed-router.d.ts&quot;  ],&#125;
         </p>
     </div>
 </article>
@@ -644,9 +648,9 @@ https://artifacthub.io/packages/helm/bitnami/keycloak
         <p class="article-excerpt">
             
 목차
-[쿠버네티스 DevOps 구축] - OpenSearch 설치하기
-[쿠버네티스 DevOps 구축] - Prometheus 와 Grafana 설치하기
-[쿠버네티스 DevOps 구축] - Keycloak 설치하기
+[쿠버네티스 DevOps 구축] -  5. OpenSearch 설치하기
+[쿠버네티스 DevOps 구축] - 4. Prometheus 와 Grafana 설치하기
+[쿠버네티스 DevOps 구축] - 3. Keycloak 설치하기
 [쿠버네티스 DevOps 구축] - Ingress Nginx Controller 설치하기
 [쿠버네티스 DevOps 구축] - Local PC 쿠버네티스 동적 프로비저닝을 위한 StorageClass 설치
 [쿠버네티스 DevOps 구축] - Local PC 에 쿠버네티스 설치하기

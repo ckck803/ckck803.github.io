@@ -408,83 +408,6 @@ Configspring:  datasource:#    url: jdbc:h2:~/querydsl    url: jdbc:h2:tcp://loc
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/04/24/jpa/querydsl/querydsl-02/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="JPA JPQL vs Querydsl" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-02/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
-            </div>
-            <div class="date"><time datetime="2022-04-23T20:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/24/jpa/querydsl/querydsl-02/">JPA JPQL vs Querydsl</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Post not found: jpa/querydsl/querydsl-15
-Post not found: jpa/querydsl/querydsl-14
-QueryDSL - 동적 쿼리와 성능 최적화 조회
-QueryDSL - 순수 JPA 리포지토리와 Querydsl
-QueryDSL - SQL Function 호출하기
-Post not found: jpa/querydsl/querydsl-10
-Post not found: jpa/querydsl/querydsl-09
-Post not found: jpa/querydsl/querydsl-08
-QueryDSL - 조인
-QueryDSL - 집계
-QueryDSL - 결과 조회
-QueryDSL - 검색 조건 쿼리
-Post not found: jpa/querydsl/querydsl-03
-JPA JPQL vs Querydsl
-QueryDSL 시작하기
-
-JPQL@Testpublic void startJPQL()&#123;    // member1 을 찾아라    Member findByJPQL = em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)            .setParameter(&quot;username&quot;, &quot;member1&quot;)            .getSingleResult();    assertThat(findByJPQL.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
-
-Querydsl@Testpublic void startQuerydsl()&#123;    JPAQueryFactory queryFactory = new JPAQueryFactory(em);    QMember qMember = new QMember(&quot;m&quot;);    Member findMember = queryFactory            .select(qMember)            .from(qMember)            .where(qMember.username.eq(&quot;member1&quot;))            .fetchOne();    assertThat(findMember.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
-
-
-Querydsl 은 기본적으로  parameter binding 시 preparedStatement 의 parameter binding 을 사용해 SQL injection 공격으로부터 안전하다.
-
-select        member0_.member_id as member_i1_1_,        member0_.age as age2_1_,        member0_.team_id as team_id4_1_,        member0_.username as username3_1_     from        member member0_     where        member0_.username=?
-
-jpql 은 런타임 오류가 발생하나 querydsl 은 컴파일시 에러가 발생하게 된다.
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2022/04/24/jpa/querydsl/querydsl-02-jpql-querydsl/" class="thumbnail">
     
     
@@ -546,6 +469,83 @@ JPA QueryDSL 은 JPA Entity 와 관련해 정적 타입으로 쿼리를 작성 �
 
 JPA QueryDSL 에서는 JPAQueryFactory 객체를 이용해 쿼리를 작성합니다. JPAQueryFactory 객체를 통해 생성된 쿼리가 JPA Entity 를 대상으로 쿼리를 생성하고 실행하고 상태를 관리하기 위해서는 EntityMagager 인스턴스가 필요합니다. 
 따라서, JPA 기능을 사용하고 Entity 를 대상으로 쿼리를 수행할 수 있도록 EntityMagager 객체를 JPAQueryFactory 객체 생성시 전달할 필요가 있습니다.
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/24/jpa/querydsl/querydsl-02/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="JPA JPQL vs Querydsl" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-02/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
+            </div>
+            <div class="date"><time datetime="2022-04-23T20:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/24/jpa/querydsl/querydsl-02/">JPA JPQL vs Querydsl</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Post not found: jpa/querydsl/querydsl-15
+Post not found: jpa/querydsl/querydsl-14
+QueryDSL - 동적 쿼리와 성능 최적화 조회
+QueryDSL - 순수 JPA 리포지토리와 Querydsl
+QueryDSL - SQL Function 호출하기
+Post not found: jpa/querydsl/querydsl-10
+Post not found: jpa/querydsl/querydsl-09
+Post not found: jpa/querydsl/querydsl-08
+QueryDSL - 조인
+QueryDSL - 집계
+QueryDSL - 결과 조회
+QueryDSL - 검색 조건 쿼리
+Post not found: jpa/querydsl/querydsl-03
+JPA JPQL vs Querydsl
+QueryDSL 시작하기
+
+JPQL@Testpublic void startJPQL()&#123;    // member1 을 찾아라    Member findByJPQL = em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)            .setParameter(&quot;username&quot;, &quot;member1&quot;)            .getSingleResult();    assertThat(findByJPQL.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
+
+Querydsl@Testpublic void startQuerydsl()&#123;    JPAQueryFactory queryFactory = new JPAQueryFactory(em);    QMember qMember = new QMember(&quot;m&quot;);    Member findMember = queryFactory            .select(qMember)            .from(qMember)            .where(qMember.username.eq(&quot;member1&quot;))            .fetchOne();    assertThat(findMember.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
+
+
+Querydsl 은 기본적으로  parameter binding 시 preparedStatement 의 parameter binding 을 사용해 SQL injection 공격으로부터 안전하다.
+
+select        member0_.member_id as member_i1_1_,        member0_.age as age2_1_,        member0_.team_id as team_id4_1_,        member0_.username as username3_1_     from        member member0_     where        member0_.username=?
+
+jpql 은 런타임 오류가 발생하나 querydsl 은 컴파일시 에러가 발생하게 된다.
         </p>
     </div>
 </article>
@@ -1192,17 +1192,17 @@ public List&lt;Order&gt; findAllWithMemberDelivery()&#123;    return em.createQu
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/04/18/jpa/jpa-programming/jpql/object-query/" class="thumbnail">
+        <a href="/2022/04/18/jpa/jpa-programming/jpql/jpql/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/JPA/jpa.png)" alt="JPA - 객체지향 쿼리 언어" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/JPA/jpa.png)" alt="JPA JPQL (Java Persistence Query Language)" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/18/jpa/jpa-programming/jpql/object-query/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/18/jpa/jpa-programming/jpql/jpql/">0</span>
     
 </span>
 
@@ -1220,7 +1220,7 @@ public List&lt;Order&gt; findAllWithMemberDelivery()&#123;    return em.createQu
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/18/jpa/jpa-programming/jpql/object-query/">JPA - 객체지향 쿼리 언어</a>
+        <a href="/2022/04/18/jpa/jpa-programming/jpql/jpql/">JPA JPQL (Java Persistence Query Language)</a>
         </h1>
     
 
@@ -1232,28 +1232,21 @@ JPA JPQL - Projection (Select)
 JPA JPQL (Java Persistence Query Language)
 JPA - 객체지향 쿼리 언어
 
-객체 지향 쿼리 언어 종류
 JPQL
-JPA Criteria
-QueryDSL
-네이티브 SQL
-JDBC API 직접 사용, MyBatis, SrpignjdbcTemplate 함께 사용
+JPQL 은 객체지향 쿼리 언어 로 테이블 을 대상으로 쿼리하는 것이 아니라 엔티티 객체 를 대상으로 쿼리한다.JPQL 은 SQL 을 추상화 해서 특정 데이터 베이스 SQL 에 의존하지 않는다.
 
-JPQL
-JPA 를 사용하면 엔티티 객체 를 중심으로 개발
-문제는 검색 쿼리
-검색을 할때도 테이블이 나닌 엔티티 객체 를 대상으로 검색
-모든 DB 데이터를 객체로 변화해서 검색하는 것은 불가능
-애플리케이션이 필요한 데이터만 DB 에서 불러오려면 결국 검색 조건인 포함된 SQL 이 필요
+JPQL 문법
+select m from Memeber as m where m.age &gt; 18
 
 
+Entity 와 속성 은 대소문자 구분 O (Member, age)
+JPQL 키워드 는 대소문자 구분 X (select, from, where)
+엔티티 이름 사용, 테이블 이름이 아님
+별칭(alias) 은 필수 (m)
 
-JPA 는 SQL 을 추상화한 JPQL 이라는 객체지향 쿼리 언어 제공
-SQL 과 문법 유사, SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN 지원
-JPQL 은 엔티티 객체를 대상으로 쿼리
-SQL 은 데이터 베이스 테이블을 대상으로 쿼리
+TypeQuery, Query
+반환 타입 형태에 따라 사용하는 타입이 다르다.
 
-public class JpaMain &#123;    public static void main(String[] ars) &#123;        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(&quot;hello&quot;);        EntityManager em = entityManagerFactory.createEntityManager();        EntityTransaction transaction = em.getTransaction();        transaction.begin();        try &#123;            String qlString = &quot;select m from Member m where m.username like &#x27;%kim%&#x27;&quot;;            List&lt;Member&gt; result = em.createQuery(qlString, Member.class)                    .getResultList();        &#125; catch (Exception e) &#123;            transaction.rollback();        &#125; finally &#123;            em.close();        &#125;        entityManagerFactory.close();    &#125;&#125;
         </p>
     </div>
 </article>
