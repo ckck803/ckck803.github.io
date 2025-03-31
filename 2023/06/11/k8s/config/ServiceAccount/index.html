@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/k8s/k8s.png">
 <meta property="article:published_time" content="2023-06-11T01:31:46.000Z">
-<meta property="article:modified_time" content="2024-02-18T16:19:54.536Z">
+<meta property="article:modified_time" content="2025-03-31T17:52:42.435Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/k8s/k8s.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2023/06/11/k8s/config/ServiceAccount/" class="article-date">
-     <time datetime="2024-02-18T16:19:54.536Z" itemprop="dateModified">2024-02-19</time>
+     <time datetime="2025-03-31T17:52:42.435Z" itemprop="dateModified">2025-04-01</time>
   </a>
 </div>
 
@@ -233,7 +233,7 @@
 <li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/</a></li>
 <li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://kubernetes.io/ko/docs/reference/access-authn-authz/service-accounts-admin/">https://kubernetes.io/ko/docs/reference/access-authn-authz/service-accounts-admin/</a></li>
 </ul>
-<h2 id="ServiceAccount"><a href="#ServiceAccount" class="headerlink" title="ServiceAccount"></a>ServiceAccount</h2><blockquote>
+<h2 id="🔎-ServiceAccount-란"><a href="#🔎-ServiceAccount-란" class="headerlink" title="🔎 ServiceAccount 란?"></a>🔎 ServiceAccount 란?</h2><blockquote>
 <p>ServiceAccount 는 쿠버네티스 API 서버와 통신하고 클러스터 내의 다른 리소스에 접근하기 위한 인증 정보를 제공합니다.</p>
 </blockquote>
 <!-- ServiceAccount는 쿠버네티스 API 서버와 통신하고 클러스터 내의 다른 리소스에 접근하기 위한 인증 정보를 제공합니다.
@@ -250,19 +250,20 @@ ServiceAccount는 Pod를 생성할 때 자동으로 생성되며, Pod의 spec에
 <p>ServiceAccount 는 Pod 가 Kubernetes API Server 에 인증 하기 위한 Account 입니다. 때문에 Pod 를 생성할때 ServiceAccount 를 할당해야 하며 지정하지 않을 경우 <strong>default</strong> 가 자동으로 할당됩니다.</p>
 <p>Rule 과 RuleBinding 을 이용해 ServiceAccount 에 권한을 부여함으로써 Pod 가 다른 리소스에 접근할 수 있게 해줍니다.</p>
 <p>ServiceAccount 는 Namespace 단위로 생성되는 리소스며 다른 Namespace 에서 정의된 ServiceAccount 를 사용할 수 없습니다.</p>
-<h2 id="ServiceAccount-생성하기"><a href="#ServiceAccount-생성하기" class="headerlink" title="ServiceAccount 생성하기"></a>ServiceAccount 생성하기</h2><p>매니페스트 내 <code>kind: ServiceAccount</code> 를 사용하여 ServiceAccount를 생성할 수 있습니다.</p>
+<h2 id="✅-ServiceAccount-생성-및-권한-부여"><a href="#✅-ServiceAccount-생성-및-권한-부여" class="headerlink" title="✅ ServiceAccount 생성 및 권한 부여"></a>✅ ServiceAccount 생성 및 권한 부여</h2><h4 id="1-ServiceAccount-리소스-생성"><a href="#1-ServiceAccount-리소스-생성" class="headerlink" title="1. ServiceAccount 리소스 생성"></a>1. ServiceAccount 리소스 생성</h4><p>매니페스트 내 <code>kind: ServiceAccount</code> 를 사용하여 ServiceAccount를 생성할 수 있습니다.</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">ServiceAccount</span> <span class="string">에</span> <span class="string">대한</span> <span class="string">설명</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;ServiceAccount</span> <span class="string">이름&gt;</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">&lt;ServiceAccount</span> <span class="string">를</span> <span class="string">사용할</span> <span class="string">Namespace&gt;</span> </span><br></pre></td></tr></table></figure>
 
-<h2 id="Token-생성"><a href="#Token-생성" class="headerlink" title="Token 생성"></a>Token 생성</h2><p>v1.22 이전 버전의 쿠버네티스 버전은 쿠버네티스 API에 액세스하기 위한 장기 자격 증명을 자동으로 생성했다. 이 이전 메커니즘은 실행 중인 파드에 마운트할 수 있는 토큰 시크릿을 생성하는 것을 기반으로 했다. 쿠버네티스 v1.27을 포함한 최신 버전에서는, API 자격 증명이 토큰리퀘스트 API를 사용하여 직접 획득되고, 예상 볼륨을 사용하여 파드에 마운트된다. 이 방법을 사용하여 획득한 토큰은 수명이 제한되어 있으며, 마운트된 파드가 삭제되면 자동으로 무효화된다.</p>
+<h4 id="2-Token-리소스-생성"><a href="#2-Token-리소스-생성" class="headerlink" title="2. Token 리소스 생성"></a>2. Token 리소스 생성</h4><p>v1.22 이전 버전의 쿠버네티스 버전은 쿠버네티스 API에 액세스하기 위한 장기 자격 증명을 자동으로 생성했다. 이 이전 메커니즘은 실행 중인 파드에 마운트할 수 있는 토큰 시크릿을 생성하는 것을 기반으로 했다. 쿠버네티스 v1.27을 포함한 최신 버전에서는, API 자격 증명이 토큰리퀘스트 API를 사용하여 직접 획득되고, 예상 볼륨을 사용하여 파드에 마운트된다. 이 방법을 사용하여 획득한 토큰은 수명이 제한되어 있으며, 마운트된 파드가 삭제되면 자동으로 무효화된다.</p>
 <p>예를 들어 만료되지 않는 토큰이 필요한 경우 서비스 어카운트 토큰 시크릿을 수동으로 생성할 수 있다. 그러나 대신 TokenRequest 서브리소스를 사용하여 API에 액세스하기 위한 토큰을 얻는 것을 권장한다.</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">kubectl create token &lt;ServiceAccount Name&gt;</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="Secret-생성"><a href="#Secret-생성" class="headerlink" title="Secret 생성"></a>Secret 생성</h2><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Secret</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;Secret</span> <span class="string">Name&gt;</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">mbc-add-dev</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/service-account.name:</span> <span class="string">&lt;ServiceAccount</span> <span class="string">Name&gt;</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">kubernetes.io/service-account-token</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-Secret-리소스-생성"><a href="#3-Secret-리소스-생성" class="headerlink" title="3. Secret 리소스 생성"></a>3. Secret 리소스 생성</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Secret</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;Secret</span> <span class="string">Name&gt;</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">mbc-add-dev</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/service-account.name:</span> <span class="string">&lt;ServiceAccount</span> <span class="string">Name&gt;</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">kubernetes.io/service-account-token</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Rule"><a href="#Rule" class="headerlink" title="Rule"></a>Rule</h2><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Role</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubectl-prometheus-alertmanager-role</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">mbc-add-dev</span></span><br><span class="line"><span class="attr">rules:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">apiGroups:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">apps</span></span><br><span class="line">  <span class="attr">resourceNames:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">prometheus-alertmanager</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">alertmanager</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">statefulsets</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">statefulsets/scale</span></span><br><span class="line">  <span class="attr">verbs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">get</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">patch</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">list</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">watch</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">update</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-Role-리소스-생성"><a href="#4-Role-리소스-생성" class="headerlink" title="4. Role 리소스 생성"></a>4. Role 리소스 생성</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Role</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubectl-prometheus-alertmanager-role</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">mbc-add-dev</span></span><br><span class="line"><span class="attr">rules:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">apiGroups:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">apps</span></span><br><span class="line">  <span class="attr">resourceNames:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">prometheus-alertmanager</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">alertmanager</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">statefulsets</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">statefulsets/scale</span></span><br><span class="line">  <span class="attr">verbs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">get</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">patch</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">list</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">watch</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">update</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="RoleBinding"><a href="#RoleBinding" class="headerlink" title="RoleBinding"></a>RoleBinding</h2><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">RoleBinding</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubectl-prometheus-alertmanager-rolebinding</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">mbc-add-dev</span></span><br><span class="line"><span class="attr">roleRef:</span></span><br><span class="line">  <span class="attr">apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br><span class="line">  <span class="attr">kind:</span> <span class="string">Role</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;Role</span> <span class="string">Name&gt;</span></span><br><span class="line"><span class="attr">subjects:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;Service</span> <span class="string">Account</span> <span class="string">Name&gt;</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">mbc-add-dev</span></span><br></pre></td></tr></table></figure>
+<h4 id="5-RoleBinding-리소스-생성"><a href="#5-RoleBinding-리소스-생성" class="headerlink" title="5. RoleBinding 리소스 생성"></a>5. RoleBinding 리소스 생성</h4><p>위에서 생성한 Role 과 ServiceAccount 을 연결시켜주기 위한 RoleBinding 객체를 생성합니다. </p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">RoleBinding</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubectl-prometheus-alertmanager-rolebinding</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">mbc-add-dev</span></span><br><span class="line"><span class="attr">roleRef:</span></span><br><span class="line">  <span class="attr">apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br><span class="line">  <span class="attr">kind:</span> <span class="string">Role</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;Role</span> <span class="string">Name&gt;</span></span><br><span class="line"><span class="attr">subjects:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;Service</span> <span class="string">Account</span> <span class="string">Name&gt;</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">mbc-add-dev</span></span><br></pre></td></tr></table></figure>
         </div>
         <footer class="article-footer">
             
@@ -345,7 +346,7 @@ ServiceAccount는 Pod를 생성할 때 자동으로 생성되며, Pod의 spec에
         "genre": "Kubernetes Config",
         "datePublished": "2023-06-11",
         "dateCreated": "2023-06-11",
-        "dateModified": "2024-02-19",
+        "dateModified": "2025-04-01",
         "url": "https://ckck803.github.io/2023/06/11/k8s/config/ServiceAccount/",
         "description": "
 
@@ -368,7 +369,7 @@ https://findstar.pe.kr/2023/04/09/access-k8s-api-from-pod/
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 https://kubernetes.io/ko/docs/reference/access-authn-authz/service-accounts-admin/
 
-ServiceAccount
+🔎 ServiceAccount 란?
 ServiceAccount 는 쿠버네티스 API 서버와 통신하고 클러스터 내의 다른 리소스에 접근하기 위한 인증 정보를 제공합니다.
 
 
@@ -377,7 +378,7 @@ ServiceAccount 는 쿠버네티스 API 서버와 통신하고 클러스터 내�
 ServiceAccount 는 Pod 가 Kubernetes API Server 에 인증 하기 위한 Account 입니다. 때문에 Pod 를 생성할때 ServiceAccount 를 할당해야 하며 지정하지 않을 경우 default 가 자동으로 할당됩니다.
 Rule 과 RuleBinding 을 이용해 ServiceAccount 에 권한을 부여함으로써 Pod 가 다른 리소스에 접근할 수 있게 해줍니다.
 ServiceAccount 는 Namespace 단위로 생성되는 리소스며 다른 Namespace 에서 정의된 ServiceAccount 를 사용할 수 없습니다.",
-        "wordCount": 692
+        "wordCount": 745
     }
 </script>
 
@@ -553,20 +554,5 @@ ServiceAccount 는 Namespace 단위로 생성되는 리소스며 다른 Namespac
 <script src="/js/main.js"></script>
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
