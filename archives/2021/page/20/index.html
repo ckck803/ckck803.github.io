@@ -926,16 +926,16 @@ JWT는 Header, Payload, Signature 세가지로 구성돼 있다.
 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입
 [Spring Core] - 스프링 컨테이너
 
-BeanDefinition
+🔎 BeanDefinition - Bean 메타정보 관리
 스프링 컨테이너는 BeanDefinition 을 이용해 스프링 빈을 생성합니다.
 
-스프링 컨테이너는 BeanDefinition 에 정의된 빈 메타정보를 이용해 스프링 빈을 생성합니다. 빈 메타 정보는 XML, 자바코드 등으로 작성되며 @Bean, &lt;bean&gt; 당 하나씩 메타정보가 생성됩니다. 스프링은 정의된 메타정보들을 읽어와 BeanDefinition 을 생성합니다.
+빈 메타 정보는 XML, 자바코드 등으로 작성되며 @Bean, &lt;bean&gt; 당 하나씩 메타정보가 생성됩니다. 스프링은 정의된 메타정보들을 읽어와 BeanDefinition 을 생성한 후 스프링 컨테이너에서 BeanDefinition 에 정의된 빈 메타정보를 이용해 스프링 빈을 생성합니다. 
 ` 당 하나씩 메타정보가 생성됩니다. -->
 
 
 
 
-BeanDefinitionReader서로 다른 방식으로 정의된 빈 메타정보를 BeanDefinition 으로 생성하기 위해 스프링은 다양한 BeanDefinitionReader 를 제공합니다.
+🔎 BeanDefinitionReader - BeanDefinition 을 생성하기 위한 객체서로 다른 방식으로 정의된 빈 메타정보를 BeanDefinition 으로 생성하기 위해 스프링은 다양한 BeanDefinitionReader 를 제공합니다.
 
 AnnotationConfigApplicationContext 는 AnnotatedBeanDefinitionReader 를 사용해서 AppConfig.class 를 읽고 BeanDefinition 을 생성합니다.
 GenericXmlApplicationContext 는 XmlBeanDefinitionReader 를 사용해서 appConfig.xml 설정 정보를 읽고 BeanDefinition 을 생성합니다.

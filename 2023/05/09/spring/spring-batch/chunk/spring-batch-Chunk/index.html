@@ -7,22 +7,22 @@
     
 
     
-    <title>Spring Batch - Chunk 기반 Step | Victor</title>
+    <title>[Spring Batch] - Chunk 기반 Step | Victor</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="keywords" content>
     
-    <meta name="description" content="출처 해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.  목차 Spring Batch - ItemWriter Spring Batch - ItemProcessor Spring Batch - ItemReader Spring Batch - ChunkProvider 와 Ch">
+    <meta name="description" content="출처 해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.  목차 [Spring Batch] - ItemWriter [Spring Batch] - ItemProcessor [Spring Batch] - ItemReader [Spring Batch] - ChunkProvi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Batch - Chunk 기반 Step">
+<meta property="og:title" content="[Spring Batch] - Chunk 기반 Step">
 <meta property="og:url" content="https://ckck803.github.io/2023/05/09/spring/spring-batch/chunk/spring-batch-Chunk/index.html">
 <meta property="og:site_name" content="Victor">
-<meta property="og:description" content="출처 해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.  목차 Spring Batch - ItemWriter Spring Batch - ItemProcessor Spring Batch - ItemReader Spring Batch - ChunkProvider 와 Ch">
+<meta property="og:description" content="출처 해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.  목차 [Spring Batch] - ItemWriter [Spring Batch] - ItemProcessor [Spring Batch] - ItemReader [Spring Batch] - ChunkProvi">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/spring-batch/ch7/chunk.png">
 <meta property="article:published_time" content="2023-05-09T01:25:35.000Z">
-<meta property="article:modified_time" content="2024-02-26T15:27:47.013Z">
+<meta property="article:modified_time" content="2025-03-31T16:54:54.367Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/spring-batch/ch7/chunk.png">
@@ -170,7 +170,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-        Spring Batch - Chunk 기반 Step
+        [Spring Batch] - Chunk 기반 Step
         </h1>
     
 
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-Chunk/" class="article-date">
-     <time datetime="2024-02-26T15:27:47.013Z" itemprop="dateModified">2024-02-27</time>
+     <time datetime="2025-03-31T16:54:54.367Z" itemprop="dateModified">2025-04-01</time>
   </a>
 </div>
 
@@ -216,24 +216,14 @@
 <li>해당 포스트는 정수원 강사님의 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B0%B0%EC%B9%98/dashboard">스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch</a> 강의를 바탕으로 작성 됐습니다.</li>
 </ul>
 <h2 id="목차"><a href="#목차" class="headerlink" title="목차"></a>목차</h2><ul>
-<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ItemWriter/" title="Spring Batch - ItemWriter">Spring Batch - ItemWriter</a></li>
-<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ItemProcessor/" title="Spring Batch - ItemProcessor">Spring Batch - ItemProcessor</a></li>
-<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ItemReader/" title="Spring Batch - ItemReader">Spring Batch - ItemReader</a></li>
-<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ChunkProvider_ChunkProcessor/" title="Spring Batch - ChunkProvider 와 ChunkProcessor">Spring Batch - ChunkProvider 와 ChunkProcessor</a></li>
-<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ChunkOrientedTasklet/" title="Spring Batch - ChunkOrientedTasklet">Spring Batch - ChunkOrientedTasklet</a></li>
-<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-Chunk/" title="Spring Batch - Chunk 기반 Step">Spring Batch - Chunk 기반 Step</a></li>
-<li><a href="/2023/05/08/spring/spring-batch/flow/spring-batch-24-FlowJob/" title="Spring Batch - 24. FlowJob">Spring Batch - 24. FlowJob</a></li>
-<li><a href="#">Post not found: spring/spring-batch/tasklet/spring-batch-23-JobStep</a></li>
-<li><a href="/2023/05/06/spring/spring-batch/tasklet/spring-batch-22-Tasklet/" title="Spring Batch - 22. Tasklet 기반 Step">Spring Batch - 22. Tasklet 기반 Step</a></li>
-<li><a href="/2023/05/04/spring/spring-batch/tasklet/spring-batch-21-TaskletStep/" title="Spring Batch - 21. TaskletStep">Spring Batch - 21. TaskletStep</a></li>
-<li><a href="/2023/05/04/spring/spring-batch/step/spring-batch-20-StepBuilderFactory/" title="Spring Batch - 20. StepBuilderFactory 와 StepBuilder">Spring Batch - 20. StepBuilderFactory 와 StepBuilder</a></li>
-<li><a href="/2023/05/03/spring/spring-batch/job/spring-batch-19-JobIncrementer/" title="Spring Batch - 19. JobParameters 증가 JobParametersIncrementer">Spring Batch - 19. JobParameters 증가 JobParametersIncrementer</a></li>
-<li><a href="/2023/04/06/spring/spring-batch/job/spring-batch-18-preventRestart/" title="Spring Batch - 18. Job 의 재시작 방지 preventRestart">Spring Batch - 18. Job 의 재시작 방지 preventRestart</a></li>
-<li><a href="/2023/04/05/spring/spring-batch/job/spring-batch-17-JobParametersValidator/" title="Spring Batch - 17. JobParameters 검증 JobParametersValidator">Spring Batch - 17. JobParameters 검증 JobParametersValidator</a></li>
-<li><a href="/2023/04/04/spring/spring-batch/job/spring-batch-16-SimpleJob/" title="Spring Batch - 16. SimpleJob 와 SimpleJobLauncher">Spring Batch - 16. SimpleJob 와 SimpleJobLauncher</a></li>
-<li><a href="/2023/04/02/spring/spring-batch/job/spring-batch-15-JobBuilderFactory/" title="Spring Batch - 15. JobBuilderFactory &amp; JobBuilder">Spring Batch - 15. JobBuilderFactory &amp; JobBuilder</a></li>
+<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ItemWriter/" title="[Spring Batch] - ItemWriter">[Spring Batch] - ItemWriter</a></li>
+<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ItemProcessor/" title="[Spring Batch] - ItemProcessor">[Spring Batch] - ItemProcessor</a></li>
+<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ItemReader/" title="[Spring Batch] - ItemReader">[Spring Batch] - ItemReader</a></li>
+<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ChunkProvider_ChunkProcessor/" title="[Spring Batch] - ChunkProvider 와 ChunkProcessor">[Spring Batch] - ChunkProvider 와 ChunkProcessor</a></li>
+<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-ChunkOrientedTasklet/" title="[Spring Batch] - ChunkOrientedTasklet">[Spring Batch] - ChunkOrientedTasklet</a></li>
+<li><a href="/2023/05/09/spring/spring-batch/chunk/spring-batch-Chunk/" title="[Spring Batch] - Chunk 기반 Step">[Spring Batch] - Chunk 기반 Step</a></li>
 </ul>
-<h2 id="Chunk"><a href="#Chunk" class="headerlink" title="Chunk"></a>Chunk</h2><blockquote>
+<h2 id="🔎-Chunk-란"><a href="#🔎-Chunk-란" class="headerlink" title="🔎 Chunk 란?"></a>🔎 Chunk 란?</h2><blockquote>
 <p>Chunk 란 여러개의 아이템을 묶은 하나의 덩어리, 블록을 의미합니다. </p>
 </blockquote>
 <p>한번에 하나씩 아이템 입력을 받아 Chunk 단위의 덩어리로 만든 후 Chunk 단위로 트랜잭션을 처리합니다. 즉, Chunk 단위의 Commit 과 Rollback 이 이루어지게 됩니다.</p>
@@ -241,16 +231,16 @@
 <p>Chunk는 대용량 데이터를 처리하는 데 사용되는 방법 중 하나입니다. Chunk 지향 처리는 일괄 처리 작업을 조각 단위로 분할하여 처리하며, 각 조각은 스텝 내에서 개별적으로 처리됩니다. 예를 들어, 1000개의 항목이있는 데이터 세트가 있다면, Chunk 처리를 사용하여 이 데이터를 100개씩 10 조각으로 분할 할 수 있습니다.</p>
 <p>Chunk는 큰 데이터 세트를 처리 할 때 매우 유용합니다. 데이터를 조각으로 나누어 처리하므로 메모리 부족 문제가 발생하지 않습니다. 대신 Chunk는 데이터를 작은 묶음으로 나누어 처리하고 일부 묶음이 완료되면 다음 묶음으로 이동합니다.</p>
 <p>Spring Batch에서 Chunk는 ItemReader, ItemProcessor 및 ItemWriter로 구성됩니다. ItemReader는 데이터를 읽고 ItemProcessor는 데이터를 가공하고 ItemWriter는 결과를 저장합니다. Chunk 지향 처리를 사용하면 각 스텝에서 처리 할 데이터 레코드의 수를 지정할 수 있으므로 처리 속도를 향상시킬 수 있습니다.</p>
-<h2 id="Chunk-입력기와-출력기"><a href="#Chunk-입력기와-출력기" class="headerlink" title="Chunk 입력기와 출력기"></a>Chunk 입력기와 출력기</h2><p>입력기를 통해 Item 을 하나하나씩 읽어들여 Chunk 에 저장한 후 처리가 완료 됐을때 Item 들을 한번에 출력기로 내보낸다.</p>
+<h2 id="✅-Chunk-입력기와-출력기"><a href="#✅-Chunk-입력기와-출력기" class="headerlink" title="✅ Chunk 입력기와 출력기"></a>✅ Chunk 입력기와 출력기</h2><p>입력기를 통해 Item 을 하나하나씩 읽어들여 Chunk 에 저장한 후 처리가 완료 됐을때 Item 들을 한번에 출력기로 내보낸다.</p>
 <p><img src="/images/spring-batch/ch7/chunk.png"></p>
-<h2 id="Chunk-와-Chunk"><a href="#Chunk-와-Chunk" class="headerlink" title="Chunk&lt;I&gt; 와 Chunk&lt;O&gt;"></a>Chunk&lt;I&gt; 와 Chunk&lt;O&gt;</h2><p><strong>Chunk&lt;I&gt;</strong> 는 ItemReader 로 읽은 하나의 아이템을 Chunk 에서 정한 개수만큼 반복해서 저장하는 타입입니다. </p>
+<h2 id="✅-Chunk-와-Chunk"><a href="#✅-Chunk-와-Chunk" class="headerlink" title="✅ Chunk&lt;I&gt; 와 Chunk&lt;O&gt;"></a>✅ Chunk&lt;I&gt; 와 Chunk&lt;O&gt;</h2><p><strong>Chunk&lt;I&gt;</strong> 는 ItemReader 로 읽은 하나의 아이템을 Chunk 에서 정한 개수만큼 반복해서 저장하는 타입입니다. </p>
 <p><strong>Chunk&lt;O&gt;</strong> 는 ItemReader 로부터 전달받은 Chunk&lt;I&gt; 를 참조해서 ItemProcessor 에서 적절하게 가공 및 핕러링한 후 ItemWriter 에 전달하는 타입입니다.</p>
 <p><img src="/images/spring-batch/ch7/chunk_2.png" alt="Chunk 기반 Batch 에서의 Process"></p>
-<h2 id="Chunk-아키텍처"><a href="#Chunk-아키텍처" class="headerlink" title="Chunk 아키텍처"></a>Chunk 아키텍처</h2><p>ItemReader 가 Source 로부터 Item 을 읽은 후 Chunk&lt;I&gt; 에 저장합니다. 설정된 Chunk Size 만큼 Item 을 읽었을 후에는 ItemProcessor 에 Chunk&lt;I&gt; 에 저장된 Item 들을 inputs 객체로 전달합니다. </p>
+<h2 id="✅-Chunk-아키텍처"><a href="#✅-Chunk-아키텍처" class="headerlink" title="✅ Chunk 아키텍처"></a>✅ Chunk 아키텍처</h2><p>ItemReader 가 Source 로부터 Item 을 읽은 후 Chunk&lt;I&gt; 에 저장합니다. 설정된 Chunk Size 만큼 Item 을 읽었을 후에는 ItemProcessor 에 Chunk&lt;I&gt; 에 저장된 Item 들을 inputs 객체로 전달합니다. </p>
 <p>ItemProcessor 는 Iterator 를 이용해 전달받은 inputs 에 저장된 Item 들에 대한 데이터 처리를 한 후 Chunk&lt;O&gt; 에 처리 결과를 전달합니다.</p>
 <p>Chunk&lt;O&gt; 은 ItemWriter 에 처리 결과를 전달합니다. ItemWriter 객체는 데이터를 쓰거나 저장하는 역할을 진행합니다.</p>
 <p><img src="/images/spring-batch/ch7/chunk_architecture.png" alt="Chunk 기반 Batch 에서의 Transaction 단위"></p>
-<h2 id="Chunk-예시-코드"><a href="#Chunk-예시-코드" class="headerlink" title="Chunk 예시 코드"></a>Chunk 예시 코드</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Step <span class="title function_">step1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> stepBuilderFactory.get(<span class="string">&quot;step1&quot;</span>)</span><br><span class="line">            .&lt;String, String&gt;chunk(<span class="number">2</span>)</span><br><span class="line">            <span class="comment">// ItemReader</span></span><br><span class="line">            .reader(<span class="keyword">new</span> <span class="title class_">ListItemReader</span>&lt;&gt;(Arrays.asList(<span class="string">&quot;item1&quot;</span>, <span class="string">&quot;item2&quot;</span>, <span class="string">&quot;item3&quot;</span>,<span class="string">&quot;item4&quot;</span>, <span class="string">&quot;item5&quot;</span>, <span class="string">&quot;item6&quot;</span>)))</span><br><span class="line">            <span class="comment">// ItemProcessor</span></span><br><span class="line">            .processor(<span class="keyword">new</span> <span class="title class_">ItemProcessor</span>&lt;String, String&gt;() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> String <span class="title function_">process</span><span class="params">(String item)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">300</span>);</span><br><span class="line">                    System.out.println(item);</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;my_&quot;</span> + item;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="comment">// ItemWriter</span></span><br><span class="line">            .writer(<span class="keyword">new</span> <span class="title class_">ItemWriter</span>&lt;String&gt;() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">write</span><span class="params">(List&lt;? extends String&gt; items)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                    System.out.println(items);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="💻-Chunk-예시-코드"><a href="#💻-Chunk-예시-코드" class="headerlink" title="💻 Chunk 예시 코드"></a>💻 Chunk 예시 코드</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Step <span class="title function_">step1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> stepBuilderFactory.get(<span class="string">&quot;step1&quot;</span>)</span><br><span class="line">            .&lt;String, String&gt;chunk(<span class="number">2</span>)</span><br><span class="line">            <span class="comment">// ItemReader</span></span><br><span class="line">            .reader(<span class="keyword">new</span> <span class="title class_">ListItemReader</span>&lt;&gt;(Arrays.asList(<span class="string">&quot;item1&quot;</span>, <span class="string">&quot;item2&quot;</span>, <span class="string">&quot;item3&quot;</span>,<span class="string">&quot;item4&quot;</span>, <span class="string">&quot;item5&quot;</span>, <span class="string">&quot;item6&quot;</span>)))</span><br><span class="line">            <span class="comment">// ItemProcessor</span></span><br><span class="line">            .processor(<span class="keyword">new</span> <span class="title class_">ItemProcessor</span>&lt;String, String&gt;() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> String <span class="title function_">process</span><span class="params">(String item)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">300</span>);</span><br><span class="line">                    System.out.println(item);</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;my_&quot;</span> + item;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="comment">// ItemWriter</span></span><br><span class="line">            .writer(<span class="keyword">new</span> <span class="title class_">ItemWriter</span>&lt;String&gt;() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">write</span><span class="params">(List&lt;? extends String&gt; items)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                    System.out.println(items);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="Lambda-로-표현"><a href="#Lambda-로-표현" class="headerlink" title="Lambda 로 표현"></a>Lambda 로 표현</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Step <span class="title function_">step1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> stepBuilderFactory.get(<span class="string">&quot;step1&quot;</span>)</span><br><span class="line">            .&lt;String, String&gt;chunk(<span class="number">2</span>)</span><br><span class="line">            .reader(<span class="keyword">new</span> <span class="title class_">ListItemReader</span>&lt;&gt;(Arrays.asList(<span class="string">&quot;item1&quot;</span>, <span class="string">&quot;item2&quot;</span>, <span class="string">&quot;item3&quot;</span>,<span class="string">&quot;item4&quot;</span>, <span class="string">&quot;item5&quot;</span>, <span class="string">&quot;item6&quot;</span>)))</span><br><span class="line">            .processor((ItemProcessor&lt;String, String&gt;) item -&gt; &#123;</span><br><span class="line">                Thread.sleep(<span class="number">300</span>);</span><br><span class="line">                System.out.println(item);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;my_&quot;</span> + item;</span><br><span class="line">            &#125;)</span><br><span class="line">            .writer(items -&gt; &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                System.out.println(items);</span><br><span class="line">            &#125;)</span><br><span class="line">            .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         </div>
@@ -329,43 +319,33 @@
             "@type": "Person",
             "name": "ckck803"
         },
-        "headline": "Spring Batch - Chunk 기반 Step",
+        "headline": "[Spring Batch] - Chunk 기반 Step",
         "image": "https://ckck803.github.io/images/spring-batch/ch7/chunk.png",
         "keywords": "",
         "genre": "Spring Spring Batch Step Chunk",
         "datePublished": "2023-05-09",
         "dateCreated": "2023-05-09",
-        "dateModified": "2024-02-27",
+        "dateModified": "2025-04-01",
         "url": "https://ckck803.github.io/2023/05/09/spring/spring-batch/chunk/spring-batch-Chunk/",
         "description": "출처
 해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.
 
 목차
-Spring Batch - ItemWriter
-Spring Batch - ItemProcessor
-Spring Batch - ItemReader
-Spring Batch - ChunkProvider 와 ChunkProcessor
-Spring Batch - ChunkOrientedTasklet
-Spring Batch - Chunk 기반 Step
-Spring Batch - 24. FlowJob
-Post not found: spring/spring-batch/tasklet/spring-batch-23-JobStep
-Spring Batch - 22. Tasklet 기반 Step
-Spring Batch - 21. TaskletStep
-Spring Batch - 20. StepBuilderFactory 와 StepBuilder
-Spring Batch - 19. JobParameters 증가 JobParametersIncrementer
-Spring Batch - 18. Job 의 재시작 방지 preventRestart
-Spring Batch - 17. JobParameters 검증 JobParametersValidator
-Spring Batch - 16. SimpleJob 와 SimpleJobLauncher
-Spring Batch - 15. JobBuilderFactory &amp; JobBuilder
+[Spring Batch] - ItemWriter
+[Spring Batch] - ItemProcessor
+[Spring Batch] - ItemReader
+[Spring Batch] - ChunkProvider 와 ChunkProcessor
+[Spring Batch] - ChunkOrientedTasklet
+[Spring Batch] - Chunk 기반 Step
 
-Chunk
+🔎 Chunk 란?
 Chunk 란 여러개의 아이템을 묶은 하나의 덩어리, 블록을 의미합니다. 
 
 한번에 하나씩 아이템 입력을 받아 Chunk 단위의 덩어리로 만든 후 Chunk 단위로 트랜잭션을 처리합니다. 즉, Chunk 단위의 Commit 과 Rollback 이 이루어지게 됩니다.
 일반적으로 대용량의 데이터를 한번에 처리하는 것이 아닌 Chunk 단위로 쪼개어서 더 이상 처리할 데이터가 없을 때까지 반복해서 입출력하는데 사용됩니다.
 Chunk는 대용량 데이터를 처리하는 데 사용되는 방법 중 하나입니다. Chunk 지향 처리는 일괄 처리 작업을 조각 단위로 분할하여 처리하며, 각 조각은 스텝 내에서 개별적으로 처리됩니다. 예를 들어, 1000개의 항목이있는 데이터 세트가 있다면, Chunk 처리를 사용하여 이 데이터를 100개씩 10 조각으로 분할 할 수 있습니다.
 Chunk는 큰 데이터 세트를 처리 할 때 매우 유용합니다. 데이터를 조각으로 나누어 처리하므로 메모리 부족 문제가 발생하지 않습니다. 대신 Chunk는 데이터를 작은 묶음으로 나누어 처리하고 일부 묶음이 완료되면 다음 묶음으로 이동합니다.",
-        "wordCount": 1185
+        "wordCount": 1071
     }
 </script>
 
@@ -410,7 +390,7 @@ Chunk는 큰 데이터 세트를 처리 할 때 매우 유용합니다. 데이�
         <strong class="article-nav-caption">newer</strong>
         <p class="article-nav-title">
         
-            Spring Batch - ChunkOrientedTasklet
+            [Spring Batch] - ChunkOrientedTasklet
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>

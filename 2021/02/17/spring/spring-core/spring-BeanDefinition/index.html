@@ -13,16 +13,16 @@
     
     <meta name="keywords" content>
     
-    <meta name="description" content="목차 [Spring Core] - 의존성 주입 방식 [Spring Core] - 컴포넌트 스캔과 의존성 주입 [Spring Core] - BeanDefinition [Spring Core] - 스프링 빈 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입 [Spring Core] - 스프링 컨테이너  BeanDefinition">
+    <meta name="description" content="목차 [Spring Core] - 의존성 주입 방식 [Spring Core] - 컴포넌트 스캔과 의존성 주입 [Spring Core] - BeanDefinition [Spring Core] - 스프링 빈 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입 [Spring Core] - 스프링 컨테이너  🔎 BeanDefinit">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[Spring Core] - BeanDefinition">
 <meta property="og:url" content="https://ckck803.github.io/2021/02/17/spring/spring-core/spring-BeanDefinition/index.html">
 <meta property="og:site_name" content="Victor">
-<meta property="og:description" content="목차 [Spring Core] - 의존성 주입 방식 [Spring Core] - 컴포넌트 스캔과 의존성 주입 [Spring Core] - BeanDefinition [Spring Core] - 스프링 빈 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입 [Spring Core] - 스프링 컨테이너  BeanDefinition">
+<meta property="og:description" content="목차 [Spring Core] - 의존성 주입 방식 [Spring Core] - 컴포넌트 스캔과 의존성 주입 [Spring Core] - BeanDefinition [Spring Core] - 스프링 빈 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입 [Spring Core] - 스프링 컨테이너  🔎 BeanDefinit">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/spirng/Spirng5MVC/spring.png">
 <meta property="article:published_time" content="2021-02-16T20:14:19.000Z">
-<meta property="article:modified_time" content="2025-03-30T01:29:13.984Z">
+<meta property="article:modified_time" content="2025-03-31T16:29:48.441Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/spirng/Spirng5MVC/spring.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2021/02/17/spring/spring-core/spring-BeanDefinition/" class="article-date">
-     <time datetime="2025-03-30T01:29:13.984Z" itemprop="dateModified">2025-03-30</time>
+     <time datetime="2025-03-31T16:29:48.441Z" itemprop="dateModified">2025-04-01</time>
   </a>
 </div>
 
@@ -221,18 +221,18 @@
 <li><a href="/2021/02/17/spring/spring-core/spring-container-bean/" title="[Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입">[Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입</a></li>
 <li><a href="/2021/02/17/spring/spring-core/spring-container/" title="[Spring Core] - 스프링 컨테이너">[Spring Core] - 스프링 컨테이너</a></li>
 </ul>
-<h2 id="BeanDefinition"><a href="#BeanDefinition" class="headerlink" title="BeanDefinition"></a>BeanDefinition</h2><blockquote>
+<h2 id="🔎-BeanDefinition-Bean-메타정보-관리"><a href="#🔎-BeanDefinition-Bean-메타정보-관리" class="headerlink" title="🔎 BeanDefinition - Bean 메타정보 관리"></a>🔎 BeanDefinition - Bean 메타정보 관리</h2><blockquote>
 <p>스프링 컨테이너는 <strong>BeanDefinition</strong> 을 이용해 스프링 빈을 생성합니다.</p>
 </blockquote>
-<p>스프링 컨테이너는 <code>BeanDefinition</code> 에 정의된 빈 메타정보를 이용해 스프링 빈을 생성합니다. 빈 메타 정보는 XML, 자바코드 등으로 작성되며 <code>@Bean</code>, <code>&lt;bean&gt;</code> 당 하나씩 메타정보가 생성됩니다. 스프링은 정의된 메타정보들을 읽어와 BeanDefinition 을 생성합니다.</p>
+<p>빈 메타 정보는 XML, 자바코드 등으로 작성되며 <code>@Bean</code>, <code>&lt;bean&gt;</code> 당 하나씩 메타정보가 생성됩니다. 스프링은 정의된 메타정보들을 읽어와 BeanDefinition 을 생성한 후 스프링 컨테이너에서 <code>BeanDefinition</code> 에 정의된 빈 메타정보를 이용해 스프링 빈을 생성합니다. </p>
 <!-- 스프링은 XML, 자바코드 등으로 작성된 설정정보를 읽어 `BeanDefinition` 으로 생성합니다. BeanDefinition 을 빈 설정 메타정보라 합니다.
 
 BeanDefinition 에는 `@Bean`, `<bean>` 당 하나씩 메타정보가 생성됩니다. -->
 
 
 
-<p><img src="/images/springboot/spring-core/basic/BeanDefinition.png"></p>
-<h2 id="BeanDefinitionReader"><a href="#BeanDefinitionReader" class="headerlink" title="BeanDefinitionReader"></a>BeanDefinitionReader</h2><p>서로 다른 방식으로 정의된 빈 메타정보를 BeanDefinition 으로 생성하기 위해 스프링은 다양한 BeanDefinitionReader 를 제공합니다.</p>
+<p><img src="/images/springboot/spring-core/basic/BeanDefinition.png" alt="BeanDefinition 생성"></p>
+<h2 id="🔎-BeanDefinitionReader-BeanDefinition-을-생성하기-위한-객체"><a href="#🔎-BeanDefinitionReader-BeanDefinition-을-생성하기-위한-객체" class="headerlink" title="🔎 BeanDefinitionReader - BeanDefinition 을 생성하기 위한 객체"></a>🔎 BeanDefinitionReader - BeanDefinition 을 생성하기 위한 객체</h2><p>서로 다른 방식으로 정의된 빈 메타정보를 BeanDefinition 으로 생성하기 위해 스프링은 다양한 BeanDefinitionReader 를 제공합니다.</p>
 <ul>
 <li>AnnotationConfigApplicationContext 는 AnnotatedBeanDefinitionReader 를 사용해서 AppConfig.class 를 읽고 BeanDefinition 을 생성합니다.</li>
 <li>GenericXmlApplicationContext 는 XmlBeanDefinitionReader 를 사용해서 appConfig.xml 설정 정보를 읽고 BeanDefinition 을 생성합니다.</li>
@@ -323,7 +323,7 @@ BeanDefinition 에는 `@Bean`, `<bean>` 당 하나씩 메타정보가 생성됩�
         "genre": "Spring Spring Core",
         "datePublished": "2021-02-17",
         "dateCreated": "2021-02-17",
-        "dateModified": "2025-03-30",
+        "dateModified": "2025-04-01",
         "url": "https://ckck803.github.io/2021/02/17/spring/spring-core/spring-BeanDefinition/",
         "description": "
 목차
@@ -334,22 +334,22 @@ BeanDefinition 에는 `@Bean`, `<bean>` 당 하나씩 메타정보가 생성됩�
 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입
 [Spring Core] - 스프링 컨테이너
 
-BeanDefinition
+🔎 BeanDefinition - Bean 메타정보 관리
 스프링 컨테이너는 BeanDefinition 을 이용해 스프링 빈을 생성합니다.
 
-스프링 컨테이너는 BeanDefinition 에 정의된 빈 메타정보를 이용해 스프링 빈을 생성합니다. 빈 메타 정보는 XML, 자바코드 등으로 작성되며 @Bean, &lt;bean&gt; 당 하나씩 메타정보가 생성됩니다. 스프링은 정의된 메타정보들을 읽어와 BeanDefinition 을 생성합니다.
+빈 메타 정보는 XML, 자바코드 등으로 작성되며 @Bean, &lt;bean&gt; 당 하나씩 메타정보가 생성됩니다. 스프링은 정의된 메타정보들을 읽어와 BeanDefinition 을 생성한 후 스프링 컨테이너에서 BeanDefinition 에 정의된 빈 메타정보를 이용해 스프링 빈을 생성합니다. 
 ` 당 하나씩 메타정보가 생성됩니다. -->
 
 
 
 
-BeanDefinitionReader서로 다른 방식으로 정의된 빈 메타정보를 BeanDefinition 으로 생성하기 위해 스프링은 다양한 BeanDefinitionReader 를 제공합니다.
+🔎 BeanDefinitionReader - BeanDefinition 을 생성하기 위한 객체서로 다른 방식으로 정의된 빈 메타정보를 BeanDefinition 으로 생성하기 위해 스프링은 다양한 BeanDefinitionReader 를 제공합니다.
 
 AnnotationConfigApplicationContext 는 AnnotatedBeanDefinitionReader 를 사용해서 AppConfig.class 를 읽고 BeanDefinition 을 생성합니다.
 GenericXmlApplicationContext 는 XmlBeanDefinitionReader 를 사용해서 appConfig.xml 설정 정보를 읽고 BeanDefinition 을 생성합니다.
 새로운 형식의 설정 정보가 추가되면, XxxBeanDefinitionReader를 만들어서 BeanDefinition 을 생성하면 된다.
 ",
-        "wordCount": 411
+        "wordCount": 439
     }
 </script>
 

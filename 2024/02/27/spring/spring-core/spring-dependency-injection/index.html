@@ -13,16 +13,16 @@
     
     <meta name="keywords" content>
     
-    <meta name="description" content="목차 [Spring Core] - 의존성 주입 방식 [Spring Core] - 컴포넌트 스캔과 의존성 주입 [Spring Core] - BeanDefinition [Spring Core] - 스프링 빈 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입 [Spring Core] - 스프링 컨테이너  스프링 의존성 주입 (De">
+    <meta name="description" content="목차 [Spring Core] - 의존성 주입 방식 [Spring Core] - 컴포넌트 스캔과 의존성 주입 [Spring Core] - BeanDefinition [Spring Core] - 스프링 빈 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입 [Spring Core] - 스프링 컨테이너  🔎 의존성 주입 (Dep">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[Spring Core] - 의존성 주입 방식">
 <meta property="og:url" content="https://ckck803.github.io/2024/02/27/spring/spring-core/spring-dependency-injection/index.html">
 <meta property="og:site_name" content="Victor">
-<meta property="og:description" content="목차 [Spring Core] - 의존성 주입 방식 [Spring Core] - 컴포넌트 스캔과 의존성 주입 [Spring Core] - BeanDefinition [Spring Core] - 스프링 빈 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입 [Spring Core] - 스프링 컨테이너  스프링 의존성 주입 (De">
+<meta property="og:description" content="목차 [Spring Core] - 의존성 주입 방식 [Spring Core] - 컴포넌트 스캔과 의존성 주입 [Spring Core] - BeanDefinition [Spring Core] - 스프링 빈 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입 [Spring Core] - 스프링 컨테이너  🔎 의존성 주입 (Dep">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/spirng/Spirng5MVC/spring.png">
 <meta property="article:published_time" content="2024-02-26T15:14:19.000Z">
-<meta property="article:modified_time" content="2025-03-30T01:29:46.500Z">
+<meta property="article:modified_time" content="2025-03-31T16:10:34.998Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/spirng/Spirng5MVC/spring.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2024/02/27/spring/spring-core/spring-dependency-injection/" class="article-date">
-     <time datetime="2025-03-30T01:29:46.500Z" itemprop="dateModified">2025-03-30</time>
+     <time datetime="2025-03-31T16:10:34.998Z" itemprop="dateModified">2025-04-01</time>
   </a>
 </div>
 
@@ -221,16 +221,16 @@
 <li><a href="/2021/02/17/spring/spring-core/spring-container-bean/" title="[Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입">[Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입</a></li>
 <li><a href="/2021/02/17/spring/spring-core/spring-container/" title="[Spring Core] - 스프링 컨테이너">[Spring Core] - 스프링 컨테이너</a></li>
 </ul>
-<h2 id="스프링-의존성-주입-Dependency-Injection"><a href="#스프링-의존성-주입-Dependency-Injection" class="headerlink" title="스프링 의존성 주입 (Dependency Injection)"></a>스프링 의존성 주입 (Dependency Injection)</h2><blockquote>
+<h2 id="🔎-의존성-주입-Dependency-Injection"><a href="#🔎-의존성-주입-Dependency-Injection" class="headerlink" title="🔎 의존성 주입 (Dependency Injection)"></a>🔎 의존성 주입 (Dependency Injection)</h2><blockquote>
 <p>의존성 주입은 객체간의 의존성을 관리하기 위한 디자인 패턴</p>
 </blockquote>
-<p>한 객체가 직접 의존성하는 다른 객체를 생성하거나 관리하지 않고, 프레임워크와 같은 외부로부터 필요한 의존성을 주입받는방식 입니다. 이를 통해 객체간 의존성을 수정하기 위해 직접 코드를 수정할 필요가 없어 <strong>객체간 결합도</strong> 를 낮춰줍니다.</p>
-<p>스프링에서는 <strong>스프링 컨테이너</strong>가 객체의 의존성을 관리하고 주입해줍니다. 이때, 스프링 컨테이너가 의존성을 관리 및 주입을 위해 관리하는 객체들을 <strong>스프링 Bean</strong> 이라 부릅니다.</p>
-<p>스프링에서 의존성 주입을 위해서는 우선, 스프링 컨테이너에 객체들을 스프링 Bean 으로 등록해야 합나다. 의존성 주입은 스프링 Bean 으로 등록된 객체들을 기준으로 주입이 이뤄집니다.</p>
+<p>한 객체가 직접 의존성하는 다른 객체를 생성하거나 관리하지 않고, 프레임워크와 같은 외부로부터 필요한 의존성을 주입받는 방식입니다. 이를 통해 객체간 의존성을 수정하기 위해 직접 코드를 수정할 필요가 없어 <strong>객체간 결합도</strong> 를 낮춰줍니다.</p>
+<h2 id="📌-스프링에서의-의존성-주입"><a href="#📌-스프링에서의-의존성-주입" class="headerlink" title="📌 스프링에서의 의존성 주입"></a>📌 스프링에서의 의존성 주입</h2><p>스프링에서는 <strong>스프링 컨테이너</strong> 가 객체의 의존성을 관리하고 주입해줍니다. 이때, 스프링 컨테이너가 의존성을 관리 및 주입을 위해 관리하는 객체들을 <strong>스프링 Bean</strong> 이라 부릅니다.</p>
+<p>스프링에서 의존성 주입을 위해서는 우선, 스프링 컨테이너에 객체들을 스프링 Bean 으로 등록해야 합니다. 의존성 주입은 스프링 Bean 으로 등록된 객체들을 기준으로 주입이 이뤄집니다.</p>
 <p>스프링에서 의존성 주입을 위해 <code>@Autowired</code>와 <code>@Inject</code> 를 사용하고 <strong>생성자</strong>, <strong>Setter</strong>, <strong>필드</strong>, <strong>메소드</strong> 에 붙일 수 있습니다. </p>
-<p>위 어노테이션이 객체의 의존성을 주입할때는 타입을 기준으로 주입합니다.</p>
-<h2 id="의존성-주입방식"><a href="#의존성-주입방식" class="headerlink" title="의존성 주입방식"></a>의존성 주입방식</h2><h4 id="1-생성자-주입"><a href="#1-생성자-주입" class="headerlink" title="1. 생성자 주입"></a>1. 생성자 주입</h4><blockquote>
-<p>생성자를 통한 의존성 주입 방식은 스프링에서 가장 권장하는 방식입니다.</p>
+<p>객체의 의존성을 주입할때는 객체의 <strong>타입</strong> 을 기준으로 주입합니다.</p>
+<h4 id="1-생성자-주입"><a href="#1-생성자-주입" class="headerlink" title="1. 생성자 주입"></a>1. 생성자 주입</h4><blockquote>
+<p><strong>생성자</strong> 를 통한 의존성 주입 방식은 스프링에서 가장 권장하는 방식입니다.</p>
 </blockquote>
 <p>스프링 컨테이너가 Bean 을 생성할때 객체의 생성자를 이용해 의존관계를 주입하는 방식입니다. </p>
 <p>생성자를 통한 의존관계 주입은 객체 생성시 단 한번만 호출돼 객체간 <strong>의존관계의 불변성</strong>이 보장됩니다. 초기화 시점에 의존관계가 설정되고 변경되지 않기 때문에 <code>final</code> 키워드를 사용할 수 있습니다.</p>
@@ -333,7 +333,7 @@
         "genre": "Spring Spring Core",
         "datePublished": "2024-02-27",
         "dateCreated": "2024-02-27",
-        "dateModified": "2025-03-30",
+        "dateModified": "2025-04-01",
         "url": "https://ckck803.github.io/2024/02/27/spring/spring-core/spring-dependency-injection/",
         "description": "
 목차
@@ -344,15 +344,14 @@
 [Spring Core] - 스프링 컨테이너 생성과 Bean 등록, 의존성 주입
 [Spring Core] - 스프링 컨테이너
 
-스프링 의존성 주입 (Dependency Injection)
+🔎 의존성 주입 (Dependency Injection)
 의존성 주입은 객체간의 의존성을 관리하기 위한 디자인 패턴
 
-한 객체가 직접 의존성하는 다른 객체를 생성하거나 관리하지 않고, 프레임워크와 같은 외부로부터 필요한 의존성을 주입받는방식 입니다. 이를 통해 객체간 의존성을 수정하기 위해 직접 코드를 수정할 필요가 없어 객체간 결합도 를 낮춰줍니다.
-스프링에서는 스프링 컨테이너가 객체의 의존성을 관리하고 주입해줍니다. 이때, 스프링 컨테이너가 의존성을 관리 및 주입을 위해 관리하는 객체들을 스프링 Bean 이라 부릅니다.
-스프링에서 의존성 주입을 위해서는 우선, 스프링 컨테이너에 객체들을 스프링 Bean 으로 등록해야 합나다. 의존성 주입은 스프링 Bean 으로 등록된 객체들을 기준으로 주입이 이뤄집니다.
-스프링에서 의존성 주입을 위해 @Autowired와 @Inject 를 사용하고 생성자, Setter, 필드, 메소드 에 붙일 수 있습니다. 
-위 어노테이션이 객체의 의존성을 주입할때는 타입을 기준으로 주입합니다.",
-        "wordCount": 725
+한 객체가 직접 의존성하는 다른 객체를 생성하거나 관리하지 않고, 프레임워크와 같은 외부로부터 필요한 의존성을 주입받는 방식입니다. 이를 통해 객체간 의존성을 수정하기 위해 직접 코드를 수정할 필요가 없어 객체간 결합도 를 낮춰줍니다.
+📌 스프링에서의 의존성 주입스프링에서는 스프링 컨테이너 가 객체의 의존성을 관리하고 주입해줍니다. 이때, 스프링 컨테이너가 의존성을 관리 및 주입을 위해 관리하는 객체들을 스프링 Bean 이라 부릅니다.
+스프링에서 의존성 주입을 위해서는 우선, 스프링 컨테이너에 객체들을 스프링 Bean 으로 등록해야 합니다. 의존성 주입은 스프링 Bean 으로 등록된 객체들을 기준으로 주입이 이뤄집니다.
+스프링에서 의존성 주입을 위해 @Autowired와 @Inject 를 사용하고 생성자, Setter, 필드, 메소드 에 붙일 수 있습니다. ",
+        "wordCount": 731
     }
 </script>
 
