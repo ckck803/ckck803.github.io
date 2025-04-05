@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>[쿠버네티스] 인증/인가 - OIDC 를 이용한 Keycloak 연동 | Victor</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content>
+    
+    <meta name="description" content="목차 [쿠버네티스] 인증&#x2F;인가 - OIDC 를 이용한 Keycloak 연동 [쿠버네티스] 인증&#x2F;인가 - ServiceAccount [쿠버네티스] 인증&#x2F;인가 - X.509 인증서를 사용한 사용자 추가 및 인증  참고 https:&#x2F;&#x2F;wlsdn3004.tistory.com&#x2F;62   앞서 말했듯이, 쿠버네티스는 사용자 정보를 저장하">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[쿠버네티스] 인증&#x2F;인가 - OIDC 를 이용한 Keycloak 연동">
+<meta property="og:url" content="https://ckck803.github.io/2025/04/05/k8s/auth/k8s-oidc-keycloak/index.html">
+<meta property="og:site_name" content="Victor">
+<meta property="og:description" content="목차 [쿠버네티스] 인증&#x2F;인가 - OIDC 를 이용한 Keycloak 연동 [쿠버네티스] 인증&#x2F;인가 - ServiceAccount [쿠버네티스] 인증&#x2F;인가 - X.509 인증서를 사용한 사용자 추가 및 인증  참고 https:&#x2F;&#x2F;wlsdn3004.tistory.com&#x2F;62   앞서 말했듯이, 쿠버네티스는 사용자 정보를 저장하">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/k8s/k8s.png">
+<meta property="article:published_time" content="2025-04-05T01:31:46.000Z">
+<meta property="article:modified_time" content="2025-04-05T17:04:37.393Z">
+<meta property="article:author" content="ckck803">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/k8s/k8s.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="Victor" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Kubernetes/">Kubernetes</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-k8s/auth/k8s-oidc-keycloak" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        [쿠버네티스] 인증/인가 - OIDC 를 이용한 Keycloak 연동
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/04/05/k8s/auth/k8s-oidc-keycloak/" class="article-date">
+       <time datetime="2025-04-05T01:31:46.000Z" itemprop="datePublished">2025-04-05</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/04/05/k8s/auth/k8s-oidc-keycloak/" class="article-date">
+     <time datetime="2025-04-05T17:04:37.393Z" itemprop="dateModified">2025-04-06</time>
+  </a>
+</div>
+
+
+                
+
+                
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <!-- ![](/images/k8s/helm/helm.png) -->
+
+<p><img src="/images/k8s/k8s.png"></p>
+<h2 id="목차"><a href="#목차" class="headerlink" title="목차"></a>목차</h2><ul>
+<li><a href="/2025/04/05/k8s/auth/k8s-oidc-keycloak/" title="[쿠버네티스] 인증&#x2F;인가 - OIDC 를 이용한 Keycloak 연동">[쿠버네티스] 인증&#x2F;인가 - OIDC 를 이용한 Keycloak 연동</a></li>
+<li><a href="/2023/06/11/k8s/auth/ServiceAccount/" title="[쿠버네티스] 인증&#x2F;인가 - ServiceAccount">[쿠버네티스] 인증&#x2F;인가 - ServiceAccount</a></li>
+<li><a href="/2025/04/03/k8s/auth/cert-user/" title="[쿠버네티스] 인증&#x2F;인가 - X.509 인증서를 사용한 사용자 추가 및 인증">[쿠버네티스] 인증&#x2F;인가 - X.509 인증서를 사용한 사용자 추가 및 인증</a></li>
+</ul>
+<h2 id="참고"><a href="#참고" class="headerlink" title="참고"></a>참고</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://wlsdn3004.tistory.com/62">https://wlsdn3004.tistory.com/62</a></li>
+</ul>
+<hr>
+<p>앞서 말했듯이, 쿠버네티스는 사용자 정보를 저장하지 않습니다. 사용자를 관리하고 싶으면, 쿠버네티스에서 제공하는 OIDC 를 통해 별도의 인증 서버와 연계를 하면 사용자를 관리할 수 있습니다.</p>
+<p>인증서버로 유명한 Keycloak 을 이용해 사용자를 관리하고 쿠버네티스에서 인증을 진행할 수 있도록 설정을 진행하려고 합니다.</p>
+<h2 id="✅-1-Keycloak-Client-추가"><a href="#✅-1-Keycloak-Client-추가" class="headerlink" title="✅ 1. Keycloak Client 추가"></a>✅ 1. Keycloak Client 추가</h2><p>쿠버네티스에서 Keycloak 을 이용해 인증을 진행하기 위해서는 Client 생성(등록) 이 필요합니다.  Client 단위로 Keycloak 에서는 쿠버네티스 사용자들을 관리하고 권한을 매핑해줄 수 있습니다.</p>
+<h4 id="1-1-Client-생성"><a href="#1-1-Client-생성" class="headerlink" title="1-1. Client 생성"></a>1-1. Client 생성</h4><p><code>kubernetes-client</code> 이름으로 새로운 client 를 생성합니다.</p>
+<p><img src="/images/k8s/auth/k8s-keycloak-client1.png"></p>
+<p>Client authentication 을 활성화 해줍니다.</p>
+<p><img src="/images/k8s/auth/k8s-keycloak-client2.png"></p>
+<p>현재는 OIDC 를 이용하기 위한 URL 이 없으므로 빈칸으로 넘어갑니다.</p>
+<p><img src="/images/k8s/auth/k8s-keycloak-client3.png"></p>
+<h4 id="1-2-Role-생성"><a href="#1-2-Role-생성" class="headerlink" title="1-2. Role 생성"></a>1-2. Role 생성</h4><p>새로운 Role 을 추가해줍니다.</p>
+<p><img src="/images/k8s/auth/k8s-keycloak-add-role.png"></p>
+<h4 id="1-3-User-Client-Role-생성"><a href="#1-3-User-Client-Role-생성" class="headerlink" title="1-3. User Client Role 생성"></a>1-3. User Client Role 생성</h4><p><img src="/images/k8s/auth/k8s-keycloak-user-client-role.png"></p>
+<h4 id="1-4-User-추가"><a href="#1-4-User-추가" class="headerlink" title="1-4. User 추가"></a>1-4. User 추가</h4><p>쿠버네티스 사용자 인증을 위해 <code>test</code> 로 계정을 하나 생성합니다.</p>
+<p><img src="/images/k8s/auth/k8s-create-user.png"></p>
+<p>계정을 활성화 하기 위해서는 password 를 세팅해야 합니다.</p>
+<p><img src="/images/k8s/auth/k8s-keycloak-user-password.png"></p>
+<h4 id="1-5-Group-생성"><a href="#1-5-Group-생성" class="headerlink" title="1-5. Group 생성"></a>1-5. Group 생성</h4><p><img src="/images/k8s/auth/k8s-keycloak-group.png"></p>
+<p><img src="/images/k8s/auth/k8s-keycloak-group2.png"></p>
+<h4 id="1-6-User-에-Group-매핑"><a href="#1-6-User-에-Group-매핑" class="headerlink" title="1-6. User 에 Group 매핑"></a>1-6. User 에 Group 매핑</h4><p><img src="/images/k8s/auth/k8s-keycloak-user-add-group.png"></p>
+<h2 id="✅-2-Kubernetes-API-Server에-OIDC-옵션-추가"><a href="#✅-2-Kubernetes-API-Server에-OIDC-옵션-추가" class="headerlink" title="✅ 2. Kubernetes API Server에 OIDC 옵션 추가"></a>✅ 2. Kubernetes API Server에 OIDC 옵션 추가</h2><h4 id="2-1-kube-apiserver-매니페스트-변경"><a href="#2-1-kube-apiserver-매니페스트-변경" class="headerlink" title="2-1. kube-apiserver 매니페스트 변경"></a>2-1. kube-apiserver 매니페스트 변경</h4><p>쿠버네티스에서 요청을 받은 Kube API Server 가 Keycloak 을 통해 인증의 유효성을 확인할 수 있도록 <code>kube-apiserver.yaml</code> 파일에 설정을 추가해줘야 합니다.</p>
+<p>kubeadm으로 설치했을 경우 <code>/etc/kubernetes/manifests/kube-apiserver.yaml</code> 에 파일이 존재합니다.</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">command:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">kube-apiserver</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--oidc-issuer-url=https://&lt;Keycloak-호스트&gt;/auth/realms/&lt;Realm-이름&gt;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--oidc-client-id=kubernetes</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--oidc-username-claim=preferred_username</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--oidc-username-prefix=-</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--oidc-groups-claim=groups</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--oidc-groups-prefix=&quot;kubernetes:&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-쿠버네티스-접속을-위한-Keycloak-토큰-생성-테스트"><a href="#2-2-쿠버네티스-접속을-위한-Keycloak-토큰-생성-테스트" class="headerlink" title="2-2. 쿠버네티스 접속을 위한 Keycloak 토큰 생성 테스트"></a>2-2. 쿠버네티스 접속을 위한 Keycloak 토큰 생성 테스트</h4><p>위에서 생성한 Keycloak 에서 사용하기 위한 Client 와 User 정보를 이용해 Token 생성 요청이 정상적으로 이뤄지는지 확인합니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl --location <span class="string">&#x27;https://&lt;Keycloak-호스트&gt;/realms/&lt;Realm-이름&gt;/protocol/openid-connect/token&#x27;</span> \</span><br><span class="line">  --header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;grant_type=password&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;client_id=kubernetes-client&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;username=test&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;password=&lt;비밀번호&gt;&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;scope=openid&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;client_secret=&lt;secrete 정보&gt;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>정상적인 응답이 왔을 경우 Keycloak 에서는 아래와 같은 토큰 정보를 반환해줍니다.</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;access_token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzOEdsMWxzdUNLcFQ4R0RUcDVycF8waEsxN200TmJEOHFqcWp6dnFkMTFjIn0.eyJleHAiOjE3NDM4NjE0NDYsImlhdCI6MTc0Mzg2MTE0NiwianRpIjoiNzZkZTYwYWMtZGMxYy00YjM1LWFiODUtOWM0ZDNjMDc3M2VlIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmRkYW56aXRzLmNvbS9yZWFsbXMvZGRhbnppdCIsInN1YiI6IjI1MzJiNjYxLTA5ODUtNDI1YS1iYWU2LTNjMmQ4YmQ0ZGEyMyIsInR5cCI6IkJlYXJlciIsImF6cCI6Imt1YmVybmV0ZXMtY2xpZW50Iiwic2lkIjoiMzc5ZDYzZWMtNzUwOS00NzUyLWI3YTQtOTM1NDE4YTllOWNkIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZXNvdXJjZV9hY2Nlc3MiOnsia3ViZXJuZXRlcy1jbGllbnQiOnsicm9sZXMiOlsiYWRtaW4iXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJncm91cHMiOlsia3ViZXJuZXRlczphZG1pbiJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0In0.K8A_nTdNhP7HR4dR_hvuqGaWspnwnsQgJ5VPiC2UceO2l5tPi4Bxmh_TmeuIjcIOlv-d_CjgyZ4_kuKrobMpinReuAuFLD3IMuzqvXUMTyWkBv-tAxfcHqk4jceUSQEANdrywfzA7Xb2h38aSytm9TglZa7_P9mbNT34r3R_qnjwSxlnlPegjFfYvJFP107Tt5w6GIbIf3XhoRI_TYzDBSVTIvL_Y7lkvvoNB0woF0gBX914qW8_koD3NE0eNpXINhAWUB7LUycvBMYE-edgWj8menY3XwHrcNiO0FHCgTJ2nfA0KgJAspiWD725UnCW5v7Y7wD5rijNYZ38LiVkIQ&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;expires_in&quot;</span><span class="punctuation">:</span> <span class="number">300</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;refresh_expires_in&quot;</span><span class="punctuation">:</span> <span class="number">1800</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;refresh_token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0OGE4YzYzMy0zODk3LTQ3ZjMtYTk3Ni05OTdhNmJkYjQ1MzcifQ.eyJleHAiOjE3NDM4NjI5NDYsImlhdCI6MTc0Mzg2MTE0NiwianRpIjoiZmQ1M2UzNjgtMjM4NC00N2FlLTlhNWYtODEyNjIyNzg0ZmE1IiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmRkYW56aXRzLmNvbS9yZWFsbXMvZGRhbnppdCIsImF1ZCI6Imh0dHBzOi8vYXV0aC5kZGFueml0cy5jb20vcmVhbG1zL2RkYW56aXQiLCJzdWIiOiIyNTMyYjY2MS0wOTg1LTQyNWEtYmFlNi0zYzJkOGJkNGRhMjMiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoia3ViZXJuZXRlcy1jbGllbnQiLCJzaWQiOiIzNzlkNjNlYy03NTA5LTQ3NTItYjdhNC05MzU0MThhOWU5Y2QiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGJhc2ljIHJvbGVzIGFjciB3ZWItb3JpZ2lucyBlbWFpbCJ9.jCsS44jWe8xAUV1BNc4bFaamElEtg7pWHuW-m19azInpg-nziZvUrx1RwMYB_sR6pOWRvSOhoIrZXWLJOml7Vg&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;token_type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Bearer&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;id_token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzOEdsMWxzdUNLcFQ4R0RUcDVycF8waEsxN200TmJEOHFqcWp6dnFkMTFjIn0.eyJleHAiOjE3NDM4NjE0NDYsImlhdCI6MTc0Mzg2MTE0NiwianRpIjoiNWU0NTk4OTktOTk5NC00N2FlLWE2NjYtOWEwMzNkZmQ1MThkIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmRkYW56aXRzLmNvbS9yZWFsbXMvZGRhbnppdCIsImF1ZCI6Imt1YmVybmV0ZXMtY2xpZW50Iiwic3ViIjoiMjUzMmI2NjEtMDk4NS00MjVhLWJhZTYtM2MyZDhiZDRkYTIzIiwidHlwIjoiSUQiLCJhenAiOiJrdWJlcm5ldGVzLWNsaWVudCIsInNpZCI6IjM3OWQ2M2VjLTc1MDktNDc1Mi1iN2E0LTkzNTQxOGE5ZTljZCIsImF0X2hhc2giOiJ2N3VFMzY2RS1OSmpsa21QbFRJX0dnIiwiYWNyIjoiMSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZ3JvdXBzIjpbImt1YmVybmV0ZXM6YWRtaW4iXSwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdCJ9.bAUI2zSw8WGfKtJagjMFMMpza2jHHbPwB5dOGlvC0bgqJANjuZTt8VU43yLps_1ksf3EydOjnnKXoQOPSDrJprdEb6AKud-wzs0KjeuwCWrJXnHEp1YxA9fM8-CTwcExoeFKSHQOIBFkoCAY2F8fUdfmdszqMUj13vm_95QHUwhN8jw12zh_KKS_KwEMODs9fLqTxJLgKHSti7uGQi8CI_NBFDcfC-FP1Q44fzJf7m9trD14NW06iu9IGL4d32xwtcjzdh9d4zM4Wc42bYOfA1wI0l5N-k6jmpYevilWvwACwxLmkHnVdjRlHSS6pb3lY8lyvKSwfMdQs_McMQcsIA&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;not-before-policy&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;session_state&quot;</span><span class="punctuation">:</span> <span class="string">&quot;379d63ec-7509-4752-b7a4-935418a9e9cd&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;scope&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openid profile email&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>위 여러 토큰 중에서 쿠버네티스 API Server 에 요청시에는 <code>id_token</code> 값을 사용합니다. 해당 토큰에 어떤 정보가 있는지 디코딩 해보면 아래와 같은 값들을 갖고 있는 것을 확인할 수 있습니다.</p>
+<p><img src="/images/k8s/auth/k8s-jwt.png"></p>
+<h4 id="2-3-권한-부여-롤-생성-및-롤-바인딩"><a href="#2-3-권한-부여-롤-생성-및-롤-바인딩" class="headerlink" title="2-3. 권한 부여 - 롤 생성 및 롤 바인딩"></a>2-3. 권한 부여 - 롤 생성 및 롤 바인딩</h4><p>쿠버네티스는 인증 후 리소스를 사용하기 위해서는 권한이 필요합니다. 모든 Pod 에 대한 조회 권한을 주기 위해 <code>ClusterRole</code> 을 생성합니다. 만약, 특정 리소스에 대한 권한만을 주고 싶다고 하면 <code>Role</code> 리소스를 생성하면 됩니다.</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRole</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">keycloak-role</span></span><br><span class="line"><span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">apiGroups:</span> [<span class="string">&quot;&quot;</span>]</span><br><span class="line">    <span class="attr">resources:</span> [<span class="string">&quot;namespaces&quot;</span>, <span class="string">&quot;pods&quot;</span>]</span><br><span class="line">    <span class="attr">verbs:</span> [<span class="string">&quot;get&quot;</span>, <span class="string">&quot;list&quot;</span>, <span class="string">&quot;watch&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>권한이 생성 됐으면 해당 권한을 사용하기 위한 롤 바인딩 리소스도 생성합니다. 위에서 <code>ClusterRol</code> 을 생성했으므로 <code>ClusterRoleBinding</code> 리소스를 통해 바인딩을 해야 합니다.</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRoleBinding</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">keycloak-crb-test</span></span><br><span class="line"><span class="attr">roleRef:</span></span><br><span class="line">  <span class="attr">apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br><span class="line">  <span class="attr">kind:</span> <span class="string">ClusterRole</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">keycloak-role</span></span><br><span class="line"><span class="attr">subjects:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br><span class="line">  <span class="attr">kind:</span> <span class="string">User</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-토큰을-이용해-쿠버네티스-API-Server-요청"><a href="#2-4-토큰을-이용해-쿠버네티스-API-Server-요청" class="headerlink" title="2-4. 토큰을 이용해 쿠버네티스 API Server 요청"></a>2-4. 토큰을 이용해 쿠버네티스 API Server 요청</h4><p>토큰 생성이 정상적으로 되는지 확인했고, 이번에는 생성한 토큰을 이용해 쿠버네티스 API Server 에 요청을 보내려고 합니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">TOKEN=$(curl --location <span class="string">&#x27;https://&lt;Keycloak-호스트&gt;/realms/&lt;Realm-이름&gt;/protocol/openid-connect/token&#x27;</span> \</span><br><span class="line">  --header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;grant_type=password&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;client_id=kubernetes-client&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;username=test&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;password=&lt;비밀번호&gt;&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;scope=openid&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;client_secret=&lt;secrete 정보&gt;&#x27;</span> | jq -r <span class="string">&#x27;.id_token&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 받은 토큰을 이용해 쿠버네티스 API Server 에 요청이 정상적으로 가는지 확인해 봅니다.</span></span><br><span class="line">curl  https://&lt;쿠버네티스 api server 주소&gt;/api/v1/namespaces/default --header <span class="string">&quot;Authorization: Bearer <span class="variable">$&#123;TOKEN&#125;</span>&quot;</span> --insecure</span><br></pre></td></tr></table></figure>
+
+<p>토큰에 문제가 없을 경우 아래와 같은 응답이 오는 것을 확인할 수 있습니다.</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;kind&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Namespace&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;apiVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;v1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;metadata&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;default&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;uid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1c78224d-d264-4c25-873c-4407be8d63e1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;resourceVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;36&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;creationTimestamp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2025-02-20T16:16:48Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;labels&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;kubernetes.io/metadata.name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;default&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;managedFields&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;manager&quot;</span><span class="punctuation">:</span> <span class="string">&quot;kube-apiserver&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;operation&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Update&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;apiVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;v1&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;time&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2025-02-20T16:16:48Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;fieldsType&quot;</span><span class="punctuation">:</span> <span class="string">&quot;FieldsV1&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;fieldsV1&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;f:metadata&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;f:labels&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;.&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;f:kubernetes.io/metadata.name&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;spec&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;finalizers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;kubernetes&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;phase&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Active&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>인증에 성공한 User 를 이용해 kubectl 명령어를 이용하기 위해 <code>kubeconfig</code> 파일에 토큰 정보를 반영해줍니다.</p>
+<figure class="highlight yaml"><figcaption><span>config</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">cluster:</span></span><br><span class="line">    <span class="attr">certificate-authority-data:</span> <span class="string">LS0tLS1CRUdJ</span> <span class="string">...</span> <span class="string">DQVRFLS0tLS0K</span></span><br><span class="line">    <span class="attr">server:</span> <span class="string">&lt;kubernetes</span> <span class="string">api</span> <span class="string">server</span> <span class="string">주소&gt;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">context:</span></span><br><span class="line">    <span class="attr">cluster:</span> <span class="string">kubernetes</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">test</span></span><br><span class="line">    <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> &#123;&#125;</span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">user:</span></span><br><span class="line">    <span class="attr">token:</span> <span class="string">eyJhbGciO</span> <span class="string">...</span> <span class="string">GfZXJw</span>  <span class="comment"># 요청을 통해 생성된 토큰을 추가해 줍니다.</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-5-인증-및-인가-에러"><a href="#2-5-인증-및-인가-에러" class="headerlink" title="2-5. 인증 및 인가 에러"></a>2-5. 인증 및 인가 에러</h4><p>인증이 정상적으로 이뤄지지 않은 경우에는 다음과 같은 <code>401</code> 에러가 발생하게 됩니다.</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;kind&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Status&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;apiVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;v1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;metadata&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Failure&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Unauthorized&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;reason&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Unauthorized&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">401</span></span><br><span class="line"><span class="punctuation">&#125;</span>%</span><br></pre></td></tr></table></figure>
+
+<p>권한이 제대로 안들어가 있을 경우 <code>403</code> 에러와 함께 리소스에 대한 접근을 할 수 없다는 오류 메시지를 확인할 수 있습니다.  </p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;kind&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Status&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;apiVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;v1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;metadata&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Failure&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="string">&quot;namespaces \&quot;default\&quot; is forbidden: User \&quot;test\&quot; cannot get resource \&quot;namespaces\&quot; in API group \&quot;\&quot; in the namespace \&quot;default\&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;reason&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Forbidden&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;details&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;default&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;kind&quot;</span><span class="punctuation">:</span> <span class="string">&quot;namespaces&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">403</span></span><br><span class="line"><span class="punctuation">&#125;</span>%</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="✅-3-kubelogin-OIDC-를-이용하기-위한-Client-사용"><a href="#✅-3-kubelogin-OIDC-를-이용하기-위한-Client-사용" class="headerlink" title="✅ 3. kubelogin - OIDC 를 이용하기 위한 Client 사용"></a>✅ 3. kubelogin - OIDC 를 이용하기 위한 Client 사용</h2><p>쿠버네티스에서 Keycloak 을 이용해 사용자 인증과정에 대한 설정이 끝났습니다. 하지만, 사용자가 쿠버네티스로의 인증 방식에 대해서는 현재 딱히 정해진게 없습니다. </p>
+<p>위 과정에서 쿠버네티스 리소스를 이용하기 전에 토큰을 생성하고, 토큰을 config 파일에 반영하는 과정들이 있습니다. </p>
+<p>매번 반복적으로 하기에는 번거로운 이 과정을 단순화 하기 위해 kubelogin 을 사용해 인증을 간편화하려고 합니다.</p>
+<h4 id="3-1-kubelogin-설치"><a href="#3-1-kubelogin-설치" class="headerlink" title="3-1. kubelogin 설치."></a>3-1. kubelogin 설치.</h4><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/int128/kubelogin">kubelogin 공식문서</a> 에서 운영체제 별로 설치하는 방법이 있습니다. 저는 맥환경에서 이용하므로 brew 를 이용한 방법만 정리했습니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install kubelogin</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-kubelogin-설치"><a href="#3-2-kubelogin-설치" class="headerlink" title="3-2. kubelogin 설치."></a>3-2. kubelogin 설치.</h4><p>kubelogin 에서는 <code>8000</code> 번 포트를 이용해 응답을 대기 합니다. 인증에 성공 후 kubelogin 로 응답을 보내주기 위해 <code>Valid redirect URIs</code> 설정을 추가해줍니다.</p>
+<p><img src="/images/k8s/auth/k8s-keycloak-redirect.png"></p>
+<h4 id="3-3-kubeconfig-파일에-정보-추가"><a href="#3-3-kubeconfig-파일에-정보-추가" class="headerlink" title="3-3. kubeconfig 파일에 정보 추가"></a>3-3. kubeconfig 파일에 정보 추가</h4><p>쿠버네티스에서 kubelogin 을 이용해 사용자 인증이 진행될 수 있도록 config 파일에 명령어와 옵션들을 추가합니다. 해당 정보들을 통해 kubelogin 에서 Keycloak 을 이용해 인증을 진행하고 인증정보들을 관리해줍니다.</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">keycloak-user</span></span><br><span class="line">  <span class="attr">user:</span></span><br><span class="line">    <span class="attr">exec:</span></span><br><span class="line">      <span class="attr">apiVersion:</span> <span class="string">client.authentication.k8s.io/v1beta1</span></span><br><span class="line">      <span class="attr">command:</span> <span class="string">kubectl</span></span><br><span class="line">      <span class="attr">args:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">oidc-login</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">get-token</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--oidc-issuer-url=https://&lt;Keycloak-호스트&gt;/auth/realms/&lt;Realm-이름&gt;</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--oidc-client-id=kubernetes-client</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--oidc-client-secret=&lt;Keycloak</span> <span class="string">Client</span> <span class="string">Secret&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>명령어를 이용해서도 config 파일에 설정정보를 추가할 수 있습니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">kubectl config set-credentials keycloak-user \</span><br><span class="line">  --exec-api-version=client.authentication.k8s.io/v1beta1 \</span><br><span class="line">  --exec-command=kubectl \</span><br><span class="line">  --exec-arg=oidc-login \</span><br><span class="line">  --exec-arg=get-token \</span><br><span class="line">  --exec-arg=--oidc-issuer-url=https://&lt;Keycloak-호스트&gt;/auth/realms/&lt;Realm-이름&gt; \</span><br><span class="line">  --exec-arg=--oidc-client-id=kubernetes-client \</span><br><span class="line">  --exec-arg=--oidc-client-secret=&lt;Keycloak Client Secret&gt;</span><br></pre></td></tr></table></figure>
+
+<p>아래 처럼 User 정보를 명시적으로 지정해서 명령어를 사용할 수 있습니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">kubectl --user=keycloak-user get nodes</span><br></pre></td></tr></table></figure>
+
+<p>kubectl 명령어를 사용하게 되면 kubelogin 가 Keycloak 을 통해 사용자 인증을 하도록 화면을 띄어줍니다.</p>
+<p><img src="/images/k8s/auth/k8s-keycloak-kubelogin.png"></p>
+<p>인증이 정상적으로 이뤄지면 아래와 같이 성공했다는 메시지가 뜨고 위에서 실행한 결과가 정상적으로 실행됩니다.</p>
+<p><img src="/images/k8s/auth/k8s-keycloak-kubelogin-success.png"></p>
+<h4 id="3-4-전체-kubeconfig-파일"><a href="#3-4-전체-kubeconfig-파일" class="headerlink" title="3-4. 전체 kubeconfig 파일"></a>3-4. 전체 kubeconfig 파일</h4><p>이제 새로운 쿠버네티스 운영자가 왔을 경우 해당 config 파일을 건내주면 Keycloak 을 통해 사용자 인증을 받고 쿠버네티스 리소스에 접근할 수 있습니다.</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">cluster:</span></span><br><span class="line">    <span class="attr">certificate-authority-data:</span> <span class="string">LS0tLS1CRUdJ</span> <span class="string">...</span> <span class="string">DQVRFLS0tLS0K</span></span><br><span class="line">    <span class="attr">server:</span> <span class="string">&lt;kubernetes</span> <span class="string">api</span> <span class="string">server</span> <span class="string">주소&gt;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">context:</span></span><br><span class="line">    <span class="attr">cluster:</span> <span class="string">kubernetes</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">keycloak-user</span></span><br><span class="line">    <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> &#123;&#125;</span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">keycloak-user</span></span><br><span class="line">  <span class="attr">user:</span></span><br><span class="line">    <span class="attr">exec:</span></span><br><span class="line">      <span class="attr">apiVersion:</span> <span class="string">client.authentication.k8s.io/v1beta1</span></span><br><span class="line">      <span class="attr">command:</span> <span class="string">kubectl</span></span><br><span class="line">      <span class="attr">args:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">oidc-login</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">get-token</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--oidc-issuer-url=https://&lt;Keycloak-호스트&gt;/auth/realms/&lt;Realm-이름&gt;</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--oidc-client-id=kubernetes-client</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--oidc-client-secret=&lt;Keycloak</span> <span class="string">Client</span> <span class="string">Secret&gt;</span></span><br></pre></td></tr></table></figure>
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/04/05/k8s/auth/k8s-oidc-keycloak/" data-id="cm94gu2gc0000kz8d7tak3a2e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "[쿠버네티스] 인증/인가 - OIDC 를 이용한 Keycloak 연동",
+        "image": "https://ckck803.github.io/images/k8s/k8s.png",
+        "keywords": "",
+        "genre": "Kubernetes 인증/인가",
+        "datePublished": "2025-04-05",
+        "dateCreated": "2025-04-05",
+        "dateModified": "2025-04-06",
+        "url": "https://ckck803.github.io/2025/04/05/k8s/auth/k8s-oidc-keycloak/",
+        "description": "
+
+
+목차
+[쿠버네티스] 인증&#x2F;인가 - OIDC 를 이용한 Keycloak 연동
+[쿠버네티스] 인증&#x2F;인가 - ServiceAccount
+[쿠버네티스] 인증&#x2F;인가 - X.509 인증서를 사용한 사용자 추가 및 인증
+
+참고
+https://wlsdn3004.tistory.com/62
+
+
+앞서 말했듯이, 쿠버네티스는 사용자 정보를 저장하지 않습니다. 사용자를 관리하고 싶으면, 쿠버네티스에서 제공하는 OIDC 를 통해 별도의 인증 서버와 연계를 하면 사용자를 관리할 수 있습니다.
+인증서버로 유명한 Keycloak 을 이용해 사용자를 관리하고 쿠버네티스에서 인증을 진행할 수 있도록 설정을 진행하려고 합니다.
+✅ 1. Keycloak Client 추가쿠버네티스에서 Keycloak 을 이용해 인증을 진행하기 위해서는 Client 생성(등록) 이 필요합니다.  Client 단위로 Keycloak 에서는 쿠버네티스 사용자들을 관리하고 권한을 매핑해줄 수 있습니다.",
+        "wordCount": 2213
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2025/04/03/k8s/auth/cert-user/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">[쿠버네티스] 인증/인가 - X.509 인증서를 사용한 사용자 추가 및 인증</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">275</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2025 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/04/05/k8s/auth/k8s-oidc-keycloak/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
