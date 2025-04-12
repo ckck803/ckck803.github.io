@@ -176,6 +176,327 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/10/22/react/login/login-modal-06-back-login/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/react/login/login-modal.png)" alt="React 로그인 Modal 만들기 6 - Login 구현" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/22/react/login/login-modal-06-back-login/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Login/">Login</a>
+            </div>
+            <div class="date"><time datetime="2021-10-22T07:10:40.000Z" itemprop="datePublished">2021-10-22</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/22/react/login/login-modal-06-back-login/">React 로그인 Modal 만들기 6 - Login 구현</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+
+React 로그인 Modal 만들기 9 - Redux Saga 적용
+React 로그인 Modal 만들기 8 - Redux 사용하기
+React 로그인 Modal 만들기 7 - JWT 적용하기
+React 로그인 Modal 만들기 6 - Login 구현
+React 로그인 Modal 만들기 5 - 회원 가입 Back end 구현
+React 로그인 Modal 만들기 4 - 비동기 처리
+React 로그인 Modal 만들기 3 - 회원 가입
+React 로그인 Modal 만들기 2 - styled-component 사용하기
+React 로그인 Modal 만들기
+
+React 로그인 Modal 만들기 6 - Login 구현Json 인증 Filter 구현하기UsernamePasswordAuthenticationFilter 의 경우 Form Login을 위해 구현된 Filter라 Request Body로 요청이 들어오는 Login 요청을 적용하기는 어렵기에 JSON 을 이용해 Login을 진행할 수 있도록 JsonAuthenticationFilter 를 새로 만들어줄 필요가 있다.
+UsernamePasswordAuthenticationFilter 와 인증을 진행하는 과정은 비슷하므로 AbstractAuthenticationProcessingFilter 를 상속해 새로운 Filter를 생성해준다.
+JsonAuthenticationFilter.java
+public class JsonAuthenticationFilter extends AbstractAuthenticationProcessingFilter &#123;    private static final String LOGIN_PROCESSING_URL = &quot;/api/login&quot;;    @Autowired    private ObjectMapper objectMapper;    public JsonAuthenticationFilter() &#123;        super(new AntPathRequestMatcher(LOGIN_PROCESSING_URL));    &#125;    @Override    public Authentication attemptAuthentication(HttpServletRequest request,                                                HttpServletResponse response) throws AuthenticationException, IOException, ServletException &#123;        if(!isApplicationJSON(request))&#123;            throw new IllegalStateException(&quot;Content Type is not Application/json&quot;);        &#125;        LoginDto loginDto = objectMapper.readValue(request.getReader(), LoginDto.class);        if(ObjectUtils.isEmpty(loginDto.getUsername()) || ObjectUtils.isEmpty(loginDto.getPassword()))&#123;            throw new IllegalArgumentException(&quot;Username or Password is empty&quot;);        &#125;        JsonAuthenticationToken jsonAuthenticationToken = new JsonAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());        getAuthenticationManager().authenticate(jsonAuthenticationToken);        return null;    &#125;    private boolean isApplicationJSON(HttpServletRequest httpServletRequest)&#123;        if(httpServletRequest.getHeader(&quot;Content-type&quot;).equals(MediaType.APPLICATION_JSON_VALUE))&#123;            return true;        &#125;        return false;    &#125;&#125;
+
+새로운 Authentication Token 만들기
+JsonAuthenticationFilter 에서 사용하기 위한 새로운 Authentication 생성
+
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/21/react/login/login-modal-05-back-signup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/react/login/login-modal.png)" alt="React 로그인 Modal 만들기 5 - 회원 가입 Back end 구현" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/21/react/login/login-modal-05-back-signup/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Login/">Login</a>
+            </div>
+            <div class="date"><time datetime="2021-10-21T06:10:40.000Z" itemprop="datePublished">2021-10-21</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/21/react/login/login-modal-05-back-signup/">React 로그인 Modal 만들기 5 - 회원 가입 Back end 구현</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+
+React 로그인 Modal 만들기 9 - Redux Saga 적용
+React 로그인 Modal 만들기 8 - Redux 사용하기
+React 로그인 Modal 만들기 7 - JWT 적용하기
+React 로그인 Modal 만들기 6 - Login 구현
+React 로그인 Modal 만들기 5 - 회원 가입 Back end 구현
+React 로그인 Modal 만들기 4 - 비동기 처리
+React 로그인 Modal 만들기 3 - 회원 가입
+React 로그인 Modal 만들기 2 - styled-component 사용하기
+React 로그인 Modal 만들기
+
+React 로그인 Modal 만들기 5 - 회원 가입 Back end 구현회원 데이터를 저장할 UserInfo 정의회원 가입을 위해 사용자 id, username, email, password와 사용자 별로 권한을 관리하기 위한 UserInfo 객체를 관리하도록 정의
+@Entity@NoArgsConstructor@AllArgsConstructor@Getter@Builderpublic class UserInfo &#123;    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)    private Long id;    @Column(nullable = false)    private String username;    @Column(nullable = false)    private String email;    @Column(nullable = false)    private String password;    @Enumerated(EnumType.STRING)    private UserRole userRole;&#125;
+
+User 권한 목록
+권한은 3가지로 일반사용자를 위한 USER 권한, 수정&#x2F;변경 권한이 있는 MANAGER 권한과 관리자인 ADMIN 3가지 권한으로 분류 한다
+
+public enum UserRole &#123;    USER(&quot;ROLE_USER&quot;), MANAGER(&quot;ROLE_MANAGER&quot;), ADMIN(&quot;ROLE_ADMIN&quot;);    private String value;    UserRole(String value)&#123;        this.value = value;    &#125;    public String getValue()&#123;        return this.value;    &#125;&#125;
+
+사용자 이름과 Email을 이용해 사용자 정보를 가져올 수 있도록 메소드를 추가한다.
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/20/react/login/login-modal-04-async/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/react/login/login-modal.png)" alt="React 로그인 Modal 만들기 4 - 비동기 처리" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/20/react/login/login-modal-04-async/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Login/">Login</a>
+            </div>
+            <div class="date"><time datetime="2021-10-20T04:10:40.000Z" itemprop="datePublished">2021-10-20</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/20/react/login/login-modal-04-async/">React 로그인 Modal 만들기 4 - 비동기 처리</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+
+React 로그인 Modal 만들기 9 - Redux Saga 적용
+React 로그인 Modal 만들기 8 - Redux 사용하기
+React 로그인 Modal 만들기 7 - JWT 적용하기
+React 로그인 Modal 만들기 6 - Login 구현
+React 로그인 Modal 만들기 5 - 회원 가입 Back end 구현
+React 로그인 Modal 만들기 4 - 비동기 처리
+React 로그인 Modal 만들기 3 - 회원 가입
+React 로그인 Modal 만들기 2 - styled-component 사용하기
+React 로그인 Modal 만들기
+
+React 로그인 Modal 만들기 4 - 비동기 처리import axios from &quot;axios&quot;;import React, &#123; useState, useCallback &#125; from &quot;react&quot;;import &#123;  LoginBody,  LoginFooter,  LoginHeader,  ModalBackGround,  ModalBox,&#125; from &quot;../assets/css/login&quot;;const LoginTemplate = (&#123; open, close &#125;) =&gt; &#123;  const [form, setForm] = useState(&#123;    email: &quot;&quot;,    password: &quot;&quot;,  &#125;);  const onChange = useCallback(    (e) =&gt; &#123;      setForm(&#123;        ...form,        [e.target.name]: e.target.value,      &#125;);    &#125;,    [form]  );  const onClick = useCallback(    (e) =&gt; &#123;      axios        .post(&quot;/api/login&quot;, form)        .then((response) =&gt; &#123;          console.log(response);        &#125;)        .catch((err) =&gt; &#123;          console.log(err);        &#125;);    &#125;,    [form]  );  return open ? (    &lt;ModalBackGround&gt;      &lt;ModalBox&gt;        &lt;LoginHeader&gt;          로그인          &lt;button className=&quot;close&quot; onClick=&#123;close&#125;&gt;            &#123;&quot; &quot;&#125;            &amp;times;&#123;&quot; &quot;&#125;          &lt;/button&gt;        &lt;/LoginHeader&gt;        &lt;LoginBody className=&quot;login-body&quot;&gt;          &lt;div&gt;            &lt;input              id=&quot;email&quot;              name=&quot;email&quot;              type=&quot;email&quot;              placeholder=&quot;Email&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;          &lt;div&gt;            &lt;input              id=&quot;password&quot;              name=&quot;password&quot;              type=&quot;password&quot;              placeholder=&quot;Password&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;        &lt;/LoginBody&gt;        &lt;LoginFooter&gt;          &lt;button onClick=&#123;onClick&#125;&gt;로그인&lt;/button&gt;        &lt;/LoginFooter&gt;      &lt;/ModalBox&gt;    &lt;/ModalBackGround&gt;  ) : null;&#125;;export default LoginTemplate;
+
+import React, &#123; useCallback, useState &#125; from &quot;react&quot;;import &#123; ModalBox &#125; from &quot;../assets/css/login&quot;;import axios from &quot;axios&quot;;import &#123;  ModalBackGround,  SignUpBody,  SignUpFooter,  SignUpHeader,&#125; from &quot;../assets/css/signup&quot;;const SignUpTemplate = (&#123; open, onChangeOpen &#125;) =&gt; &#123;  const [form, setForm] = useState(&#123;    username: &quot;&quot;,    email: &quot;&quot;,    password: &quot;&quot;,  &#125;);  const onChange = useCallback(    (e) =&gt; &#123;      setForm(&#123;        ...form,        [e.target.name]: e.target.value,      &#125;);    &#125;,    [form]  );  const onClickSignUp = useCallback(() =&gt; &#123;    axios.post(&quot;/api/signup&quot;, form).then((Response) =&gt; &#123;      console.log(Response);    &#125;);  &#125;, [form]);  return open ? (    &lt;ModalBackGround className=&quot;signup-modal-box&quot;&gt;      &lt;ModalBox&gt;        &lt;SignUpHeader&gt;          회원 가입          &lt;button className=&quot;close&quot; onClick=&#123;onChangeOpen&#125;&gt;            &#123;&quot; &quot;&#125;            &amp;times;&#123;&quot; &quot;&#125;          &lt;/button&gt;        &lt;/SignUpHeader&gt;        &lt;SignUpBody&gt;          &lt;div&gt;            &lt;input              type=&quot;username&quot;              id=&quot;username&quot;              name=&quot;username&quot;              placeholder=&quot;이름&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;          &lt;div&gt;            &lt;input              type=&quot;email&quot;              id=&quot;email&quot;              name=&quot;email&quot;              placeholder=&quot;Email&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;          &lt;div&gt;            &lt;input              type=&quot;password&quot;              id=&quot;password&quot;              name=&quot;password&quot;              placeholder=&quot;Password&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;        &lt;/SignUpBody&gt;        &lt;SignUpFooter&gt;          &lt;button onClick=&#123;onClickSignUp&#125;&gt;회원가입&lt;/button&gt;        &lt;/SignUpFooter&gt;      &lt;/ModalBox&gt;    &lt;/ModalBackGround&gt;  ) : null;&#125;;export default SignUpTemplate;
+
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/19/react/login/login-modal-03-signup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/react/login/login-modal.png)" alt="React 로그인 Modal 만들기 3 - 회원 가입" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/19/react/login/login-modal-03-signup/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Login/">Login</a>
+            </div>
+            <div class="date"><time datetime="2021-10-19T03:10:40.000Z" itemprop="datePublished">2021-10-19</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/19/react/login/login-modal-03-signup/">React 로그인 Modal 만들기 3 - 회원 가입</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+
+React 로그인 Modal 만들기 9 - Redux Saga 적용
+React 로그인 Modal 만들기 8 - Redux 사용하기
+React 로그인 Modal 만들기 7 - JWT 적용하기
+React 로그인 Modal 만들기 6 - Login 구현
+React 로그인 Modal 만들기 5 - 회원 가입 Back end 구현
+React 로그인 Modal 만들기 4 - 비동기 처리
+React 로그인 Modal 만들기 3 - 회원 가입
+React 로그인 Modal 만들기 2 - styled-component 사용하기
+React 로그인 Modal 만들기
+
+React 로그인 Modal 만들기 3 - 회원 가입import styled, &#123; keyframes &#125; from &quot;styled-components&quot;;export const ModalFade = keyframes`&#123;    from &#123;        opacity: 0;        margin-top: -50px;    &#125;    to &#123;        opacity: 1;        margin-top: 0;    &#125;&#125;`;export const ModalBackGround = styled.div`  position: fixed;  top: 0;  left: 0;  width: 100%;  height: 100%;  background: rgba(0, 0, 0, 0.5);  display: flex;  align-items: center;  justify-content: center;  animation: modal-bg-show 0.3s;`;export const ModalBox = styled.div`  width: 90%;  max-width: 400px;  margin: 0 auto;  border-radius: 0.3rem;  background-color: #fff;  animation: ModalFade 0.3s;  overflow: hidden;`;export const SignUpHeader = styled.div`  position: relative;  padding: 16px 64px 16px 16px;  background-color: #f1f1f1;  font-weight: 700;  &amp; &gt; button &#123;    position: absolute;    top: 15px;    right: 15px;    width: 30px;    font-size: 21px;    font-weight: 700;    text-align: center;    color: #999;    border: 0;  &#125;`;export const SignUpBody = styled.div`  padding: 10px;  &amp; &gt; div &#123;    padding: 5px;    display: flex;    align-items: center;    justify-content: center;  &#125;  &amp; &gt; div &gt; input &#123;    padding-top: 5px;    padding-bottom: 5px;    padding-left: 15px;    padding-right: 15px;    width: 290px;    height: 30px;    font-size: 14px;    border: 1px solid rgb(222, 226, 230);  &#125;`;export const SignUpFooter = styled.div`  border-top: 1px solid;  padding: 7px 16px;  text-align: right;  &amp; &gt; button &#123;    padding: 6px 12px;    color: #fff;    background-color: #6c757d;    border-radius: 5px;    font-size: 13px;  &#125;`;
+
+import React, &#123; useCallback, useState &#125; from &quot;react&quot;;import &#123; ModalBox &#125; from &quot;../assets/css/login&quot;;import &#123;  ModalBackGround,  SignUpBody,  SignUpFooter,  SignUpHeader,&#125; from &quot;../assets/css/signup&quot;;const SignUpTemplate = (&#123; open, onChangeOpen &#125;) =&gt; &#123;  const [form, setForm] = useState(&#123;    username: &quot;&quot;,    email: &quot;&quot;,    password: &quot;&quot;,  &#125;);  const onChange = useCallback(    (e) =&gt; &#123;      setForm(&#123;        ...form,        [e.target.name]: e.target.value,      &#125;);    &#125;,    [form]  );  return open ? (    &lt;ModalBackGround className=&quot;signup-modal-box&quot;&gt;      &lt;ModalBox&gt;        &lt;SignUpHeader&gt;          회원 가입          &lt;button className=&quot;close&quot; onClick=&#123;onChangeOpen&#125;&gt;            &#123;&quot; &quot;&#125;            &amp;times;&#123;&quot; &quot;&#125;          &lt;/button&gt;        &lt;/SignUpHeader&gt;        &lt;SignUpBody&gt;          &lt;div&gt;            &lt;input              type=&quot;username&quot;              id=&quot;username&quot;              name=&quot;username&quot;              placeholder=&quot;이름&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;          &lt;div&gt;            &lt;input              type=&quot;email&quot;              id=&quot;email&quot;              name=&quot;email&quot;              placeholder=&quot;Email&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;          &lt;div&gt;            &lt;input              type=&quot;password&quot;              id=&quot;password&quot;              name=&quot;password&quot;              placeholder=&quot;Password&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;        &lt;/SignUpBody&gt;        &lt;SignUpFooter&gt;          &lt;button onClick=&#123;onChangeOpen&#125;&gt;닫기&lt;/button&gt;        &lt;/SignUpFooter&gt;      &lt;/ModalBox&gt;    &lt;/ModalBackGround&gt;  ) : null;&#125;;export default SignUpTemplate;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/18/react/login/login-modal-02-styled-component/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/react/login/login-modal.png)" alt="React 로그인 Modal 만들기 2 - styled-component 사용하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/18/react/login/login-modal-02-styled-component/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Login/">Login</a>
+            </div>
+            <div class="date"><time datetime="2021-10-18T02:10:40.000Z" itemprop="datePublished">2021-10-18</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/18/react/login/login-modal-02-styled-component/">React 로그인 Modal 만들기 2 - styled-component 사용하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+
+React 로그인 Modal 만들기 9 - Redux Saga 적용
+React 로그인 Modal 만들기 8 - Redux 사용하기
+React 로그인 Modal 만들기 7 - JWT 적용하기
+React 로그인 Modal 만들기 6 - Login 구현
+React 로그인 Modal 만들기 5 - 회원 가입 Back end 구현
+React 로그인 Modal 만들기 4 - 비동기 처리
+React 로그인 Modal 만들기 3 - 회원 가입
+React 로그인 Modal 만들기 2 - styled-component 사용하기
+React 로그인 Modal 만들기
+
+React 로그인 Modal 만들기 2 - styled-component 사용하기기존에 style 내용들을 css 파일로 관리해도 문제가 없으나, React에서는 style마저도 js파일로 관리할 수 있도록 지원해주는 다양한 프레임 워크들이 있다. js파일로 관리하게 되면 React의 여러 기능을 사용하기 좋기 때문에 기존에 작성해준 Login 관련 css 내용을 js 파일로 변경하려고 한다.
+import styled, &#123; keyframes &#125; from &quot;styled-components&quot;;export const ModalFade = keyframes`&#123;    from &#123;        opacity: 0;        margin-top: -50px;    &#125;    to &#123;        opacity: 1;        margin-top: 0;    &#125;&#125;`;export const ModalBackGround = styled.div`  position: fixed;  top: 0;  left: 0;  width: 100%;  height: 100%;  background: rgba(0, 0, 0, 0.5);  display: flex;  align-items: center;  justify-content: center;`;export const ModalBox = styled.div`  width: 90%;  max-width: 400px;  margin: 0 auto;  border-radius: 0.3rem;  background-color: #fff;  animation: $&#123;ModalFade&#125; 0.5s;  overflow: hidden;`;export const LoginHeader = styled.div`  position: relative;  padding: 16px 64px 16px 16px;  background-color: #f1f1f1;  font-weight: 700;  &amp; &gt; button &#123;    position: absolute;    top: 15px;    right: 15px;    width: 30px;    font-size: 21px;    font-weight: 700;    text-align: center;    color: #999;    border: 0;  &#125;`;export const LoginBody = styled.div`  padding: 10px;  &amp; &gt; div &#123;    padding: 5px;    display: flex;    align-items: center;    justify-content: center;  &#125;  &amp; &gt; div &gt; input &#123;    padding-top: 5px;    padding-bottom: 5px;    padding-left: 15px;    padding-right: 15px;    width: 290px;    height: 30px;    font-size: 14px;    border: 1px solid rgb(222, 226, 230);  &#125;`;export const LoginFooter = styled.div`  border-top: 1px solid rgb(222, 226, 230);  padding: 7px 16px;  text-align: right;  &amp; &gt; button &#123;    padding: 6px 12px;    color: #fff;    background-color: #6c757d;    border-radius: 5px;    font-size: 13px;  &#125;`;
+
+Styled-Component 적용하기import React, &#123; useState, useCallback &#125; from &quot;react&quot;;import &#123;  LoginBody,  LoginFooter,  LoginHeader,  ModalBackGround,  ModalBox,&#125; from &quot;../assets/css/login&quot;;const LoginTemplate = (&#123; open, close &#125;) =&gt; &#123;  const [form, setForm] = useState(&#123;    email: &quot;&quot;,    password: &quot;&quot;,  &#125;);  const onChange = useCallback(    (e) =&gt; &#123;      setForm(&#123;        ...form,        [e.target.name]: e.target.value,      &#125;);    &#125;,    [form]  );  return open ? (    &lt;ModalBackGround&gt;      &lt;ModalBox&gt;        &lt;LoginHeader&gt;          로그인          &lt;button className=&quot;close&quot; onClick=&#123;close&#125;&gt;            &#123;&quot; &quot;&#125;            &amp;times;&#123;&quot; &quot;&#125;          &lt;/button&gt;        &lt;/LoginHeader&gt;        &lt;LoginBody className=&quot;login-body&quot;&gt;          &lt;div&gt;            &lt;input              id=&quot;email&quot;              name=&quot;email&quot;              type=&quot;email&quot;              placeholder=&quot;Email&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;          &lt;div&gt;            &lt;input              id=&quot;password&quot;              name=&quot;password&quot;              type=&quot;password&quot;              placeholder=&quot;Password&quot;              onChange=&#123;onChange&#125;            /&gt;          &lt;/div&gt;        &lt;/LoginBody&gt;        &lt;LoginFooter&gt;          &lt;button onClick=&#123;close&#125;&gt;닫기&lt;/button&gt;        &lt;/LoginFooter&gt;      &lt;/ModalBox&gt;    &lt;/ModalBackGround&gt;  ) : null;&#125;;export default LoginTemplate;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/10/18/react/login/login-modal-01-login/" class="thumbnail">
     
     
@@ -233,10 +554,14 @@ LoginTemplate.js
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -297,14 +622,10 @@ SizeLimitExceededException
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -368,10 +689,14 @@ Text를 보낼때는 addTextBody 메소드를 이용해 값을 넣어주고
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -436,14 +761,10 @@ List&lt;NameValuePair&gt; params = new ArrayList&lt;&gt;();params.add(new BasicN
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -500,375 +821,6 @@ HttpClient 객체 가져오기
     </div>
 </article>
     
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/13/spring/spring-framework/mvc/spring-mvc-02-requestmapping/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/spring-framework/spring-mvc/spring-mvc-lifecycle.jpeg)" alt="Spring Boot @RequestMapping" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/13/spring/spring-framework/mvc/spring-mvc-02-requestmapping/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
-            </div>
-            <div class="date"><time datetime="2021-10-12T16:05:00.000Z" itemprop="datePublished">2021-10-13</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/13/spring/spring-framework/mvc/spring-mvc-02-requestmapping/">Spring Boot @RequestMapping</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            목차
-Spring MVC - ArgumentResolver 
-Spring MVC - HttpMessageConverter 
-Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
-Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
-Spring Boot 요청 메시지 - JSON
-Spring Boot 요청 메시지 - Text 
-Spring Boot 쿼리 파라미터, HTML Form 
-Spring Boot 기본 헤더 조회 
-Spring Boot API 예시 
-Spring Boot @RequestMapping 
-Spring Boot Logging
-
-Spring Boot @RequestMapping
-사용자 요청 받기RequestMapping 어노테이션을 사용해 해당 URL로 들어오는 사용자 요청을 처리할 수 있다. 이때, method를 명시하지 않을 경우 GET, POST, PUT, PATCH, DELETE 모든 method를 사용해 접근이 가능하므로, 특정 method에서만 요청을 받고 싶을 경우 method를 명시해줘야 한다.
-@RequestMapping(value = &quot;/hello-basic&quot;)public String helloBasic()&#123;    log.info(&quot;helloBasic&quot;);    return &quot;ok&quot;;&#125;
-
-@RequestMapping(value = &quot;/mapping-get-v1&quot;, method = RequestMethod.GET)public String mappingGetV1()&#123;    log.info(&quot;helloBasic&quot;);    return &quot;ok&quot;;&#125;
-
-GetMapping 어노테이션 사용하기@GetMapping(value = &quot;/mapping-get-v2&quot;)public String mappingGetV2()&#123;    log.info(&quot;helloBasic&quot;);    return &quot;ok&quot;;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-04-viewresolver/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/spring-framework/spring-mvc/spring-mvc-lifecycle.jpeg)" alt="Spring MVC Request Life Cycle - ViewResolver" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-04-viewresolver/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a>
-            </div>
-            <div class="date"><time datetime="2021-10-11T23:05:00.000Z" itemprop="datePublished">2021-10-12</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-04-viewresolver/">Spring MVC Request Life Cycle - ViewResolver</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring MVC - ArgumentResolver 
-Spring MVC Request Life Cycle - ViewResolver  
-Spring MVC Request Life Cycle - HandlerAdapter
-Spring MVC Request Life Cycle - HandlerMapping  
-Spring MVC Request Life Cycle - DispatcherServlet
-Spring MVC Request Life Cycle - Interceptor  
-Spring MVC Request Life Cycle - Filter
-
-Spring MVC Request Life Cycle - ViewResolver
-핸들러 어뎁터 호출
-ViewResolver 호출
-
-spring.mvc.view.prefix=/WEB-INF/views/spring.mvc.view.suffix=.jsp
-
-
-
-ViewResolver.java
-public interface ViewResolver &#123;    @Nullable    View resolveViewName(String viewName, Locale locale) throws Exception;&#125;
-
-스프링 부투에서는 InternalResourceViewResolver 를 등록할때 spring.mvc.view.prefix, spring.mvc.view.suffix 설정 정보를 갖고와 등록해준다.
-public InternalResourceViewResolver(String prefix, String suffix) &#123;    this();    setPrefix(prefix);    setSuffix(suffix);&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-03-handleradapter/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/spring-framework/spring-mvc/spring-mvc-lifecycle.jpeg)" alt="Spring MVC Request Life Cycle - HandlerAdapter" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-03-handleradapter/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a>
-            </div>
-            <div class="date"><time datetime="2021-10-11T22:05:00.000Z" itemprop="datePublished">2021-10-12</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-03-handleradapter/">Spring MVC Request Life Cycle - HandlerAdapter</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring MVC - ArgumentResolver 
-Spring MVC Request Life Cycle - ViewResolver  
-Spring MVC Request Life Cycle - HandlerAdapter
-Spring MVC Request Life Cycle - HandlerMapping  
-Spring MVC Request Life Cycle - DispatcherServlet
-Spring MVC Request Life Cycle - Interceptor  
-Spring MVC Request Life Cycle - Filter
-
-HandlerAdapter 살펴보기
-HandlerAdapter 는 HandlerMapping 통해 찾은 Handler를 이용해 사용자 요청(Request)를 처리하는 역할을 한다.
-
-public interface HandlerAdapter &#123;    // supports 메소드를 통해 HandlerAdapter 가 인자로 받은 handler를 지원하는지 확인한다. 보통 Handler에는 HandlerAdapter를 갖는다.    boolean supports(Object handler);    // handler를 이용해 사용자 Request를 처리한다.    @Nullable    ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception;    @Deprecated    long getLastModified(HttpServletRequest request, Object handler);&#125;
-
-HandlerAdapter 구현체
-AbstractHandlerMethodAdapter
-RequestMappingHandlerAdapter
-
-HandlerAdapter 지원 여부 확인하기
-supports 메소드를 이용해 HandlerAdapter가 전달받은 Handler를 지원하는지 확인한다.
-
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-02-handlermapping/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/spring-framework/spring-mvc/spring-mvc-lifecycle.jpeg)" alt="Spring MVC Request Life Cycle - HandlerMapping" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-02-handlermapping/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a>
-            </div>
-            <div class="date"><time datetime="2021-10-11T21:05:00.000Z" itemprop="datePublished">2021-10-12</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-02-handlermapping/">Spring MVC Request Life Cycle - HandlerMapping</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring MVC - ArgumentResolver 
-Spring MVC Request Life Cycle - ViewResolver  
-Spring MVC Request Life Cycle - HandlerAdapter
-Spring MVC Request Life Cycle - HandlerMapping  
-Spring MVC Request Life Cycle - DispatcherServlet
-Spring MVC Request Life Cycle - Interceptor  
-Spring MVC Request Life Cycle - Filter
-
-Spring MVC Request Life Cycle - HandlerMapping
-RequestMapping 어노테이션을 처리하는 Handler, Handler Adapter는 RequestMappingHandlerMapping, RequestMappingHandlerAdapter다
-HandlerMapping 살펴보기
-Request(요청)와 Request를 처리하기 위한 Handler의 Mapping 정보를 관리한다.
-
-HttpServletRequest 객체 Attribute에서 Handler의 정보를 가져올 수 있다.
-
-BEST_MATCHING_HANDLER_ATTRIBUTE
-요청 URL과 가장 많이 일치하는 Handler를 가져온다.
-
-
-PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE
-요청을 처리하기 위한 Handler의 URL을 가져온다.
-
-
-BEST_MATCHING_PATTERN_ATTRIBUTE
-요청 URL과 가장 많이 일치하는 Handler Pattern(URL)을 가져온다.
-
-
-INTROSPECT_TYPE_LEVEL_MAPPING
-URI_TEMPLATE_VARIABLES_ATTRIBUTE
-요청 URL에 포함된 PathVariable 정보를 가져온다.
-
-
-MATRIX_VARIABLES_ATTRIBUTE
-요청 URL에 포함된 MATRIX 변수 정보를 가져온다.
-Matrix 변수를 사용하기 위해서는 WebMvcConfigurer 를 이용해 설정해줘야 한다.
-반환 값은 MultiValueMap 형태의 데이터다.
-
-
-PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE
-HttpServletRequest 객체내 Attribute에서 Handler가 반환하는 Media Type 정보를 가져온다.
-
-
-
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-01-dispatcherservlet/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/spring-framework/spring-mvc/spring-mvc-lifecycle.jpeg)" alt="Spring MVC Request Life Cycle - DispatcherServlet" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-01-dispatcherservlet/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a>
-            </div>
-            <div class="date"><time datetime="2021-10-11T20:05:00.000Z" itemprop="datePublished">2021-10-12</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/12/spring/spring-framework/lifecycle/spring-lifecycle-01-dispatcherservlet/">Spring MVC Request Life Cycle - DispatcherServlet</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring MVC - ArgumentResolver 
-Spring MVC Request Life Cycle - ViewResolver  
-Spring MVC Request Life Cycle - HandlerAdapter
-Spring MVC Request Life Cycle - HandlerMapping  
-Spring MVC Request Life Cycle - DispatcherServlet
-Spring MVC Request Life Cycle - Interceptor  
-Spring MVC Request Life Cycle - Filter
-
-DispatcherServlet 이란
-사용자의 요청을 제일 먼저 받는 Front Controller, 스프링 MVC는 Front Controller 패턴 으로 구현돼 있다.DispatcherServlet도 HttpServlet을 상속 받고 Servlet으로 동작한다. 스프링 부트는 DispatcherServlet을 Servlet으로 자동으로 등록하면서 모든 경로(urlpattern &#x3D; “&#x2F;“) 에 대해 매핑한다.
-
-
-사용자로 부터 들어오는 모든 요청을 제일 먼저 받아 적절한 Handler(Controller) 를 찾아 호출한다.
-모든 요청은 DispatcherServlet을 거치기 때문에 모든 요청에 공통적인 작업 이 가능한다.
-
-
-
-요청 흐름
-서블릿이 호출 되면 HttpServlet에서 제공하는 service 메소드가 호출된다.
-스프링 MVC는 DispatcherServlet의 부모인 FrameworkServlet 에서 service를 오버라이드 했다.
-FrameworkServlet service를 시작으로 여러 메소드를 호출되면서 DispatcherServlet의 doDispatch 메소드가 호출된다.
-
-
-DispatcherServlet 동작 과정 살펴보기
-        </p>
-    </div>
-</article>
-    
         </div>
     
 
@@ -877,8 +829,8 @@ DispatcherServlet 동작 과정 살펴보기
 
 
     <nav id="page-nav">
-        <span class="pages">Page 40 of 63</span>
-        <a class="extend prev" rel="prev" href="/page/39/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="page-number" href="/page/39/">39</a><span class="page-number current">40</span><a class="page-number" href="/page/41/">41</a><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/41/">&raquo;</a>
+        <span class="pages">Page 40 of 64</span>
+        <a class="extend prev" rel="prev" href="/page/39/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="page-number" href="/page/39/">39</a><span class="page-number current">40</span><a class="page-number" href="/page/41/">41</a><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/41/">&raquo;</a>
     </nav>
 
 
@@ -911,7 +863,7 @@ DispatcherServlet 동작 과정 살펴보기
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">47</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">275</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">169</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">48</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">275</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
         </div>
     </div>
 

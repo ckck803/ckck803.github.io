@@ -176,6 +176,369 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2022/04/25/spring/spring-data-jpa/12-spring-data-jpa-bulk/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/spring-data-jpa/spring-data-jpa.png)" alt="Spring Data JPA - 벌크성 수정 쿼리" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/25/spring/spring-data-jpa/12-spring-data-jpa-bulk/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a>
+            </div>
+            <div class="date"><time datetime="2022-04-25T10:39:59.000Z" itemprop="datePublished">2022-04-25</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/25/spring/spring-data-jpa/12-spring-data-jpa-bulk/">Spring Data JPA - 벌크성 수정 쿼리</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Data JPA - 벌크성 수정 쿼리
+Spring Data JPA - Convertor
+Spring Data JPA - Auditing
+Spring Data JPA - Paging Request Paramater
+Spring Data JPA - 페이징과 정렬
+Post not found: spring/spring-data-jpa/07-spring-data-jpa
+Spring Data JPA - 반환 타입
+Spring Data JPA - Query 파라미터 바인딩
+Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기
+Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기
+Spring Data JPA - 메소드 이름으로 쿼리 생성하기
+Spring Data JPA - 시작하기
+
+벌크성 수정 쿼리public int bulkAgePlus(int age) &#123;    int resultCount = em.createQuery(&quot;update Member m set m.age = m.age + 1 where m.age &gt;= :age&quot;)            .setParameter(&quot;age&quot;, age)            .executeUpdate();    return resultCount;&#125;
+
+@Testpublic void bulkUpdate()&#123;    memberJpaRepository.save(new Member(&quot;member1&quot;, 10));    memberJpaRepository.save(new Member(&quot;member2&quot;, 19));    memberJpaRepository.save(new Member(&quot;member3&quot;, 20));    memberJpaRepository.save(new Member(&quot;member4&quot;, 21));    memberJpaRepository.save(new Member(&quot;member5&quot;, 40));    int resultCount = memberJpaRepository.bulkAgePlus(20);    assertThat(resultCount).isEqualTo(3);&#125;
+
+Spring JPA 사용하기@Modifying@Query(&quot;update Member m set m.age = :age+1 where m.age &gt;= :age&quot;)int bulkAgePlus(@Param(&quot;age&quot;) int age);
+
+벌크성 쿼리는 영속성 Context를 무시하고 바로 DB에 업데이트를 진행 시키기 때문에 벌크성 쿼리를 수행한 후에는 영속성 Context를 초기화 해줄 필요가 있다. 안그러면 기존에 남아있는데이터가 꼬여서 문제가 발생할 수 있다.
+@Testpublic void bulkUpdate()&#123;    memberRepository.save(new Member(&quot;member1&quot;, 10));    memberRepository.save(new Member(&quot;member2&quot;, 19));    memberRepository.save(new Member(&quot;member3&quot;, 20));    memberRepository.save(new Member(&quot;member4&quot;, 21));    memberRepository.save(new Member(&quot;member5&quot;, 40));    int resultCount = memberRepository.bulkAgePlus(20);    // 벌크성 쿼리를 실행한 후 영속성 컨텍스트를 날려준다.    entityManager.flush();    entityManager.clear();    assertThat(resultCount).isEqualTo(3);&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/25/jpa/querydsl/querydsl-15-paging/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - QueryDsl 페이징 사용하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/25/jpa/querydsl/querydsl-15-paging/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
+            </div>
+            <div class="date"><time datetime="2022-04-25T08:31:46.000Z" itemprop="datePublished">2022-04-25</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/25/jpa/querydsl/querydsl-15-paging/">QueryDSL - QueryDsl 페이징 사용하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+QueryDSL - QueryDsl 페이징 사용하기
+QueryDSL - 사용자 정의 Repository
+QueryDSL - 동적 쿼리와 성능 최적화 조회
+QueryDSL - 순수 JPA 리포지토리와 Querydsl
+QueryDSL - SQL Function 호출하기
+QueryDSL - 수정, 삭제 벌크 연산
+QueryDSL - 동적 쿼리
+QueryDSL - 프로젝션과 결과 반환
+QueryDSL - 조인
+QueryDSL - 집계
+QueryDSL - 결과 조회
+QueryDSL - 검색 조건 쿼리
+QueryDSL - Q-Type 활용
+QueryDSL - JPA JPQL vs JPA QueryDSL
+QueryDSL 시작하기
+
+Querydsl 페이징public interface MemberRepositoryCustom &#123;    List&lt;MemberTeamDto&gt; search(MemberSearchCondition condition);    Page&lt;MemberTeamDto&gt; searchPageSimple(MemberSearchCondition condition, Pageable pageable);    Page&lt;MemberTeamDto&gt; searchPageComplex(MemberSearchCondition condition, Pageable pageable);&#125;
+
+QueryDSL 에서 제공하는 fetchResults 를 사용하게 되면 데이터를 가져오는 쿼리 와 가져온 데이터 수를 확인하는 Count 쿼리 총 2개의 쿼리가 발생하게 된다.
+@Overridepublic Page&lt;MemberTeamDto&gt; searchPageSimple(MemberSearchCondition condition, Pageable pageable) &#123;    QueryResults&lt;MemberTeamDto&gt; results = queryFactory            .select(new QMemberTeamDto(                    member.id.as(&quot;memberId&quot;),                    member.username,                    member.age,                    team.id.as(&quot;teamId&quot;),                    team.name.as(&quot;teamName&quot;)            ))            .from(member)            .leftJoin(member.team, team)            .where(                    usernameEq(condition.getUsername()),                    teamNameEq(condition.getTeamName()),                    ageGoe(condition.getAgeGoe()),                    ageLoe(condition.getAgeLoe())            )            .offset(pageable.getOffset())            .limit(pageable.getPageSize())            .fetchResults(); // fetchResults 를 사용하게 되면 count 쿼리가 같이 나가게 된다.    List&lt;MemberTeamDto&gt; content = results.getResults();    long total = results.getTotal();    return new PageImpl&lt;&gt;(content, pageable, total);&#125;
+
+Querydsl 페이징 쿼리와 Count 쿼리 분리@Overridepublic Page&lt;MemberTeamDto&gt; searchPageComplex(MemberSearchCondition condition, Pageable pageable) &#123;        // 전체 내용을 가져오는 쿼리     List&lt;MemberTeamDto&gt; content = queryFactory            .select(new QMemberTeamDto(                    member.id.as(&quot;memberId&quot;),                    member.username,                    member.age,                    team.id.as(&quot;teamId&quot;),                    team.name.as(&quot;teamName&quot;)            ))            .from(member)            .leftJoin(member.team, team)            .where(                    usernameEq(condition.getUsername()),                    teamNameEq(condition.getTeamName()),                    ageGoe(condition.getAgeGoe()),                    ageLoe(condition.getAgeLoe())            )            .offset(pageable.getOffset())            .limit(pageable.getPageSize())            .fetch();    // 전체 Count 를 가져오는 쿼리    long total = queryFactory            .select(ExpressionUtils.count(member))            .from(member)            .leftJoin(member.team, team)            .where(                    usernameEq(condition.getUsername()),                    teamNameEq(condition.getTeamName()),                    ageGoe(condition.getAgeGoe()),                    ageLoe(condition.getAgeLoe())            )            .fetchCount();    return new PageImpl&lt;&gt;(content, pageable, total);&#125;
+
+스프링 데이터 페이징 활용2 - CountQuery 최적화
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/25/jpa/querydsl/querydsl-14-custom-repository/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - 사용자 정의 Repository" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/25/jpa/querydsl/querydsl-14-custom-repository/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
+            </div>
+            <div class="date"><time datetime="2022-04-25T07:31:46.000Z" itemprop="datePublished">2022-04-25</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/25/jpa/querydsl/querydsl-14-custom-repository/">QueryDSL - 사용자 정의 Repository</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+QueryDSL - QueryDsl 페이징 사용하기
+QueryDSL - 사용자 정의 Repository
+QueryDSL - 동적 쿼리와 성능 최적화 조회
+QueryDSL - 순수 JPA 리포지토리와 Querydsl
+QueryDSL - SQL Function 호출하기
+QueryDSL - 수정, 삭제 벌크 연산
+QueryDSL - 동적 쿼리
+QueryDSL - 프로젝션과 결과 반환
+QueryDSL - 조인
+QueryDSL - 집계
+QueryDSL - 결과 조회
+QueryDSL - 검색 조건 쿼리
+QueryDSL - Q-Type 활용
+QueryDSL - JPA JPQL vs JPA QueryDSL
+QueryDSL 시작하기
+
+참고
+https://docs.spring.io/spring-data/jpa/docs/2.1.3.RELEASE/reference/html/#repositories.custom-implementations
+
+사용자 정의 Repository 사용법
+사용자 정의 인터페이스 작성
+사용자 정의 인터페이스 구현
+스프링 데이터 Repository 에 사용자 정의 인터페이스 상속
+
+1. 사용자 정의 인터페이스 작성public interface MemberRepositoryCustom &#123;    List&lt;MemberTeamDto&gt; search(MemberSearchCondition condition);&#125;
+
+2. 사용자 정의 인터페이스 구현
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/25/jpa/querydsl/querydsl-12/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - 순수 JPA 리포지토리와 Querydsl" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/25/jpa/querydsl/querydsl-12/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
+            </div>
+            <div class="date"><time datetime="2022-04-25T03:31:46.000Z" itemprop="datePublished">2022-04-25</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/25/jpa/querydsl/querydsl-12/">QueryDSL - 순수 JPA 리포지토리와 Querydsl</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+QueryDSL - QueryDsl 페이징 사용하기
+QueryDSL - 사용자 정의 Repository
+QueryDSL - 동적 쿼리와 성능 최적화 조회
+QueryDSL - 순수 JPA 리포지토리와 Querydsl
+QueryDSL - SQL Function 호출하기
+Post not found: jpa/querydsl/querydsl-10
+QueryDSL - 동적 쿼리
+QueryDSL - 프로젝션과 결과 반환
+QueryDSL - 조인
+QueryDSL - 집계
+QueryDSL - 결과 조회
+QueryDSL - 검색 조건 쿼리
+QueryDSL - Q-Type 활용
+QueryDSL - JPA JPQL vs JPA QueryDSL
+QueryDSL 시작하기
+
+순수 JPA 리포지토리와 Querydsl@Repositorypublic class MemberJpaRepository &#123;    private final EntityManager em;    private final JPAQueryFactory queryFactory;    public MemberJpaRepository(EntityManager em)&#123;        this.em = em;        this.queryFactory = new JPAQueryFactory(em);    &#125;    public void save(Member member)&#123;        em.persist(member);    &#125;    public Optional&lt;Member&gt; findById(Long id)&#123;        Member findMember = em.find(Member.class, id);        return Optional.ofNullable(findMember);    &#125;    public List&lt;Member&gt; findAll()&#123;        return em.createQuery(&quot;select m from Member m&quot;, Member.class)                .getResultList();    &#125;    public List&lt;Member&gt; findByUsername(String username)&#123;        return em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)                .setParameter(&quot;username&quot;, username)                .getResultList();    &#125;&#125;
+
+SpringBootTest@Transactionalclass MemberJpaRepositoryTest &#123;    @Autowired    EntityManager em;    @Autowired    MemberJpaRepository memberJpaRepository;    @Test    public void basicTest()&#123;        Member member = new Member(&quot;member1&quot;, 10);        memberJpaRepository.save(member);        Member findMember = memberJpaRepository.findById(member.getId()).get();        assertThat(findMember).isEqualTo(member);        List&lt;Member&gt; result = memberJpaRepository.findAll();        assertThat(result).containsExactly(member);        List&lt;Member&gt; result2 = memberJpaRepository.findByUsername(&quot;member1&quot;);        assertThat(result2).containsExactly(member);    &#125;&#125;
+
+JPQL QueryDsl 로 변경public List&lt;Member&gt; findAll()&#123;    return em.createQuery(&quot;select m from Member m&quot;, Member.class)            .getResultList();&#125;public List&lt;Member&gt; findAll_Querydsl()&#123;    return queryFactory            .selectFrom(member)            .fetch();&#125;public List&lt;Member&gt; findByUsername(String username)&#123;    return em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)            .setParameter(&quot;username&quot;, username)            .getResultList();&#125;public List&lt;Member&gt; findByUsername_Querydsl(String username)&#123;    return queryFactory            .selectFrom(member)            .where(member.username.eq(username))            .fetch();&#125;
+
+@Test    public void basicQueryDsl()&#123;        Member member = new Member(&quot;member1&quot;, 10);        memberJpaRepository.save(member);        Member findMember = memberJpaRepository.findById(member.getId()).get();        assertThat(findMember).isEqualTo(member);        List&lt;Member&gt; result = memberJpaRepository.findAll_Querydsl();        assertThat(result).containsExactly(member);        List&lt;Member&gt; result2 = memberJpaRepository.findByUsername_Querydsl(&quot;member1&quot;);        assertThat(result2).containsExactly(member);    &#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/25/jpa/querydsl/querydsl-13/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - 동적 쿼리와 성능 최적화 조회" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/25/jpa/querydsl/querydsl-13/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
+            </div>
+            <div class="date"><time datetime="2022-04-25T03:31:46.000Z" itemprop="datePublished">2022-04-25</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/25/jpa/querydsl/querydsl-13/">QueryDSL - 동적 쿼리와 성능 최적화 조회</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+QueryDSL - QueryDsl 페이징 사용하기
+QueryDSL - 사용자 정의 Repository
+QueryDSL - 동적 쿼리와 성능 최적화 조회
+QueryDSL - 순수 JPA 리포지토리와 Querydsl
+QueryDSL - SQL Function 호출하기
+QueryDSL - 수정, 삭제 벌크 연산
+QueryDSL - 동적 쿼리
+QueryDSL - 프로젝션과 결과 반환
+QueryDSL - 조인
+QueryDSL - 집계
+QueryDSL - 결과 조회
+QueryDSL - 검색 조건 쿼리
+QueryDSL - Q-Type 활용
+QueryDSL - JPA JPQL vs JPA QueryDSL
+QueryDSL 시작하기
+
+동적 쿼리와 성능 최적화 조회 - Builder 사용public List&lt;MemberTeamDto&gt; searchByBuilder(MemberSearchCondition condition)&#123;        BooleanBuilder builder = new BooleanBuilder();    if (StringUtils.hasText(condition.getUsername())) &#123;        builder.and(member.username.eq(condition.getUsername()));    &#125;    if(StringUtils.hasText(condition.getTeamName()))&#123;        builder.and(team.name.eq(condition.getUsername()));    &#125;    if(condition.getAgeGoe()!=null)&#123;        builder.and(member.age.goe(condition.getAgeGoe()));    &#125;    if(condition.getAgeLoe()!=null)&#123;        builder.and(member.age.loe(condition.getAgeLoe()));    &#125;    return queryFactory            .select(new QMemberTeamDto(                    member.id.as(&quot;memberId&quot;),                    member.username,                    member.age,                    team.id.as(&quot;teamId&quot;),                    team.name.as(&quot;teamName&quot;)            ))            .from(member)            .leftJoin(member.team, team)            .where(builder)            .fetch();&#125;
+
+@Testpublic void searchTest()&#123;    Team teamA = new Team(&quot;teamA&quot;);    Team teamB = new Team(&quot;teamB&quot;);    em.persist(teamA);    em.persist(teamB);    Member member1 = new Member(&quot;member1&quot;, 10, teamA);    Member member2 = new Member(&quot;member2&quot;, 20, teamA);    Member member3 = new Member(&quot;member3&quot;, 30, teamB);    Member member4 = new Member(&quot;member4&quot;, 40, teamB);    em.persist(member1);    em.persist(member2);    em.persist(member3);    em.persist(member4);    MemberSearchCondition condition = new MemberSearchCondition();    condition.setAgeGoe(35);    condition.setAgeLoe(40);    condition.setTeamName(&quot;teamB&quot;);    List&lt;MemberTeamDto&gt; result = memberJpaRepository.searchByBuilder(condition);    assertThat(result).extracting(&quot;username&quot;).containsExactly(&quot;member4&quot;);&#125;
+
+/* select    member1.id as memberId,    member1.username,    member1.age,    team.id as teamId,    team.name as teamName from    Member member1   left join    member1.team as team where    team.name = ?1     and member1.age &gt;= ?2     and member1.age &lt;= ?3 */ select        member0_.member_id as col_0_0_,        member0_.username as col_1_0_,        member0_.age as col_2_0_,        team1_.team_id as col_3_0_,        team1_.name as col_4_0_     from        member member0_     left outer join        team team1_             on member0_.team_id=team1_.team_id     where        team1_.name=?         and member0_.age&gt;=?         and member0_.age&lt;=?
+
+동적 쿼리와 성능 최적화 조회 - where 절 파라미터 사용public List&lt;MemberTeamDto&gt; searchByBuilder(MemberSearchCondition condition)&#123;    BooleanBuilder builder = new BooleanBuilder();    if (StringUtils.hasText(condition.getUsername())) &#123;        builder.and(member.username.eq(condition.getUsername()));    &#125;    if(StringUtils.hasText(condition.getTeamName()))&#123;        builder.and(team.name.eq(condition.getUsername()));    &#125;    if(condition.getAgeGoe()!=null)&#123;        builder.and(member.age.goe(condition.getAgeGoe()));    &#125;    if(condition.getAgeLoe()!=null)&#123;        builder.and(member.age.loe(condition.getAgeLoe()));    &#125;    return queryFactory            .select(new QMemberTeamDto(                    member.id.as(&quot;memberId&quot;),                    member.username,                    member.age,                    team.id.as(&quot;teamId&quot;),                    team.name.as(&quot;teamName&quot;)            ))            .from(member)            .leftJoin(member.team, team)            .where(builder)            .fetch();&#125;
+
+@Test    public void searchTest()&#123;        Team teamA = new Team(&quot;teamA&quot;);        Team teamB = new Team(&quot;teamB&quot;);        em.persist(teamA);        em.persist(teamB);        Member member1 = new Member(&quot;member1&quot;, 10, teamA);        Member member2 = new Member(&quot;member2&quot;, 20, teamA);        Member member3 = new Member(&quot;member3&quot;, 30, teamB);        Member member4 = new Member(&quot;member4&quot;, 40, teamB);        em.persist(member1);        em.persist(member2);        em.persist(member3);        em.persist(member4);        MemberSearchCondition condition = new MemberSearchCondition();        condition.setAgeGoe(35);        condition.setAgeLoe(40);        condition.setTeamName(&quot;teamB&quot;);        List&lt;MemberTeamDto&gt; result = memberJpaRepository.searchByBuilder(condition);        assertThat(result).extracting(&quot;username&quot;).containsExactly(&quot;member4&quot;);    &#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2022/04/24/jpa/querydsl/querydsl-11/" class="thumbnail">
     
     
@@ -236,10 +599,14 @@ registerColumnType( Types.BOOLEAN, &quot;boolean&quot; );registerColumnType( Typ
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -308,14 +675,10 @@ UPDATE, DELETE 와 같은 대량의 데이터를 한번에 처리하는 Bulk 연
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -386,10 +749,14 @@ List&lt;String&gt; result = queryFactory          .select(member.username.concat
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -459,14 +826,10 @@ Where 다중 파라미터 사용
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -539,381 +902,6 @@ From 절에 여러 엔티티를 선택해서 세타 조인이 가능하다.
     </div>
 </article>
     
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/24/jpa/querydsl/querydsl-06/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - 집계" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-06/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
-            </div>
-            <div class="date"><time datetime="2022-04-24T00:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/24/jpa/querydsl/querydsl-06/">QueryDSL - 집계</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-QueryDSL - QueryDsl 페이징 사용하기
-QueryDSL - 사용자 정의 Repository
-QueryDSL - 동적 쿼리와 성능 최적화 조회
-QueryDSL - 순수 JPA 리포지토리와 Querydsl
-QueryDSL - SQL Function 호출하기
-QueryDSL - 수정, 삭제 벌크 연산
-QueryDSL - 동적 쿼리
-QueryDSL - 프로젝션과 결과 반환
-QueryDSL - 조인
-QueryDSL - 집계
-QueryDSL - 결과 조회
-QueryDSL - 검색 조건 쿼리
-QueryDSL - Q-Type 활용
-QueryDSL - JPA JPQL vs JPA QueryDSL
-QueryDSL 시작하기
-
-집계 함수@Testpublic void aggregation()&#123;    List&lt;Tuple&gt; result = queryFactory.select(                    member.count(),                    member.age.sum(),                    member.age.avg(),                    member.age.max(),                    member.age.min()            )            .from(member)            .fetch();    Tuple tuple = result.get(0);    assertThat(tuple.get(member.count())).isEqualTo(4);    assertThat(tuple.get(member.age.sum())).isEqualTo(100);    assertThat(tuple.get(member.age.avg())).isEqualTo(25);    assertThat(tuple.get(member.age.max())).isEqualTo(40);    assertThat(tuple.get(member.age.min())).isEqualTo(10);&#125;
-
-Group by@Testpublic void group() &#123;    List&lt;Tuple&gt; result = queryFactory.select(team.name, member.age.avg())            .from(member)            .join(member.team, team)            .groupBy(team.name)            .fetch();    Tuple teamA = result.get(0);    Tuple teamB = result.get(1);    assertThat(teamA.get(team.name)).isEqualTo(&quot;teamA&quot;);    assertThat(teamA.get(member.age.avg())).isEqualTo(15);    assertThat(teamB.get(team.name)).isEqualTo(&quot;teamB&quot;);    assertThat(teamB.get(member.age.avg())).isEqualTo(35);&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/24/jpa/querydsl/querydsl-05/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - 결과 조회" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-05/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
-            </div>
-            <div class="date"><time datetime="2022-04-23T23:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/24/jpa/querydsl/querydsl-05/">QueryDSL - 결과 조회</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-QueryDSL - QueryDsl 페이징 사용하기
-QueryDSL - 사용자 정의 Repository
-QueryDSL - 동적 쿼리와 성능 최적화 조회
-QueryDSL - 순수 JPA 리포지토리와 Querydsl
-QueryDSL - SQL Function 호출하기
-QueryDSL - 수정, 삭제 벌크 연산
-QueryDSL - 동적 쿼리
-QueryDSL - 프로젝션과 결과 반환
-QueryDSL - 조인
-QueryDSL - 집계
-QueryDSL - 결과 조회
-QueryDSL - 검색 조건 쿼리
-QueryDSL - Q-Type 활용
-QueryDSL - JPA JPQL vs JPA QueryDSL
-QueryDSL 시작하기
-
-Querydsl 결과 조회
-fetch : 리스트 조회, 데이터가 없으면 빈 리스트 반환
-fetchOne : 단건 조회
-결과가 없으면 : null
-결과가 둘 이상이면 NonUniqueResultException
-
-
-fetchFirst : limit(1).fetchOne() 와 의미가 동일하다.
-fetchResults : 페이징 정보 포함, total count 쿼리 추가 실행
-fetchCount : count 쿼리로 변경해서 count 수 조회
-
-@Testpublic void resultFetch()&#123;List&lt;Member&gt; fetch = queryFactory.selectFrom(member)        .fetch();Member fetchOne = queryFactory.selectFrom(QMember.member)        .fetchOne();Member fetchFirst = queryFactory.selectFrom(QMember.member)        .fetchFirst();QueryResults&lt;Member&gt; results = queryFactory.selectFrom(member)        .fetchResults();results.getTotal();List&lt;Member&gt; content = results.getResults();// Deprecatedlong total = queryFactory        .selectFrom(member)        .fetchCount();// Count 쿼리 작성long totalCount = queryFactory                .select(member.count())                .from(member)                .fetchOne();
-
-
-fetchResults : 페이징 쿼리가 복잡해지면 content 를 가져오는 쿼리와 total count 를 가져오는 쿼리가 다를 때가 있어서 해당 메소드를 사용하면 안된다.
-
-정렬@Testpublic void sort()&#123;    em.persist(new Member(null, 100));    em.persist(new Member(&quot;member5&quot;, 100));    em.persist(new Member(&quot;member6&quot;, 100));    List&lt;Member&gt; result = queryFactory            .selectFrom(member)            .where(member.age.eq(100))            .orderBy(member.age.desc(), member.username.asc().nullsLast())            .fetch();    Member member5 = result.get(0);    Member member6 = result.get(1);    Member memberNull = result.get(2);    assertThat(member5.getUsername()).isEqualTo(&quot;member5&quot;);    assertThat(member6.getUsername()).isEqualTo(&quot;member6&quot;);    assertThat(memberNull.getUsername()).isNull();&#125;
-
-페이징
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/24/jpa/querydsl/querydsl-04/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - 검색 조건 쿼리" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-04/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
-            </div>
-            <div class="date"><time datetime="2022-04-23T22:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/24/jpa/querydsl/querydsl-04/">QueryDSL - 검색 조건 쿼리</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-QueryDSL - QueryDsl 페이징 사용하기
-QueryDSL - 사용자 정의 Repository
-QueryDSL - 동적 쿼리와 성능 최적화 조회
-QueryDSL - 순수 JPA 리포지토리와 Querydsl
-QueryDSL - SQL Function 호출하기
-QueryDSL - 수정, 삭제 벌크 연산
-QueryDSL - 동적 쿼리
-QueryDSL - 프로젝션과 결과 반환
-QueryDSL - 조인
-QueryDSL - 집계
-QueryDSL - 결과 조회
-QueryDSL - 검색 조건 쿼리
-QueryDSL - Q-Type 활용
-QueryDSL - JPA JPQL vs JPA QueryDSL
-QueryDSL 시작하기
-
-@Testpublic void startQuerydsl()&#123;    QMember qMember = new QMember(&quot;m&quot;);    Member findMember = queryFactory            .select(qMember)            .from(qMember)            .where(qMember.username.eq(&quot;member1&quot;))            .fetchOne();    assertThat(findMember.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
-
-@Testpublic void search()&#123;    Member findMember = queryFactory            .selectFrom(member)            .where(member.username.eq(&quot;member1&quot;).and(member.age.eq(10)))            .fetchOne();    assertThat(findMember.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
-
-and 를 풀어내는 방식 - and 메소드 사용
-@Testpublic void search()&#123;    Member findMember = queryFactory            .selectFrom(member)            .where(                    member.username.eq(&quot;member1&quot;).and(member.age.eq(10))            )            .fetchOne();    assertThat(findMember.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
-
-and 를 풀어내는 방식 - 파라미터로 넘기는 방법
-@Testpublic void search()&#123;    Member findMember = queryFactory            .selectFrom(member)            .where(                    member.username.eq(&quot;member1&quot;),                    member.age.eq(10)            )            .fetchOne();    assertThat(findMember.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
-
-Querydsl 에서 사용하는 검색 조건
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/24/jpa/querydsl/querydsl-03-qtype/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - Q-Type 활용" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-03-qtype/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
-            </div>
-            <div class="date"><time datetime="2022-04-23T21:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/24/jpa/querydsl/querydsl-03-qtype/">QueryDSL - Q-Type 활용</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-QueryDSL - QueryDsl 페이징 사용하기
-QueryDSL - 사용자 정의 Repository
-QueryDSL - 동적 쿼리와 성능 최적화 조회
-QueryDSL - 순수 JPA 리포지토리와 Querydsl
-QueryDSL - SQL Function 호출하기
-QueryDSL - 수정, 삭제 벌크 연산
-QueryDSL - 동적 쿼리
-QueryDSL - 프로젝션과 결과 반환
-QueryDSL - 조인
-QueryDSL - 집계
-QueryDSL - 결과 조회
-QueryDSL - 검색 조건 쿼리
-QueryDSL - Q-Type 활용
-QueryDSL - JPA JPQL vs JPA QueryDSL
-QueryDSL 시작하기
-
-Q 클래스 인스턴스를 사용하는 2가지 방법
-생성자기 parameter 를 넘기게 되면 해당 값으로 alias 가 걸리게 된다.
-
-// 별칭 직접 지정 QMember qMember = new QMember(&quot;m&quot;); // 기본 인스턴스 사용QMember qMember = QMember.member; 
-
-use_sql_comments 옵션을 true 로 설정하게 되면 jpql comment 를 볼 수 있다.
-Configspring:  datasource:#    url: jdbc:h2:~/querydsl    url: jdbc:h2:tcp://localhost/~/querydsl    username: sa    password:    driver-class-name: org.h2.Driver  jpa:    hibernate:      ddl-auto: create-drop    properties:      hibernate:#        show_sql: true        format_sql: true        use_sql_comments: truelogging.level:  org.hibernate.SQL: debug    #  org.hibernate.type: trace
-
-/* select        m     from        Member m     where        m.username = :username */ select            member0_.member_id as member_i1_1_,            member0_.age as age2_1_,            member0_.team_id as team_id4_1_,            member0_.username as username3_1_         from            member member0_         where            member0_.username=?
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/24/jpa/querydsl/querydsl-02-jpql-querydsl/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - JPA JPQL vs JPA QueryDSL" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-02-jpql-querydsl/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
-            </div>
-            <div class="date"><time datetime="2022-04-23T20:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/24/jpa/querydsl/querydsl-02-jpql-querydsl/">QueryDSL - JPA JPQL vs JPA QueryDSL</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-QueryDSL - QueryDsl 페이징 사용하기
-QueryDSL - 사용자 정의 Repository
-QueryDSL - 동적 쿼리와 성능 최적화 조회
-QueryDSL - 순수 JPA 리포지토리와 Querydsl
-QueryDSL - SQL Function 호출하기
-QueryDSL - 수정, 삭제 벌크 연산
-QueryDSL - 동적 쿼리
-QueryDSL - 프로젝션과 결과 반환
-QueryDSL - 조인
-QueryDSL - 집계
-QueryDSL - 결과 조회
-QueryDSL - 검색 조건 쿼리
-QueryDSL - Q-Type 활용
-QueryDSL - JPA JPQL vs JPA QueryDSL
-QueryDSL 시작하기
-
-JPA JPQL
-JPQL 은 EntityManager 객체내 creatQuery 메소드를 이용해 쿼리를 작성한 후 실행한다.
-
-@Testpublic void startJPQL()&#123;    // member1 을 찾아라    Member findByJPQL = em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)            .setParameter(&quot;username&quot;, &quot;member1&quot;)            .getSingleResult();    assertThat(findByJPQL.getUsername()).isEqualTo(&quot;member1&quot;);&#125;
-
-JPA QueryDSL
-JPA QueryDSL 은 JPA Entity 와 관련해 정적 타입으로 쿼리를 작성 하게 해주는 라이브러리
-
-JPA QueryDSL 에서는 JPAQueryFactory 객체를 이용해 쿼리를 작성합니다. JPAQueryFactory 객체를 통해 생성된 쿼리가 JPA Entity 를 대상으로 쿼리를 생성하고 실행하고 상태를 관리하기 위해서는 EntityMagager 인스턴스가 필요합니다. 
-따라서, JPA 기능을 사용하고 Entity 를 대상으로 쿼리를 수행할 수 있도록 EntityMagager 객체를 JPAQueryFactory 객체 생성시 전달할 필요가 있습니다.
-        </p>
-    </div>
-</article>
-    
         </div>
     
 
@@ -922,8 +910,8 @@ JPA QueryDSL 에서는 JPAQueryFactory 객체를 이용해 쿼리를 작성합�
 
 
     <nav id="page-nav">
-        <span class="pages">Page 19 of 63</span>
-        <a class="extend prev" rel="prev" href="/page/18/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/20/">&raquo;</a>
+        <span class="pages">Page 19 of 64</span>
+        <a class="extend prev" rel="prev" href="/page/18/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/20/">&raquo;</a>
     </nav>
 
 
@@ -956,7 +944,7 @@ JPA QueryDSL 에서는 JPAQueryFactory 객체를 이용해 쿼리를 작성합�
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">47</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">275</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">169</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">48</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">275</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
         </div>
     </div>
 

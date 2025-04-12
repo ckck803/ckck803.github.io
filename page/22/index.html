@@ -176,6 +176,382 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2022/04/12/spring/spring-batch/spring-batch-11-ExecutionContext/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/spring-batch/execution-context.png)" alt="Spring Batch - 11. ExecutionContext" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/12/spring/spring-batch/spring-batch-11-ExecutionContext/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a>
+            </div>
+            <div class="date"><time datetime="2022-04-12T03:25:35.000Z" itemprop="datePublished">2022-04-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/12/spring/spring-batch/spring-batch-11-ExecutionContext/">Spring Batch - 11. ExecutionContext</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            출처
+해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.
+
+목차
+Spring Batch - 14. 배치 초기화 설정 (application.properties)
+Spring Batch - 13. JobLauncher
+Spring Batch - 12. JobRepository
+Spring Batch - 11. ExecutionContext
+Spring Batch - 10. StepContribution
+Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블
+Spring Batch - 08. Step
+Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블
+Spring Batch - 06. JobParameter 와 JOB_EXECUTION_PARAM 테이블
+Spring Batch - 05. JobInstance 와 JOB_INSTANCE 테이블
+Spring Batch - 04. JobLauncher
+Spring Batch - 03. Job
+Spring Batch - 02. Batch 에서 사용하는 Table
+Spring Batch - 01. @EnableBatchProcessing
+
+ExecutionContext
+프레잌워크에서 유지 및 관리하는 Key&#x2F;Value 컬렉션으로 JobExecution, StepExecution 객체의 상태를 저장하는 공유 객체
+
+
+DB 에 직렬화 한 값으로 저장된다. 
+Job 재 시작시 이미 처리한 Row 데이터는 건너뛰고 이후로 수행하도록 할 때 상태 정보를 활용한다.
+
+ExecutionContext 는 Job 또는 Step 의 실행 중에 데이터를 공유하거나 저장하기 위한 메커니즘으로 JobExecution, StepExecution 및 JobParameter 와 함께 사용됩니다.
+ExecutionContext 는 JobExecutionContext 와 StepExecutionContext 로 구분됩니다. JobExecutionContext 는 Job 의 실행 컨텍스트를 나타내며, StepExecutionContext 는 Step 의 실행 컨텍스트를 나타냅니다. JobExecutionContext 는 모든 Step에서 공유됩니다. 그러나 StepExecutionContext 는 Step 간에 공유되지 않으며, 각 Step 에서 고유한 ExecutionContext 를 유지합니다.
+ExecutionContext 는 기본적으로 Map&lt;String, Object&gt; 타입으로 사용자가 직접 데이터를 추가, 수정, 삭제할 수 있습니다. 예를 들어, Job 또는 Step 실행 중에 사용자 데이터를 저장하고 싶은 경우, ExecutionContext 를 사용하여 저장할 수 있습니다.
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/12/spring/spring-batch/step/spring-batch-10-StepContribution/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/spring-batch/step-contribution.png)" alt="Spring Batch - 10. StepContribution" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/12/spring/spring-batch/step/spring-batch-10-StepContribution/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a>
+            </div>
+            <div class="date"><time datetime="2022-04-12T02:25:35.000Z" itemprop="datePublished">2022-04-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/12/spring/spring-batch/step/spring-batch-10-StepContribution/">Spring Batch - 10. StepContribution</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            출처
+해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.
+
+목차
+Spring Batch - 14. 배치 초기화 설정 (application.properties)
+Spring Batch - 13. JobLauncher
+Spring Batch - 12. JobRepository
+Spring Batch - 11. ExecutionContext
+Spring Batch - 10. StepContribution
+Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블
+Spring Batch - 08. Step
+Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블
+Spring Batch - 06. JobParameter 와 JOB_EXECUTION_PARAM 테이블
+Spring Batch - 05. JobInstance 와 JOB_INSTANCE 테이블
+Spring Batch - 04. JobLauncher
+Spring Batch - 03. Job
+Spring Batch - 02. Batch 에서 사용하는 Table
+Spring Batch - 01. @EnableBatchProcessing
+
+StepContribution
+Chunk 프로세스의 변경 사항을 버퍼링 한 후 StepExecution 상태를 업데이트 하는 객체
+
+
+Chunk Commit 직전에 StepExecution 의 apply 메서드를 호출해 상태르르 업데이트 한다.
+ExitStatus 의 기본 종료 코드 외 사용자 정의 종료 코드를 생성해서 적용할 수 있다.
+
+
+
+TaskletStep 클래스내 doInTransaction 메서드에서 StepExecution 객체를 이용해 StepContribution 객체를 생성한다.
+Tasklet 을 실행시킨다.
+
+TaskletStep.java
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/12/spring/spring-batch/step/spring-batch-09-StepExecution/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/spring-batch/step-execution.png)" alt="Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/12/spring/spring-batch/step/spring-batch-09-StepExecution/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a>
+            </div>
+            <div class="date"><time datetime="2022-04-12T01:25:35.000Z" itemprop="datePublished">2022-04-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/12/spring/spring-batch/step/spring-batch-09-StepExecution/">Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            출처
+해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.
+
+목차
+Spring Batch - 14. 배치 초기화 설정 (application.properties)
+Spring Batch - 13. JobLauncher
+Spring Batch - 12. JobRepository
+Spring Batch - 11. ExecutionContext
+Spring Batch - 10. StepContribution
+Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블
+Spring Batch - 08. Step
+Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블
+Spring Batch - 06. JobParameter 와 JOB_EXECUTION_PARAM 테이블
+Spring Batch - 05. JobInstance 와 JOB_INSTANCE 테이블
+Spring Batch - 04. JobLauncher
+Spring Batch - 03. Job
+Spring Batch - 02. Batch 에서 사용하는 Table
+Spring Batch - 01. @EnableBatchProcessing
+
+StepExecution
+Step 에 대한 한번의 시도를 의미하는 객체로서 Step 실행 중에 발생한 정보들을 저장하고 있는 객체BATCH_STEP_EXECUTION 테이블과 매핑된다.
+
+
+
+StepExecution 객체는 Step 이 매번 시도될 때마다 각 Step 별로 생성되며 JobRepository 를 통해 저장됩니다. 이를 통해 실행 중인 Step의 정보를 추적하고, 필요한 경우 실행을 재개하거나 롤백할 수 있습니다.
+Job 이 재시작 하더라도 이미 성공적으로 완료된 Step 은 재 실행되지 않고 실패한 Step 만 실행됩니다. 이전 단계 Step 이 실패해서 현재 Step 을 실행하지 않는다면 StepExecetoin 객체를 생성하지 않는다.
+StepExecution 인터페이스public interface StepExecution &#123;    public long getStepExecutionId();    public String getStepName();    public BatchStatus getBatchStatus();    public Date getStartTime();    public Date getEndTime();    public String getExitStatus();    public Serializable getPersistentUserData();    public Metric[] getMetrics();&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/12/spring/spring-batch/step/spring-batch-08-Step/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/spring-batch/step.png)" alt="Spring Batch - 08. Step" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/12/spring/spring-batch/step/spring-batch-08-Step/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a>
+            </div>
+            <div class="date"><time datetime="2022-04-12T00:25:35.000Z" itemprop="datePublished">2022-04-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/12/spring/spring-batch/step/spring-batch-08-Step/">Spring Batch - 08. Step</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            출처
+해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.
+
+목차
+Spring Batch - 14. 배치 초기화 설정 (application.properties)
+Spring Batch - 13. JobLauncher
+Spring Batch - 12. JobRepository
+Spring Batch - 11. ExecutionContext
+Spring Batch - 10. StepContribution
+Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블
+Spring Batch - 08. Step
+Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블
+Spring Batch - 06. JobParameter 와 JOB_EXECUTION_PARAM 테이블
+Spring Batch - 05. JobInstance 와 JOB_INSTANCE 테이블
+Spring Batch - 04. JobLauncher
+Spring Batch - 03. Job
+Spring Batch - 02. Batch 에서 사용하는 Table
+Spring Batch - 01. @EnableBatchProcessing
+
+Step
+Batch Job 을 구성하는 독립적인 하나의 단계로서 실제 배치 처리를 정의하고 컨트롤하는 데 필요한 모든 정보를 가지고 있는 도메인 객체
+단순한 단일 테스크 뿐 아리나 입력, 처리 그리고 출력과 관련된 복잡한 비즈니스 로직을 포함하는 모든 설정들을 담고 있다.
+배치 작업을 어떻게 구성하고 실행할 것인지 Job 의 세부 작업을 Task 기반으로 설정하고 명세해 놓은 객체
+모든 Job 은 하나 이상의 step 으로 구성된다.
+
+Step은 하나 이상의 Batch 작업을 수행하는 논리적인 단위입니다. 각 Step은 하나의 Tasklet 또는 하나 이상의 Reader, Processor 및 Writer 구성 요소를 포함할 수 있습니다.
+Reader는 데이터 소스에서 데이터를 읽고 Processor는 읽어온 데이터를 가공하고 Writer는 가공된 데이터를 결과 저장소에 씁니다. 이러한 구성 요소는 일련의 스텝으로 연결되어 Batch 작업의 흐름을 제어합니다.
+Step은 각 스텝의 실행 전&#x2F;후에 수행해야 할 작업을 처리하기 위한 Tasklet도 지원합니다. 예를 들어, 스텝이 실행되기 전에 데이터베이스 테이블을 비워야 하는 경우, 이러한 작업을 Tasklet에 포함시킬 수 있습니다.
+Spring Batch는 스텝 간에 데이터를 공유하는 방법도 제공합니다. 이를 통해 하나의 스텝이 처리한 결과를 다음 스텝에서 사용할 수 있습니다.
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/12/spring/spring-batch/job/spring-batch-07-JobExecution/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/spring-batch/job-execution.png)" alt="Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/12/spring/spring-batch/job/spring-batch-07-JobExecution/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a>
+            </div>
+            <div class="date"><time datetime="2022-04-11T23:25:35.000Z" itemprop="datePublished">2022-04-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/12/spring/spring-batch/job/spring-batch-07-JobExecution/">Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            출처
+해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.
+
+목차
+Spring Batch - 14. 배치 초기화 설정 (application.properties)
+Spring Batch - 13. JobLauncher
+Spring Batch - 12. JobRepository
+Spring Batch - 11. ExecutionContext
+Spring Batch - 10. StepContribution
+Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블
+Spring Batch - 08. Step
+Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블
+Spring Batch - 06. JobParameter 와 JOB_EXECUTION_PARAM 테이블
+Spring Batch - 05. JobInstance 와 JOB_INSTANCE 테이블
+Spring Batch - 04. JobLauncher
+Spring Batch - 03. Job
+Spring Batch - 02. Batch 에서 사용하는 Table
+Spring Batch - 01. @EnableBatchProcessing
+
+JobExecution
+Job 실행 중에 발생한 정보들을 저장하고 있는 객체, JobInstance 에 대한 시도를 의미하는 객체로서 1:N 의 관계를 갖는다.BATCH_JOB_EXECUTION 테이블과 매핑되고 로서 JobInstance 에 대한 성공 &#x2F; 실패 내역을 관리한다.
+
+JobExecution 객체는 JobInstance 가 실행될 때 마다 생성됩니다. JobExecution 객체는 Job 의 실행 결과 FAILED 또는 COMPLETED 등의 값을 관리합니다.
+JobExecution 의 실행 결과가 COMPLETED 면 JobInstance 실행이 완료된 것으로 간주해 동일한 JobParameter 를 이용한 재실행이 불가능합니다.
+JobExecution 의 실행 결과가 FAILED 면 JobInstance 실행이 완료되지 않은 것으로 간주해 동일한 JobParameter 를 이용한 재실행이 가능합니다. 또한, JobExecution 의 실행 결과가 COMPLETED 될 때까지 하나의 JobInstance 내에서 여러 번의 시도가 생길 수 있다.
+
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2022/04/12/spring/spring-batch/job/spring-batch-06-JobParameter/" class="thumbnail">
     
     
@@ -257,10 +633,14 @@ SpEL 이용
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -328,14 +708,10 @@ Spring Batch는 다양한 유형의 JobLauncher를 제공합니다. 각 JobLaunc
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -414,10 +790,14 @@ JOB_NAME(Job) 과 JOB_KEY(JobParamter 해시값) 이 동일한 데이터는 중�
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -501,14 +881,10 @@ Thread 동기화
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -580,420 +956,6 @@ Spring Batch에서 Job은 JobBuilderFactory를 사용하여 생성됩니다. Job
     </div>
 </article>
     
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/10/spring/spring-batch/spring-batch-02-batch-table/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/spring-batch/springbatch-dbschema.png)" alt="Spring Batch - 02. Batch 에서 사용하는 Table" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/10/spring/spring-batch/spring-batch-02-batch-table/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a>
-            </div>
-            <div class="date"><time datetime="2022-04-10T13:25:35.000Z" itemprop="datePublished">2022-04-10</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/10/spring/spring-batch/spring-batch-02-batch-table/">Spring Batch - 02. Batch 에서 사용하는 Table</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            출처
-해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.
-
-목차
-Spring Batch - 14. 배치 초기화 설정 (application.properties)
-Spring Batch - 13. JobLauncher
-Spring Batch - 12. JobRepository
-Spring Batch - 11. ExecutionContext
-Spring Batch - 10. StepContribution
-Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블
-Spring Batch - 08. Step
-Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블
-Spring Batch - 06. JobParameter 와 JOB_EXECUTION_PARAM 테이블
-Spring Batch - 05. JobInstance 와 JOB_INSTANCE 테이블
-Spring Batch - 04. JobLauncher
-Spring Batch - 03. Job
-Spring Batch - 02. Batch 에서 사용하는 Table
-Spring Batch - 01. @EnableBatchProcessing
-
-Spring Batch 메타 데이터
-스프링 배치의 실행 및 관리를 위한 목적으로 여러 도메인들(Job, Step, JobParameters 등) 의 정보들을 저장, 업데이트, 조회할 수 있는 스키마 를 제공한다.
-과거, 현재의 실행에 대한 세세한 정보, 실행에 대한 성공과 실패 여부등을 일목요연하게 관리함으로서 배치운용에 있어 리스크 발생시 빠른 대처 가능
-DB 와 연동할 경우 필수적으로 메타 테이블이 생성 돼야 함
-
-스키마 생성 설정
-수동 생성 : 쿼리 복사 후 직접 실행
-자동 생성 - spring.batch.jdbc.initialize-schema 설정
-ALWAYS
-스크립트 항상 실행
-RDBMS 설정이 돼 있을 경우 내장 DB 보다 우선적으로 실행
-
-
-EMBEDDED (기본 값)
-내장 DB 일 때만 실행되며 스키마가 자동 생성됨
-
-
-NEBER
-스크립트가 항상 실행 안된다.
-내장 DB 일 경우 스크립트가 생성이 안되기 때문에 오류가 발생
-운영에서는 수동으로 스크립트 생성 후 설정하는 것을 권장
-
-
-
-
-
-# ALWAYS 로 설정spring.batch.jdbc.initialize-schema: always# EMBEDED 로 설정spring.batch.jdbc.initialize-schema: embedded# NEVER 로 설정spring.batch.jdbc.initialize-schema: never
-
-
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/09/spring/spring-batch/spring-batch-01-EnableBatchProcessing/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/spring-batch/EnableBatchProcessing2.png)" alt="Spring Batch - 01. @EnableBatchProcessing" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/09/spring/spring-batch/spring-batch-01-EnableBatchProcessing/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a>
-            </div>
-            <div class="date"><time datetime="2022-04-09T14:25:35.000Z" itemprop="datePublished">2022-04-09</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/09/spring/spring-batch/spring-batch-01-EnableBatchProcessing/">Spring Batch - 01. @EnableBatchProcessing</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            출처
-해당 포스트는 정수원 강사님의 스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch 강의를 바탕으로 작성 됐습니다.
-
-목차
-Spring Batch - 14. 배치 초기화 설정 (application.properties)
-Spring Batch - 13. JobLauncher
-Spring Batch - 12. JobRepository
-Spring Batch - 11. ExecutionContext
-Spring Batch - 10. StepContribution
-Spring Batch - 09. StepExecution 와 STEP_EXECUTION 테이블
-Spring Batch - 08. Step
-Spring Batch - 07. JobExecution 와 JOB_EXECUTION 테이블
-Spring Batch - 06. JobParameter 와 JOB_EXECUTION_PARAM 테이블
-Spring Batch - 05. JobInstance 와 JOB_INSTANCE 테이블
-Spring Batch - 04. JobLauncher
-Spring Batch - 03. Job
-Spring Batch - 02. Batch 에서 사용하는 Table
-Spring Batch - 01. @EnableBatchProcessing
-
-@EnableBatchProcessing
-@EnableBatchProcessing 을 이용해 어플리케이션이 Spring Batch 로 실행될 수 있도록 자동으로 설정해준다.
-
-@SpringBootApplication@EnableBatchProcessing // Spring Batch 활성화public class SpringBatchApplication &#123;    public static void main(String[] args) &#123;        SpringApplication.run(SpringBatchApplication.class, args);    &#125;&#125;
-
-Spring Batch 초기화 과정@EnableBatchProcessing 을 명시해주면 Batch 관련 설정 클래스 SimpleBatchConfiguration, BatchConfigurerConfiguration, BatchAutoConfiguration 를 실행시켜 Spring Batch 초기화 및 실행 구성이 이뤄진다.
-
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/05/spring/spring-data-jpa/11-spring-data-jpa-convertor/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/spring-data-jpa/spring-data-jpa.png)" alt="Spring Data JPA - Convertor" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/05/spring/spring-data-jpa/11-spring-data-jpa-convertor/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a>
-            </div>
-            <div class="date"><time datetime="2022-04-05T10:39:59.000Z" itemprop="datePublished">2022-04-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/05/spring/spring-data-jpa/11-spring-data-jpa-convertor/">Spring Data JPA - Convertor</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring Data JPA - 벌크성 수정 쿼리
-Spring Data JPA - Convertor
-Spring Data JPA - Auditing
-Spring Data JPA - Paging Request Paramater
-Spring Data JPA - 페이징과 정렬
-Post not found: spring/spring-data-jpa/07-spring-data-jpa
-Spring Data JPA - 반환 타입
-Spring Data JPA - Query 파라미터 바인딩
-Spring Data JPA - Query 를 이용한 조회 결과를 특정 값으로 반환하기
-Spring Data JPA - JPQL (Java Persistence Query Lange) 사용하기
-Spring Data JPA - 메소드 이름으로 쿼리 생성하기
-Spring Data JPA - 시작하기
-
-BooleanToYNConverterBoolean 으로 저장 되는 값을 True, false 로 변경해 값을 저장하기 위한 Convertor
-@Converterpublic class BooleanToYNConverter implements AttributeConverter&lt;Boolean, String&gt; &#123;    @Override    public String convertToDatabaseColumn(Boolean attribute)&#123;        return (attribute != null &amp;&amp; attribute) ? &quot;Y&quot; : &quot;N&quot;;    &#125;    @Override    public Boolean convertToEntityAttribute(String dbData)&#123;        return &quot;Y&quot;.equals(dbData);    &#125;&#125;
-
-
-@Entity@Getter@Builder@NoArgsConstructor@AllArgsConstructor@EntityListeners(AuditingEntityListener.class)public class Post extends BaseEntity&#123;    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)    @Column    private Long id;    @Column(name = &quot;POST_TITLE&quot;, length = 100, nullable = false)    private String title;    @Column(name = &quot;POST_SUBTITLE&quot;)    private String subTitle;    @Lob    private String content;    @ManyToOne(fetch = FetchType.LAZY)    @JoinColumn(name = &quot;username&quot;, nullable = false, referencedColumnName = &quot;username&quot;)    @CreatedBy    private UserInfo author;    @ManyToOne(fetch = FetchType.LAZY)    @JoinColumn(name = &quot;CATEGORY&quot;, nullable = true, referencedColumnName = &quot;CATEGORY_NAME&quot;)    private Category category;    @Column(name = &quot;isDeleted&quot;)    @ColumnDefault(&quot;false&quot;)    @Convert(converter = BooleanToYNConverter.class)    private boolean isDeleted;    // ==== 연관관계 편의 메서드 ==== //    public void changeCategory(Category category)&#123;        this.category = category;        // 새로운 카테고리에 해당 포스트 추가        category.getPosts().add(this);    &#125;    public void setAuthor(UserInfo author)&#123;        this.author = author;        author.getPosts().add(this);    &#125;    public Post updatePost(Post post) &#123;        this.title = post.title;        this.subTitle = post.subTitle;        this.content = post.content;        changeCategory(post.getCategory());        return this;    &#125;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/03/31/spring/spring-framework/springboot-messageresource/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/spring-boot-logo.png)" alt="Spring Boot - 메시지 국제화 MessageSource" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/03/31/spring/spring-framework/springboot-messageresource/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a>
-            </div>
-            <div class="date"><time datetime="2022-03-30T19:31:46.000Z" itemprop="datePublished">2022-03-31</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/03/31/spring/spring-framework/springboot-messageresource/">Spring Boot - 메시지 국제화 MessageSource</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Post not found: spring-boot/spring-framework/springboot-actuator
-Post not found: spring-boot/spring-framework/springboot-messageresource
-Post not found: spring-boot/spring-framework/configuration/springboot-WebMvcConfigurer
-Post not found: spring-boot/spring-framework/configuration/springboot-autoconfiguration
-
-참고
-https://gist.github.com/dlxotn216/cb9fe1e40c7961da9d7147d9ebc876d6
-
-메시지 관리를 위한 MessageSource어플리케이션 개발을 진행하다가 보면 메시지를 보낼때 하드 코딩으로 넣다 보면 같은 맥략으로 쓰인 메시지들이 서로 상이하게 관리되는 것을 느낄 수 있었고 무엇보다 가장 큰 문제는 메시지를 변경하게 될 경우 해당 메시지가 사용된 소스를 전부 찾아 변경해 줘야 하는 문제점이 있다. 이런 메시지 파편화를 막고 한 곳에서 모든 메시지를 관리할 수 있도록 Spring 에서는 MessageSource 를 제공한다.
-
-MessageSource
-메시지를 한 파일 message.properties 에서 관리할 수 있다.
-경로 : main&#x2F;resource&#x2F;message.properties
-
-
-메시지에 대한 다국어 처리 를 지원한다.
-사용법 : message_[언어코드].properties
-영어 : message_en.properties
-한국어 : message_ko.properties
-
-
-
-
-
-메시지 등록
-경로 : main&#x2F;resource&#x2F;message.properties
-
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/03/20/spring/spring-security/oauth2/oauth2-04-authenticate/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/security/OAuth2/oauth2.png)" alt="Spring Security OAuth2를 이용한 로그인 구현 - Spring boot OAuth2 인증 살펴보기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/03/20/spring/spring-security/oauth2/oauth2-04-authenticate/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
-            </div>
-            <div class="date"><time datetime="2022-03-20T04:26:33.000Z" itemprop="datePublished">2022-03-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/03/20/spring/spring-security/oauth2/oauth2-04-authenticate/">Spring Security OAuth2를 이용한 로그인 구현 - Spring boot OAuth2 인증 살펴보기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring Security OAuth2 - Handler
-Spring Security OAuth2 - Login 페이지 Customizing 하기
-Spring Security OAuth2를 이용한 로그인 구현 - 사용자 정보 가져오기
-Spring Security OAuth2를 이용한 로그인 구현 - Spring boot OAuth2 인증 살펴보기
-Spring Security OAuth2를 이용한 로그인 구현 - OAuth2를 이용한 인증 사용하기
-Google OAuth2 인증 방식 이해하기
-OAuth2를 이용한 로그인 구현 이해하기
-
-참고
-https://www.baeldung.com/spring-security-5-oauth2-login
-https://www.docs4dev.com/docs/en/spring-security/5.1.2.RELEASE/reference/jc.html#oauth2client
-
-OAuth2LoginAuthenticationFilter
-OAuth2 인증을 진행하기 위한 Filter
-
-OAuth2 인증 방식도 UsernamePassword 인증과 같이 인증을 진행하기 위한 Filter 가 존재한다. OAuth2LoginAuthenticationFilter 에서는 Authentication Server 로부터 Authorization Code 를 받은 후 Acess Token 과 Reflesh Token 을 받기 위한 과정을 진행한다.
-
-ClientRegistrationRepository
-ClientRegistration 정보를 저장 및 가져오기 위한 Class
-
-
-OAuth2AuthorizedClient
-인증된 Client 정보를 관리하기 위한 Class
-Access Token, Reflesh Token, ClientRegistration 정보를 관리하는 Class
-
-
-OAuth2AuthorizedClientRepository
-OAuth2AuthorizedClient 정보를 저장 및 가져오기 위한 Class
-인증이 진행중인 Client 정보를 가져온다.
-기본 구현체는 HttpSessionOAuth2AuthorizedClientRepository
-
-
-OAuth2AuthorizedClientService
-Application Level 에서 OAuth2AuthorizedClient 정보를 가져오기 위한 Class
-인증이 완료된 Client 정보를 저장소 에서 가져올 때 사용한다.
-메모리에 OAuth2AuthorizedClient 객체를 저장하는 InMemoryOAuth2AuthorizedClientService 
-데이터 베이스에 OAuth2AuthorizedClient 객체를 저장하는 JdbcOAuth2AuthorizedClientService
-
-
-AuthorizationRequestRepository
-인증 요청에서 인증 응답을 받을때 까지 OAuth2AuthorizationRequest 의 지속성을 보장하기 위한 Class
-기본 구현체는 Session 에 저장하는 HttpSessionOAuth2AuthorizationRequestRepository
-
-
-OAuth2AuthorizationRequestResolver
-registrationId 와 HttpServletRequest 를 OAuth2AuthorizationRequest 객체를 생성하기 위한 Class
-기본 구현체는 DefaultOAuth2AuthorizationRequestResolver
-
-
-OAuth2AccessTokenResponseClient
-Authorization Code 를 Access Token 으로 교환하는데 사용하는 Class
-기본 구현체는 DefaultAuthorizationCodeTokenResponseClient
-
-
-
-인증 과정
-        </p>
-    </div>
-</article>
-    
         </div>
     
 
@@ -1002,8 +964,8 @@ Authorization Code 를 Access Token 으로 교환하는데 사용하는 Class
 
 
     <nav id="page-nav">
-        <span class="pages">Page 22 of 63</span>
-        <a class="extend prev" rel="prev" href="/page/21/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/23/">&raquo;</a>
+        <span class="pages">Page 22 of 64</span>
+        <a class="extend prev" rel="prev" href="/page/21/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/23/">&raquo;</a>
     </nav>
 
 
@@ -1036,7 +998,7 @@ Authorization Code 를 Access Token 으로 교환하는데 사용하는 Class
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">167</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">47</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">275</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/">Develop Lanuage</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Develop-Lanuage/JAVA/">JAVA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">169</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">56</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">48</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">275</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
         </div>
     </div>
 
