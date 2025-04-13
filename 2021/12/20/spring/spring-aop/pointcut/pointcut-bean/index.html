@@ -223,7 +223,7 @@
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-args/" title="[Spring AOP] 포인트컷 표현식 - args">[Spring AOP] 포인트컷 표현식 - args</a></li>
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-within/" title="[Spring AOP] 포인트컷 표현식 - within">[Spring AOP] 포인트컷 표현식 - within</a></li>
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-execution/" title="[Spring AOP] 포인트컷 표현식 - execution">[Spring AOP] 포인트컷 표현식 - execution</a></li>
-<li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut/" title="Spring 핵심원리 고급편 - 포인트컷">Spring 핵심원리 고급편 - 포인트컷</a></li>
+<li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut/" title="[Spring AOP] 포인트컷">[Spring AOP] 포인트컷</a></li>
 </ul>
 <h2 id="bean"><a href="#bean" class="headerlink" title="bean"></a>bean</h2><p>bean 표현식은 스프링에서만 사용한 포인트컷 지시자로 Bean 이름으로 Advice 적용 여부를 판단합니다. </p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Import(BeanTest.BeanAspect.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    OrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">success</span><span class="params">()</span>&#123;</span><br><span class="line">        orderService.orderItem(<span class="string">&quot;itemA&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Aspect</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">BeanAspect</span>&#123;</span><br><span class="line">        <span class="comment">// orderService 빈과 Repository 로 끝나는 빈들에 Advice 를 적용합니다.</span></span><br><span class="line">        <span class="meta">@Around(&quot;bean(orderService) || bean(*Repository)&quot;)</span></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">doLog</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">            log.info(<span class="string">&quot;[bean] &#123;&#125;&quot;</span>, joinPoint.getSignature());</span><br><span class="line">            <span class="keyword">return</span> joinPoint.proceed();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -236,7 +236,7 @@
 
 
 
-    <a data-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-bean/" data-id="cm8to2qun018un28d22qwg6f2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-bean/" data-id="cm9fxxyc101ebcw8dd7kvcipd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -325,14 +325,14 @@
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 beanbean 표현식은 스프링에서만 사용한 포인트컷 지시자로 Bean 이름으로 Advice 적용 여부를 판단합니다. 
 @Slf4j@Import(BeanTest.BeanAspect.class)@SpringBootTestpublic class BeanTest &#123;    @Autowired    OrderService orderService;    @Test    void success()&#123;        orderService.orderItem(&quot;itemA&quot;);    &#125;    @Aspect    static class BeanAspect&#123;        // orderService 빈과 Repository 로 끝나는 빈들에 Advice 를 적용합니다.        @Around(&quot;bean(orderService) || bean(*Repository)&quot;)        public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable &#123;            log.info(&quot;[bean] &#123;&#125;&quot;, joinPoint.getSignature());            return joinPoint.proceed();        &#125;    &#125;&#125;
 
 
 2021-12-21 00:13:43.463  INFO 35836 --- [    Test worker] com.example.aop.pointcut.BeanTest        : [bean] void com.example.aop.order.OrderService.orderItem(String)2021-12-21 00:13:43.474  INFO 35836 --- [    Test worker] com.example.aop.order.OrderService       : [orderService] 실행2021-12-21 00:13:43.475  INFO 35836 --- [    Test worker] com.example.aop.pointcut.BeanTest        : [bean] String com.example.aop.order.OrderRepository.save(String)2021-12-21 00:13:43.480  INFO 35836 --- [    Test worker] com.example.aop.order.OrderRepository    : [orderRepository] 실행",
-        "wordCount": 419
+        "wordCount": 415
     }
 </script>
 

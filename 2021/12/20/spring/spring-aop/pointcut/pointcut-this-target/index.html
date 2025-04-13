@@ -223,7 +223,7 @@
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-args/" title="[Spring AOP] 포인트컷 표현식 - args">[Spring AOP] 포인트컷 표현식 - args</a></li>
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-within/" title="[Spring AOP] 포인트컷 표현식 - within">[Spring AOP] 포인트컷 표현식 - within</a></li>
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-execution/" title="[Spring AOP] 포인트컷 표현식 - execution">[Spring AOP] 포인트컷 표현식 - execution</a></li>
-<li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut/" title="Spring 핵심원리 고급편 - 포인트컷">Spring 핵심원리 고급편 - 포인트컷</a></li>
+<li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut/" title="[Spring AOP] 포인트컷">[Spring AOP] 포인트컷</a></li>
 </ul>
 <h2 id="포인트컷-표현식-this-target"><a href="#포인트컷-표현식-this-target" class="headerlink" title="포인트컷 표현식 - this, target"></a>포인트컷 표현식 - this, target</h2><p>this 와 target 은 객체를 대상으로 AOP 를 적용할 때 사용하는 포인트컷 표현식입니다. 두 표현식 모두 상위 타입이나 인터페이스를 이용해 AOP 를 적용할 수 있습니다.</p>
 <p><code>this</code> 는 스프링 빈으로 등록돼 있는 <strong>프록시 객체</strong>를 대상으로 Advice 를 적용합니다. 때문에 스프링에서 프록시 객체를 생성하는 전략에 따라 AOP 가 다르게 적용될 수 있습니다. </p>
@@ -247,7 +247,7 @@
 
 
 
-    <a data-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-this-target/" data-id="cm8to2quo018xn28d52v55t6z" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-this-target/" data-id="cm9fxxyc201ejcw8d97vdg5d7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -336,7 +336,7 @@
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 포인트컷 표현식 - this, targetthis 와 target 은 객체를 대상으로 AOP 를 적용할 때 사용하는 포인트컷 표현식입니다. 두 표현식 모두 상위 타입이나 인터페이스를 이용해 AOP 를 적용할 수 있습니다.
 this 는 스프링 빈으로 등록돼 있는 프록시 객체를 대상으로 Advice 를 적용합니다. 때문에 스프링에서 프록시 객체를 생성하는 전략에 따라 AOP 가 다르게 적용될 수 있습니다. 
@@ -344,7 +344,7 @@ target 은 실제 객체를 대상으로 Advice 를 적용합니다.
 this 와 target 작동방식 확인을 위한 테스트 코드@AutowiredMemberService memberService;@Testvoid success() &#123;    log.info(&quot;memberService Proxy=&#123;&#125;&quot;, memberService.getClass());    memberService.hello(&quot;helloA&quot;);&#125;@Aspectstatic class ThisTargetAspect &#123;    //부모 타입 허용    @Around(&quot;this(hello.aop.member.MemberService)&quot;)    public Object doThisInterface(ProceedingJoinPoint joinPoint) throws Throwable &#123;        log.info(&quot;[this-interface] &#123;&#125;&quot;, joinPoint.getSignature());        return joinPoint.proceed();    &#125;    //부모 타입 허용    @Around(&quot;target(hello.aop.member.MemberService)&quot;)    public Object doTargetInterface(ProceedingJoinPoint joinPoint) throws Throwable &#123;        log.info(&quot;[target-interface] &#123;&#125;&quot;, joinPoint.getSignature());        return joinPoint.proceed();    &#125;    @Around(&quot;this(hello.aop.member.MemberServiceImpl)&quot;)    public Object doThis(ProceedingJoinPoint joinPoint) throws Throwable &#123;        log.info(&quot;[this-impl] &#123;&#125;&quot;, joinPoint.getSignature());        return joinPoint.proceed();    &#125;    @Around(&quot;target(hello.aop.member.MemberServiceImpl)&quot;)    public Object doTarget(ProceedingJoinPoint joinPoint) throws Throwable &#123;        log.info(&quot;[target-impl] &#123;&#125;&quot;, joinPoint.getSignature());        return joinPoint.proceed();    &#125;&#125;
 
 JDK 동적 프록시를 이용한 프록시 객체 생성",
-        "wordCount": 854
+        "wordCount": 850
     }
 </script>
 

@@ -539,78 +539,6 @@ QueryDSL 시작하기
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/04/24/jpa/querydsl/querydsl-11/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - SQL Function 호출하기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-11/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
-            </div>
-            <div class="date"><time datetime="2022-04-24T04:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/24/jpa/querydsl/querydsl-11/">QueryDSL - SQL Function 호출하기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-QueryDSL - QueryDsl 페이징 사용하기
-QueryDSL - 사용자 정의 Repository
-QueryDSL - 동적 쿼리와 성능 최적화 조회
-QueryDSL - 순수 JPA 리포지토리와 Querydsl
-QueryDSL - SQL Function 호출하기
-Post not found: jpa/querydsl/querydsl-10
-QueryDSL - 동적 쿼리
-QueryDSL - 프로젝션과 결과 반환
-QueryDSL - 조인
-QueryDSL - 집계
-QueryDSL - 결과 조회
-QueryDSL - 검색 조건 쿼리
-QueryDSL - Q-Type 활용
-QueryDSL - JPA JPQL vs JPA QueryDSL
-QueryDSL 시작하기
-
-SQL Function 호출하기@Testpublic void sqlFunction()&#123;    List&lt;String&gt; result = queryFactory            .select(                    Expressions.stringTemplate(&quot;function(&#x27;replace&#x27;, &#123;0&#125;, &#123;1&#125;, &#123;2&#125;)&quot;, member.username, &quot;member&quot;, &quot;M&quot;)            ).from(member)            .fetch();    for (String s : result) &#123;        System.out.println(&quot;s = &quot; + s);    &#125;&#125;
-
-@Testpublic void sqlFunction2()&#123;    queryFactory            .select(member.username)            .from(member)            .where(member.username.eq(Expressions.stringTemplate(&quot;function(&#x27;lower&#x27;, &#123;0&#125;)&quot;, member.username)));&#125;
-
-registerColumnType( Types.BOOLEAN, &quot;boolean&quot; );registerColumnType( Types.BIGINT, &quot;bigint&quot; );registerColumnType( Types.BINARY, &quot;binary&quot; );registerColumnType( Types.BIT, &quot;boolean&quot; );registerColumnType( Types.CHAR, &quot;char($l)&quot; );registerColumnType( Types.DATE, &quot;date&quot; );registerColumnType( Types.DECIMAL, &quot;decimal($p,$s)&quot; );registerColumnType( Types.NUMERIC, buildId &gt;= 201 ? &quot;numeric($p,$s)&quot; : &quot;decimal($p,$s)&quot; );registerColumnType( Types.DOUBLE, &quot;double&quot; );registerColumnType( Types.FLOAT, &quot;float&quot; );registerColumnType( Types.INTEGER, &quot;integer&quot; );registerColumnType( Types.LONGVARBINARY, &quot;longvarbinary&quot; );// H2 does define &quot;longvarchar&quot;, but it is a simple alias to &quot;varchar&quot;registerColumnType( Types.LONGVARCHAR, String.format( &quot;varchar(%d)&quot;, Integer.MAX_VALUE ) );registerColumnType( Types.REAL, &quot;real&quot; );registerColumnType( Types.SMALLINT, &quot;smallint&quot; );registerColumnType( Types.TINYINT, &quot;tinyint&quot; );registerColumnType( Types.TIME, &quot;time&quot; );registerColumnType( Types.TIMESTAMP, &quot;timestamp&quot; );registerColumnType( Types.VARCHAR, &quot;varchar($l)&quot; );registerColumnType( Types.VARBINARY, buildId &gt;= 201 ? &quot;varbinary($l)&quot; : &quot;binary($l)&quot; );registerColumnType( Types.BLOB, &quot;blob&quot; );registerColumnType( Types.CLOB, &quot;clob&quot; );if ( isVersion2 ) &#123;    registerColumnType( Types.LONGVARCHAR, &quot;character varying&quot; );    registerColumnType( Types.BINARY, &quot;binary($l)&quot; );    registerFunction( &quot;str&quot;, new SQLFunctionTemplate( StandardBasicTypes.STRING, &quot;cast(?1 as character varying)&quot;) );&#125;// Aggregations ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;avg&quot;, new AvgWithArgumentCastFunction( &quot;double&quot; ) );// select topic, syntax from information_schema.help// where section like &#x27;Function%&#x27; order by section, topic//// see also -&gt;  http://www.h2database.com/html/functions.html// Numeric Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;acos&quot;, new StandardSQLFunction( &quot;acos&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;asin&quot;, new StandardSQLFunction( &quot;asin&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;atan&quot;, new StandardSQLFunction( &quot;atan&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;atan2&quot;, new StandardSQLFunction( &quot;atan2&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;bitand&quot;, new StandardSQLFunction( &quot;bitand&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;bitor&quot;, new StandardSQLFunction( &quot;bitor&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;bitxor&quot;, new StandardSQLFunction( &quot;bitxor&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;ceiling&quot;, new StandardSQLFunction( &quot;ceiling&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;cos&quot;, new StandardSQLFunction( &quot;cos&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;compress&quot;, new StandardSQLFunction( &quot;compress&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;cot&quot;, new StandardSQLFunction( &quot;cot&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;decrypt&quot;, new StandardSQLFunction( &quot;decrypt&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;degrees&quot;, new StandardSQLFunction( &quot;degrees&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;encrypt&quot;, new StandardSQLFunction( &quot;encrypt&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;exp&quot;, new StandardSQLFunction( &quot;exp&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;expand&quot;, new StandardSQLFunction( &quot;compress&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;floor&quot;, new StandardSQLFunction( &quot;floor&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;hash&quot;, new StandardSQLFunction( &quot;hash&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;log&quot;, new StandardSQLFunction( &quot;log&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;log10&quot;, new StandardSQLFunction( &quot;log10&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;pi&quot;, new NoArgSQLFunction( &quot;pi&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;power&quot;, new StandardSQLFunction( &quot;power&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;radians&quot;, new StandardSQLFunction( &quot;radians&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;rand&quot;, new NoArgSQLFunction( &quot;rand&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;round&quot;, new StandardSQLFunction( &quot;round&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;roundmagic&quot;, new StandardSQLFunction( &quot;roundmagic&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;sign&quot;, new StandardSQLFunction( &quot;sign&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;sin&quot;, new StandardSQLFunction( &quot;sin&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;tan&quot;, new StandardSQLFunction( &quot;tan&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;truncate&quot;, new StandardSQLFunction( &quot;truncate&quot;, StandardBasicTypes.DOUBLE ) );// String Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;ascii&quot;, new StandardSQLFunction( &quot;ascii&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;char&quot;, new StandardSQLFunction( &quot;char&quot;, StandardBasicTypes.CHARACTER ) );registerFunction( &quot;concat&quot;, new VarArgsSQLFunction( StandardBasicTypes.STRING, &quot;(&quot;, &quot;||&quot;, &quot;)&quot; ) );registerFunction( &quot;difference&quot;, new StandardSQLFunction( &quot;difference&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;hextoraw&quot;, new StandardSQLFunction( &quot;hextoraw&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;insert&quot;, new StandardSQLFunction( &quot;lower&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;left&quot;, new StandardSQLFunction( &quot;left&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;lcase&quot;, new StandardSQLFunction( &quot;lcase&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;ltrim&quot;, new StandardSQLFunction( &quot;ltrim&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;octet_length&quot;, new StandardSQLFunction( &quot;octet_length&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;position&quot;, new StandardSQLFunction( &quot;position&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;rawtohex&quot;, new StandardSQLFunction( &quot;rawtohex&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;repeat&quot;, new StandardSQLFunction( &quot;repeat&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;replace&quot;, new StandardSQLFunction( &quot;replace&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;right&quot;, new StandardSQLFunction( &quot;right&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;rtrim&quot;, new StandardSQLFunction( &quot;rtrim&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;soundex&quot;, new StandardSQLFunction( &quot;soundex&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;space&quot;, new StandardSQLFunction( &quot;space&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;stringencode&quot;, new StandardSQLFunction( &quot;stringencode&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;stringdecode&quot;, new StandardSQLFunction( &quot;stringdecode&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;stringtoutf8&quot;, new StandardSQLFunction( &quot;stringtoutf8&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;ucase&quot;, new StandardSQLFunction( &quot;ucase&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;utf8tostring&quot;, new StandardSQLFunction( &quot;utf8tostring&quot;, StandardBasicTypes.STRING ) );// Time and Date Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;curdate&quot;, new NoArgSQLFunction( &quot;curdate&quot;, StandardBasicTypes.DATE ) );registerFunction( &quot;curtime&quot;, new NoArgSQLFunction( &quot;curtime&quot;, StandardBasicTypes.TIME ) );registerFunction( &quot;curtimestamp&quot;, new NoArgSQLFunction( &quot;curtimestamp&quot;, StandardBasicTypes.TIME ) );registerFunction( &quot;current_date&quot;, new NoArgSQLFunction( &quot;current_date&quot;, StandardBasicTypes.DATE ) );// H2 made a nasty breaking change that changed the type of// - current_timestamp to timestamp with time zone// - current_time to time with time zone// and also refuses to implicitly convert the typeregisterFunction( &quot;current_time&quot;, new NoArgSQLFunction( buildId &gt;= 200 ? &quot;localtime&quot; : &quot;current_time&quot;, StandardBasicTypes.TIME ) );registerFunction( &quot;current_timestamp&quot;, new NoArgSQLFunction( buildId &gt;= 200 ? &quot;localtimestamp&quot; : &quot;current_timestamp&quot;, StandardBasicTypes.TIMESTAMP ) );registerFunction( &quot;datediff&quot;, new StandardSQLFunction( &quot;datediff&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;dayname&quot;, new StandardSQLFunction( &quot;dayname&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;dayofmonth&quot;, new StandardSQLFunction( &quot;dayofmonth&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;dayofweek&quot;, new StandardSQLFunction( &quot;dayofweek&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;dayofyear&quot;, new StandardSQLFunction( &quot;dayofyear&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;monthname&quot;, new StandardSQLFunction( &quot;monthname&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;now&quot;, new NoArgSQLFunction( &quot;now&quot;, StandardBasicTypes.TIMESTAMP ) );registerFunction( &quot;quarter&quot;, new StandardSQLFunction( &quot;quarter&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;week&quot;, new StandardSQLFunction( &quot;week&quot;, StandardBasicTypes.INTEGER ) );// System Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;database&quot;, new NoArgSQLFunction( &quot;database&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;user&quot;, new NoArgSQLFunction( &quot;user&quot;, StandardBasicTypes.STRING ) );getDefaultProperties().setProperty( AvailableSettings.STATEMENT_BATCH_SIZE, DEFAULT_BATCH_SIZE );// http://code.google.com/p/h2database/issues/detail?id=235getDefaultProperties().setProperty( AvailableSettings.NON_CONTEXTUAL_LOB_CREATION, &quot;true&quot; );
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2022/04/24/jpa/querydsl/querydsl-10-bulk/" class="thumbnail">
     
     
@@ -671,6 +599,78 @@ UPDATE, DELETE 와 같은 대량의 데이터를 한번에 처리하는 Bulk 연
 /* update    Member member1 set    member1.username = ?1 where    member1.age &lt; ?2 */ update        member     set        username=?     where        age&lt;?
 
 @Testpublic void bulkUpdate()&#123;    long count = queryFactory            .update(member)            .set(member.username, &quot;비회원&quot;)            .where(member.age.lt(28))            .execute();    List&lt;Member&gt; result = queryFactory            .selectFrom(member)            .fetch();    for (Member member1 : result) &#123;        System.out.println(&quot;member1 = &quot; + member1);    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/04/24/jpa/querydsl/querydsl-11/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - SQL Function 호출하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/24/jpa/querydsl/querydsl-11/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
+            </div>
+            <div class="date"><time datetime="2022-04-24T04:31:46.000Z" itemprop="datePublished">2022-04-24</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/24/jpa/querydsl/querydsl-11/">QueryDSL - SQL Function 호출하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+QueryDSL - QueryDsl 페이징 사용하기
+QueryDSL - 사용자 정의 Repository
+QueryDSL - 동적 쿼리와 성능 최적화 조회
+QueryDSL - 순수 JPA 리포지토리와 Querydsl
+QueryDSL - SQL Function 호출하기
+Post not found: jpa/querydsl/querydsl-10
+QueryDSL - 동적 쿼리
+QueryDSL - 프로젝션과 결과 반환
+QueryDSL - 조인
+QueryDSL - 집계
+QueryDSL - 결과 조회
+QueryDSL - 검색 조건 쿼리
+QueryDSL - Q-Type 활용
+QueryDSL - JPA JPQL vs JPA QueryDSL
+QueryDSL 시작하기
+
+SQL Function 호출하기@Testpublic void sqlFunction()&#123;    List&lt;String&gt; result = queryFactory            .select(                    Expressions.stringTemplate(&quot;function(&#x27;replace&#x27;, &#123;0&#125;, &#123;1&#125;, &#123;2&#125;)&quot;, member.username, &quot;member&quot;, &quot;M&quot;)            ).from(member)            .fetch();    for (String s : result) &#123;        System.out.println(&quot;s = &quot; + s);    &#125;&#125;
+
+@Testpublic void sqlFunction2()&#123;    queryFactory            .select(member.username)            .from(member)            .where(member.username.eq(Expressions.stringTemplate(&quot;function(&#x27;lower&#x27;, &#123;0&#125;)&quot;, member.username)));&#125;
+
+registerColumnType( Types.BOOLEAN, &quot;boolean&quot; );registerColumnType( Types.BIGINT, &quot;bigint&quot; );registerColumnType( Types.BINARY, &quot;binary&quot; );registerColumnType( Types.BIT, &quot;boolean&quot; );registerColumnType( Types.CHAR, &quot;char($l)&quot; );registerColumnType( Types.DATE, &quot;date&quot; );registerColumnType( Types.DECIMAL, &quot;decimal($p,$s)&quot; );registerColumnType( Types.NUMERIC, buildId &gt;= 201 ? &quot;numeric($p,$s)&quot; : &quot;decimal($p,$s)&quot; );registerColumnType( Types.DOUBLE, &quot;double&quot; );registerColumnType( Types.FLOAT, &quot;float&quot; );registerColumnType( Types.INTEGER, &quot;integer&quot; );registerColumnType( Types.LONGVARBINARY, &quot;longvarbinary&quot; );// H2 does define &quot;longvarchar&quot;, but it is a simple alias to &quot;varchar&quot;registerColumnType( Types.LONGVARCHAR, String.format( &quot;varchar(%d)&quot;, Integer.MAX_VALUE ) );registerColumnType( Types.REAL, &quot;real&quot; );registerColumnType( Types.SMALLINT, &quot;smallint&quot; );registerColumnType( Types.TINYINT, &quot;tinyint&quot; );registerColumnType( Types.TIME, &quot;time&quot; );registerColumnType( Types.TIMESTAMP, &quot;timestamp&quot; );registerColumnType( Types.VARCHAR, &quot;varchar($l)&quot; );registerColumnType( Types.VARBINARY, buildId &gt;= 201 ? &quot;varbinary($l)&quot; : &quot;binary($l)&quot; );registerColumnType( Types.BLOB, &quot;blob&quot; );registerColumnType( Types.CLOB, &quot;clob&quot; );if ( isVersion2 ) &#123;    registerColumnType( Types.LONGVARCHAR, &quot;character varying&quot; );    registerColumnType( Types.BINARY, &quot;binary($l)&quot; );    registerFunction( &quot;str&quot;, new SQLFunctionTemplate( StandardBasicTypes.STRING, &quot;cast(?1 as character varying)&quot;) );&#125;// Aggregations ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;avg&quot;, new AvgWithArgumentCastFunction( &quot;double&quot; ) );// select topic, syntax from information_schema.help// where section like &#x27;Function%&#x27; order by section, topic//// see also -&gt;  http://www.h2database.com/html/functions.html// Numeric Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;acos&quot;, new StandardSQLFunction( &quot;acos&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;asin&quot;, new StandardSQLFunction( &quot;asin&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;atan&quot;, new StandardSQLFunction( &quot;atan&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;atan2&quot;, new StandardSQLFunction( &quot;atan2&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;bitand&quot;, new StandardSQLFunction( &quot;bitand&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;bitor&quot;, new StandardSQLFunction( &quot;bitor&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;bitxor&quot;, new StandardSQLFunction( &quot;bitxor&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;ceiling&quot;, new StandardSQLFunction( &quot;ceiling&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;cos&quot;, new StandardSQLFunction( &quot;cos&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;compress&quot;, new StandardSQLFunction( &quot;compress&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;cot&quot;, new StandardSQLFunction( &quot;cot&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;decrypt&quot;, new StandardSQLFunction( &quot;decrypt&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;degrees&quot;, new StandardSQLFunction( &quot;degrees&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;encrypt&quot;, new StandardSQLFunction( &quot;encrypt&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;exp&quot;, new StandardSQLFunction( &quot;exp&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;expand&quot;, new StandardSQLFunction( &quot;compress&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;floor&quot;, new StandardSQLFunction( &quot;floor&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;hash&quot;, new StandardSQLFunction( &quot;hash&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;log&quot;, new StandardSQLFunction( &quot;log&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;log10&quot;, new StandardSQLFunction( &quot;log10&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;pi&quot;, new NoArgSQLFunction( &quot;pi&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;power&quot;, new StandardSQLFunction( &quot;power&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;radians&quot;, new StandardSQLFunction( &quot;radians&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;rand&quot;, new NoArgSQLFunction( &quot;rand&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;round&quot;, new StandardSQLFunction( &quot;round&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;roundmagic&quot;, new StandardSQLFunction( &quot;roundmagic&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;sign&quot;, new StandardSQLFunction( &quot;sign&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;sin&quot;, new StandardSQLFunction( &quot;sin&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;tan&quot;, new StandardSQLFunction( &quot;tan&quot;, StandardBasicTypes.DOUBLE ) );registerFunction( &quot;truncate&quot;, new StandardSQLFunction( &quot;truncate&quot;, StandardBasicTypes.DOUBLE ) );// String Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;ascii&quot;, new StandardSQLFunction( &quot;ascii&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;char&quot;, new StandardSQLFunction( &quot;char&quot;, StandardBasicTypes.CHARACTER ) );registerFunction( &quot;concat&quot;, new VarArgsSQLFunction( StandardBasicTypes.STRING, &quot;(&quot;, &quot;||&quot;, &quot;)&quot; ) );registerFunction( &quot;difference&quot;, new StandardSQLFunction( &quot;difference&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;hextoraw&quot;, new StandardSQLFunction( &quot;hextoraw&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;insert&quot;, new StandardSQLFunction( &quot;lower&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;left&quot;, new StandardSQLFunction( &quot;left&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;lcase&quot;, new StandardSQLFunction( &quot;lcase&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;ltrim&quot;, new StandardSQLFunction( &quot;ltrim&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;octet_length&quot;, new StandardSQLFunction( &quot;octet_length&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;position&quot;, new StandardSQLFunction( &quot;position&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;rawtohex&quot;, new StandardSQLFunction( &quot;rawtohex&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;repeat&quot;, new StandardSQLFunction( &quot;repeat&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;replace&quot;, new StandardSQLFunction( &quot;replace&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;right&quot;, new StandardSQLFunction( &quot;right&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;rtrim&quot;, new StandardSQLFunction( &quot;rtrim&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;soundex&quot;, new StandardSQLFunction( &quot;soundex&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;space&quot;, new StandardSQLFunction( &quot;space&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;stringencode&quot;, new StandardSQLFunction( &quot;stringencode&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;stringdecode&quot;, new StandardSQLFunction( &quot;stringdecode&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;stringtoutf8&quot;, new StandardSQLFunction( &quot;stringtoutf8&quot;, StandardBasicTypes.BINARY ) );registerFunction( &quot;ucase&quot;, new StandardSQLFunction( &quot;ucase&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;utf8tostring&quot;, new StandardSQLFunction( &quot;utf8tostring&quot;, StandardBasicTypes.STRING ) );// Time and Date Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;curdate&quot;, new NoArgSQLFunction( &quot;curdate&quot;, StandardBasicTypes.DATE ) );registerFunction( &quot;curtime&quot;, new NoArgSQLFunction( &quot;curtime&quot;, StandardBasicTypes.TIME ) );registerFunction( &quot;curtimestamp&quot;, new NoArgSQLFunction( &quot;curtimestamp&quot;, StandardBasicTypes.TIME ) );registerFunction( &quot;current_date&quot;, new NoArgSQLFunction( &quot;current_date&quot;, StandardBasicTypes.DATE ) );// H2 made a nasty breaking change that changed the type of// - current_timestamp to timestamp with time zone// - current_time to time with time zone// and also refuses to implicitly convert the typeregisterFunction( &quot;current_time&quot;, new NoArgSQLFunction( buildId &gt;= 200 ? &quot;localtime&quot; : &quot;current_time&quot;, StandardBasicTypes.TIME ) );registerFunction( &quot;current_timestamp&quot;, new NoArgSQLFunction( buildId &gt;= 200 ? &quot;localtimestamp&quot; : &quot;current_timestamp&quot;, StandardBasicTypes.TIMESTAMP ) );registerFunction( &quot;datediff&quot;, new StandardSQLFunction( &quot;datediff&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;dayname&quot;, new StandardSQLFunction( &quot;dayname&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;dayofmonth&quot;, new StandardSQLFunction( &quot;dayofmonth&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;dayofweek&quot;, new StandardSQLFunction( &quot;dayofweek&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;dayofyear&quot;, new StandardSQLFunction( &quot;dayofyear&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;monthname&quot;, new StandardSQLFunction( &quot;monthname&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;now&quot;, new NoArgSQLFunction( &quot;now&quot;, StandardBasicTypes.TIMESTAMP ) );registerFunction( &quot;quarter&quot;, new StandardSQLFunction( &quot;quarter&quot;, StandardBasicTypes.INTEGER ) );registerFunction( &quot;week&quot;, new StandardSQLFunction( &quot;week&quot;, StandardBasicTypes.INTEGER ) );// System Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~registerFunction( &quot;database&quot;, new NoArgSQLFunction( &quot;database&quot;, StandardBasicTypes.STRING ) );registerFunction( &quot;user&quot;, new NoArgSQLFunction( &quot;user&quot;, StandardBasicTypes.STRING ) );getDefaultProperties().setProperty( AvailableSettings.STATEMENT_BATCH_SIZE, DEFAULT_BATCH_SIZE );// http://code.google.com/p/h2database/issues/detail?id=235getDefaultProperties().setProperty( AvailableSettings.NON_CONTEXTUAL_LOB_CREATION, &quot;true&quot; );
         </p>
     </div>
 </article>

@@ -220,7 +220,7 @@
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 포인트컷 표현식 - this, targetthis 와 target 은 객체를 대상으로 AOP 를 적용할 때 사용하는 포인트컷 표현식입니다. 두 표현식 모두 상위 타입이나 인터페이스를 이용해 AOP 를 적용할 수 있습니다.
 this 는 스프링 빈으로 등록돼 있는 프록시 객체를 대상으로 Advice 를 적용합니다. 때문에 스프링에서 프록시 객체를 생성하는 전략에 따라 AOP 가 다르게 적용될 수 있습니다. 
@@ -284,7 +284,7 @@ JDK 동적 프록시를 이용한 프록시 객체 생성
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 Advice 에 매게변수 전달포인트 컷 포현식을 사용해서 AOP 가 적용되는 객체나 메소들의 정보를 Advice 내 매개변수로 정보들을 전달 할 수 있습니다.
 Advice 로 매개변수로 정보들을 넘기기 위해서는 포인트컷의 이름과 매개변수 이름이 같아야 합니다. 또한, 값이 들어올때 타입이 매개변수에서 정의한 타입으로 제한이 됩니다.
@@ -352,7 +352,7 @@ AOP 적용 확인을 위한 테스트 코드@AutowiredMemberService memberServic
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 beanbean 표현식은 스프링에서만 사용한 포인트컷 지시자로 Bean 이름으로 Advice 적용 여부를 판단합니다. 
 @Slf4j@Import(BeanTest.BeanAspect.class)@SpringBootTestpublic class BeanTest &#123;    @Autowired    OrderService orderService;    @Test    void success()&#123;        orderService.orderItem(&quot;itemA&quot;);    &#125;    @Aspect    static class BeanAspect&#123;        // orderService 빈과 Repository 로 끝나는 빈들에 Advice 를 적용합니다.        @Around(&quot;bean(orderService) || bean(*Repository)&quot;)        public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable &#123;            log.info(&quot;[bean] &#123;&#125;&quot;, joinPoint.getSignature());            return joinPoint.proceed();        &#125;    &#125;&#125;
@@ -415,7 +415,7 @@ beanbean 표현식은 스프링에서만 사용한 포인트컷 지시자로 Bea
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 @annotation
 메서드가 주어진 어노테이션을 가지고 있는 조인 포인트를 매칭
@@ -484,7 +484,7 @@ Advisor 생성어노테이션을 이용해 Advice 적용하기 위해 @annotatio
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 @args
 메서드내 매개변수에 특정 어노테이션을 가지고 있는 경우 조인 포인트를 매칭
@@ -549,7 +549,7 @@ Advisor 생성매개변수가 @MyAnnotation 를 가질 경우 advice 를 적용�
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 @target 과 @within
 클래스에 특정 어노테이션이 적용된 경우 조인 포인트를 매칭
@@ -619,7 +619,7 @@ Custon Annotation 생성
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 포인트컷 표현식 - args
 args 는 메서드의 매개변수를 기준으로 AOP 를 적용
@@ -683,7 +683,7 @@ args 를 이용해 적용 여부 판단@BeforeEachpublic void init() throws NoSu
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 
 within
@@ -753,7 +753,7 @@ execution 과 within 의 차이within 은 표현식은 execution 과 다르게 �
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 
 포인트컷 표현식 - execution
@@ -883,13 +883,13 @@ AspectJExpressionPointcut 이 포인트 컷 표현식을 처리해주는 클래�
             목차
 [Spring AOP] - Advice 종류
 [Spring AOP] - 트랜잭션 순서
-[Spring AOP] - Pointcut 참조
+[Spring AOP] - 포인트컷 참조
 [Spring AOP] - 어드바이스 추가
-[Spring AOP] - Pointcut 분리
+[Spring AOP] - @Pointcut 포인트컷 분리
 [Spring AOP] - @Aspect
-Spring AOP - Aspect
-Spring AOP - 용어 정리
-Spring AOP - 적용 방식
+[Spring AOP] - Aspect
+[Spring AOP] - 용어 정리
+[Spring AOP] - 적용 방식
 
 Spring 핵심원리 고급편 - 어드바이스 종류
 
@@ -1001,13 +1001,13 @@ toString
             목차
 [Spring AOP] - Advice 종류
 [Spring AOP] - 트랜잭션 순서
-[Spring AOP] - Pointcut 참조
+[Spring AOP] - 포인트컷 참조
 [Spring AOP] - 어드바이스 추가
-[Spring AOP] - Pointcut 분리
+[Spring AOP] - @Pointcut 포인트컷 분리
 [Spring AOP] - @Aspect
-Spring AOP - Aspect
-Spring AOP - 용어 정리
-Spring AOP - 적용 방식
+[Spring AOP] - Aspect
+[Spring AOP] - 용어 정리
+[Spring AOP] - 적용 방식
 
 Spring 핵심원리 고급편 - 트랜잭션 순서@Slf4jpublic class AspectV5Order &#123;    @Aspect    @Order(2)    public static class LogAspect&#123;        @Around(&quot;com.example.aop.order.aop.Pointcuts.allOrder()&quot;)        public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable&#123;            log.info(&quot;[log] &#123;&#125;&quot;, joinPoint.getSignature()); // join point 시그니처            return joinPoint.proceed();        &#125;    &#125;    @Aspect    @Order(1)    public static class TxAspect&#123;        // com.example.aop.order 하위 패키지면서 클래스 이름 패턴이 *Service 인 것        @Around(&quot;com.example.aop.order.aop.Pointcuts.orderAndService()&quot;)        public Object  doTransaction(ProceedingJoinPoint joinPoint) throws Throwable&#123;            try&#123;                log.info(&quot;[트랜잭션 시작] &#123;&#125;&quot;, joinPoint.getSignature());                Object result = joinPoint.proceed();                log.info(&quot;[트랜잭션 커밋] &#123;&#125;&quot;, joinPoint.getSignature());                return result;            &#125;catch (Exception ex)&#123;                log.info(&quot;[트랜잭션 롤백] &#123;&#125;&quot;, joinPoint.getSignature());                throw ex;            &#125;finally &#123;                log.info(&quot;[리소스 릴리즈] &#123;&#125;&quot;, joinPoint.getSignature());            &#125;        &#125;    &#125;&#125;
 
@@ -1128,13 +1128,13 @@ Pointcutpublic class Pointcuts &#123;    @Pointcut(&quot;execution(* com.example
             목차
 [Spring AOP] - Advice 종류
 [Spring AOP] - 트랜잭션 순서
-[Spring AOP] - Pointcut 참조
+[Spring AOP] - 포인트컷 참조
 [Spring AOP] - 어드바이스 추가
-[Spring AOP] - Pointcut 분리
+[Spring AOP] - @Pointcut 포인트컷 분리
 [Spring AOP] - @Aspect
-Spring AOP - Aspect
-Spring AOP - 용어 정리
-Spring AOP - 적용 방식
+[Spring AOP] - Aspect
+[Spring AOP] - 용어 정리
+[Spring AOP] - 적용 방식
 
 Advice 추가
 기존에 로그를 찍은 기능에서 트랜잭션 기능 추가

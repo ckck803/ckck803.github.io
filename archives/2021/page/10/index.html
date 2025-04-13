@@ -176,71 +176,6 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
-            </div>
-            <div class="date"><time datetime="2021-10-10T17:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/">Spring Boot 요청 메시지 - Text</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            목차
-Spring MVC - ArgumentResolver 
-Spring MVC - HttpMessageConverter 
-Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
-Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
-Spring Boot 요청 메시지 - JSON
-Spring Boot 요청 메시지 - Text 
-Spring Boot 쿼리 파라미터, HTML Form 
-Spring Boot 기본 헤더 조회 
-Spring Boot API 예시 
-Spring Boot @RequestMapping 
-Spring Boot Logging
-
-Spring Boot 요청 메시지@PostMapping(&quot;/request-body-string-v1&quot;)public void requestBodyString(HttpServletRequest request, HttpServletResponse response) throws IOException &#123;    ServletInputStream inputStream = request.getInputStream();    String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    response.getWriter().write(&quot;ok&quot;);&#125;
-
-@PostMapping(&quot;/request-body-string-v2&quot;)public void requestBodyStringV2(InputStream inputStream, Writer responseWriter) throws IOException &#123;    String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    responseWriter.write(&quot;ok&quot;);&#125;
-
-HttpEntity 사용하기@PostMapping(&quot;/request-body-string-v3&quot;)public HttpEntity&lt;String&gt; requestBodyStringV3(HttpEntity&lt;String&gt; httpEntity) throws IOException &#123;    String messageBody = httpEntity.getBody();    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    return new HttpEntity&lt;&gt;(&quot;ok&quot;);&#125;
-
-RequestBody, ResponseBody 어노테이션 사용하기@ResponseBody@PostMapping(&quot;/request-body-string-v4&quot;)public String requestBodyStringV4(@RequestBody String messageBody) throws IOException &#123;    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    return &quot;ok&quot;;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-07-requestjson/" class="thumbnail">
     
     
@@ -296,6 +231,71 @@ DTO 사용하기@ResponseBody@PostMapping(&quot;/request-body-json-v3&quot;)publ
 
 
 @ResponseBody@PostMapping(&quot;/request-body-json-v4&quot;)public String requestBodyJsonV4(HttpEntity&lt;HelloData&gt; data) throws IOException &#123;    HelloData body = data.getBody();    log.info(&quot;username=&#123;&#125;, age=&#123;&#125;&quot;, body.getUsername(), body.getAge());    return &quot;ok&quot;;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
+            </div>
+            <div class="date"><time datetime="2021-10-10T17:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-06-requesttext/">Spring Boot 요청 메시지 - Text</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            목차
+Spring MVC - ArgumentResolver 
+Spring MVC - HttpMessageConverter 
+Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
+Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
+Spring Boot 요청 메시지 - JSON
+Spring Boot 요청 메시지 - Text 
+Spring Boot 쿼리 파라미터, HTML Form 
+Spring Boot 기본 헤더 조회 
+Spring Boot API 예시 
+Spring Boot @RequestMapping 
+Spring Boot Logging
+
+Spring Boot 요청 메시지@PostMapping(&quot;/request-body-string-v1&quot;)public void requestBodyString(HttpServletRequest request, HttpServletResponse response) throws IOException &#123;    ServletInputStream inputStream = request.getInputStream();    String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    response.getWriter().write(&quot;ok&quot;);&#125;
+
+@PostMapping(&quot;/request-body-string-v2&quot;)public void requestBodyStringV2(InputStream inputStream, Writer responseWriter) throws IOException &#123;    String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    responseWriter.write(&quot;ok&quot;);&#125;
+
+HttpEntity 사용하기@PostMapping(&quot;/request-body-string-v3&quot;)public HttpEntity&lt;String&gt; requestBodyStringV3(HttpEntity&lt;String&gt; httpEntity) throws IOException &#123;    String messageBody = httpEntity.getBody();    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    return new HttpEntity&lt;&gt;(&quot;ok&quot;);&#125;
+
+RequestBody, ResponseBody 어노테이션 사용하기@ResponseBody@PostMapping(&quot;/request-body-string-v4&quot;)public String requestBodyStringV4(@RequestBody String messageBody) throws IOException &#123;    log.info(&quot;messageBody = &#123;&#125;&quot;, messageBody);    return &quot;ok&quot;;&#125;
         </p>
     </div>
 </article>
@@ -446,6 +446,66 @@ Spring Boot API 예시@RestController@RequestMapping(&quot;/mapping/users&quot;)
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
+            </div>
+            <div class="date"><time datetime="2021-10-10T16:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">Spring Boot 기본 헤더 조회</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            목차
+Spring MVC - ArgumentResolver 
+Spring MVC - HttpMessageConverter 
+Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
+Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
+Spring Boot 요청 메시지 - JSON
+Spring Boot 요청 메시지 - Text 
+Spring Boot 쿼리 파라미터, HTML Form 
+Spring Boot 기본 헤더 조회 
+Spring Boot API 예시 
+Spring Boot @RequestMapping 
+Spring Boot Logging
+
+기본 헤더 조회Controller 사용 가능한 파리미터 목록
+@Slf4j@RestControllerpublic class RequestHeaderController &#123;    @RequestMapping(&quot;/headers&quot;)    public String headers(HttpServletRequest request,                          HttpServletResponse response,                          HttpMethod httpMethod,                          Locale locale,                          @RequestHeader MultiValueMap&lt;String, String&gt; headerMap,                          @RequestHeader(&quot;host&quot;) String host,                          @CookieValue(value = &quot;myCookie&quot;, required = false) String cookie) &#123;        log.info(&quot;request=&#123;&#125;&quot;, request);        log.info(&quot;response=&#123;&#125;&quot;, response);        log.info(&quot;httpMethod=&#123;&#125;&quot;, httpMethod);        log.info(&quot;locale=&#123;&#125;&quot;, locale);        log.info(&quot;headerMap=&#123;&#125;&quot;, headerMap);        log.info(&quot;header host=&#123;&#125;&quot;, host);        log.info(&quot;myCookie=&#123;&#125;&quot;, cookie);        return &quot;ok&quot;;    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-05-queryparameter/" class="thumbnail">
     
     
@@ -504,66 +564,6 @@ RequestParam 어노테이션 사용하기@RequestMapping(&quot;/request-param-v2
 
 
 @RequestMapping(&quot;/request-param-v4&quot;)@ResponseBodypublic String requestParamV4(String username, int age) &#123;    log.info(&quot;username=&#123;&#125;, age=&#123;&#125;&quot;, username, age );    return &quot;ok&quot;;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
-            </div>
-            <div class="date"><time datetime="2021-10-10T16:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">Spring Boot 기본 헤더 조회</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            목차
-Spring MVC - ArgumentResolver 
-Spring MVC - HttpMessageConverter 
-Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
-Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
-Spring Boot 요청 메시지 - JSON
-Spring Boot 요청 메시지 - Text 
-Spring Boot 쿼리 파라미터, HTML Form 
-Spring Boot 기본 헤더 조회 
-Spring Boot API 예시 
-Spring Boot @RequestMapping 
-Spring Boot Logging
-
-기본 헤더 조회Controller 사용 가능한 파리미터 목록
-@Slf4j@RestControllerpublic class RequestHeaderController &#123;    @RequestMapping(&quot;/headers&quot;)    public String headers(HttpServletRequest request,                          HttpServletResponse response,                          HttpMethod httpMethod,                          Locale locale,                          @RequestHeader MultiValueMap&lt;String, String&gt; headerMap,                          @RequestHeader(&quot;host&quot;) String host,                          @CookieValue(value = &quot;myCookie&quot;, required = false) String cookie) &#123;        log.info(&quot;request=&#123;&#125;&quot;, request);        log.info(&quot;response=&#123;&#125;&quot;, response);        log.info(&quot;httpMethod=&#123;&#125;&quot;, httpMethod);        log.info(&quot;locale=&#123;&#125;&quot;, locale);        log.info(&quot;headerMap=&#123;&#125;&quot;, headerMap);        log.info(&quot;header host=&#123;&#125;&quot;, host);        log.info(&quot;myCookie=&#123;&#125;&quot;, cookie);        return &quot;ok&quot;;    &#125;&#125;
         </p>
     </div>
 </article>
@@ -658,6 +658,79 @@ Credentials가 Password와 다를 경우 BadCredentialsException 예외를 던�
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - SecurityContextHolder 와 SecurityContext" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/securitycontext/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
+            </div>
+            <div class="date"><time datetime="2021-10-07T14:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/">Spring Security - SecurityContextHolder 와 SecurityContext</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Security 권한 계층 사용하기 - @RoleHierarcy
+Spring Security -  DelegateFilterProxy
+Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
+Spring Security - RembmerMeAuthenticationFilter
+Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
+Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
+Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
+Spring Security - AuthenticationProvider
+Spring Security - AuthenticationManager
+Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
+Spring Security - SecurityContextHolder 와 SecurityContext  
+Spring Security - Authentication 객체
+
+참고
+https://spring.io/guides/topicals/spring-security-architecture
+
+Spring Security - SecurityContextHolder 와 SecurityContext
+인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체 내에 저장된다.
+
+저장된 Authentication 객체를 저장하고 가져오기 위해서 SecurityContext는 getAuthentication 메소드와 setAuthentication 메소드를 제공한다.
+SecurityContext.java
+public interface SecurityContext extends Serializable &#123;    Authentication getAuthentication();    void setAuthentication(Authentication authentication);&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/10/07/spring/spring-security/security/authentication/authenticationManager/" class="thumbnail">
     
     
@@ -717,79 +790,6 @@ public interface AuthenticationManager &#123;    Authentication authenticate(Aut
 ProviderManager
 AuthenticationManager의 가장 대표적인 구현체
 
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - SecurityContextHolder 와 SecurityContext" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/securitycontext/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
-            </div>
-            <div class="date"><time datetime="2021-10-07T14:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/">Spring Security - SecurityContextHolder 와 SecurityContext</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring Security 권한 계층 사용하기 - @RoleHierarcy
-Spring Security -  DelegateFilterProxy
-Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
-Spring Security - RembmerMeAuthenticationFilter
-Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
-Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
-Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
-Spring Security - AuthenticationProvider
-Spring Security - AuthenticationManager
-Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
-Spring Security - SecurityContextHolder 와 SecurityContext  
-Spring Security - Authentication 객체
-
-참고
-https://spring.io/guides/topicals/spring-security-architecture
-
-Spring Security - SecurityContextHolder 와 SecurityContext
-인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체 내에 저장된다.
-
-저장된 Authentication 객체를 저장하고 가져오기 위해서 SecurityContext는 getAuthentication 메소드와 setAuthentication 메소드를 제공한다.
-SecurityContext.java
-public interface SecurityContext extends Serializable &#123;    Authentication getAuthentication();    void setAuthentication(Authentication authentication);&#125;
         </p>
     </div>
 </article>

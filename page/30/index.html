@@ -220,7 +220,7 @@
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 포인트컷 표현식 - args
 args 는 메서드의 매개변수를 기준으로 AOP 를 적용
@@ -284,7 +284,7 @@ args 를 이용해 적용 여부 판단@BeforeEachpublic void init() throws NoSu
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 
 within
@@ -354,7 +354,7 @@ execution 과 within 의 차이within 은 표현식은 execution 과 다르게 �
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 
 포인트컷 표현식 - execution
@@ -797,13 +797,13 @@ Queue 맨 앞의 원소를 삭제한다.
             목차
 [Spring AOP] - Advice 종류
 [Spring AOP] - 트랜잭션 순서
-[Spring AOP] - Pointcut 참조
+[Spring AOP] - 포인트컷 참조
 [Spring AOP] - 어드바이스 추가
-[Spring AOP] - Pointcut 분리
+[Spring AOP] - @Pointcut 포인트컷 분리
 [Spring AOP] - @Aspect
-Spring AOP - Aspect
-Spring AOP - 용어 정리
-Spring AOP - 적용 방식
+[Spring AOP] - Aspect
+[Spring AOP] - 용어 정리
+[Spring AOP] - 적용 방식
 
 Spring 핵심원리 고급편 - 어드바이스 종류
 
@@ -915,13 +915,13 @@ toString
             목차
 [Spring AOP] - Advice 종류
 [Spring AOP] - 트랜잭션 순서
-[Spring AOP] - Pointcut 참조
+[Spring AOP] - 포인트컷 참조
 [Spring AOP] - 어드바이스 추가
-[Spring AOP] - Pointcut 분리
+[Spring AOP] - @Pointcut 포인트컷 분리
 [Spring AOP] - @Aspect
-Spring AOP - Aspect
-Spring AOP - 용어 정리
-Spring AOP - 적용 방식
+[Spring AOP] - Aspect
+[Spring AOP] - 용어 정리
+[Spring AOP] - 적용 방식
 
 Spring 핵심원리 고급편 - 트랜잭션 순서@Slf4jpublic class AspectV5Order &#123;    @Aspect    @Order(2)    public static class LogAspect&#123;        @Around(&quot;com.example.aop.order.aop.Pointcuts.allOrder()&quot;)        public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable&#123;            log.info(&quot;[log] &#123;&#125;&quot;, joinPoint.getSignature()); // join point 시그니처            return joinPoint.proceed();        &#125;    &#125;    @Aspect    @Order(1)    public static class TxAspect&#123;        // com.example.aop.order 하위 패키지면서 클래스 이름 패턴이 *Service 인 것        @Around(&quot;com.example.aop.order.aop.Pointcuts.orderAndService()&quot;)        public Object  doTransaction(ProceedingJoinPoint joinPoint) throws Throwable&#123;            try&#123;                log.info(&quot;[트랜잭션 시작] &#123;&#125;&quot;, joinPoint.getSignature());                Object result = joinPoint.proceed();                log.info(&quot;[트랜잭션 커밋] &#123;&#125;&quot;, joinPoint.getSignature());                return result;            &#125;catch (Exception ex)&#123;                log.info(&quot;[트랜잭션 롤백] &#123;&#125;&quot;, joinPoint.getSignature());                throw ex;            &#125;finally &#123;                log.info(&quot;[리소스 릴리즈] &#123;&#125;&quot;, joinPoint.getSignature());            &#125;        &#125;    &#125;&#125;
 
@@ -1042,13 +1042,13 @@ Pointcutpublic class Pointcuts &#123;    @Pointcut(&quot;execution(* com.example
             목차
 [Spring AOP] - Advice 종류
 [Spring AOP] - 트랜잭션 순서
-[Spring AOP] - Pointcut 참조
+[Spring AOP] - 포인트컷 참조
 [Spring AOP] - 어드바이스 추가
-[Spring AOP] - Pointcut 분리
+[Spring AOP] - @Pointcut 포인트컷 분리
 [Spring AOP] - @Aspect
-Spring AOP - Aspect
-Spring AOP - 용어 정리
-Spring AOP - 적용 방식
+[Spring AOP] - Aspect
+[Spring AOP] - 용어 정리
+[Spring AOP] - 적용 방식
 
 Advice 추가
 기존에 로그를 찍은 기능에서 트랜잭션 기능 추가

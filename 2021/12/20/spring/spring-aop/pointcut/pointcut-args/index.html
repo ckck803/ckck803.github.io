@@ -223,7 +223,7 @@
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-args/" title="[Spring AOP] 포인트컷 표현식 - args">[Spring AOP] 포인트컷 표현식 - args</a></li>
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-within/" title="[Spring AOP] 포인트컷 표현식 - within">[Spring AOP] 포인트컷 표현식 - within</a></li>
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-execution/" title="[Spring AOP] 포인트컷 표현식 - execution">[Spring AOP] 포인트컷 표현식 - execution</a></li>
-<li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut/" title="Spring 핵심원리 고급편 - 포인트컷">Spring 핵심원리 고급편 - 포인트컷</a></li>
+<li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut/" title="[Spring AOP] 포인트컷">[Spring AOP] 포인트컷</a></li>
 </ul>
 <h2 id="포인트컷-표현식-args"><a href="#포인트컷-표현식-args" class="headerlink" title="포인트컷 표현식 - args"></a>포인트컷 표현식 - args</h2><blockquote>
 <p>args 는 메서드의 매개변수를 기준으로 AOP 를 적용</p>
@@ -242,7 +242,7 @@
 
 
 
-    <a data-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-args/" data-id="cm8to2qun018pn28dciz081w8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-args/" data-id="cm9fxxyc101e9cw8dcbcg8brh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -331,7 +331,7 @@
 [Spring AOP] 포인트컷 표현식 - args
 [Spring AOP] 포인트컷 표현식 - within
 [Spring AOP] 포인트컷 표현식 - execution
-Spring 핵심원리 고급편 - 포인트컷
+[Spring AOP] 포인트컷
 
 포인트컷 표현식 - args
 args 는 메서드의 매개변수를 기준으로 AOP 를 적용
@@ -340,7 +340,7 @@ args는 메서드의 매개변수를 기준으로 매칭하기 위한 표현식�
 테스트를 위한 객체@ClassAop@Componentpublic class MemberServiceImpl implements MemberService &#123;    @Override    @MethodAop(&quot;test value&quot;)    public String hello(String param) &#123;        return &quot;ok&quot;;    &#125;    private String internal(String param) &#123;        return &quot;ok&quot;;    &#125;&#125;
 
 args 를 이용해 적용 여부 판단@BeforeEachpublic void init() throws NoSuchMethodException &#123;    helloMethod = MemberServiceImpl.class.getMethod(&quot;hello&quot;, String.class);&#125;private AspectJExpressionPointcut pointcut(String expression) &#123;    AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();    pointcut.setExpression(expression);    return pointcut;&#125;@Testvoid args() &#123;    // hello(String)과 매칭    assertThat(pointcut(&quot;args(String)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();    // Object 는 String 의 상위 타입          assertThat(pointcut(&quot;args(Object)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();    assertThat(pointcut(&quot;args()&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isFalse();    assertThat(pointcut(&quot;args(..)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();    assertThat(pointcut(&quot;args(*)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();    assertThat(pointcut(&quot;args(String,..)&quot;)            .matches(helloMethod, MemberServiceImpl.class)).isTrue();&#125;",
-        "wordCount": 780
+        "wordCount": 776
     }
 </script>
 
