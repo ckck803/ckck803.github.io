@@ -288,16 +288,16 @@ https://inpa.tistory.com/entry/%F0%9F%91%A9%E2%80%8D%F0%9F%92%BB-%ED%94%84%EB%A1
 https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/
 https:&#x2F;&#x2F;velog.io&#x2F;@hoonki&#x2F;마이크로서비스-패턴-서비스-디스커버리
 
-Service Discovery 패턴이 등장하게 된 배경기존 서비스 인스턴스의 개수와 IP 가 고정적이였던 온 프레미스 환경과 달리 MSA 환경에서는 Application 들이 AutoScaling 을 하면서 동적으로 줄었다가 늘어나면서 IP 자체도 동적으로 바뀌게 됐습니다.
+🕵️‍♂️ Service Discovery 패턴이 등장하게 된 배경기존 서비스 인스턴스의 개수와 IP 가 고정적이였던 온 프레미스 환경과 달리 MSA 환경에서는 Application 들이 AutoScaling 을 하면서 동적으로 줄었다가 늘어나면서 IP 자체도 고정이 아닌 동적으로 바뀌게 됐습니다.
 Client 나 Gateway 입장에서 서비스 인스턴스들이 동적으로 늘었는지 줄었는지에 대한 파악을 하기가 어려운 문제가 있었고 그에 따른 LoadBalancing 하는데 어려움이 있었습니다.
-Service Discovery 패턴에서는 Service EndPoint 를 조회 및 관리하기 위한 Service Registry 가 있습니다. MSA 의 각 서비스들은 Service Registry 에 자신의 EndPoint 들을 등록합니다.
-Service EndPoint 를 접근하는 방식에 따라 두가지로 나뉘게 됩니다. 첫번째는 Client-Side Discovery  두번째는 Server-Side Discovery 패턴이 있습니다.
+변경 및 추가된 서비스들의 위치와 주소를 쉽게 파악하기 위해 Service Discovery 가 등장하게 됐습니다.
 
 
 출처: https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/
 
 
-Client Side DiscoveryMSA 내 한 서비스가 다른 서비스를 호출할때 Service Registry 로 부터 EndPoint 를 조회한 후 해당 서비스를 호출하는 방식입니다.
+✅ 서비스 등록 - Service RegistryService Discovery 패턴에서는 Service EndPoint 를 조회 및 관리하기 위한 저장소가 필요한데, 이를 Service Registry 라 합니다. MSA 에서 각 서비스들이 실행하게 되면 Service Registry 에 자신의 EndPoint 들을 등록합니다.
+그리고 주기적으로 Service Registry 에 등록된 서비스 중이 정상적인지 Health Check 를 진행하고, 정상적인 응답이 안올 경우 목록에서 삭제하는 방식으로 진행합니다.
         </p>
     </div>
 </article>
