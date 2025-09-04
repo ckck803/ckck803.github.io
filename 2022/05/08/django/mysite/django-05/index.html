@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/django/django.png">
 <meta property="article:published_time" content="2022-05-08T03:47:30.000Z">
-<meta property="article:modified_time" content="2024-11-28T13:59:31.577Z">
+<meta property="article:modified_time" content="2025-09-04T03:59:51.798Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/django/django.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2022/05/08/django/mysite/django-05/" class="article-date">
-     <time datetime="2024-11-28T13:59:31.577Z" itemprop="dateModified">2024-11-28</time>
+     <time datetime="2025-09-04T03:59:51.798Z" itemprop="dateModified">2025-09-04</time>
   </a>
 </div>
 
@@ -235,7 +235,7 @@
 </blockquote>
 <figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="language-xml"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Blog<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Blog<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="comment">&lt;!-- 포스트의 모든 게시물들을 하나씩 가져온다. --&gt;</span></span></span><br><span class="line"><span class="language-xml">    </span><span class="template-tag">&#123;% <span class="name"><span class="name">for</span></span> p <span class="keyword">in</span> object_list %&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">    <span class="comment">&lt;!-- 제목 --&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">h3</span>&gt;</span></span><span class="template-variable">&#123;&#123;p.title&#125;&#125;</span><span class="language-xml"><span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="comment">&lt;!-- 작성일과 작성자 --&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">h4</span>&gt;</span></span><span class="template-variable">&#123;&#123;p.created&#125;&#125;</span><span class="language-xml"> by </span><span class="template-variable">&#123;&#123;p.author&#125;&#125;</span><span class="language-xml"><span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="comment">&lt;!-- 내용 --&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123;p.content&#125;&#125;</span><span class="language-xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    </span><span class="template-tag">&#123;%<span class="name"><span class="name">endfor</span></span>%&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-<h2 id="역순으로-보이게-하기"><a href="#역순으로-보이게-하기" class="headerlink" title="역순으로 보이게 하기"></a>역순으로 보이게 하기</h2><figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="language-xml">from django.shortcuts import render</span></span><br><span class="line"><span class="language-xml">from .models import Post</span></span><br><span class="line"><span class="language-xml">from django.views.generic import ListView</span></span><br><span class="line"><span class="language-xml"># Create your views here.</span></span><br><span class="line"><span class="language-xml"># List로 보여줄 때는 django.views.generic의</span></span><br><span class="line"><span class="language-xml"># ListView를 상속하여 보여주면 간단하게 보여줄 수 있다.</span></span><br><span class="line"><span class="language-xml">class PostList(ListView):</span></span><br><span class="line"><span class="language-xml">    model = Post</span></span><br><span class="line"><span class="language-xml">    def get_queryset(self):</span></span><br><span class="line"><span class="language-xml">        # 역순으로 보여주기 위해 -로 붙인다.</span></span><br><span class="line"><span class="language-xml">        return Post.objects.order_by(&#x27;-created&#x27;)</span></span><br></pre></td></tr></table></figure>
+<h2 id="역순으로-보이게-하기"><a href="#역순으로-보이게-하기" class="headerlink" title="역순으로 보이게 하기"></a>역순으로 보이게 하기</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Post</span><br><span class="line"><span class="keyword">from</span> django.views.generic <span class="keyword">import</span> ListView</span><br><span class="line"><span class="comment"># Create your views here.</span></span><br><span class="line"><span class="comment"># List로 보여줄 때는 django.views.generic의</span></span><br><span class="line"><span class="comment"># ListView를 상속하여 보여주면 간단하게 보여줄 수 있다.</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PostList</span>(<span class="title class_ inherited__">ListView</span>):</span><br><span class="line">    model = Post</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_queryset</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 역순으로 보여주기 위해 -로 붙인다.</span></span><br><span class="line">        <span class="keyword">return</span> Post.objects.order_by(<span class="string">&#x27;-created&#x27;</span>)</span><br></pre></td></tr></table></figure>
         </div>
         <footer class="article-footer">
             
@@ -318,7 +318,7 @@
         "genre": "Develop Django",
         "datePublished": "2022-05-08",
         "dateCreated": "2022-05-08",
-        "dateModified": "2024-11-28",
+        "dateModified": "2025-09-04",
         "url": "https://ckck803.github.io/2022/05/08/django/mysite/django-05/",
         "description": "
 
@@ -342,7 +342,7 @@ urlpatterns = [    path(&#x27;&#x27;, views.PostList.as_view()),]
 blog&#x2F;templates&#x2F;blog&#x2F;post_list.html 생성
 
 &lt;!DOCTYPE html&gt;&lt;html lang=&quot;ko&quot;&gt;  &lt;head&gt;    &lt;meta charset=&quot;UTF-8&quot; /&gt;    &lt;title&gt;Blog&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;    &lt;h1&gt;Blog&lt;/h1&gt;    &lt;!-- 포스트의 모든 게시물들을 하나씩 가져온다. --&gt;    &#123;% for p in object_list %&#125;    &lt;!-- 제목 --&gt;    &lt;h3&gt;&#123;&#123;p.title&#125;&#125;&lt;/h3&gt;    &lt;!-- 작성일과 작성자 --&gt;    &lt;h4&gt;&#123;&#123;p.created&#125;&#125; by &#123;&#123;p.author&#125;&#125;&lt;/h4&gt;    &lt;!-- 내용 --&gt;    &lt;p&gt;&#123;&#123;p.content&#125;&#125;&lt;/p&gt;    &#123;%endfor%&#125;  &lt;/body&gt;&lt;/html&gt;",
-        "wordCount": 498
+        "wordCount": 509
     }
 </script>
 
@@ -518,20 +518,5 @@ blog&#x2F;templates&#x2F;blog&#x2F;post_list.html 생성
 <script src="/js/main.js"></script>
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

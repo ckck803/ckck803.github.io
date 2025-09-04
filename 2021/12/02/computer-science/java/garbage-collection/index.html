@@ -13,16 +13,16 @@
     
     <meta name="keywords" content>
     
-    <meta name="description" content="목차 [JAVA] - 가비지 컬렉션 튜닝 [JAVA] - Garbage Collection(가비지 컬렉션) [JAVA] - JVM (자바 가상 머신)  📌 가비지 컬렉션 동적 할당 받은 메모리 중에서 사용하지 않는 메모리를 해제해 메모리 누수를 막는 메모리 관리 기법   memory leak 을 없앨 수 있다.  GC Root가 될 수 있는 대상들  S">
+    <meta name="description" content="목차 [JAVA] - 가비지 컬렉션 튜닝 [JAVA] - Garbage Collection(가비지 컬렉션) [JAVA] - JVM (자바 가상 머신)  📌 가비지 컬렉션 동적 할당 받은 메모리 중에서 사용하지 않는 메모리를 해제해 메모리 누수를 막는 메모리 관리 기법  GC 가 등장하기 전에는 개발자가 직접 메모리를 할당하거나 해제해줘야 했습니다. 메모">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[JAVA] - Garbage Collection(가비지 컬렉션)">
 <meta property="og:url" content="https://ckck803.github.io/2021/12/02/computer-science/java/garbage-collection/index.html">
 <meta property="og:site_name" content="Victor">
-<meta property="og:description" content="목차 [JAVA] - 가비지 컬렉션 튜닝 [JAVA] - Garbage Collection(가비지 컬렉션) [JAVA] - JVM (자바 가상 머신)  📌 가비지 컬렉션 동적 할당 받은 메모리 중에서 사용하지 않는 메모리를 해제해 메모리 누수를 막는 메모리 관리 기법   memory leak 을 없앨 수 있다.  GC Root가 될 수 있는 대상들  S">
+<meta property="og:description" content="목차 [JAVA] - 가비지 컬렉션 튜닝 [JAVA] - Garbage Collection(가비지 컬렉션) [JAVA] - JVM (자바 가상 머신)  📌 가비지 컬렉션 동적 할당 받은 메모리 중에서 사용하지 않는 메모리를 해제해 메모리 누수를 막는 메모리 관리 기법  GC 가 등장하기 전에는 개발자가 직접 메모리를 할당하거나 해제해줘야 했습니다. 메모">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/java/java.png">
 <meta property="article:published_time" content="2021-12-02T14:16:32.000Z">
-<meta property="article:modified_time" content="2025-09-01T23:18:17.884Z">
+<meta property="article:modified_time" content="2025-09-04T04:00:22.399Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/java/java.png">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2021/12/02/computer-science/java/garbage-collection/" class="article-date">
-     <time datetime="2025-09-01T23:18:17.884Z" itemprop="dateModified">2025-09-02</time>
+     <time datetime="2025-09-04T04:00:22.399Z" itemprop="dateModified">2025-09-04</time>
   </a>
 </div>
 
@@ -221,6 +221,7 @@
 <h2 id="📌-가비지-컬렉션"><a href="#📌-가비지-컬렉션" class="headerlink" title="📌 가비지 컬렉션"></a>📌 가비지 컬렉션</h2><blockquote>
 <p>동적 할당 받은 메모리 중에서 사용하지 않는 메모리를 해제해 메모리 누수를 막는 <strong>메모리 관리 기법</strong></p>
 </blockquote>
+<p>GC 가 등장하기 전에는 개발자가 직접 메모리를 할당하거나 해제해줘야 했습니다. 메모리를 직접관리하기 때문에 실수로 메모리</p>
 <ul>
 <li>memory leak 을 없앨 수 있다.</li>
 </ul>
@@ -406,7 +407,7 @@
         "genre": "CS 프로그래밍 언어 JAVA",
         "datePublished": "2021-12-02",
         "dateCreated": "2021-12-02",
-        "dateModified": "2025-09-02",
+        "dateModified": "2025-09-04",
         "url": "https://ckck803.github.io/2021/12/02/computer-science/java/garbage-collection/",
         "description": "
 목차
@@ -417,6 +418,7 @@
 📌 가비지 컬렉션
 동적 할당 받은 메모리 중에서 사용하지 않는 메모리를 해제해 메모리 누수를 막는 메모리 관리 기법
 
+GC 가 등장하기 전에는 개발자가 직접 메모리를 할당하거나 해제해줘야 했습니다. 메모리를 직접관리하기 때문에 실수로 메모리
 
 memory leak 을 없앨 수 있다.
 
@@ -426,10 +428,8 @@ Stack 영역의 데이터
 Static 데이터
 JNI에 의해 생성된 객체들
 
-Mark And Sweep 알고리즘
-참조가 유효한 Object를 Reachable 참조가 유효하지 않은 Object를 Unreachable 이라고 부른다.
-",
-        "wordCount": 507
+Mark And Sweep 알고리즘",
+        "wordCount": 521
     }
 </script>
 
@@ -605,20 +605,5 @@ Mark And Sweep 알고리즘
 <script src="/js/main.js"></script>
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
