@@ -1261,7 +1261,7 @@ supportsParameter 메소드를 통해 전달 받은 파라미터를 지원하는
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-08-responsestatic/" class="thumbnail">
+        <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-09-httpresponse/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
@@ -1271,7 +1271,7 @@ supportsParameter 메소드를 통해 전달 받은 파라미터를 지원하는
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/12/spring/spring-framework/mvc/spring-mvc-08-responsestatic/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/12/spring/spring-framework/mvc/spring-mvc-09-httpresponse/">0</span>
     
 </span>
 
@@ -1289,7 +1289,7 @@ supportsParameter 메소드를 통해 전달 받은 파라미터를 지원하는
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-08-responsestatic/">Spring Boot 응답 - 정적 리소스, 뷰 템플릿</a>
+        <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-09-httpresponse/">Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력</a>
         </h1>
     
 
@@ -1307,12 +1307,15 @@ Spring Boot API 예시
 Spring Boot @RequestMapping 
 Spring Boot Logging
 
-Spring Boot 응답 - 정적 리소스, 뷰 템플릿@RequestMapping(&quot;/response-view-v1&quot;)public ModelAndView responseViewV1()&#123;    ModelAndView mav = new ModelAndView(&quot;response/hello&quot;)            .addObject(&quot;data&quot;, &quot;hello&quot;);    return mav;&#125;
+Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력@GetMapping(&quot;/response-body-string-v1&quot;)public void responseBodyV1(HttpServletResponse response) throws IOException &#123;    response.getWriter().write(&quot;ok&quot;);&#125;
 
-String을 반환하는 경우뷰 리졸버를 통해 반환되는 문자열에 해당되는 뷰를 찾아 렌더링 해준다.
-@RequestMapping(&quot;/response-view-v2&quot;)public String responseViewV2(Model model)&#123;    model.addAttribute(&quot;data&quot;, &quot;hello!&quot;);    return &quot;response/hello&quot;;&#125;
+@GetMapping(&quot;/response-body-string-v2&quot;)public ResponseEntity&lt;String&gt; responseBodyV2(HttpServletResponse response) &#123;    return new ResponseEntity&lt;&gt;(&quot;ok&quot;, HttpStatus.OK);&#125;
 
-void를 반환하는 경우@RequestMapping(&quot;/response/hello&quot;)public void responseViewV3(Model model)&#123;    model.addAttribute(&quot;data&quot;, &quot;hello!&quot;);&#125;
+@ResponseBody@GetMapping(&quot;/response-body-string-v3&quot;)public String responseBodyV3(HttpServletResponse response) &#123;    return &quot;ok&quot;;&#125;
+
+@GetMapping(&quot;/response-body-json-v1&quot;)public ResponseEntity&lt;HelloData&gt; responseBodyJsonV1() &#123;    HelloData helloData = new HelloData();    helloData.setUsername(&quot;userA&quot;);    helloData.setAge(20);    return new ResponseEntity&lt;&gt;(helloData, HttpStatus.OK);&#125;
+
+@ResponseBody@ResponseStatus(HttpStatus.OK)@GetMapping(&quot;/response-body-json-v1&quot;)public HelloData responseBodyJsonV2() &#123;    HelloData helloData = new HelloData();    helloData.setUsername(&quot;userA&quot;);    helloData.setAge(20);    return helloData;&#125;
         </p>
     </div>
 </article>

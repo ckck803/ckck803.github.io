@@ -296,6 +296,65 @@ row 를 다 소비하면 JDBC는 다음 100 건을 요청합니다.
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2025/04/05/k8s/auth/role-clusterrole/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/k8s/k8s.png)" alt="[쿠버네티스] 인증/인가 - Role 과 ClusterRole" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2025/04/05/k8s/auth/role-clusterrole/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Kubernetes/">Kubernetes</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a>
+            </div>
+            <div class="date"><time datetime="2025-04-05T01:31:46.000Z" itemprop="datePublished">2025-04-05</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2025/04/05/k8s/auth/role-clusterrole/">[쿠버네티스] 인증/인가 - Role 과 ClusterRole</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+
+
+목차
+[쿠버네티스] 인증&#x2F;인가 - OIDC 를 이용한 Keycloak 연동
+[쿠버네티스] 인증&#x2F;인가 - ServiceAccount
+[쿠버네티스] 인증&#x2F;인가 - X.509 인증서를 사용한 사용자 추가 및 인증
+[쿠버네티스] 인증&#x2F;인가 - Role 과 ClusterRole
+
+쿠버네티스에서 Role과 ClusterRole은 RBAC(역할 기반 접근 제어)를 통해 사용자나 서비스 계정에 권한을 부여하는 중요한 리소스입니다. 아래에 각각의 특징과 차이점을 정리해 보았습니다.
+Role네임스페이스 범위: Role은 특정 네임스페이스 내에서만 유효합니다. 따라서 한 네임스페이스의 자원에만 접근 권한을 부여할 수 있습니다.
+정책 정의: Role 안에는 API 리소스(예: Pods, Services 등)에 대한 특정 동작(예: get, list, create 등)이 정의되어 있습니다.
+바인딩: Role은 RoleBinding을 통해 사용자나 서비스 계정에 연결됩니다. 이때 RoleBinding 역시 특정 네임스페이스에 속합니다.
+
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2025/04/05/k8s/auth/k8s-oidc-keycloak/" class="thumbnail">
     
     
@@ -345,65 +404,6 @@ https://wlsdn3004.tistory.com/62
 앞서 말했듯이, 쿠버네티스는 사용자 정보를 저장하지 않습니다. 사용자를 관리하고 싶으면, 쿠버네티스에서 제공하는 OIDC 를 통해 별도의 인증 서버와 연계를 하면 사용자를 관리할 수 있습니다.
 인증서버로 유명한 Keycloak 을 이용해 사용자를 관리하고 쿠버네티스에서 인증을 진행할 수 있도록 설정을 진행하려고 합니다.
 ✅ 1. Keycloak Client 추가쿠버네티스에서 Keycloak 을 이용해 인증을 진행하기 위해서는 Client 생성(등록) 이 필요합니다.  Client 단위로 Keycloak 에서는 쿠버네티스 사용자들을 관리하고 권한을 매핑해줄 수 있습니다.
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2025/04/05/k8s/auth/role-clusterrole/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/k8s/k8s.png)" alt="[쿠버네티스] 인증/인가 - Role 과 ClusterRole" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2025/04/05/k8s/auth/role-clusterrole/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Kubernetes/">Kubernetes</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a>
-            </div>
-            <div class="date"><time datetime="2025-04-05T01:31:46.000Z" itemprop="datePublished">2025-04-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2025/04/05/k8s/auth/role-clusterrole/">[쿠버네티스] 인증/인가 - Role 과 ClusterRole</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-
-
-목차
-[쿠버네티스] 인증&#x2F;인가 - OIDC 를 이용한 Keycloak 연동
-[쿠버네티스] 인증&#x2F;인가 - ServiceAccount
-[쿠버네티스] 인증&#x2F;인가 - X.509 인증서를 사용한 사용자 추가 및 인증
-[쿠버네티스] 인증&#x2F;인가 - Role 과 ClusterRole
-
-쿠버네티스에서 Role과 ClusterRole은 RBAC(역할 기반 접근 제어)를 통해 사용자나 서비스 계정에 권한을 부여하는 중요한 리소스입니다. 아래에 각각의 특징과 차이점을 정리해 보았습니다.
-Role네임스페이스 범위: Role은 특정 네임스페이스 내에서만 유효합니다. 따라서 한 네임스페이스의 자원에만 접근 권한을 부여할 수 있습니다.
-정책 정의: Role 안에는 API 리소스(예: Pods, Services 등)에 대한 특정 동작(예: get, list, create 등)이 정의되어 있습니다.
-바인딩: Role은 RoleBinding을 통해 사용자나 서비스 계정에 연결됩니다. 이때 RoleBinding 역시 특정 네임스페이스에 속합니다.
-
         </p>
     </div>
 </article>
@@ -593,6 +593,63 @@ Pinia 를 사용하는 이유는 상태를 관리하는 로직을 분리할 수 
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2025/03/05/vue/router/vue-unplugin-vue-router/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/vue/vue-2.png)" alt="[Vue 3] - unplugin-vue-router 사용하기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2025/03/05/vue/router/vue-unplugin-vue-router/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Vue/">Vue</a>
+            </div>
+            <div class="date"><time datetime="2025-03-05T11:10:40.000Z" itemprop="datePublished">2025-03-05</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2025/03/05/vue/router/vue-unplugin-vue-router/">[Vue 3] - unplugin-vue-router 사용하기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+참고https://github.com/posva/unplugin-vue-router
+vue 에서는 새로운 페이지를 생성할때마다 vue-router 에 직접 등록해줘야 하는 번거로움이 있습니다. 이런 수고스러움을 좀 덜고자 찾아보니 vue 에서도 next 나 nuxt 처럼 파일 기반으로 라우팅을 할 수 있게 지원해주는 모듈을 찾게 됐습니다. 
+1.  unplugin-vue-router 모듈을 설치npm i -D unplugin-vue-router
+
+2.  vite.config.ts 에 다음 내용을 추가해 줍니다.vite.config.tsimport &#123; defineConfig &#125; from &#x27;vite&#x27;import vue from &#x27;@vitejs/plugin-vue&#x27;import VueRouter from &#x27;unplugin-vue-router/vite&#x27;;// https://vitejs.dev/config/export default defineConfig(&#123;  plugins: [vue(), VueRouter(&#123;&#125;)],&#125;)
+
+3. tsconfig.json 설정 정보 추가tsconfig.json&#123;  &quot;compilerOptions&quot;: &#123;    // ...    &quot;moduleResolution&quot;: &quot;Bundler&quot;,    // ...    &quot;types&quot;: [&quot;unplugin-vue-router/client&quot;],  &#125;  // ...  &quot;include&quot;: [    // ...    &quot;./typed-router.d.ts&quot;  ],&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2025/03/05/vue/router/vue-router-guard/" class="thumbnail">
     
     
@@ -639,63 +696,6 @@ beforeEach: 모든 라우팅 전에 실행
 beforeResolve: 컴포넌트 렌더링 전 비동기 작업
 afterEach: 라우팅 완료 후 작업
 
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2025/03/05/vue/router/vue-unplugin-vue-router/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/vue/vue-2.png)" alt="[Vue 3] - unplugin-vue-router 사용하기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2025/03/05/vue/router/vue-unplugin-vue-router/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Frontend/">Frontend</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Frontend/Vue/">Vue</a>
-            </div>
-            <div class="date"><time datetime="2025-03-05T11:10:40.000Z" itemprop="datePublished">2025-03-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2025/03/05/vue/router/vue-unplugin-vue-router/">[Vue 3] - unplugin-vue-router 사용하기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-참고https://github.com/posva/unplugin-vue-router
-vue 에서는 새로운 페이지를 생성할때마다 vue-router 에 직접 등록해줘야 하는 번거로움이 있습니다. 이런 수고스러움을 좀 덜고자 찾아보니 vue 에서도 next 나 nuxt 처럼 파일 기반으로 라우팅을 할 수 있게 지원해주는 모듈을 찾게 됐습니다. 
-1.  unplugin-vue-router 모듈을 설치npm i -D unplugin-vue-router
-
-2.  vite.config.ts 에 다음 내용을 추가해 줍니다.vite.config.tsimport &#123; defineConfig &#125; from &#x27;vite&#x27;import vue from &#x27;@vitejs/plugin-vue&#x27;import VueRouter from &#x27;unplugin-vue-router/vite&#x27;;// https://vitejs.dev/config/export default defineConfig(&#123;  plugins: [vue(), VueRouter(&#123;&#125;)],&#125;)
-
-3. tsconfig.json 설정 정보 추가tsconfig.json&#123;  &quot;compilerOptions&quot;: &#123;    // ...    &quot;moduleResolution&quot;: &quot;Bundler&quot;,    // ...    &quot;types&quot;: [&quot;unplugin-vue-router/client&quot;],  &#125;  // ...  &quot;include&quot;: [    // ...    &quot;./typed-router.d.ts&quot;  ],&#125;
         </p>
     </div>
 </article>
