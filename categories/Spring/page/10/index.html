@@ -319,6 +319,65 @@ ByteArrayHttpMessageConverter
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-12-RequestMappingHandlerAdapter/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/12/spring/spring-framework/mvc/spring-mvc-12-RequestMappingHandlerAdapter/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
+            </div>
+            <div class="date"><time datetime="2021-10-11T16:05:00.000Z" itemprop="datePublished">2021-10-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-12-RequestMappingHandlerAdapter/">Spring Boot RequestMappingHandlerAdapter</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            목차
+Spring MVC - ArgumentResolver 
+Spring MVC - HttpMessageConverter 
+Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
+Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
+Spring Boot 요청 메시지 - JSON
+Spring Boot 요청 메시지 - Text 
+Spring Boot 쿼리 파라미터, HTML Form 
+Spring Boot 기본 헤더 조회 
+Spring Boot API 예시 
+Spring Boot @RequestMapping 
+Spring Boot Logging
+
+public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter implements BeanFactoryAware, InitializingBean &#123;    private static final boolean shouldIgnoreXml = SpringProperties.getFlag(&quot;spring.xml.ignore&quot;);    public static final MethodFilter INIT_BINDER_METHODS = (method) -&gt; &#123;        return AnnotatedElementUtils.hasAnnotation(method, InitBinder.class);    &#125;;    public static final MethodFilter MODEL_ATTRIBUTE_METHODS = (method) -&gt; &#123;        return !AnnotatedElementUtils.hasAnnotation(method, RequestMapping.class) &amp;&amp; AnnotatedElementUtils.hasAnnotation(method, ModelAttribute.class);    &#125;;    @Nullable    private List&lt;HandlerMethodArgumentResolver&gt; customArgumentResolvers;    @Nullable    private HandlerMethodArgumentResolverComposite argumentResolvers;    @Nullable    private HandlerMethodArgumentResolverComposite initBinderArgumentResolvers;    @Nullable    private List&lt;HandlerMethodReturnValueHandler&gt; customReturnValueHandlers;    @Nullable    private HandlerMethodReturnValueHandlerComposite returnValueHandlers;    @Nullable    private List&lt;ModelAndViewResolver&gt; modelAndViewResolvers;    private ContentNegotiationManager contentNegotiationManager = new ContentNegotiationManager();    private List&lt;HttpMessageConverter&lt;?&gt;&gt; messageConverters = new ArrayList(4);    private final List&lt;Object&gt; requestResponseBodyAdvice = new ArrayList();    @Nullable    private WebBindingInitializer webBindingInitializer;    private AsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor(&quot;MvcAsync&quot;);    @Nullable    private Long asyncRequestTimeout;    private CallableProcessingInterceptor[] callableInterceptors = new CallableProcessingInterceptor[0];    private DeferredResultProcessingInterceptor[] deferredResultInterceptors = new DeferredResultProcessingInterceptor[0];    private ReactiveAdapterRegistry reactiveAdapterRegistry = ReactiveAdapterRegistry.getSharedInstance();    private boolean ignoreDefaultModelOnRedirect = false;    private int cacheSecondsForSessionAttributeHandlers = 0;    private boolean synchronizeOnSession = false;    private SessionAttributeStore sessionAttributeStore = new DefaultSessionAttributeStore();    private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();    @Nullable    private ConfigurableBeanFactory beanFactory;    private final Map&lt;Class&lt;?&gt;, SessionAttributesHandler&gt; sessionAttributesHandlerCache = new ConcurrentHashMap(64);    private final Map&lt;Class&lt;?&gt;, Set&lt;Method&gt;&gt; initBinderCache = new ConcurrentHashMap(64);    private final Map&lt;ControllerAdviceBean, Set&lt;Method&gt;&gt; initBinderAdviceCache = new LinkedHashMap();    private final Map&lt;Class&lt;?&gt;, Set&lt;Method&gt;&gt; modelAttributeCache = new ConcurrentHashMap(64);    private final Map&lt;ControllerAdviceBean, Set&lt;Method&gt;&gt; modelAttributeAdviceCache = new LinkedHashMap();    public RequestMappingHandlerAdapter() &#123;        this.messageConverters.add(new ByteArrayHttpMessageConverter());        this.messageConverters.add(new StringHttpMessageConverter());        if (!shouldIgnoreXml) &#123;            try &#123;                this.messageConverters.add(new SourceHttpMessageConverter());            &#125; catch (Error var2) &#123;            &#125;        &#125;        this.messageConverters.add(new AllEncompassingFormHttpMessageConverter());    &#125;    public void setCustomArgumentResolvers(@Nullable List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) &#123;        this.customArgumentResolvers = argumentResolvers;    &#125;    @Nullable    public List&lt;HandlerMethodArgumentResolver&gt; getCustomArgumentResolvers() &#123;        return this.customArgumentResolvers;    &#125;    public void setArgumentResolvers(@Nullable List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) &#123;        if (argumentResolvers == null) &#123;            this.argumentResolvers = null;        &#125; else &#123;            this.argumentResolvers = new HandlerMethodArgumentResolverComposite();            this.argumentResolvers.addResolvers(argumentResolvers);        &#125;    &#125;    @Nullable    public List&lt;HandlerMethodArgumentResolver&gt; getArgumentResolvers() &#123;        return this.argumentResolvers != null ? this.argumentResolvers.getResolvers() : null;    &#125;    public void setInitBinderArgumentResolvers(@Nullable List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) &#123;        if (argumentResolvers == null) &#123;            this.initBinderArgumentResolvers = null;        &#125; else &#123;            this.initBinderArgumentResolvers = new HandlerMethodArgumentResolverComposite();            this.initBinderArgumentResolvers.addResolvers(argumentResolvers);        &#125;    &#125;    @Nullable    public List&lt;HandlerMethodArgumentResolver&gt; getInitBinderArgumentResolvers() &#123;        return this.initBinderArgumentResolvers != null ? this.initBinderArgumentResolvers.getResolvers() : null;    &#125;    public void setCustomReturnValueHandlers(@Nullable List&lt;HandlerMethodReturnValueHandler&gt; returnValueHandlers) &#123;        this.customReturnValueHandlers = returnValueHandlers;    &#125;    @Nullable    public List&lt;HandlerMethodReturnValueHandler&gt; getCustomReturnValueHandlers() &#123;        return this.customReturnValueHandlers;    &#125;    public void setReturnValueHandlers(@Nullable List&lt;HandlerMethodReturnValueHandler&gt; returnValueHandlers) &#123;        if (returnValueHandlers == null) &#123;            this.returnValueHandlers = null;        &#125; else &#123;            this.returnValueHandlers = new HandlerMethodReturnValueHandlerComposite();            this.returnValueHandlers.addHandlers(returnValueHandlers);        &#125;    &#125;    @Nullable    public List&lt;HandlerMethodReturnValueHandler&gt; getReturnValueHandlers() &#123;        return this.returnValueHandlers != null ? this.returnValueHandlers.getHandlers() : null;    &#125;    public void setModelAndViewResolvers(@Nullable List&lt;ModelAndViewResolver&gt; modelAndViewResolvers) &#123;        this.modelAndViewResolvers = modelAndViewResolvers;    &#125;    @Nullable    public List&lt;ModelAndViewResolver&gt; getModelAndViewResolvers() &#123;        return this.modelAndViewResolvers;    &#125;    public void setContentNegotiationManager(ContentNegotiationManager contentNegotiationManager) &#123;        this.contentNegotiationManager = contentNegotiationManager;    &#125;    public void setMessageConverters(List&lt;HttpMessageConverter&lt;?&gt;&gt; messageConverters) &#123;        this.messageConverters = messageConverters;    &#125;    public List&lt;HttpMessageConverter&lt;?&gt;&gt; getMessageConverters() &#123;        return this.messageConverters;    &#125;    public void setRequestBodyAdvice(@Nullable List&lt;RequestBodyAdvice&gt; requestBodyAdvice) &#123;        if (requestBodyAdvice != null) &#123;            this.requestResponseBodyAdvice.addAll(requestBodyAdvice);        &#125;    &#125;    public void setResponseBodyAdvice(@Nullable List&lt;ResponseBodyAdvice&lt;?&gt;&gt; responseBodyAdvice) &#123;        if (responseBodyAdvice != null) &#123;            this.requestResponseBodyAdvice.addAll(responseBodyAdvice);        &#125;    &#125;    public void setWebBindingInitializer(@Nullable WebBindingInitializer webBindingInitializer) &#123;        this.webBindingInitializer = webBindingInitializer;    &#125;    @Nullable    public WebBindingInitializer getWebBindingInitializer() &#123;        return this.webBindingInitializer;    &#125;    public void setTaskExecutor(AsyncTaskExecutor taskExecutor) &#123;        this.taskExecutor = taskExecutor;    &#125;    public void setAsyncRequestTimeout(long timeout) &#123;        this.asyncRequestTimeout = timeout;    &#125;    public void setCallableInterceptors(List&lt;CallableProcessingInterceptor&gt; interceptors) &#123;        this.callableInterceptors = (CallableProcessingInterceptor[])interceptors.toArray(new CallableProcessingInterceptor[0]);    &#125;    public void setDeferredResultInterceptors(List&lt;DeferredResultProcessingInterceptor&gt; interceptors) &#123;        this.deferredResultInterceptors = (DeferredResultProcessingInterceptor[])interceptors.toArray(new DeferredResultProcessingInterceptor[0]);    &#125;    public void setReactiveAdapterRegistry(ReactiveAdapterRegistry reactiveAdapterRegistry) &#123;        this.reactiveAdapterRegistry = reactiveAdapterRegistry;    &#125;    public ReactiveAdapterRegistry getReactiveAdapterRegistry() &#123;        return this.reactiveAdapterRegistry;    &#125;    public void setIgnoreDefaultModelOnRedirect(boolean ignoreDefaultModelOnRedirect) &#123;        this.ignoreDefaultModelOnRedirect = ignoreDefaultModelOnRedirect;    &#125;    public void setSessionAttributeStore(SessionAttributeStore sessionAttributeStore) &#123;        this.sessionAttributeStore = sessionAttributeStore;    &#125;    public void setCacheSecondsForSessionAttributeHandlers(int cacheSecondsForSessionAttributeHandlers) &#123;        this.cacheSecondsForSessionAttributeHandlers = cacheSecondsForSessionAttributeHandlers;    &#125;    public void setSynchronizeOnSession(boolean synchronizeOnSession) &#123;        this.synchronizeOnSession = synchronizeOnSession;    &#125;    public void setParameterNameDiscoverer(ParameterNameDiscoverer parameterNameDiscoverer) &#123;        this.parameterNameDiscoverer = parameterNameDiscoverer;    &#125;    public void setBeanFactory(BeanFactory beanFactory) &#123;        if (beanFactory instanceof ConfigurableBeanFactory) &#123;            this.beanFactory = (ConfigurableBeanFactory)beanFactory;        &#125;    &#125;    @Nullable    protected ConfigurableBeanFactory getBeanFactory() &#123;        return this.beanFactory;    &#125;    public void afterPropertiesSet() &#123;        this.initControllerAdviceCache();        List handlers;        if (this.argumentResolvers == null) &#123;            handlers = this.getDefaultArgumentResolvers();            this.argumentResolvers = (new HandlerMethodArgumentResolverComposite()).addResolvers(handlers);        &#125;        if (this.initBinderArgumentResolvers == null) &#123;            handlers = this.getDefaultInitBinderArgumentResolvers();            this.initBinderArgumentResolvers = (new HandlerMethodArgumentResolverComposite()).addResolvers(handlers);        &#125;        if (this.returnValueHandlers == null) &#123;            handlers = this.getDefaultReturnValueHandlers();            this.returnValueHandlers = (new HandlerMethodReturnValueHandlerComposite()).addHandlers(handlers);        &#125;    &#125;    private void initControllerAdviceCache() &#123;        if (this.getApplicationContext() != null) &#123;            List&lt;ControllerAdviceBean&gt; adviceBeans = ControllerAdviceBean.findAnnotatedBeans(this.getApplicationContext());            List&lt;Object&gt; requestResponseBodyAdviceBeans = new ArrayList();            Iterator var3 = adviceBeans.iterator();            while(var3.hasNext()) &#123;                ControllerAdviceBean adviceBean = (ControllerAdviceBean)var3.next();                Class&lt;?&gt; beanType = adviceBean.getBeanType();                if (beanType == null) &#123;                    throw new IllegalStateException(&quot;Unresolvable type for ControllerAdviceBean: &quot; + adviceBean);                &#125;                Set&lt;Method&gt; attrMethods = MethodIntrospector.selectMethods(beanType, MODEL_ATTRIBUTE_METHODS);                if (!attrMethods.isEmpty()) &#123;                    this.modelAttributeAdviceCache.put(adviceBean, attrMethods);                &#125;                Set&lt;Method&gt; binderMethods = MethodIntrospector.selectMethods(beanType, INIT_BINDER_METHODS);                if (!binderMethods.isEmpty()) &#123;                    this.initBinderAdviceCache.put(adviceBean, binderMethods);                &#125;                if (RequestBodyAdvice.class.isAssignableFrom(beanType) || ResponseBodyAdvice.class.isAssignableFrom(beanType)) &#123;                    requestResponseBodyAdviceBeans.add(adviceBean);                &#125;            &#125;            if (!requestResponseBodyAdviceBeans.isEmpty()) &#123;                this.requestResponseBodyAdvice.addAll(0, requestResponseBodyAdviceBeans);            &#125;            if (this.logger.isDebugEnabled()) &#123;                int modelSize = this.modelAttributeAdviceCache.size();                int binderSize = this.initBinderAdviceCache.size();                int reqCount = this.getBodyAdviceCount(RequestBodyAdvice.class);                int resCount = this.getBodyAdviceCount(ResponseBodyAdvice.class);                if (modelSize == 0 &amp;&amp; binderSize == 0 &amp;&amp; reqCount == 0 &amp;&amp; resCount == 0) &#123;                    this.logger.debug(&quot;ControllerAdvice beans: none&quot;);                &#125; else &#123;                    this.logger.debug(&quot;ControllerAdvice beans: &quot; + modelSize + &quot; @ModelAttribute, &quot; + binderSize + &quot; @InitBinder, &quot; + reqCount + &quot; RequestBodyAdvice, &quot; + resCount + &quot; ResponseBodyAdvice&quot;);                &#125;            &#125;        &#125;    &#125;    private int getBodyAdviceCount(Class&lt;?&gt; adviceType) &#123;        List&lt;Object&gt; advice = this.requestResponseBodyAdvice;        return RequestBodyAdvice.class.isAssignableFrom(adviceType) ? RequestResponseBodyAdviceChain.getAdviceByType(advice, RequestBodyAdvice.class).size() : RequestResponseBodyAdviceChain.getAdviceByType(advice, ResponseBodyAdvice.class).size();    &#125;    private List&lt;HandlerMethodArgumentResolver&gt; getDefaultArgumentResolvers() &#123;        List&lt;HandlerMethodArgumentResolver&gt; resolvers = new ArrayList(30);        resolvers.add(new RequestParamMethodArgumentResolver(this.getBeanFactory(), false));        resolvers.add(new RequestParamMapMethodArgumentResolver());        resolvers.add(new PathVariableMethodArgumentResolver());        resolvers.add(new PathVariableMapMethodArgumentResolver());        resolvers.add(new MatrixVariableMethodArgumentResolver());        resolvers.add(new MatrixVariableMapMethodArgumentResolver());        resolvers.add(new ServletModelAttributeMethodProcessor(false));        resolvers.add(new RequestResponseBodyMethodProcessor(this.getMessageConverters(), this.requestResponseBodyAdvice));        resolvers.add(new RequestPartMethodArgumentResolver(this.getMessageConverters(), this.requestResponseBodyAdvice));        resolvers.add(new RequestHeaderMethodArgumentResolver(this.getBeanFactory()));        resolvers.add(new RequestHeaderMapMethodArgumentResolver());        resolvers.add(new ServletCookieValueMethodArgumentResolver(this.getBeanFactory()));        resolvers.add(new ExpressionValueMethodArgumentResolver(this.getBeanFactory()));        resolvers.add(new SessionAttributeMethodArgumentResolver());        resolvers.add(new RequestAttributeMethodArgumentResolver());        resolvers.add(new ServletRequestMethodArgumentResolver());        resolvers.add(new ServletResponseMethodArgumentResolver());        resolvers.add(new HttpEntityMethodProcessor(this.getMessageConverters(), this.requestResponseBodyAdvice));        resolvers.add(new RedirectAttributesMethodArgumentResolver());        resolvers.add(new ModelMethodProcessor());        resolvers.add(new MapMethodProcessor());        resolvers.add(new ErrorsMethodArgumentResolver());        resolvers.add(new SessionStatusMethodArgumentResolver());        resolvers.add(new UriComponentsBuilderMethodArgumentResolver());        if (KotlinDetector.isKotlinPresent()) &#123;            resolvers.add(new ContinuationHandlerMethodArgumentResolver());        &#125;        if (this.getCustomArgumentResolvers() != null) &#123;            resolvers.addAll(this.getCustomArgumentResolvers());        &#125;        resolvers.add(new PrincipalMethodArgumentResolver());        resolvers.add(new RequestParamMethodArgumentResolver(this.getBeanFactory(), true));        resolvers.add(new ServletModelAttributeMethodProcessor(true));        return resolvers;    &#125;    private List&lt;HandlerMethodArgumentResolver&gt; getDefaultInitBinderArgumentResolvers() &#123;        List&lt;HandlerMethodArgumentResolver&gt; resolvers = new ArrayList(20);        resolvers.add(new RequestParamMethodArgumentResolver(this.getBeanFactory(), false));        resolvers.add(new RequestParamMapMethodArgumentResolver());        resolvers.add(new PathVariableMethodArgumentResolver());        resolvers.add(new PathVariableMapMethodArgumentResolver());        resolvers.add(new MatrixVariableMethodArgumentResolver());        resolvers.add(new MatrixVariableMapMethodArgumentResolver());        resolvers.add(new ExpressionValueMethodArgumentResolver(this.getBeanFactory()));        resolvers.add(new SessionAttributeMethodArgumentResolver());        resolvers.add(new RequestAttributeMethodArgumentResolver());        resolvers.add(new ServletRequestMethodArgumentResolver());        resolvers.add(new ServletResponseMethodArgumentResolver());        if (this.getCustomArgumentResolvers() != null) &#123;            resolvers.addAll(this.getCustomArgumentResolvers());        &#125;        resolvers.add(new PrincipalMethodArgumentResolver());        resolvers.add(new RequestParamMethodArgumentResolver(this.getBeanFactory(), true));        return resolvers;    &#125;    private List&lt;HandlerMethodReturnValueHandler&gt; getDefaultReturnValueHandlers() &#123;        List&lt;HandlerMethodReturnValueHandler&gt; handlers = new ArrayList(20);        handlers.add(new ModelAndViewMethodReturnValueHandler());        handlers.add(new ModelMethodProcessor());        handlers.add(new ViewMethodReturnValueHandler());        handlers.add(new ResponseBodyEmitterReturnValueHandler(this.getMessageConverters(), this.reactiveAdapterRegistry, this.taskExecutor, this.contentNegotiationManager));        handlers.add(new StreamingResponseBodyReturnValueHandler());        handlers.add(new HttpEntityMethodProcessor(this.getMessageConverters(), this.contentNegotiationManager, this.requestResponseBodyAdvice));        handlers.add(new HttpHeadersReturnValueHandler());        handlers.add(new CallableMethodReturnValueHandler());        handlers.add(new DeferredResultMethodReturnValueHandler());        handlers.add(new AsyncTaskMethodReturnValueHandler(this.beanFactory));        handlers.add(new ServletModelAttributeMethodProcessor(false));        handlers.add(new RequestResponseBodyMethodProcessor(this.getMessageConverters(), this.contentNegotiationManager, this.requestResponseBodyAdvice));        handlers.add(new ViewNameMethodReturnValueHandler());        handlers.add(new MapMethodProcessor());        if (this.getCustomReturnValueHandlers() != null) &#123;            handlers.addAll(this.getCustomReturnValueHandlers());        &#125;        if (!CollectionUtils.isEmpty(this.getModelAndViewResolvers())) &#123;            handlers.add(new ModelAndViewResolverMethodReturnValueHandler(this.getModelAndViewResolvers()));        &#125; else &#123;            handlers.add(new ServletModelAttributeMethodProcessor(true));        &#125;        return handlers;    &#125;    protected boolean supportsInternal(HandlerMethod handlerMethod) &#123;        return true;    &#125;    protected ModelAndView handleInternal(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws Exception &#123;        this.checkRequest(request);        ModelAndView mav;        if (this.synchronizeOnSession) &#123;            HttpSession session = request.getSession(false);            if (session != null) &#123;                Object mutex = WebUtils.getSessionMutex(session);                synchronized(mutex) &#123;                    mav = this.invokeHandlerMethod(request, response, handlerMethod);                &#125;            &#125; else &#123;                mav = this.invokeHandlerMethod(request, response, handlerMethod);            &#125;        &#125; else &#123;            mav = this.invokeHandlerMethod(request, response, handlerMethod);        &#125;        if (!response.containsHeader(&quot;Cache-Control&quot;)) &#123;            if (this.getSessionAttributesHandler(handlerMethod).hasSessionAttributes()) &#123;                this.applyCacheSeconds(response, this.cacheSecondsForSessionAttributeHandlers);            &#125; else &#123;                this.prepareResponse(response);            &#125;        &#125;        return mav;    &#125;    protected long getLastModifiedInternal(HttpServletRequest request, HandlerMethod handlerMethod) &#123;        return -1L;    &#125;    private SessionAttributesHandler getSessionAttributesHandler(HandlerMethod handlerMethod) &#123;        return (SessionAttributesHandler)this.sessionAttributesHandlerCache.computeIfAbsent(handlerMethod.getBeanType(), (type) -&gt; &#123;            return new SessionAttributesHandler(type, this.sessionAttributeStore);        &#125;);    &#125;    @Nullable    protected ModelAndView invokeHandlerMethod(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws Exception &#123;        ServletWebRequest webRequest = new ServletWebRequest(request, response);        Object result;        try &#123;            WebDataBinderFactory binderFactory = this.getDataBinderFactory(handlerMethod);            ModelFactory modelFactory = this.getModelFactory(handlerMethod, binderFactory);            ServletInvocableHandlerMethod invocableMethod = this.createInvocableHandlerMethod(handlerMethod);            if (this.argumentResolvers != null) &#123;                invocableMethod.setHandlerMethodArgumentResolvers(this.argumentResolvers);            &#125;            if (this.returnValueHandlers != null) &#123;                invocableMethod.setHandlerMethodReturnValueHandlers(this.returnValueHandlers);            &#125;            invocableMethod.setDataBinderFactory(binderFactory);            invocableMethod.setParameterNameDiscoverer(this.parameterNameDiscoverer);            ModelAndViewContainer mavContainer = new ModelAndViewContainer();            mavContainer.addAllAttributes(RequestContextUtils.getInputFlashMap(request));            modelFactory.initModel(webRequest, mavContainer, invocableMethod);            mavContainer.setIgnoreDefaultModelOnRedirect(this.ignoreDefaultModelOnRedirect);            AsyncWebRequest asyncWebRequest = WebAsyncUtils.createAsyncWebRequest(request, response);            asyncWebRequest.setTimeout(this.asyncRequestTimeout);            WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);            asyncManager.setTaskExecutor(this.taskExecutor);            asyncManager.setAsyncWebRequest(asyncWebRequest);            asyncManager.registerCallableInterceptors(this.callableInterceptors);            asyncManager.registerDeferredResultInterceptors(this.deferredResultInterceptors);            if (asyncManager.hasConcurrentResult()) &#123;                result = asyncManager.getConcurrentResult();                mavContainer = (ModelAndViewContainer)asyncManager.getConcurrentResultContext()[0];                asyncManager.clearConcurrentResult();                LogFormatUtils.traceDebug(this.logger, (traceOn) -&gt; &#123;                    String formatted = LogFormatUtils.formatValue(result, !traceOn);                    return &quot;Resume with async result [&quot; + formatted + &quot;]&quot;;                &#125;);                invocableMethod = invocableMethod.wrapConcurrentResult(result);            &#125;            invocableMethod.invokeAndHandle(webRequest, mavContainer, new Object[0]);            if (!asyncManager.isConcurrentHandlingStarted()) &#123;                ModelAndView var15 = this.getModelAndView(mavContainer, modelFactory, webRequest);                return var15;            &#125;            result = null;        &#125; finally &#123;            webRequest.requestCompleted();        &#125;        return (ModelAndView)result;    &#125;    protected ServletInvocableHandlerMethod createInvocableHandlerMethod(HandlerMethod handlerMethod) &#123;        return new ServletInvocableHandlerMethod(handlerMethod);    &#125;    private ModelFactory getModelFactory(HandlerMethod handlerMethod, WebDataBinderFactory binderFactory) &#123;        SessionAttributesHandler sessionAttrHandler = this.getSessionAttributesHandler(handlerMethod);        Class&lt;?&gt; handlerType = handlerMethod.getBeanType();        Set&lt;Method&gt; methods = (Set)this.modelAttributeCache.get(handlerType);        if (methods == null) &#123;            methods = MethodIntrospector.selectMethods(handlerType, MODEL_ATTRIBUTE_METHODS);            this.modelAttributeCache.put(handlerType, methods);        &#125;        List&lt;InvocableHandlerMethod&gt; attrMethods = new ArrayList();        this.modelAttributeAdviceCache.forEach((controllerAdviceBean, methodSet) -&gt; &#123;            if (controllerAdviceBean.isApplicableToBeanType(handlerType)) &#123;                Object bean = controllerAdviceBean.resolveBean();                Iterator var7 = methodSet.iterator();                while(var7.hasNext()) &#123;                    Method method = (Method)var7.next();                    attrMethods.add(this.createModelAttributeMethod(binderFactory, bean, method));                &#125;            &#125;        &#125;);        Iterator var7 = methods.iterator();        while(var7.hasNext()) &#123;            Method method = (Method)var7.next();            Object bean = handlerMethod.getBean();            attrMethods.add(this.createModelAttributeMethod(binderFactory, bean, method));        &#125;        return new ModelFactory(attrMethods, binderFactory, sessionAttrHandler);    &#125;    private InvocableHandlerMethod createModelAttributeMethod(WebDataBinderFactory factory, Object bean, Method method) &#123;        InvocableHandlerMethod attrMethod = new InvocableHandlerMethod(bean, method);        if (this.argumentResolvers != null) &#123;            attrMethod.setHandlerMethodArgumentResolvers(this.argumentResolvers);        &#125;        attrMethod.setParameterNameDiscoverer(this.parameterNameDiscoverer);        attrMethod.setDataBinderFactory(factory);        return attrMethod;    &#125;    private WebDataBinderFactory getDataBinderFactory(HandlerMethod handlerMethod) throws Exception &#123;        Class&lt;?&gt; handlerType = handlerMethod.getBeanType();        Set&lt;Method&gt; methods = (Set)this.initBinderCache.get(handlerType);        if (methods == null) &#123;            methods = MethodIntrospector.selectMethods(handlerType, INIT_BINDER_METHODS);            this.initBinderCache.put(handlerType, methods);        &#125;        List&lt;InvocableHandlerMethod&gt; initBinderMethods = new ArrayList();        this.initBinderAdviceCache.forEach((controllerAdviceBean, methodSet) -&gt; &#123;            if (controllerAdviceBean.isApplicableToBeanType(handlerType)) &#123;                Object bean = controllerAdviceBean.resolveBean();                Iterator var6 = methodSet.iterator();                while(var6.hasNext()) &#123;                    Method method = (Method)var6.next();                    initBinderMethods.add(this.createInitBinderMethod(bean, method));                &#125;            &#125;        &#125;);        Iterator var5 = methods.iterator();        while(var5.hasNext()) &#123;            Method method = (Method)var5.next();            Object bean = handlerMethod.getBean();            initBinderMethods.add(this.createInitBinderMethod(bean, method));        &#125;        return this.createDataBinderFactory(initBinderMethods);    &#125;    private InvocableHandlerMethod createInitBinderMethod(Object bean, Method method) &#123;        InvocableHandlerMethod binderMethod = new InvocableHandlerMethod(bean, method);        if (this.initBinderArgumentResolvers != null) &#123;            binderMethod.setHandlerMethodArgumentResolvers(this.initBinderArgumentResolvers);        &#125;        binderMethod.setDataBinderFactory(new DefaultDataBinderFactory(this.webBindingInitializer));        binderMethod.setParameterNameDiscoverer(this.parameterNameDiscoverer);        return binderMethod;    &#125;    protected InitBinderDataBinderFactory createDataBinderFactory(List&lt;InvocableHandlerMethod&gt; binderMethods) throws Exception &#123;        return new ServletRequestDataBinderFactory(binderMethods, this.getWebBindingInitializer());    &#125;    @Nullable    private ModelAndView getModelAndView(ModelAndViewContainer mavContainer, ModelFactory modelFactory, NativeWebRequest webRequest) throws Exception &#123;        modelFactory.updateModel(webRequest, mavContainer);        if (mavContainer.isRequestHandled()) &#123;            return null;        &#125; else &#123;            ModelMap model = mavContainer.getModel();            ModelAndView mav = new ModelAndView(mavContainer.getViewName(), model, mavContainer.getStatus());            if (!mavContainer.isViewReference()) &#123;                mav.setView((View)mavContainer.getView());            &#125;            if (model instanceof RedirectAttributes) &#123;                Map&lt;String, ?&gt; flashAttributes = ((RedirectAttributes)model).getFlashAttributes();                HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest(HttpServletRequest.class);                if (request != null) &#123;                    RequestContextUtils.getOutputFlashMap(request).putAll(flashAttributes);                &#125;            &#125;            return mav;        &#125;    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-13-ReturnValueHandler/" class="thumbnail">
     
     
@@ -369,65 +428,6 @@ Spring Boot ReturnValueHandlerpublic interface HandlerMethodReturnValueHandler &
 
 
 
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-12-RequestMappingHandlerAdapter/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/12/spring/spring-framework/mvc/spring-mvc-12-RequestMappingHandlerAdapter/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
-            </div>
-            <div class="date"><time datetime="2021-10-11T16:05:00.000Z" itemprop="datePublished">2021-10-12</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/12/spring/spring-framework/mvc/spring-mvc-12-RequestMappingHandlerAdapter/">Spring Boot RequestMappingHandlerAdapter</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            목차
-Spring MVC - ArgumentResolver 
-Spring MVC - HttpMessageConverter 
-Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
-Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
-Spring Boot 요청 메시지 - JSON
-Spring Boot 요청 메시지 - Text 
-Spring Boot 쿼리 파라미터, HTML Form 
-Spring Boot 기본 헤더 조회 
-Spring Boot API 예시 
-Spring Boot @RequestMapping 
-Spring Boot Logging
-
-public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter implements BeanFactoryAware, InitializingBean &#123;    private static final boolean shouldIgnoreXml = SpringProperties.getFlag(&quot;spring.xml.ignore&quot;);    public static final MethodFilter INIT_BINDER_METHODS = (method) -&gt; &#123;        return AnnotatedElementUtils.hasAnnotation(method, InitBinder.class);    &#125;;    public static final MethodFilter MODEL_ATTRIBUTE_METHODS = (method) -&gt; &#123;        return !AnnotatedElementUtils.hasAnnotation(method, RequestMapping.class) &amp;&amp; AnnotatedElementUtils.hasAnnotation(method, ModelAttribute.class);    &#125;;    @Nullable    private List&lt;HandlerMethodArgumentResolver&gt; customArgumentResolvers;    @Nullable    private HandlerMethodArgumentResolverComposite argumentResolvers;    @Nullable    private HandlerMethodArgumentResolverComposite initBinderArgumentResolvers;    @Nullable    private List&lt;HandlerMethodReturnValueHandler&gt; customReturnValueHandlers;    @Nullable    private HandlerMethodReturnValueHandlerComposite returnValueHandlers;    @Nullable    private List&lt;ModelAndViewResolver&gt; modelAndViewResolvers;    private ContentNegotiationManager contentNegotiationManager = new ContentNegotiationManager();    private List&lt;HttpMessageConverter&lt;?&gt;&gt; messageConverters = new ArrayList(4);    private final List&lt;Object&gt; requestResponseBodyAdvice = new ArrayList();    @Nullable    private WebBindingInitializer webBindingInitializer;    private AsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor(&quot;MvcAsync&quot;);    @Nullable    private Long asyncRequestTimeout;    private CallableProcessingInterceptor[] callableInterceptors = new CallableProcessingInterceptor[0];    private DeferredResultProcessingInterceptor[] deferredResultInterceptors = new DeferredResultProcessingInterceptor[0];    private ReactiveAdapterRegistry reactiveAdapterRegistry = ReactiveAdapterRegistry.getSharedInstance();    private boolean ignoreDefaultModelOnRedirect = false;    private int cacheSecondsForSessionAttributeHandlers = 0;    private boolean synchronizeOnSession = false;    private SessionAttributeStore sessionAttributeStore = new DefaultSessionAttributeStore();    private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();    @Nullable    private ConfigurableBeanFactory beanFactory;    private final Map&lt;Class&lt;?&gt;, SessionAttributesHandler&gt; sessionAttributesHandlerCache = new ConcurrentHashMap(64);    private final Map&lt;Class&lt;?&gt;, Set&lt;Method&gt;&gt; initBinderCache = new ConcurrentHashMap(64);    private final Map&lt;ControllerAdviceBean, Set&lt;Method&gt;&gt; initBinderAdviceCache = new LinkedHashMap();    private final Map&lt;Class&lt;?&gt;, Set&lt;Method&gt;&gt; modelAttributeCache = new ConcurrentHashMap(64);    private final Map&lt;ControllerAdviceBean, Set&lt;Method&gt;&gt; modelAttributeAdviceCache = new LinkedHashMap();    public RequestMappingHandlerAdapter() &#123;        this.messageConverters.add(new ByteArrayHttpMessageConverter());        this.messageConverters.add(new StringHttpMessageConverter());        if (!shouldIgnoreXml) &#123;            try &#123;                this.messageConverters.add(new SourceHttpMessageConverter());            &#125; catch (Error var2) &#123;            &#125;        &#125;        this.messageConverters.add(new AllEncompassingFormHttpMessageConverter());    &#125;    public void setCustomArgumentResolvers(@Nullable List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) &#123;        this.customArgumentResolvers = argumentResolvers;    &#125;    @Nullable    public List&lt;HandlerMethodArgumentResolver&gt; getCustomArgumentResolvers() &#123;        return this.customArgumentResolvers;    &#125;    public void setArgumentResolvers(@Nullable List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) &#123;        if (argumentResolvers == null) &#123;            this.argumentResolvers = null;        &#125; else &#123;            this.argumentResolvers = new HandlerMethodArgumentResolverComposite();            this.argumentResolvers.addResolvers(argumentResolvers);        &#125;    &#125;    @Nullable    public List&lt;HandlerMethodArgumentResolver&gt; getArgumentResolvers() &#123;        return this.argumentResolvers != null ? this.argumentResolvers.getResolvers() : null;    &#125;    public void setInitBinderArgumentResolvers(@Nullable List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) &#123;        if (argumentResolvers == null) &#123;            this.initBinderArgumentResolvers = null;        &#125; else &#123;            this.initBinderArgumentResolvers = new HandlerMethodArgumentResolverComposite();            this.initBinderArgumentResolvers.addResolvers(argumentResolvers);        &#125;    &#125;    @Nullable    public List&lt;HandlerMethodArgumentResolver&gt; getInitBinderArgumentResolvers() &#123;        return this.initBinderArgumentResolvers != null ? this.initBinderArgumentResolvers.getResolvers() : null;    &#125;    public void setCustomReturnValueHandlers(@Nullable List&lt;HandlerMethodReturnValueHandler&gt; returnValueHandlers) &#123;        this.customReturnValueHandlers = returnValueHandlers;    &#125;    @Nullable    public List&lt;HandlerMethodReturnValueHandler&gt; getCustomReturnValueHandlers() &#123;        return this.customReturnValueHandlers;    &#125;    public void setReturnValueHandlers(@Nullable List&lt;HandlerMethodReturnValueHandler&gt; returnValueHandlers) &#123;        if (returnValueHandlers == null) &#123;            this.returnValueHandlers = null;        &#125; else &#123;            this.returnValueHandlers = new HandlerMethodReturnValueHandlerComposite();            this.returnValueHandlers.addHandlers(returnValueHandlers);        &#125;    &#125;    @Nullable    public List&lt;HandlerMethodReturnValueHandler&gt; getReturnValueHandlers() &#123;        return this.returnValueHandlers != null ? this.returnValueHandlers.getHandlers() : null;    &#125;    public void setModelAndViewResolvers(@Nullable List&lt;ModelAndViewResolver&gt; modelAndViewResolvers) &#123;        this.modelAndViewResolvers = modelAndViewResolvers;    &#125;    @Nullable    public List&lt;ModelAndViewResolver&gt; getModelAndViewResolvers() &#123;        return this.modelAndViewResolvers;    &#125;    public void setContentNegotiationManager(ContentNegotiationManager contentNegotiationManager) &#123;        this.contentNegotiationManager = contentNegotiationManager;    &#125;    public void setMessageConverters(List&lt;HttpMessageConverter&lt;?&gt;&gt; messageConverters) &#123;        this.messageConverters = messageConverters;    &#125;    public List&lt;HttpMessageConverter&lt;?&gt;&gt; getMessageConverters() &#123;        return this.messageConverters;    &#125;    public void setRequestBodyAdvice(@Nullable List&lt;RequestBodyAdvice&gt; requestBodyAdvice) &#123;        if (requestBodyAdvice != null) &#123;            this.requestResponseBodyAdvice.addAll(requestBodyAdvice);        &#125;    &#125;    public void setResponseBodyAdvice(@Nullable List&lt;ResponseBodyAdvice&lt;?&gt;&gt; responseBodyAdvice) &#123;        if (responseBodyAdvice != null) &#123;            this.requestResponseBodyAdvice.addAll(responseBodyAdvice);        &#125;    &#125;    public void setWebBindingInitializer(@Nullable WebBindingInitializer webBindingInitializer) &#123;        this.webBindingInitializer = webBindingInitializer;    &#125;    @Nullable    public WebBindingInitializer getWebBindingInitializer() &#123;        return this.webBindingInitializer;    &#125;    public void setTaskExecutor(AsyncTaskExecutor taskExecutor) &#123;        this.taskExecutor = taskExecutor;    &#125;    public void setAsyncRequestTimeout(long timeout) &#123;        this.asyncRequestTimeout = timeout;    &#125;    public void setCallableInterceptors(List&lt;CallableProcessingInterceptor&gt; interceptors) &#123;        this.callableInterceptors = (CallableProcessingInterceptor[])interceptors.toArray(new CallableProcessingInterceptor[0]);    &#125;    public void setDeferredResultInterceptors(List&lt;DeferredResultProcessingInterceptor&gt; interceptors) &#123;        this.deferredResultInterceptors = (DeferredResultProcessingInterceptor[])interceptors.toArray(new DeferredResultProcessingInterceptor[0]);    &#125;    public void setReactiveAdapterRegistry(ReactiveAdapterRegistry reactiveAdapterRegistry) &#123;        this.reactiveAdapterRegistry = reactiveAdapterRegistry;    &#125;    public ReactiveAdapterRegistry getReactiveAdapterRegistry() &#123;        return this.reactiveAdapterRegistry;    &#125;    public void setIgnoreDefaultModelOnRedirect(boolean ignoreDefaultModelOnRedirect) &#123;        this.ignoreDefaultModelOnRedirect = ignoreDefaultModelOnRedirect;    &#125;    public void setSessionAttributeStore(SessionAttributeStore sessionAttributeStore) &#123;        this.sessionAttributeStore = sessionAttributeStore;    &#125;    public void setCacheSecondsForSessionAttributeHandlers(int cacheSecondsForSessionAttributeHandlers) &#123;        this.cacheSecondsForSessionAttributeHandlers = cacheSecondsForSessionAttributeHandlers;    &#125;    public void setSynchronizeOnSession(boolean synchronizeOnSession) &#123;        this.synchronizeOnSession = synchronizeOnSession;    &#125;    public void setParameterNameDiscoverer(ParameterNameDiscoverer parameterNameDiscoverer) &#123;        this.parameterNameDiscoverer = parameterNameDiscoverer;    &#125;    public void setBeanFactory(BeanFactory beanFactory) &#123;        if (beanFactory instanceof ConfigurableBeanFactory) &#123;            this.beanFactory = (ConfigurableBeanFactory)beanFactory;        &#125;    &#125;    @Nullable    protected ConfigurableBeanFactory getBeanFactory() &#123;        return this.beanFactory;    &#125;    public void afterPropertiesSet() &#123;        this.initControllerAdviceCache();        List handlers;        if (this.argumentResolvers == null) &#123;            handlers = this.getDefaultArgumentResolvers();            this.argumentResolvers = (new HandlerMethodArgumentResolverComposite()).addResolvers(handlers);        &#125;        if (this.initBinderArgumentResolvers == null) &#123;            handlers = this.getDefaultInitBinderArgumentResolvers();            this.initBinderArgumentResolvers = (new HandlerMethodArgumentResolverComposite()).addResolvers(handlers);        &#125;        if (this.returnValueHandlers == null) &#123;            handlers = this.getDefaultReturnValueHandlers();            this.returnValueHandlers = (new HandlerMethodReturnValueHandlerComposite()).addHandlers(handlers);        &#125;    &#125;    private void initControllerAdviceCache() &#123;        if (this.getApplicationContext() != null) &#123;            List&lt;ControllerAdviceBean&gt; adviceBeans = ControllerAdviceBean.findAnnotatedBeans(this.getApplicationContext());            List&lt;Object&gt; requestResponseBodyAdviceBeans = new ArrayList();            Iterator var3 = adviceBeans.iterator();            while(var3.hasNext()) &#123;                ControllerAdviceBean adviceBean = (ControllerAdviceBean)var3.next();                Class&lt;?&gt; beanType = adviceBean.getBeanType();                if (beanType == null) &#123;                    throw new IllegalStateException(&quot;Unresolvable type for ControllerAdviceBean: &quot; + adviceBean);                &#125;                Set&lt;Method&gt; attrMethods = MethodIntrospector.selectMethods(beanType, MODEL_ATTRIBUTE_METHODS);                if (!attrMethods.isEmpty()) &#123;                    this.modelAttributeAdviceCache.put(adviceBean, attrMethods);                &#125;                Set&lt;Method&gt; binderMethods = MethodIntrospector.selectMethods(beanType, INIT_BINDER_METHODS);                if (!binderMethods.isEmpty()) &#123;                    this.initBinderAdviceCache.put(adviceBean, binderMethods);                &#125;                if (RequestBodyAdvice.class.isAssignableFrom(beanType) || ResponseBodyAdvice.class.isAssignableFrom(beanType)) &#123;                    requestResponseBodyAdviceBeans.add(adviceBean);                &#125;            &#125;            if (!requestResponseBodyAdviceBeans.isEmpty()) &#123;                this.requestResponseBodyAdvice.addAll(0, requestResponseBodyAdviceBeans);            &#125;            if (this.logger.isDebugEnabled()) &#123;                int modelSize = this.modelAttributeAdviceCache.size();                int binderSize = this.initBinderAdviceCache.size();                int reqCount = this.getBodyAdviceCount(RequestBodyAdvice.class);                int resCount = this.getBodyAdviceCount(ResponseBodyAdvice.class);                if (modelSize == 0 &amp;&amp; binderSize == 0 &amp;&amp; reqCount == 0 &amp;&amp; resCount == 0) &#123;                    this.logger.debug(&quot;ControllerAdvice beans: none&quot;);                &#125; else &#123;                    this.logger.debug(&quot;ControllerAdvice beans: &quot; + modelSize + &quot; @ModelAttribute, &quot; + binderSize + &quot; @InitBinder, &quot; + reqCount + &quot; RequestBodyAdvice, &quot; + resCount + &quot; ResponseBodyAdvice&quot;);                &#125;            &#125;        &#125;    &#125;    private int getBodyAdviceCount(Class&lt;?&gt; adviceType) &#123;        List&lt;Object&gt; advice = this.requestResponseBodyAdvice;        return RequestBodyAdvice.class.isAssignableFrom(adviceType) ? RequestResponseBodyAdviceChain.getAdviceByType(advice, RequestBodyAdvice.class).size() : RequestResponseBodyAdviceChain.getAdviceByType(advice, ResponseBodyAdvice.class).size();    &#125;    private List&lt;HandlerMethodArgumentResolver&gt; getDefaultArgumentResolvers() &#123;        List&lt;HandlerMethodArgumentResolver&gt; resolvers = new ArrayList(30);        resolvers.add(new RequestParamMethodArgumentResolver(this.getBeanFactory(), false));        resolvers.add(new RequestParamMapMethodArgumentResolver());        resolvers.add(new PathVariableMethodArgumentResolver());        resolvers.add(new PathVariableMapMethodArgumentResolver());        resolvers.add(new MatrixVariableMethodArgumentResolver());        resolvers.add(new MatrixVariableMapMethodArgumentResolver());        resolvers.add(new ServletModelAttributeMethodProcessor(false));        resolvers.add(new RequestResponseBodyMethodProcessor(this.getMessageConverters(), this.requestResponseBodyAdvice));        resolvers.add(new RequestPartMethodArgumentResolver(this.getMessageConverters(), this.requestResponseBodyAdvice));        resolvers.add(new RequestHeaderMethodArgumentResolver(this.getBeanFactory()));        resolvers.add(new RequestHeaderMapMethodArgumentResolver());        resolvers.add(new ServletCookieValueMethodArgumentResolver(this.getBeanFactory()));        resolvers.add(new ExpressionValueMethodArgumentResolver(this.getBeanFactory()));        resolvers.add(new SessionAttributeMethodArgumentResolver());        resolvers.add(new RequestAttributeMethodArgumentResolver());        resolvers.add(new ServletRequestMethodArgumentResolver());        resolvers.add(new ServletResponseMethodArgumentResolver());        resolvers.add(new HttpEntityMethodProcessor(this.getMessageConverters(), this.requestResponseBodyAdvice));        resolvers.add(new RedirectAttributesMethodArgumentResolver());        resolvers.add(new ModelMethodProcessor());        resolvers.add(new MapMethodProcessor());        resolvers.add(new ErrorsMethodArgumentResolver());        resolvers.add(new SessionStatusMethodArgumentResolver());        resolvers.add(new UriComponentsBuilderMethodArgumentResolver());        if (KotlinDetector.isKotlinPresent()) &#123;            resolvers.add(new ContinuationHandlerMethodArgumentResolver());        &#125;        if (this.getCustomArgumentResolvers() != null) &#123;            resolvers.addAll(this.getCustomArgumentResolvers());        &#125;        resolvers.add(new PrincipalMethodArgumentResolver());        resolvers.add(new RequestParamMethodArgumentResolver(this.getBeanFactory(), true));        resolvers.add(new ServletModelAttributeMethodProcessor(true));        return resolvers;    &#125;    private List&lt;HandlerMethodArgumentResolver&gt; getDefaultInitBinderArgumentResolvers() &#123;        List&lt;HandlerMethodArgumentResolver&gt; resolvers = new ArrayList(20);        resolvers.add(new RequestParamMethodArgumentResolver(this.getBeanFactory(), false));        resolvers.add(new RequestParamMapMethodArgumentResolver());        resolvers.add(new PathVariableMethodArgumentResolver());        resolvers.add(new PathVariableMapMethodArgumentResolver());        resolvers.add(new MatrixVariableMethodArgumentResolver());        resolvers.add(new MatrixVariableMapMethodArgumentResolver());        resolvers.add(new ExpressionValueMethodArgumentResolver(this.getBeanFactory()));        resolvers.add(new SessionAttributeMethodArgumentResolver());        resolvers.add(new RequestAttributeMethodArgumentResolver());        resolvers.add(new ServletRequestMethodArgumentResolver());        resolvers.add(new ServletResponseMethodArgumentResolver());        if (this.getCustomArgumentResolvers() != null) &#123;            resolvers.addAll(this.getCustomArgumentResolvers());        &#125;        resolvers.add(new PrincipalMethodArgumentResolver());        resolvers.add(new RequestParamMethodArgumentResolver(this.getBeanFactory(), true));        return resolvers;    &#125;    private List&lt;HandlerMethodReturnValueHandler&gt; getDefaultReturnValueHandlers() &#123;        List&lt;HandlerMethodReturnValueHandler&gt; handlers = new ArrayList(20);        handlers.add(new ModelAndViewMethodReturnValueHandler());        handlers.add(new ModelMethodProcessor());        handlers.add(new ViewMethodReturnValueHandler());        handlers.add(new ResponseBodyEmitterReturnValueHandler(this.getMessageConverters(), this.reactiveAdapterRegistry, this.taskExecutor, this.contentNegotiationManager));        handlers.add(new StreamingResponseBodyReturnValueHandler());        handlers.add(new HttpEntityMethodProcessor(this.getMessageConverters(), this.contentNegotiationManager, this.requestResponseBodyAdvice));        handlers.add(new HttpHeadersReturnValueHandler());        handlers.add(new CallableMethodReturnValueHandler());        handlers.add(new DeferredResultMethodReturnValueHandler());        handlers.add(new AsyncTaskMethodReturnValueHandler(this.beanFactory));        handlers.add(new ServletModelAttributeMethodProcessor(false));        handlers.add(new RequestResponseBodyMethodProcessor(this.getMessageConverters(), this.contentNegotiationManager, this.requestResponseBodyAdvice));        handlers.add(new ViewNameMethodReturnValueHandler());        handlers.add(new MapMethodProcessor());        if (this.getCustomReturnValueHandlers() != null) &#123;            handlers.addAll(this.getCustomReturnValueHandlers());        &#125;        if (!CollectionUtils.isEmpty(this.getModelAndViewResolvers())) &#123;            handlers.add(new ModelAndViewResolverMethodReturnValueHandler(this.getModelAndViewResolvers()));        &#125; else &#123;            handlers.add(new ServletModelAttributeMethodProcessor(true));        &#125;        return handlers;    &#125;    protected boolean supportsInternal(HandlerMethod handlerMethod) &#123;        return true;    &#125;    protected ModelAndView handleInternal(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws Exception &#123;        this.checkRequest(request);        ModelAndView mav;        if (this.synchronizeOnSession) &#123;            HttpSession session = request.getSession(false);            if (session != null) &#123;                Object mutex = WebUtils.getSessionMutex(session);                synchronized(mutex) &#123;                    mav = this.invokeHandlerMethod(request, response, handlerMethod);                &#125;            &#125; else &#123;                mav = this.invokeHandlerMethod(request, response, handlerMethod);            &#125;        &#125; else &#123;            mav = this.invokeHandlerMethod(request, response, handlerMethod);        &#125;        if (!response.containsHeader(&quot;Cache-Control&quot;)) &#123;            if (this.getSessionAttributesHandler(handlerMethod).hasSessionAttributes()) &#123;                this.applyCacheSeconds(response, this.cacheSecondsForSessionAttributeHandlers);            &#125; else &#123;                this.prepareResponse(response);            &#125;        &#125;        return mav;    &#125;    protected long getLastModifiedInternal(HttpServletRequest request, HandlerMethod handlerMethod) &#123;        return -1L;    &#125;    private SessionAttributesHandler getSessionAttributesHandler(HandlerMethod handlerMethod) &#123;        return (SessionAttributesHandler)this.sessionAttributesHandlerCache.computeIfAbsent(handlerMethod.getBeanType(), (type) -&gt; &#123;            return new SessionAttributesHandler(type, this.sessionAttributeStore);        &#125;);    &#125;    @Nullable    protected ModelAndView invokeHandlerMethod(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws Exception &#123;        ServletWebRequest webRequest = new ServletWebRequest(request, response);        Object result;        try &#123;            WebDataBinderFactory binderFactory = this.getDataBinderFactory(handlerMethod);            ModelFactory modelFactory = this.getModelFactory(handlerMethod, binderFactory);            ServletInvocableHandlerMethod invocableMethod = this.createInvocableHandlerMethod(handlerMethod);            if (this.argumentResolvers != null) &#123;                invocableMethod.setHandlerMethodArgumentResolvers(this.argumentResolvers);            &#125;            if (this.returnValueHandlers != null) &#123;                invocableMethod.setHandlerMethodReturnValueHandlers(this.returnValueHandlers);            &#125;            invocableMethod.setDataBinderFactory(binderFactory);            invocableMethod.setParameterNameDiscoverer(this.parameterNameDiscoverer);            ModelAndViewContainer mavContainer = new ModelAndViewContainer();            mavContainer.addAllAttributes(RequestContextUtils.getInputFlashMap(request));            modelFactory.initModel(webRequest, mavContainer, invocableMethod);            mavContainer.setIgnoreDefaultModelOnRedirect(this.ignoreDefaultModelOnRedirect);            AsyncWebRequest asyncWebRequest = WebAsyncUtils.createAsyncWebRequest(request, response);            asyncWebRequest.setTimeout(this.asyncRequestTimeout);            WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);            asyncManager.setTaskExecutor(this.taskExecutor);            asyncManager.setAsyncWebRequest(asyncWebRequest);            asyncManager.registerCallableInterceptors(this.callableInterceptors);            asyncManager.registerDeferredResultInterceptors(this.deferredResultInterceptors);            if (asyncManager.hasConcurrentResult()) &#123;                result = asyncManager.getConcurrentResult();                mavContainer = (ModelAndViewContainer)asyncManager.getConcurrentResultContext()[0];                asyncManager.clearConcurrentResult();                LogFormatUtils.traceDebug(this.logger, (traceOn) -&gt; &#123;                    String formatted = LogFormatUtils.formatValue(result, !traceOn);                    return &quot;Resume with async result [&quot; + formatted + &quot;]&quot;;                &#125;);                invocableMethod = invocableMethod.wrapConcurrentResult(result);            &#125;            invocableMethod.invokeAndHandle(webRequest, mavContainer, new Object[0]);            if (!asyncManager.isConcurrentHandlingStarted()) &#123;                ModelAndView var15 = this.getModelAndView(mavContainer, modelFactory, webRequest);                return var15;            &#125;            result = null;        &#125; finally &#123;            webRequest.requestCompleted();        &#125;        return (ModelAndView)result;    &#125;    protected ServletInvocableHandlerMethod createInvocableHandlerMethod(HandlerMethod handlerMethod) &#123;        return new ServletInvocableHandlerMethod(handlerMethod);    &#125;    private ModelFactory getModelFactory(HandlerMethod handlerMethod, WebDataBinderFactory binderFactory) &#123;        SessionAttributesHandler sessionAttrHandler = this.getSessionAttributesHandler(handlerMethod);        Class&lt;?&gt; handlerType = handlerMethod.getBeanType();        Set&lt;Method&gt; methods = (Set)this.modelAttributeCache.get(handlerType);        if (methods == null) &#123;            methods = MethodIntrospector.selectMethods(handlerType, MODEL_ATTRIBUTE_METHODS);            this.modelAttributeCache.put(handlerType, methods);        &#125;        List&lt;InvocableHandlerMethod&gt; attrMethods = new ArrayList();        this.modelAttributeAdviceCache.forEach((controllerAdviceBean, methodSet) -&gt; &#123;            if (controllerAdviceBean.isApplicableToBeanType(handlerType)) &#123;                Object bean = controllerAdviceBean.resolveBean();                Iterator var7 = methodSet.iterator();                while(var7.hasNext()) &#123;                    Method method = (Method)var7.next();                    attrMethods.add(this.createModelAttributeMethod(binderFactory, bean, method));                &#125;            &#125;        &#125;);        Iterator var7 = methods.iterator();        while(var7.hasNext()) &#123;            Method method = (Method)var7.next();            Object bean = handlerMethod.getBean();            attrMethods.add(this.createModelAttributeMethod(binderFactory, bean, method));        &#125;        return new ModelFactory(attrMethods, binderFactory, sessionAttrHandler);    &#125;    private InvocableHandlerMethod createModelAttributeMethod(WebDataBinderFactory factory, Object bean, Method method) &#123;        InvocableHandlerMethod attrMethod = new InvocableHandlerMethod(bean, method);        if (this.argumentResolvers != null) &#123;            attrMethod.setHandlerMethodArgumentResolvers(this.argumentResolvers);        &#125;        attrMethod.setParameterNameDiscoverer(this.parameterNameDiscoverer);        attrMethod.setDataBinderFactory(factory);        return attrMethod;    &#125;    private WebDataBinderFactory getDataBinderFactory(HandlerMethod handlerMethod) throws Exception &#123;        Class&lt;?&gt; handlerType = handlerMethod.getBeanType();        Set&lt;Method&gt; methods = (Set)this.initBinderCache.get(handlerType);        if (methods == null) &#123;            methods = MethodIntrospector.selectMethods(handlerType, INIT_BINDER_METHODS);            this.initBinderCache.put(handlerType, methods);        &#125;        List&lt;InvocableHandlerMethod&gt; initBinderMethods = new ArrayList();        this.initBinderAdviceCache.forEach((controllerAdviceBean, methodSet) -&gt; &#123;            if (controllerAdviceBean.isApplicableToBeanType(handlerType)) &#123;                Object bean = controllerAdviceBean.resolveBean();                Iterator var6 = methodSet.iterator();                while(var6.hasNext()) &#123;                    Method method = (Method)var6.next();                    initBinderMethods.add(this.createInitBinderMethod(bean, method));                &#125;            &#125;        &#125;);        Iterator var5 = methods.iterator();        while(var5.hasNext()) &#123;            Method method = (Method)var5.next();            Object bean = handlerMethod.getBean();            initBinderMethods.add(this.createInitBinderMethod(bean, method));        &#125;        return this.createDataBinderFactory(initBinderMethods);    &#125;    private InvocableHandlerMethod createInitBinderMethod(Object bean, Method method) &#123;        InvocableHandlerMethod binderMethod = new InvocableHandlerMethod(bean, method);        if (this.initBinderArgumentResolvers != null) &#123;            binderMethod.setHandlerMethodArgumentResolvers(this.initBinderArgumentResolvers);        &#125;        binderMethod.setDataBinderFactory(new DefaultDataBinderFactory(this.webBindingInitializer));        binderMethod.setParameterNameDiscoverer(this.parameterNameDiscoverer);        return binderMethod;    &#125;    protected InitBinderDataBinderFactory createDataBinderFactory(List&lt;InvocableHandlerMethod&gt; binderMethods) throws Exception &#123;        return new ServletRequestDataBinderFactory(binderMethods, this.getWebBindingInitializer());    &#125;    @Nullable    private ModelAndView getModelAndView(ModelAndViewContainer mavContainer, ModelFactory modelFactory, NativeWebRequest webRequest) throws Exception &#123;        modelFactory.updateModel(webRequest, mavContainer);        if (mavContainer.isRequestHandled()) &#123;            return null;        &#125; else &#123;            ModelMap model = mavContainer.getModel();            ModelAndView mav = new ModelAndView(mavContainer.getViewName(), model, mavContainer.getStatus());            if (!mavContainer.isViewReference()) &#123;                mav.setView((View)mavContainer.getView());            &#125;            if (model instanceof RedirectAttributes) &#123;                Map&lt;String, ?&gt; flashAttributes = ((RedirectAttributes)model).getFlashAttributes();                HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest(HttpServletRequest.class);                if (request != null) &#123;                    RequestContextUtils.getOutputFlashMap(request).putAll(flashAttributes);                &#125;            &#125;            return mav;        &#125;    &#125;&#125;
         </p>
     </div>
 </article>
@@ -660,70 +660,6 @@ DTO 사용하기@ResponseBody@PostMapping(&quot;/request-body-json-v3&quot;)publ
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
-            </div>
-            <div class="date"><time datetime="2021-10-10T16:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">Spring Boot 기본 헤더 조회</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            목차
-Spring MVC - ArgumentResolver 
-Spring MVC - HttpMessageConverter 
-Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
-Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
-Spring Boot 요청 메시지 - JSON
-Spring Boot 요청 메시지 - Text 
-Spring Boot 쿼리 파라미터, HTML Form 
-Spring Boot 기본 헤더 조회 
-Spring Boot API 예시 
-Spring Boot @RequestMapping 
-Spring Boot Logging
-
-기본 헤더 조회Controller 사용 가능한 파리미터 목록
-@Slf4j@RestControllerpublic class RequestHeaderController &#123;    @RequestMapping(&quot;/headers&quot;)    public String headers(HttpServletRequest request,                          HttpServletResponse response,                          HttpMethod httpMethod,                          Locale locale,                          @RequestHeader MultiValueMap&lt;String, String&gt; headerMap,                          @RequestHeader(&quot;host&quot;) String host,                          @CookieValue(value = &quot;myCookie&quot;, required = false) String cookie) &#123;        log.info(&quot;request=&#123;&#125;&quot;, request);        log.info(&quot;response=&#123;&#125;&quot;, response);        log.info(&quot;httpMethod=&#123;&#125;&quot;, httpMethod);        log.info(&quot;locale=&#123;&#125;&quot;, locale);        log.info(&quot;headerMap=&#123;&#125;&quot;, headerMap);        log.info(&quot;header host=&#123;&#125;&quot;, host);        log.info(&quot;myCookie=&#123;&#125;&quot;, cookie);        return &quot;ok&quot;;    &#125;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-01-logging/" class="thumbnail">
     
     
@@ -787,10 +723,14 @@ logging.level.com.example.springmvc=trace
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -842,6 +782,66 @@ Spring Boot @RequestMapping
 Spring Boot Logging
 
 Spring Boot API 예시@RestController@RequestMapping(&quot;/mapping/users&quot;)public class MappingClassController &#123;    @GetMapping    public String user()&#123;        return &quot;get users&quot;;    &#125;    @PostMapping    public String addUser()&#123;        return &quot;post user&quot;;    &#125;    @GetMapping(&quot;/&#123;userId&#125;&quot;)    public String findUser(@PathVariable String userId)&#123;        return &quot;get suerId = &quot; + userId;    &#125;    @PatchMapping(&quot;/&#123;userId&#125;&quot;)    public String updateUser(@PathVariable String userId)&#123;        return &quot;update userId = &quot; + userId;    &#125;    @DeleteMapping(&quot;/&#123;userId&#125;&quot;)    public String deleteUser(@PathVariable String userId)&#123;        return &quot;delete userId = &quot; + userId;    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
+            </div>
+            <div class="date"><time datetime="2021-10-10T16:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">Spring Boot 기본 헤더 조회</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            목차
+Spring MVC - ArgumentResolver 
+Spring MVC - HttpMessageConverter 
+Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
+Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
+Spring Boot 요청 메시지 - JSON
+Spring Boot 요청 메시지 - Text 
+Spring Boot 쿼리 파라미터, HTML Form 
+Spring Boot 기본 헤더 조회 
+Spring Boot API 예시 
+Spring Boot @RequestMapping 
+Spring Boot Logging
+
+기본 헤더 조회Controller 사용 가능한 파리미터 목록
+@Slf4j@RestControllerpublic class RequestHeaderController &#123;    @RequestMapping(&quot;/headers&quot;)    public String headers(HttpServletRequest request,                          HttpServletResponse response,                          HttpMethod httpMethod,                          Locale locale,                          @RequestHeader MultiValueMap&lt;String, String&gt; headerMap,                          @RequestHeader(&quot;host&quot;) String host,                          @CookieValue(value = &quot;myCookie&quot;, required = false) String cookie) &#123;        log.info(&quot;request=&#123;&#125;&quot;, request);        log.info(&quot;response=&#123;&#125;&quot;, response);        log.info(&quot;httpMethod=&#123;&#125;&quot;, httpMethod);        log.info(&quot;locale=&#123;&#125;&quot;, locale);        log.info(&quot;headerMap=&#123;&#125;&quot;, headerMap);        log.info(&quot;header host=&#123;&#125;&quot;, host);        log.info(&quot;myCookie=&#123;&#125;&quot;, cookie);        return &quot;ok&quot;;    &#125;&#125;
         </p>
     </div>
 </article>
@@ -1010,6 +1010,75 @@ Credentials가 Password와 다를 경우 BadCredentialsException 예외를 던�
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - SecurityContextHolder 와 SecurityContext" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/securitycontext/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
+            </div>
+            <div class="date"><time datetime="2021-10-07T14:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/">Spring Security - SecurityContextHolder 와 SecurityContext</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Security 권한 계층 사용하기 - @RoleHierarcy
+Spring Security -  DelegateFilterProxy
+Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
+Spring Security - RembmerMeAuthenticationFilter
+Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
+Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
+Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
+Spring Security - AuthenticationProvider
+Spring Security - AuthenticationManager
+Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
+Spring Security - SecurityContextHolder 와 SecurityContext  
+Spring Security - Authentication 객체
+
+참고
+https://spring.io/guides/topicals/spring-security-architecture
+
+Spring Security - SecurityContextHolder 와 SecurityContext
+인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체 내에 저장된다.
+
+저장된 Authentication 객체를 저장하고 가져오기 위해서 SecurityContext는 getAuthentication 메소드와 setAuthentication 메소드를 제공한다.
+SecurityContext.java
+public interface SecurityContext extends Serializable &#123;    Authentication getAuthentication();    void setAuthentication(Authentication authentication);&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/10/07/spring/spring-security/security/authentication/authenticationManager/" class="thumbnail">
     
     
@@ -1073,75 +1142,6 @@ AuthenticationManager의 가장 대표적인 구현체
     </div>
 </article>
     
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - SecurityContextHolder 와 SecurityContext" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/securitycontext/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
-            </div>
-            <div class="date"><time datetime="2021-10-07T14:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/">Spring Security - SecurityContextHolder 와 SecurityContext</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring Security 권한 계층 사용하기 - @RoleHierarcy
-Spring Security -  DelegateFilterProxy
-Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
-Spring Security - RembmerMeAuthenticationFilter
-Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
-Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
-Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
-Spring Security - AuthenticationProvider
-Spring Security - AuthenticationManager
-Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
-Spring Security - SecurityContextHolder 와 SecurityContext  
-Spring Security - Authentication 객체
-
-참고
-https://spring.io/guides/topicals/spring-security-architecture
-
-Spring Security - SecurityContextHolder 와 SecurityContext
-인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체 내에 저장된다.
-
-저장된 Authentication 객체를 저장하고 가져오기 위해서 SecurityContext는 getAuthentication 메소드와 setAuthentication 메소드를 제공한다.
-SecurityContext.java
-public interface SecurityContext extends Serializable &#123;    Authentication getAuthentication();    void setAuthentication(Authentication authentication);&#125;
-        </p>
-    </div>
-</article>
-    
         </div>
     
 
@@ -1154,17 +1154,17 @@ public interface SecurityContext extends Serializable &#123;    Authentication g
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/" class="thumbnail">
+        <a href="/2021/10/07/spring/spring-security/security/configure/rememberme/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - Authentication 객체" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/springboot/security/inflearn-whiteship-security/spring-security.png)" alt="Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/authentication/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/configure/rememberme/">0</span>
     
 </span>
 
@@ -1182,7 +1182,7 @@ public interface SecurityContext extends Serializable &#123;    Authentication g
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/">Spring Security - Authentication 객체</a>
+        <a href="/2021/10/07/spring/spring-security/security/configure/rememberme/">Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer</a>
         </h1>
     
 
@@ -1202,28 +1202,42 @@ Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticat
 Spring Security - SecurityContextHolder 와 SecurityContext  
 Spring Security - Authentication 객체
 
-참고
-https://spring.io/guides/topicals/spring-security-architecture
-
-Spring Security - Authentication 객체
-Authentication 객체 내에는 자원에 접근하기 위한 대상의 정보와 권한 정보가 들어가 있다. Authentication 객체의 대표적인 구현 클래스는 AbstractAuthenticationToken 클래스와 UsernamePasswordAuthenticationToken 가 있다. 인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체에 저장된다. 
-
-Authentication 객체 내에 Principal, Credentials, GrantedAuthority 가 있다.
-
-Principal
-Object 타입으로 보통은 User ID가 들어가거나 UserDetails가 들어가게 된다.
+Remember Me와 관련된 인증 API
+rememberMeParameter 
+쿠키의 파라미터명을 지정한다. 체크박스의 이름(parameter)과 remember-me의 파라미터 명은 일치 시켜줘야 한다.
 
 
-Credentials
-Object 타입으로 보통은 User Password가 들어가 있다.
+tokenValiditySeconds
+쿠키의 만료시간을 설정한다.
 
 
-GrantedAuthority
-접근 권한 목록들을 가지고 있다.
+useSecureCookie
+Cookie 에 보안 설정을 할 때 사용하는 Flag
+HTTPS 환경에서만 사용할 수 있다.
+
+
+userDetailsService
+remember-me 를 이용한 인증 진행시 시스템의 사용자 계정을 조회할 때 사용하는 class 를 지정한다.
+
+
+tokenRepository
+Remember Me Token 저장소를 설정한다. 
+기본은 TokenBasedRememberMeServices 를 사용하기 때문에 Cookie 에 저장하는 방식이다.
+기본 구현체는 InMemoryTokenRepositoryImpl 와 JdbcTokenRepositoryImpl 로 저장소를 명시해주면 PersistentTokenBasedRememberMeServices 를 사용한다.
+
+
+key
+Remember Me Authentication 객체 유효성을 확인하기 위한 Key 값을 설정한다.
+String Hash 비교를 통해 인증 유효성을 확인한다.
+
+
+alwaysRemember
+Remember Me 기능이 활성화되지 않아도 항상 실행하는 Flag
 
 
 
-public interface Authentication extends Principal, Serializable &#123;    Collection&lt;? extends GrantedAuthority&gt; getAuthorities();    Object getCredentials();    Object getDetails();    Object getPrincipal();    boolean isAuthenticated();    void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException;&#125;
+사용자의 Session이 생성되었고 Session이 인증 객체를 담고 있다는 것이다.
+RememberMeConfigurerpublic RememberMeConfigurer&lt;H&gt; tokenValiditySeconds(int tokenValiditySeconds) &#123;    this.tokenValiditySeconds = tokenValiditySeconds;    return this;&#125;public RememberMeConfigurer&lt;H&gt; useSecureCookie(boolean useSecureCookie) &#123;    this.useSecureCookie = useSecureCookie;    return this;&#125;public RememberMeConfigurer&lt;H&gt; userDetailsService(UserDetailsService userDetailsService) &#123;    this.userDetailsService = userDetailsService;    return this;&#125;public RememberMeConfigurer&lt;H&gt; tokenRepository(PersistentTokenRepository tokenRepository) &#123;    this.tokenRepository = tokenRepository;    return this;&#125;public RememberMeConfigurer&lt;H&gt; key(String key) &#123;    this.key = key;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeParameter(String rememberMeParameter) &#123;    this.rememberMeParameter = rememberMeParameter;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeCookieName(String rememberMeCookieName) &#123;    this.rememberMeCookieName = rememberMeCookieName;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeCookieDomain(String rememberMeCookieDomain) &#123;    this.rememberMeCookieDomain = rememberMeCookieDomain;    return this;&#125;public RememberMeConfigurer&lt;H&gt; authenticationSuccessHandler(        AuthenticationSuccessHandler authenticationSuccessHandler) &#123;    this.authenticationSuccessHandler = authenticationSuccessHandler;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeServices(RememberMeServices rememberMeServices) &#123;    this.rememberMeServices = rememberMeServices;    return this;&#125;public RememberMeConfigurer&lt;H&gt; alwaysRemember(boolean alwaysRemember) &#123;    this.alwaysRemember = alwaysRemember;    return this;&#125;
         </p>
     </div>
 </article>

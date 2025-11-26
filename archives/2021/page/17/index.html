@@ -176,17 +176,17 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/" class="thumbnail">
+        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/2343-%EA%B8%B0%ED%83%80%EB%A0%88%EC%8A%A8/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 1920 - 수 찾기" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 2343 - 기타 레슨" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/04/algorithm/baekjoon/BinarySearch/2343-%EA%B8%B0%ED%83%80%EB%A0%88%EC%8A%A8/">0</span>
     
 </span>
 
@@ -204,14 +204,23 @@
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/">백준 1920 - 수 찾기</a>
+        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/2343-%EA%B8%B0%ED%83%80%EB%A0%88%EC%8A%A8/">백준 2343 - 기타 레슨</a>
         </h1>
     
 
         <p class="article-excerpt">
             
-백준 1920 - 수 찾기문제 풀이범위 1~10만개의 숫자들 중에서 M개의 주어진 값이 존재하는지 확인하는 문제이다. 일반적인 탐색을 진행할 경우 O(N*N)의 시간복잡도를 갖게 되므로 O(logN)의 시간복잡도를 갖는 이분 탐색을 이용해 문제를 해결하도록 한다.
-전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;int binarySearch(vector&lt;int&gt;&amp; arr, int value) &#123;    int begin = 0;    int end = arr.size() - 1;    while (begin &lt;= end) &#123;        int mid = (begin + end) / 2;        int midValue = arr[mid];        if (value == midValue) &#123;            return 1;        &#125; else if (value &gt; midValue) &#123;            begin = mid + 1;        &#125; else &#123;            end = mid - 1;        &#125;    &#125;    return 0;&#125;vector&lt;int&gt; solution(vector&lt;int&gt; arr, vector&lt;int&gt; values) &#123;    vector&lt;int&gt; results;    for (int valuesIndex = 0; valuesIndex &lt; values.size(); valuesIndex++) &#123;        int result = binarySearch(arr, values[valuesIndex]);        results.push_back(result);    &#125;    return results;&#125;int main(void) &#123;    int n, m;    vector&lt;int&gt; arr;    vector&lt;int&gt; values;    cin &gt;&gt; n;    arr = vector&lt;int&gt;(n);    for (int i = 0; i &lt; n; i++) &#123;        cin &gt;&gt; arr[i];    &#125;    sort(arr.begin(), arr.end());    cin &gt;&gt; m;    values = vector&lt;int&gt;(m);    for (int i = 0; i &lt; m; i++) &#123;        cin &gt;&gt; values[i];    &#125;    vector&lt;int&gt; results = solution(arr, values);    for (int value : results) &#123;        cout &lt;&lt; value &lt;&lt; &#x27;\n&#x27;;    &#125;    return 0;&#125;
+백준 2343 - 기타 레슨https://www.acmicpc.net/problem/2343
+문제 풀이탐색 범위는 (1~10억)이고 연산을 N번 해야 함으로 O(N) or O(NlogN)의 시간복잡도 내에 문제를 해결해야 한다. 탐색 시간을 줄이기 위해서 O(logN)시간 복잡도 내에 탐색을 끝낼 수 있는 이분탐색을 이용해 문제를 해결해야 한다.
+이 문제의 함정은 조건 중 순서가 뒤바뀌면 안된다는 조껀이 있기 때문에 레슨이 들어온 순서를 sorting할 경우 틀리게 된다.
+
+begin을 1로 end를 들어온 값의 합을 준다.
+begin과 end 범위 내에서 이분 탐색을 진행한다.
+이분탐색을 진행하면서 블루레이를 녹화할 수 있는 영상의 길이가 한 영상의 길이보다 작으면 begin을 움직인다.
+블루레이에 녹화하는 갯수가 블루레이보다 총 갯수보다 작거나 같을 경우 end를 움직인다.
+블루레이에 녹화하는 갯수가 블루레이보다 작을 경우 begin을 움직인다.
+
+전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;bool cmp(vector&lt;int&gt; arr, int mid, int M) &#123;    int sum = 0;    int count = 1;    for (int arrIndex = 0; arrIndex &lt; arr.size(); arrIndex++) &#123;        int value = arr[arrIndex];        if (value &gt; mid) &#123;            return true;        &#125;        if (sum + value &lt;= mid) &#123;            sum += value;        &#125; else &#123;            count += 1;            sum = value;        &#125;    &#125;    // 길이가 너무 짧다. begin을 늘려줘야 한다.    return count &gt; M;&#125;int binarySearch(vector&lt;int&gt; arr, int N, int M) &#123;    int begin = 1;    int end = 0;    for (int arrIndex = 0; arrIndex &lt; arr.size(); arrIndex++) &#123;        end += arr[arrIndex];    &#125;    while (begin &lt;= end) &#123;        int mid = (begin + end) / 2;        if (cmp(arr, mid, M)) &#123;            begin = mid + 1;        &#125; else &#123;            end = mid - 1;        &#125;    &#125;    return begin;&#125;int solution(vector&lt;int&gt; arr, int N, int M) &#123;    int result = 0;    result = binarySearch(arr, N, M);    return result;&#125;int main(void) &#123;    int N, M;    vector&lt;int&gt; arr;    cin &gt;&gt; N &gt;&gt; M;    arr = vector&lt;int&gt;(N);    for (int i = 0; i &lt; N; i++) &#123;        cin &gt;&gt; arr[i];    &#125;    cout &lt;&lt; solution(arr, N, M) &lt;&lt; &#x27;\n&#x27;;    return 0;&#125;
         </p>
     </div>
 </article>

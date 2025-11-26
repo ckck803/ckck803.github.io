@@ -176,17 +176,17 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2023/02/08/docker/build/docker-build/" class="thumbnail">
+        <a href="/2023/02/08/docker/docker-compose/docker-compose/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/docker/docker.png)" alt="[Docker] 이미지 Build" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/docker/docker-compose.png)" alt="[Docker Compose]" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/08/docker/build/docker-build/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/08/docker/docker-compose/docker-compose/">0</span>
     
 </span>
 
@@ -204,17 +204,21 @@
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2023/02/08/docker/build/docker-build/">[Docker] 이미지 Build</a>
+        <a href="/2023/02/08/docker/docker-compose/docker-compose/">[Docker Compose]</a>
         </h1>
     
 
         <p class="article-excerpt">
             
-Docker 이미지 Build 란?Docker Build는 Docker 이미지 를 생성하는 과정을 의미합니다. 이미지 빌드는 Dockerfile 파일을 기반으로 수행되며, 이 파일에는 이미지 생성에 필요한 명령어들이 단계별로 정의되어 있습니다.
-Dockerfile 살펴보기# Node.js 기반 이미지 사용FROM node:18# 앱 디렉토리 생성WORKDIR /app# package.json 복사 후 의존성 설치COPY package*.json ./RUN npm install# 앱 소스 복사COPY . .# 포트 개방EXPOSE 3000# 앱 실행CMD [&quot;npm&quot;, &quot;start&quot;]
+1. Docker Compose란?Docker Compose 는 여러 개의 컨테이너를 한 번에 정의하고 실행할 수 있게 해주는 도구입니다. 일반적으로 실무에서는 웹 서버, 데이터베이스, 캐시 서버 등 다양한 컨테이너가 함께 작동해야 하는 경우가 많은데, 이 모든 것을 일일이 docker run으로 실행하는 건 너무 번거롭습니다.
+Docker Compose 를 사용하면 docker-compose.yml 파일 하나로 모든 서비스를 정의하고 일괄로 실행시킬 수 있습니다.
+2. docker-compose.yaml 살펴보기version: &quot;3.9&quot;  # compose 파일 버전services:  web:    image: nginx    ports:      - &quot;8080:80&quot;  db:    image: mysql:8.0    environment:      MYSQL_ROOT_PASSWORD: example
 
-이미지 캐시와 레이어Docker Build 는 명령어 하나하나를 레이어로 분리하여 캐시를 사용합니다. 예를 들어 COPY나 RUN 단계에서 변경이 없으면 이전 캐시를 재사용하여 빌드 속도를 높일 수 있습니다.
-멀티 스테이지 빌드# Build stageFROM node:18 as builderWORKDIR /appCOPY . .RUN npm install &amp;&amp; npm run build# Production stageFROM nginx:alpineCOPY --from=builder /app/dist /usr/share/nginx/html
+3. Docker Compose 기본 명령어docker-compose.yaml 파일이 정의되면 해당 파일에 정의된 컨테이너 이미지나 환경등을 한번에 실행시켜 적용할 수 있습니다.
+
+실행
+
+docker compose up -d
         </p>
     </div>
 </article>
@@ -549,6 +553,64 @@ https://plugins.jenkins.io/multibranch-scan-webhook-trigger/
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2023/02/07/devops/cicd/jenkins/jenkinsx/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/devops/jenkins/jenkins_logo.png)" alt="Jenkins X" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/07/devops/cicd/jenkins/jenkinsx/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/DevOps/">DevOps</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/DevOps/CICD/">CICD</a>
+            </div>
+            <div class="date"><time datetime="2023-02-06T21:31:46.000Z" itemprop="datePublished">2023-02-07</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2023/02/07/devops/cicd/jenkins/jenkinsx/">Jenkins X</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+공식 홈페이지
+https://www.jenkins.io/
+
+Jenkins Xcurl -L  https://github.com/jenkins-x/jx/releases/download/v3.10.83/jx-darwin-amd64.tar.gz | tar xzvchmod +x jx sudo mv jx /usr/local/bin
+
+minikube delete
+
+minikube start --cpus 4 --memory 6048 --disk-size=100g --addons=ingress --kubernetes-version=1.24
+
+for i in $(kubectl get deploy -n msa|grep -v NAME awk (print $1)) ; do kubectl scale deploy&#x2F;st -n msa –replicas&#x3D;1g done
+for i in $(kubectl get pod|grep -v NAME awk (print $1)) ; 
+
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2023/02/07/devops/cicd/jenkins/jenkins/" class="thumbnail">
     
     
@@ -598,10 +660,14 @@ Jenkins는 자유롭게 사용할 수 있는 오픈소스 소프트웨어로, �
     </div>
 </article>
     
+        </div>
+    
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -644,68 +710,6 @@ Jenkins는 자유롭게 사용할 수 있는 오픈소스 소프트웨어로, �
 https://goharbor.io/
 
 Harbor
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2023/02/07/devops/cicd/jenkins/jenkinsx/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/devops/jenkins/jenkins_logo.png)" alt="Jenkins X" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/02/07/devops/cicd/jenkins/jenkinsx/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/DevOps/">DevOps</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/DevOps/CICD/">CICD</a>
-            </div>
-            <div class="date"><time datetime="2023-02-06T21:31:46.000Z" itemprop="datePublished">2023-02-07</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2023/02/07/devops/cicd/jenkins/jenkinsx/">Jenkins X</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-공식 홈페이지
-https://www.jenkins.io/
-
-Jenkins Xcurl -L  https://github.com/jenkins-x/jx/releases/download/v3.10.83/jx-darwin-amd64.tar.gz | tar xzvchmod +x jx sudo mv jx /usr/local/bin
-
-minikube delete
-
-minikube start --cpus 4 --memory 6048 --disk-size=100g --addons=ingress --kubernetes-version=1.24
-
-for i in $(kubectl get deploy -n msa|grep -v NAME awk (print $1)) ; do kubectl scale deploy&#x2F;st -n msa –replicas&#x3D;1g done
-for i in $(kubectl get pod|grep -v NAME awk (print $1)) ; 
-
         </p>
     </div>
 </article>

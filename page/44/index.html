@@ -176,77 +176,6 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-01-logging/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/spring-mvc/logging-level.png)" alt="Spring Boot Logging" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-01-logging/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
-            </div>
-            <div class="date"><time datetime="2021-10-10T16:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-01-logging/">Spring Boot Logging</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            목차
-Spring MVC - ArgumentResolver 
-Spring MVC - HttpMessageConverter 
-Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
-Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
-Spring Boot 요청 메시지 - JSON
-Spring Boot 요청 메시지 - Text 
-Spring Boot 쿼리 파라미터, HTML Form 
-Spring Boot 기본 헤더 조회 
-Spring Boot API 예시 
-Spring Boot @RequestMapping 
-Spring Boot Logging
-
-Spring Boot Logging로그 선언 방법
-private final Logger log &#x3D; LoggerFactory.getLogger(getClass());
-private static final Logger log &#x3D; LoggerFactory.getLogger(xxx.class);
-@slf4j &#x2F;&#x2F; Lombok에서 제공하는 Log 기능 사용
-
-log.trace(&quot;info log = &#123;&#125;&quot;, name);log.debug(&quot;info log = &#123;&#125;&quot;, name);log.info(&quot;info log = &#123;&#125;&quot;, name);log.warn(&quot;info log = &#123;&#125;&quot;, name);log.error(&quot;info log = &#123;&#125;&quot;, name);
-
-logging.level.com.example.springmvc=trace 
-
-@Slf4j@RestControllerpublic class LogTestController &#123;//    private final Logger log = LoggerFactory.getLogger(getClass());    @RequestMapping(&quot;/log-test&quot;)    public String logTest()&#123;        String name = &quot;Spring&quot;;        System.out.println(&quot;name = &quot; + name);        log.trace(&quot;info log = &#123;&#125;&quot;, name);        log.debug(&quot;info log = &#123;&#125;&quot;, name);        log.info(&quot;info log = &#123;&#125;&quot;, name);        log.warn(&quot;info log = &#123;&#125;&quot;, name);        log.error(&quot;info log = &#123;&#125;&quot;, name);        return &quot;ok&quot;;    &#125;&#125;
-
-
-
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-03-api-method/" class="thumbnail">
     
     
@@ -294,6 +223,66 @@ Spring Boot @RequestMapping
 Spring Boot Logging
 
 Spring Boot API 예시@RestController@RequestMapping(&quot;/mapping/users&quot;)public class MappingClassController &#123;    @GetMapping    public String user()&#123;        return &quot;get users&quot;;    &#125;    @PostMapping    public String addUser()&#123;        return &quot;post user&quot;;    &#125;    @GetMapping(&quot;/&#123;userId&#125;&quot;)    public String findUser(@PathVariable String userId)&#123;        return &quot;get suerId = &quot; + userId;    &#125;    @PatchMapping(&quot;/&#123;userId&#125;&quot;)    public String updateUser(@PathVariable String userId)&#123;        return &quot;update userId = &quot; + userId;    &#125;    @DeleteMapping(&quot;/&#123;userId&#125;&quot;)    public String deleteUser(@PathVariable String userId)&#123;        return &quot;delete userId = &quot; + userId;    &#125;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a>
+            </div>
+            <div class="date"><time datetime="2021-10-10T16:05:00.000Z" itemprop="datePublished">2021-10-11</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/11/spring/spring-framework/mvc/spring-mvc-04/">Spring Boot 기본 헤더 조회</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            목차
+Spring MVC - ArgumentResolver 
+Spring MVC - HttpMessageConverter 
+Spring Boot Http 응답 - HTTP API, Message Body에 직접 입력  
+Spring Boot 응답 - 정적 리소스, 뷰 템플릿 
+Spring Boot 요청 메시지 - JSON
+Spring Boot 요청 메시지 - Text 
+Spring Boot 쿼리 파라미터, HTML Form 
+Spring Boot 기본 헤더 조회 
+Spring Boot API 예시 
+Spring Boot @RequestMapping 
+Spring Boot Logging
+
+기본 헤더 조회Controller 사용 가능한 파리미터 목록
+@Slf4j@RestControllerpublic class RequestHeaderController &#123;    @RequestMapping(&quot;/headers&quot;)    public String headers(HttpServletRequest request,                          HttpServletResponse response,                          HttpMethod httpMethod,                          Locale locale,                          @RequestHeader MultiValueMap&lt;String, String&gt; headerMap,                          @RequestHeader(&quot;host&quot;) String host,                          @CookieValue(value = &quot;myCookie&quot;, required = false) String cookie) &#123;        log.info(&quot;request=&#123;&#125;&quot;, request);        log.info(&quot;response=&#123;&#125;&quot;, response);        log.info(&quot;httpMethod=&#123;&#125;&quot;, httpMethod);        log.info(&quot;locale=&#123;&#125;&quot;, locale);        log.info(&quot;headerMap=&#123;&#125;&quot;, headerMap);        log.info(&quot;header host=&#123;&#125;&quot;, host);        log.info(&quot;myCookie=&#123;&#125;&quot;, cookie);        return &quot;ok&quot;;    &#125;&#125;
         </p>
     </div>
 </article>
@@ -462,6 +451,75 @@ Credentials가 Password와 다를 경우 BadCredentialsException 예외를 던�
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - SecurityContextHolder 와 SecurityContext" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/securitycontext/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
+            </div>
+            <div class="date"><time datetime="2021-10-07T14:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/">Spring Security - SecurityContextHolder 와 SecurityContext</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Security 권한 계층 사용하기 - @RoleHierarcy
+Spring Security -  DelegateFilterProxy
+Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
+Spring Security - RembmerMeAuthenticationFilter
+Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
+Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
+Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
+Spring Security - AuthenticationProvider
+Spring Security - AuthenticationManager
+Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
+Spring Security - SecurityContextHolder 와 SecurityContext  
+Spring Security - Authentication 객체
+
+참고
+https://spring.io/guides/topicals/spring-security-architecture
+
+Spring Security - SecurityContextHolder 와 SecurityContext
+인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체 내에 저장된다.
+
+저장된 Authentication 객체를 저장하고 가져오기 위해서 SecurityContext는 getAuthentication 메소드와 setAuthentication 메소드를 제공한다.
+SecurityContext.java
+public interface SecurityContext extends Serializable &#123;    Authentication getAuthentication();    void setAuthentication(Authentication authentication);&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/10/07/spring/spring-security/security/authentication/authenticationManager/" class="thumbnail">
     
     
@@ -525,75 +583,6 @@ AuthenticationManager의 가장 대표적인 구현체
     </div>
 </article>
     
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - SecurityContextHolder 와 SecurityContext" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/securitycontext/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
-            </div>
-            <div class="date"><time datetime="2021-10-07T14:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/">Spring Security - SecurityContextHolder 와 SecurityContext</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring Security 권한 계층 사용하기 - @RoleHierarcy
-Spring Security -  DelegateFilterProxy
-Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
-Spring Security - RembmerMeAuthenticationFilter
-Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
-Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
-Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
-Spring Security - AuthenticationProvider
-Spring Security - AuthenticationManager
-Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
-Spring Security - SecurityContextHolder 와 SecurityContext  
-Spring Security - Authentication 객체
-
-참고
-https://spring.io/guides/topicals/spring-security-architecture
-
-Spring Security - SecurityContextHolder 와 SecurityContext
-인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체 내에 저장된다.
-
-저장된 Authentication 객체를 저장하고 가져오기 위해서 SecurityContext는 getAuthentication 메소드와 setAuthentication 메소드를 제공한다.
-SecurityContext.java
-public interface SecurityContext extends Serializable &#123;    Authentication getAuthentication();    void setAuthentication(Authentication authentication);&#125;
-        </p>
-    </div>
-</article>
-    
         </div>
     
 
@@ -602,88 +591,6 @@ public interface SecurityContext extends Serializable &#123;    Authentication g
     
     
         <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - Authentication 객체" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/authentication/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
-            </div>
-            <div class="date"><time datetime="2021-10-07T13:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/">Spring Security - Authentication 객체</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring Security 권한 계층 사용하기 - @RoleHierarcy
-Spring Security -  DelegateFilterProxy
-Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
-Spring Security - RembmerMeAuthenticationFilter
-Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
-Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
-Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
-Spring Security - AuthenticationProvider
-Spring Security - AuthenticationManager
-Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
-Spring Security - SecurityContextHolder 와 SecurityContext  
-Spring Security - Authentication 객체
-
-참고
-https://spring.io/guides/topicals/spring-security-architecture
-
-Spring Security - Authentication 객체
-Authentication 객체 내에는 자원에 접근하기 위한 대상의 정보와 권한 정보가 들어가 있다. Authentication 객체의 대표적인 구현 클래스는 AbstractAuthenticationToken 클래스와 UsernamePasswordAuthenticationToken 가 있다. 인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체에 저장된다. 
-
-Authentication 객체 내에 Principal, Credentials, GrantedAuthority 가 있다.
-
-Principal
-Object 타입으로 보통은 User ID가 들어가거나 UserDetails가 들어가게 된다.
-
-
-Credentials
-Object 타입으로 보통은 User Password가 들어가 있다.
-
-
-GrantedAuthority
-접근 권한 목록들을 가지고 있다.
-
-
-
-public interface Authentication extends Principal, Serializable &#123;    Collection&lt;? extends GrantedAuthority&gt; getAuthorities();    Object getCredentials();    Object getDetails();    Object getPrincipal();    boolean isAuthenticated();    void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException;&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -772,6 +679,88 @@ Remember Me 기능이 활성화되지 않아도 항상 실행하는 Flag
 
 사용자의 Session이 생성되었고 Session이 인증 객체를 담고 있다는 것이다.
 RememberMeConfigurerpublic RememberMeConfigurer&lt;H&gt; tokenValiditySeconds(int tokenValiditySeconds) &#123;    this.tokenValiditySeconds = tokenValiditySeconds;    return this;&#125;public RememberMeConfigurer&lt;H&gt; useSecureCookie(boolean useSecureCookie) &#123;    this.useSecureCookie = useSecureCookie;    return this;&#125;public RememberMeConfigurer&lt;H&gt; userDetailsService(UserDetailsService userDetailsService) &#123;    this.userDetailsService = userDetailsService;    return this;&#125;public RememberMeConfigurer&lt;H&gt; tokenRepository(PersistentTokenRepository tokenRepository) &#123;    this.tokenRepository = tokenRepository;    return this;&#125;public RememberMeConfigurer&lt;H&gt; key(String key) &#123;    this.key = key;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeParameter(String rememberMeParameter) &#123;    this.rememberMeParameter = rememberMeParameter;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeCookieName(String rememberMeCookieName) &#123;    this.rememberMeCookieName = rememberMeCookieName;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeCookieDomain(String rememberMeCookieDomain) &#123;    this.rememberMeCookieDomain = rememberMeCookieDomain;    return this;&#125;public RememberMeConfigurer&lt;H&gt; authenticationSuccessHandler(        AuthenticationSuccessHandler authenticationSuccessHandler) &#123;    this.authenticationSuccessHandler = authenticationSuccessHandler;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeServices(RememberMeServices rememberMeServices) &#123;    this.rememberMeServices = rememberMeServices;    return this;&#125;public RememberMeConfigurer&lt;H&gt; alwaysRemember(boolean alwaysRemember) &#123;    this.alwaysRemember = alwaysRemember;    return this;&#125;
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - Authentication 객체" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/authentication/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
+            </div>
+            <div class="date"><time datetime="2021-10-07T13:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/">Spring Security - Authentication 객체</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Security 권한 계층 사용하기 - @RoleHierarcy
+Spring Security -  DelegateFilterProxy
+Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
+Spring Security - RembmerMeAuthenticationFilter
+Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
+Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
+Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
+Spring Security - AuthenticationProvider
+Spring Security - AuthenticationManager
+Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
+Spring Security - SecurityContextHolder 와 SecurityContext  
+Spring Security - Authentication 객체
+
+참고
+https://spring.io/guides/topicals/spring-security-architecture
+
+Spring Security - Authentication 객체
+Authentication 객체 내에는 자원에 접근하기 위한 대상의 정보와 권한 정보가 들어가 있다. Authentication 객체의 대표적인 구현 클래스는 AbstractAuthenticationToken 클래스와 UsernamePasswordAuthenticationToken 가 있다. 인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체에 저장된다. 
+
+Authentication 객체 내에 Principal, Credentials, GrantedAuthority 가 있다.
+
+Principal
+Object 타입으로 보통은 User ID가 들어가거나 UserDetails가 들어가게 된다.
+
+
+Credentials
+Object 타입으로 보통은 User Password가 들어가 있다.
+
+
+GrantedAuthority
+접근 권한 목록들을 가지고 있다.
+
+
+
+public interface Authentication extends Principal, Serializable &#123;    Collection&lt;? extends GrantedAuthority&gt; getAuthorities();    Object getCredentials();    Object getDetails();    Object getPrincipal();    boolean isAuthenticated();    void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException;&#125;
         </p>
     </div>
 </article>

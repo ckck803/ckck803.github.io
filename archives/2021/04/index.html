@@ -349,6 +349,58 @@ https://www.acmicpc.net/problem/12100
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 1920 - 수 찾기" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
+            </div>
+            <div class="date"><time datetime="2021-04-04T08:21:14.000Z" itemprop="datePublished">2021-04-04</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/">백준 1920 - 수 찾기</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+백준 1920 - 수 찾기문제 풀이범위 1~10만개의 숫자들 중에서 M개의 주어진 값이 존재하는지 확인하는 문제이다. 일반적인 탐색을 진행할 경우 O(N*N)의 시간복잡도를 갖게 되므로 O(logN)의 시간복잡도를 갖는 이분 탐색을 이용해 문제를 해결하도록 한다.
+전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;int binarySearch(vector&lt;int&gt;&amp; arr, int value) &#123;    int begin = 0;    int end = arr.size() - 1;    while (begin &lt;= end) &#123;        int mid = (begin + end) / 2;        int midValue = arr[mid];        if (value == midValue) &#123;            return 1;        &#125; else if (value &gt; midValue) &#123;            begin = mid + 1;        &#125; else &#123;            end = mid - 1;        &#125;    &#125;    return 0;&#125;vector&lt;int&gt; solution(vector&lt;int&gt; arr, vector&lt;int&gt; values) &#123;    vector&lt;int&gt; results;    for (int valuesIndex = 0; valuesIndex &lt; values.size(); valuesIndex++) &#123;        int result = binarySearch(arr, values[valuesIndex]);        results.push_back(result);    &#125;    return results;&#125;int main(void) &#123;    int n, m;    vector&lt;int&gt; arr;    vector&lt;int&gt; values;    cin &gt;&gt; n;    arr = vector&lt;int&gt;(n);    for (int i = 0; i &lt; n; i++) &#123;        cin &gt;&gt; arr[i];    &#125;    sort(arr.begin(), arr.end());    cin &gt;&gt; m;    values = vector&lt;int&gt;(m);    for (int i = 0; i &lt; m; i++) &#123;        cin &gt;&gt; values[i];    &#125;    vector&lt;int&gt; results = solution(arr, values);    for (int value : results) &#123;        cout &lt;&lt; value &lt;&lt; &#x27;\n&#x27;;    &#125;    return 0;&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/2343-%EA%B8%B0%ED%83%80%EB%A0%88%EC%8A%A8/" class="thumbnail">
     
     
@@ -394,58 +446,6 @@ begin과 end 범위 내에서 이분 탐색을 진행한다.
 블루레이에 녹화하는 갯수가 블루레이보다 작을 경우 begin을 움직인다.
 
 전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;bool cmp(vector&lt;int&gt; arr, int mid, int M) &#123;    int sum = 0;    int count = 1;    for (int arrIndex = 0; arrIndex &lt; arr.size(); arrIndex++) &#123;        int value = arr[arrIndex];        if (value &gt; mid) &#123;            return true;        &#125;        if (sum + value &lt;= mid) &#123;            sum += value;        &#125; else &#123;            count += 1;            sum = value;        &#125;    &#125;    // 길이가 너무 짧다. begin을 늘려줘야 한다.    return count &gt; M;&#125;int binarySearch(vector&lt;int&gt; arr, int N, int M) &#123;    int begin = 1;    int end = 0;    for (int arrIndex = 0; arrIndex &lt; arr.size(); arrIndex++) &#123;        end += arr[arrIndex];    &#125;    while (begin &lt;= end) &#123;        int mid = (begin + end) / 2;        if (cmp(arr, mid, M)) &#123;            begin = mid + 1;        &#125; else &#123;            end = mid - 1;        &#125;    &#125;    return begin;&#125;int solution(vector&lt;int&gt; arr, int N, int M) &#123;    int result = 0;    result = binarySearch(arr, N, M);    return result;&#125;int main(void) &#123;    int N, M;    vector&lt;int&gt; arr;    cin &gt;&gt; N &gt;&gt; M;    arr = vector&lt;int&gt;(N);    for (int i = 0; i &lt; N; i++) &#123;        cin &gt;&gt; arr[i];    &#125;    cout &lt;&lt; solution(arr, N, M) &lt;&lt; &#x27;\n&#x27;;    return 0;&#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/baekjoon/baekjoon.png)" alt="백준 1920 - 수 찾기" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/Beakjoon/">Beakjoon</a>
-            </div>
-            <div class="date"><time datetime="2021-04-04T08:21:14.000Z" itemprop="datePublished">2021-04-04</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/04/04/algorithm/baekjoon/BinarySearch/1920-%EC%88%98%EC%B0%BE%EA%B8%B0/">백준 1920 - 수 찾기</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-백준 1920 - 수 찾기문제 풀이범위 1~10만개의 숫자들 중에서 M개의 주어진 값이 존재하는지 확인하는 문제이다. 일반적인 탐색을 진행할 경우 O(N*N)의 시간복잡도를 갖게 되므로 O(logN)의 시간복잡도를 갖는 이분 탐색을 이용해 문제를 해결하도록 한다.
-전체 소스#include &lt;bits/stdc++.h&gt;using namespace std;int binarySearch(vector&lt;int&gt;&amp; arr, int value) &#123;    int begin = 0;    int end = arr.size() - 1;    while (begin &lt;= end) &#123;        int mid = (begin + end) / 2;        int midValue = arr[mid];        if (value == midValue) &#123;            return 1;        &#125; else if (value &gt; midValue) &#123;            begin = mid + 1;        &#125; else &#123;            end = mid - 1;        &#125;    &#125;    return 0;&#125;vector&lt;int&gt; solution(vector&lt;int&gt; arr, vector&lt;int&gt; values) &#123;    vector&lt;int&gt; results;    for (int valuesIndex = 0; valuesIndex &lt; values.size(); valuesIndex++) &#123;        int result = binarySearch(arr, values[valuesIndex]);        results.push_back(result);    &#125;    return results;&#125;int main(void) &#123;    int n, m;    vector&lt;int&gt; arr;    vector&lt;int&gt; values;    cin &gt;&gt; n;    arr = vector&lt;int&gt;(n);    for (int i = 0; i &lt; n; i++) &#123;        cin &gt;&gt; arr[i];    &#125;    sort(arr.begin(), arr.end());    cin &gt;&gt; m;    values = vector&lt;int&gt;(m);    for (int i = 0; i &lt; m; i++) &#123;        cin &gt;&gt; values[i];    &#125;    vector&lt;int&gt; results = solution(arr, values);    for (int value : results) &#123;        cout &lt;&lt; value &lt;&lt; &#x27;\n&#x27;;    &#125;    return 0;&#125;
         </p>
     </div>
 </article>

@@ -910,72 +910,6 @@ Spring 에서 제공하는 비동기 요청 처리를 위한 객체, 응답값�
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2022/05/05/spring/spring-framework/springboot-actuator/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/spring-boot-logo.png)" alt="[Spring Boot] - Actuator + Prometheus + Grafana" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/05/05/spring/spring-framework/springboot-actuator/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a>
-            </div>
-            <div class="date"><time datetime="2022-05-04T19:31:46.000Z" itemprop="datePublished">2022-05-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/05/05/spring/spring-framework/springboot-actuator/">[Spring Boot] - Actuator + Prometheus + Grafana</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-[Spring Boot] - Actuator + Prometheus + Grafana
-Spring Boot - 메시지 국제화 MessageSource
-Spring Boot - WebMvcConfigurer
-Spring Boot - @SpringBootApplication 알아보기
-
-참고
-https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#actuator
-https://www.baeldung.com/spring-boot-actuators
-https://docs.spring.io/spring-boot/docs/2.1.8.RELEASE/reference/html/production-ready.html
-https://covenant.tistory.com/244
-https://devbksheen.tistory.com/182
-
-✅ Spring ActuatorSpring Actuator 는 별도의 구현 없이 애플리케이션의 Metric 정보, 트래픽 정보, 데이터 베이스 등 운영환경에서 실행중인 애플리케이션의 상태 정보에 접근 할 수 있는 기능을 제공하고, HTTP 와 JMX 를 이용해 접근할 수 있다.
-공식 문서 에서 Actuator 가 지원하는 다양한 EndPoint 를 확인할 수 있다. 
-Actuator 라이브러리 추가implementation &#x27;org.springframework.boot:spring-boot-starter-actuator&#x27;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/2022/05/05/spring/spring-resource/springboot-range-request/" class="thumbnail">
     
     
@@ -1039,6 +973,72 @@ ResourceRegion 는 전달 받은 Resource 객체 로부터 Range 범위 만큼 �
 @RestController@Slf4jpublic class VideoController &#123;    @GetMapping(value = &quot;/video&quot;)    public ResponseEntity&lt;ResourceRegion&gt; streamVideo(@RequestHeader HttpHeaders headers) throws IOException &#123;        UrlResource video = new UrlResource(&quot;file:/Users/dongwoo-yang/spring-file/mysong.mp4&quot;);        ResourceRegion resourceRegion;        final long size = 1000000L;        long contentLength = video.contentLength();        Optional&lt;HttpRange&gt; optional = headers.getRange().stream().findFirst();        HttpRange httpRange;        if (optional.isPresent()) &#123;            httpRange = optional.get();                        long start = httpRange.getRangeStart(contentLength);            long end = httpRange.getRangeEnd(contentLength);            long rangeLength = Long.min(size, end - start + 1);            resourceRegion = new ResourceRegion(video, start, rangeLength);        &#125; else &#123;            long rangeLength = Long.min(size, contentLength);            resourceRegion = new ResourceRegion(video, 0, rangeLength);        &#125;        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)                .contentType(MediaTypeFactory.getMediaType(video).orElse(MediaType.APPLICATION_OCTET_STREAM))                .body(resourceRegion);    &#125;&#125;
 
 서버에서 전송해주는 Resource Size 가 1 MB(1000000) 로 잡혀 있어 1 MB 씩 부분적으로 응답받는 것을 확인할 수 있다.
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2022/05/05/spring/spring-framework/springboot-actuator/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/spring-boot-logo.png)" alt="[Spring Boot] - Actuator + Prometheus + Grafana" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/05/05/spring/spring-framework/springboot-actuator/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a>
+            </div>
+            <div class="date"><time datetime="2022-05-04T19:31:46.000Z" itemprop="datePublished">2022-05-05</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/05/05/spring/spring-framework/springboot-actuator/">[Spring Boot] - Actuator + Prometheus + Grafana</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+[Spring Boot] - Actuator + Prometheus + Grafana
+Spring Boot - 메시지 국제화 MessageSource
+Spring Boot - WebMvcConfigurer
+Spring Boot - @SpringBootApplication 알아보기
+
+참고
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#actuator
+https://www.baeldung.com/spring-boot-actuators
+https://docs.spring.io/spring-boot/docs/2.1.8.RELEASE/reference/html/production-ready.html
+https://covenant.tistory.com/244
+https://devbksheen.tistory.com/182
+
+✅ Spring ActuatorSpring Actuator 는 별도의 구현 없이 애플리케이션의 Metric 정보, 트래픽 정보, 데이터 베이스 등 운영환경에서 실행중인 애플리케이션의 상태 정보에 접근 할 수 있는 기능을 제공하고, HTTP 와 JMX 를 이용해 접근할 수 있다.
+공식 문서 에서 Actuator 가 지원하는 다양한 EndPoint 를 확인할 수 있다. 
+Actuator 라이브러리 추가implementation &#x27;org.springframework.boot:spring-boot-starter-actuator&#x27;
         </p>
     </div>
 </article>

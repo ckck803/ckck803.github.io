@@ -176,17 +176,17 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/" class="thumbnail">
+        <a href="/2021/10/07/spring/spring-security/security/authentication/authenticationManager/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - SecurityContextHolder 와 SecurityContext" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/springboot/security/inflearn-whiteship-security/spring-security.png)" alt="Spring Security - AuthenticationManager" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/securitycontext/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/authenticationManager/">0</span>
     
 </span>
 
@@ -204,7 +204,7 @@
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/">Spring Security - SecurityContextHolder 와 SecurityContext</a>
+        <a href="/2021/10/07/spring/spring-security/security/authentication/authenticationManager/">Spring Security - AuthenticationManager</a>
         </h1>
     
 
@@ -227,106 +227,22 @@ Spring Security - Authentication 객체
 참고
 https://spring.io/guides/topicals/spring-security-architecture
 
-Spring Security - SecurityContextHolder 와 SecurityContext
-인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체 내에 저장된다.
-
-저장된 Authentication 객체를 저장하고 가져오기 위해서 SecurityContext는 getAuthentication 메소드와 setAuthentication 메소드를 제공한다.
-SecurityContext.java
-public interface SecurityContext extends Serializable &#123;    Authentication getAuthentication();    void setAuthentication(Authentication authentication);&#125;
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - Authentication 객체" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/authentication/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
-            </div>
-            <div class="date"><time datetime="2021-10-07T13:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/">Spring Security - Authentication 객체</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-Spring Security 권한 계층 사용하기 - @RoleHierarcy
-Spring Security -  DelegateFilterProxy
-Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
-Spring Security - RembmerMeAuthenticationFilter
-Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
-Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
-Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
-Spring Security - AuthenticationProvider
 Spring Security - AuthenticationManager
-Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
-Spring Security - SecurityContextHolder 와 SecurityContext  
-Spring Security - Authentication 객체
+AuthenticationManager 는 인증을 진행하는 AuthenticationProvider 객체들을 관리하는 객체다. AuthenticationManager 는 AuthenticationProvider 에 인증을 위임하는 형태로 인증을 진행한다.
 
-참고
-https://spring.io/guides/topicals/spring-security-architecture
+public interface AuthenticationManager &#123;    Authentication authenticate(Authentication authentication) throws AuthenticationException;&#125;
 
-Spring Security - Authentication 객체
-Authentication 객체 내에는 자원에 접근하기 위한 대상의 정보와 권한 정보가 들어가 있다. Authentication 객체의 대표적인 구현 클래스는 AbstractAuthenticationToken 클래스와 UsernamePasswordAuthenticationToken 가 있다. 인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체에 저장된다. 
+ProviderManager
+AuthenticationManager의 가장 대표적인 구현체
 
-Authentication 객체 내에 Principal, Credentials, GrantedAuthority 가 있다.
-
-Principal
-Object 타입으로 보통은 User ID가 들어가거나 UserDetails가 들어가게 된다.
-
-
-Credentials
-Object 타입으로 보통은 User Password가 들어가 있다.
-
-
-GrantedAuthority
-접근 권한 목록들을 가지고 있다.
-
-
-
-public interface Authentication extends Principal, Serializable &#123;    Collection&lt;? extends GrantedAuthority&gt; getAuthorities();    Object getCredentials();    Object getDetails();    Object getPrincipal();    boolean isAuthenticated();    void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException;&#125;
         </p>
     </div>
 </article>
     
-        </div>
-    
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -415,6 +331,92 @@ Remember Me 기능이 활성화되지 않아도 항상 실행하는 Flag
 
 사용자의 Session이 생성되었고 Session이 인증 객체를 담고 있다는 것이다.
 RememberMeConfigurerpublic RememberMeConfigurer&lt;H&gt; tokenValiditySeconds(int tokenValiditySeconds) &#123;    this.tokenValiditySeconds = tokenValiditySeconds;    return this;&#125;public RememberMeConfigurer&lt;H&gt; useSecureCookie(boolean useSecureCookie) &#123;    this.useSecureCookie = useSecureCookie;    return this;&#125;public RememberMeConfigurer&lt;H&gt; userDetailsService(UserDetailsService userDetailsService) &#123;    this.userDetailsService = userDetailsService;    return this;&#125;public RememberMeConfigurer&lt;H&gt; tokenRepository(PersistentTokenRepository tokenRepository) &#123;    this.tokenRepository = tokenRepository;    return this;&#125;public RememberMeConfigurer&lt;H&gt; key(String key) &#123;    this.key = key;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeParameter(String rememberMeParameter) &#123;    this.rememberMeParameter = rememberMeParameter;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeCookieName(String rememberMeCookieName) &#123;    this.rememberMeCookieName = rememberMeCookieName;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeCookieDomain(String rememberMeCookieDomain) &#123;    this.rememberMeCookieDomain = rememberMeCookieDomain;    return this;&#125;public RememberMeConfigurer&lt;H&gt; authenticationSuccessHandler(        AuthenticationSuccessHandler authenticationSuccessHandler) &#123;    this.authenticationSuccessHandler = authenticationSuccessHandler;    return this;&#125;public RememberMeConfigurer&lt;H&gt; rememberMeServices(RememberMeServices rememberMeServices) &#123;    this.rememberMeServices = rememberMeServices;    return this;&#125;public RememberMeConfigurer&lt;H&gt; alwaysRemember(boolean alwaysRemember) &#123;    this.alwaysRemember = alwaysRemember;    return this;&#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - Authentication 객체" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/authentication/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Spring/Spring-Security/">Spring Security</a>
+            </div>
+            <div class="date"><time datetime="2021-10-07T13:25:35.000Z" itemprop="datePublished">2021-10-07</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2021/10/07/spring/spring-security/security/authentication/authentication/">Spring Security - Authentication 객체</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+Spring Security 권한 계층 사용하기 - @RoleHierarcy
+Spring Security -  DelegateFilterProxy
+Spring Security - Remember Me와 관련된 인증 API - RememberMeConfigurer
+Spring Security - RembmerMeAuthenticationFilter
+Spring Security - SessionManagementFilter &amp; ConcurrentSessionFilter
+Spring Security - 인가 API ExpressionUrlAuthorizationConfigurer
+Spring Security - Security 설정을 위한 WebSecurityConfigurerAdatper
+Spring Security - AuthenticationProvider
+Spring Security - AuthenticationManager
+Spring Security - UsernamePasswordAuthenticationFilter &amp; AbstractAuthenticationProcessingFilter
+Spring Security - SecurityContextHolder 와 SecurityContext  
+Spring Security - Authentication 객체
+
+참고
+https://spring.io/guides/topicals/spring-security-architecture
+
+Spring Security - Authentication 객체
+Authentication 객체 내에는 자원에 접근하기 위한 대상의 정보와 권한 정보가 들어가 있다. Authentication 객체의 대표적인 구현 클래스는 AbstractAuthenticationToken 클래스와 UsernamePasswordAuthenticationToken 가 있다. 인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체에 저장된다. 
+
+Authentication 객체 내에 Principal, Credentials, GrantedAuthority 가 있다.
+
+Principal
+Object 타입으로 보통은 User ID가 들어가거나 UserDetails가 들어가게 된다.
+
+
+Credentials
+Object 타입으로 보통은 User Password가 들어가 있다.
+
+
+GrantedAuthority
+접근 권한 목록들을 가지고 있다.
+
+
+
+public interface Authentication extends Principal, Serializable &#123;    Collection&lt;? extends GrantedAuthority&gt; getAuthorities();    Object getCredentials();    Object getDetails();    Object getPrincipal();    boolean isAuthenticated();    void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException;&#125;
         </p>
     </div>
 </article>

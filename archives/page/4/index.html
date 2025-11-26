@@ -481,17 +481,17 @@ django-admin startproject mysite
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2023/10/22/react/react-query/react-query-start/" class="thumbnail">
+        <a href="/2023/10/22/react/react-query/react-query-cache-stale/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/react/react-query/react-query.png)" alt="React Query - 시작하기" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/react/react-query/react-query.png)" alt="React Query - 캐싱 라이프 사이클" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/10/22/react/react-query/react-query-start/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/10/22/react/react-query/react-query-cache-stale/">0</span>
     
 </span>
 
@@ -509,7 +509,7 @@ django-admin startproject mysite
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2023/10/22/react/react-query/react-query-start/">React Query - 시작하기</a>
+        <a href="/2023/10/22/react/react-query/react-query-cache-stale/">React Query - 캐싱 라이프 사이클</a>
         </h1>
     
 
@@ -520,17 +520,11 @@ React Query - 캐싱 라이프 사이클
 React Query - React Devtools 사용하기
 React Query - 시작하기
 
-참고
-공식문서
-https://tanstack.com/query/v4/docs/react/quick-start
+cache 와 stale 설정const queryClient = new QueryClient(&#123;  defaultOptions: &#123;    queries: &#123;      staleTime: 1000 * 60,      cacheTime: 1000 * 60 * 5,    &#125;  &#125;,&#125;);const App = (&#123; Component, pageProps &#125;: AppProps) =&gt; &#123;  return (    &lt;QueryClientProvider client=&#123;queryClient&#125;&gt;      &lt;Component &#123;...pageProps&#125; /&gt;    &lt;/QueryClientProvider&gt;  );&#125;;
 
-
-
-의존성 추가$ npm i @tanstack/react-query# or$ yarn add @tanstack/react-query
-
-Providerimport React from &quot;react&quot;;import ReactDOM from &quot;react-dom/client&quot;;import App from &quot;./App.tsx&quot;;import &#123; QueryClient, QueryClientProvider &#125; from &quot;@tanstack/react-query&quot;;const queryClient = new QueryClient();ReactDOM.createRoot(document.getElementById(&quot;root&quot;)!).render(  &lt;React.StrictMode&gt;    &lt;QueryClientProvider client=&#123;queryClient&#125;&gt;      &lt;App /&gt;    &lt;/QueryClientProvider&gt;  &lt;/React.StrictMode&gt;);
-
-useQuery
+cacheReact Query 는 설정한 cacheTime 만큼 데이터를 메모리에 저장해 놓습니다. 다시 이야기 하자면 React Query 에서의 Cache 는 QueryCache 객체의 queries 배열과 queriesInMap 객체의 Query 객체가 존재하는 것을 말합니다.
+cache 라이프 사이클 - fresh 와 stalestale 은 React Query 에서 cache 에 저장된 데이터 상태를 의미합니다. cache 에 저장된 데이터가 staleTime 만큼은 fresh 한 상태로 있다가 그 후에는 stale 상태로 넘어갑니다.
+stale 상태의 데이터는 cache 에 오랫동안 저장돼 있어 refetch 가 필요한 상태임을 의미합니다. React Query 에서는 stale 상태의 데이터가 특정 조건을 만족하면 refetching 이 일어나도록 합니다.
         </p>
     </div>
 </article>
@@ -601,17 +595,17 @@ ReactQueryDevtoolsimport React from &#x27;react&#x27;import ReactDOM from &#x27;
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2023/10/22/react/react-query/react-query-cache-stale/" class="thumbnail">
+        <a href="/2023/10/22/react/react-query/react-query-start/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/react/react-query/react-query.png)" alt="React Query - 캐싱 라이프 사이클" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/react/react-query/react-query.png)" alt="React Query - 시작하기" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/10/22/react/react-query/react-query-cache-stale/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2023/10/22/react/react-query/react-query-start/">0</span>
     
 </span>
 
@@ -629,7 +623,7 @@ ReactQueryDevtoolsimport React from &#x27;react&#x27;import ReactDOM from &#x27;
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2023/10/22/react/react-query/react-query-cache-stale/">React Query - 캐싱 라이프 사이클</a>
+        <a href="/2023/10/22/react/react-query/react-query-start/">React Query - 시작하기</a>
         </h1>
     
 
@@ -640,11 +634,17 @@ React Query - 캐싱 라이프 사이클
 React Query - React Devtools 사용하기
 React Query - 시작하기
 
-cache 와 stale 설정const queryClient = new QueryClient(&#123;  defaultOptions: &#123;    queries: &#123;      staleTime: 1000 * 60,      cacheTime: 1000 * 60 * 5,    &#125;  &#125;,&#125;);const App = (&#123; Component, pageProps &#125;: AppProps) =&gt; &#123;  return (    &lt;QueryClientProvider client=&#123;queryClient&#125;&gt;      &lt;Component &#123;...pageProps&#125; /&gt;    &lt;/QueryClientProvider&gt;  );&#125;;
+참고
+공식문서
+https://tanstack.com/query/v4/docs/react/quick-start
 
-cacheReact Query 는 설정한 cacheTime 만큼 데이터를 메모리에 저장해 놓습니다. 다시 이야기 하자면 React Query 에서의 Cache 는 QueryCache 객체의 queries 배열과 queriesInMap 객체의 Query 객체가 존재하는 것을 말합니다.
-cache 라이프 사이클 - fresh 와 stalestale 은 React Query 에서 cache 에 저장된 데이터 상태를 의미합니다. cache 에 저장된 데이터가 staleTime 만큼은 fresh 한 상태로 있다가 그 후에는 stale 상태로 넘어갑니다.
-stale 상태의 데이터는 cache 에 오랫동안 저장돼 있어 refetch 가 필요한 상태임을 의미합니다. React Query 에서는 stale 상태의 데이터가 특정 조건을 만족하면 refetching 이 일어나도록 합니다.
+
+
+의존성 추가$ npm i @tanstack/react-query# or$ yarn add @tanstack/react-query
+
+Providerimport React from &quot;react&quot;;import ReactDOM from &quot;react-dom/client&quot;;import App from &quot;./App.tsx&quot;;import &#123; QueryClient, QueryClientProvider &#125; from &quot;@tanstack/react-query&quot;;const queryClient = new QueryClient();ReactDOM.createRoot(document.getElementById(&quot;root&quot;)!).render(  &lt;React.StrictMode&gt;    &lt;QueryClientProvider client=&#123;queryClient&#125;&gt;      &lt;App /&gt;    &lt;/QueryClientProvider&gt;  &lt;/React.StrictMode&gt;);
+
+useQuery
         </p>
     </div>
 </article>
