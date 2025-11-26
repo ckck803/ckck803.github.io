@@ -393,6 +393,80 @@ https://docs.spring.io/spring-data/jpa/docs/2.1.3.RELEASE/reference/html/#reposi
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/2022/04/25/jpa/querydsl/querydsl-12/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - 순수 JPA 리포지토리와 Querydsl" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/25/jpa/querydsl/querydsl-12/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
+            </div>
+            <div class="date"><time datetime="2022-04-25T03:31:46.000Z" itemprop="datePublished">2022-04-25</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2022/04/25/jpa/querydsl/querydsl-12/">QueryDSL - 순수 JPA 리포지토리와 Querydsl</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+목차
+QueryDSL - QueryDsl 페이징 사용하기
+QueryDSL - 사용자 정의 Repository
+QueryDSL - 동적 쿼리와 성능 최적화 조회
+QueryDSL - 순수 JPA 리포지토리와 Querydsl
+QueryDSL - SQL Function 호출하기
+Post not found: jpa/querydsl/querydsl-10
+QueryDSL - 동적 쿼리
+QueryDSL - 프로젝션과 결과 반환
+QueryDSL - 조인
+QueryDSL - 집계
+QueryDSL - 결과 조회
+QueryDSL - 검색 조건 쿼리
+QueryDSL - Q-Type 활용
+QueryDSL - JPA JPQL vs JPA QueryDSL
+QueryDSL 시작하기
+
+순수 JPA 리포지토리와 Querydsl@Repositorypublic class MemberJpaRepository &#123;    private final EntityManager em;    private final JPAQueryFactory queryFactory;    public MemberJpaRepository(EntityManager em)&#123;        this.em = em;        this.queryFactory = new JPAQueryFactory(em);    &#125;    public void save(Member member)&#123;        em.persist(member);    &#125;    public Optional&lt;Member&gt; findById(Long id)&#123;        Member findMember = em.find(Member.class, id);        return Optional.ofNullable(findMember);    &#125;    public List&lt;Member&gt; findAll()&#123;        return em.createQuery(&quot;select m from Member m&quot;, Member.class)                .getResultList();    &#125;    public List&lt;Member&gt; findByUsername(String username)&#123;        return em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)                .setParameter(&quot;username&quot;, username)                .getResultList();    &#125;&#125;
+
+SpringBootTest@Transactionalclass MemberJpaRepositoryTest &#123;    @Autowired    EntityManager em;    @Autowired    MemberJpaRepository memberJpaRepository;    @Test    public void basicTest()&#123;        Member member = new Member(&quot;member1&quot;, 10);        memberJpaRepository.save(member);        Member findMember = memberJpaRepository.findById(member.getId()).get();        assertThat(findMember).isEqualTo(member);        List&lt;Member&gt; result = memberJpaRepository.findAll();        assertThat(result).containsExactly(member);        List&lt;Member&gt; result2 = memberJpaRepository.findByUsername(&quot;member1&quot;);        assertThat(result2).containsExactly(member);    &#125;&#125;
+
+JPQL QueryDsl 로 변경public List&lt;Member&gt; findAll()&#123;    return em.createQuery(&quot;select m from Member m&quot;, Member.class)            .getResultList();&#125;public List&lt;Member&gt; findAll_Querydsl()&#123;    return queryFactory            .selectFrom(member)            .fetch();&#125;public List&lt;Member&gt; findByUsername(String username)&#123;    return em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)            .setParameter(&quot;username&quot;, username)            .getResultList();&#125;public List&lt;Member&gt; findByUsername_Querydsl(String username)&#123;    return queryFactory            .selectFrom(member)            .where(member.username.eq(username))            .fetch();&#125;
+
+@Test    public void basicQueryDsl()&#123;        Member member = new Member(&quot;member1&quot;, 10);        memberJpaRepository.save(member);        Member findMember = memberJpaRepository.findById(member.getId()).get();        assertThat(findMember).isEqualTo(member);        List&lt;Member&gt; result = memberJpaRepository.findAll_Querydsl();        assertThat(result).containsExactly(member);        List&lt;Member&gt; result2 = memberJpaRepository.findByUsername_Querydsl(&quot;member1&quot;);        assertThat(result2).containsExactly(member);    &#125;
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/2022/04/25/jpa/querydsl/querydsl-13/" class="thumbnail">
     
     
@@ -453,80 +527,6 @@ QueryDSL 시작하기
 동적 쿼리와 성능 최적화 조회 - where 절 파라미터 사용public List&lt;MemberTeamDto&gt; searchByBuilder(MemberSearchCondition condition)&#123;    BooleanBuilder builder = new BooleanBuilder();    if (StringUtils.hasText(condition.getUsername())) &#123;        builder.and(member.username.eq(condition.getUsername()));    &#125;    if(StringUtils.hasText(condition.getTeamName()))&#123;        builder.and(team.name.eq(condition.getUsername()));    &#125;    if(condition.getAgeGoe()!=null)&#123;        builder.and(member.age.goe(condition.getAgeGoe()));    &#125;    if(condition.getAgeLoe()!=null)&#123;        builder.and(member.age.loe(condition.getAgeLoe()));    &#125;    return queryFactory            .select(new QMemberTeamDto(                    member.id.as(&quot;memberId&quot;),                    member.username,                    member.age,                    team.id.as(&quot;teamId&quot;),                    team.name.as(&quot;teamName&quot;)            ))            .from(member)            .leftJoin(member.team, team)            .where(builder)            .fetch();&#125;
 
 @Test    public void searchTest()&#123;        Team teamA = new Team(&quot;teamA&quot;);        Team teamB = new Team(&quot;teamB&quot;);        em.persist(teamA);        em.persist(teamB);        Member member1 = new Member(&quot;member1&quot;, 10, teamA);        Member member2 = new Member(&quot;member2&quot;, 20, teamA);        Member member3 = new Member(&quot;member3&quot;, 30, teamB);        Member member4 = new Member(&quot;member4&quot;, 40, teamB);        em.persist(member1);        em.persist(member2);        em.persist(member3);        em.persist(member4);        MemberSearchCondition condition = new MemberSearchCondition();        condition.setAgeGoe(35);        condition.setAgeLoe(40);        condition.setTeamName(&quot;teamB&quot;);        List&lt;MemberTeamDto&gt; result = memberJpaRepository.searchByBuilder(condition);        assertThat(result).extracting(&quot;username&quot;).containsExactly(&quot;member4&quot;);    &#125;
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2022/04/25/jpa/querydsl/querydsl-12/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/JPA/querydsl/querydsl.png)" alt="QueryDSL - 순수 JPA 리포지토리와 Querydsl" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2022/04/25/jpa/querydsl/querydsl-12/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/Develop/QueryDSL/">QueryDSL</a>
-            </div>
-            <div class="date"><time datetime="2022-04-25T03:31:46.000Z" itemprop="datePublished">2022-04-25</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/2022/04/25/jpa/querydsl/querydsl-12/">QueryDSL - 순수 JPA 리포지토리와 Querydsl</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-목차
-QueryDSL - QueryDsl 페이징 사용하기
-QueryDSL - 사용자 정의 Repository
-QueryDSL - 동적 쿼리와 성능 최적화 조회
-QueryDSL - 순수 JPA 리포지토리와 Querydsl
-QueryDSL - SQL Function 호출하기
-Post not found: jpa/querydsl/querydsl-10
-QueryDSL - 동적 쿼리
-QueryDSL - 프로젝션과 결과 반환
-QueryDSL - 조인
-QueryDSL - 집계
-QueryDSL - 결과 조회
-QueryDSL - 검색 조건 쿼리
-QueryDSL - Q-Type 활용
-QueryDSL - JPA JPQL vs JPA QueryDSL
-QueryDSL 시작하기
-
-순수 JPA 리포지토리와 Querydsl@Repositorypublic class MemberJpaRepository &#123;    private final EntityManager em;    private final JPAQueryFactory queryFactory;    public MemberJpaRepository(EntityManager em)&#123;        this.em = em;        this.queryFactory = new JPAQueryFactory(em);    &#125;    public void save(Member member)&#123;        em.persist(member);    &#125;    public Optional&lt;Member&gt; findById(Long id)&#123;        Member findMember = em.find(Member.class, id);        return Optional.ofNullable(findMember);    &#125;    public List&lt;Member&gt; findAll()&#123;        return em.createQuery(&quot;select m from Member m&quot;, Member.class)                .getResultList();    &#125;    public List&lt;Member&gt; findByUsername(String username)&#123;        return em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)                .setParameter(&quot;username&quot;, username)                .getResultList();    &#125;&#125;
-
-SpringBootTest@Transactionalclass MemberJpaRepositoryTest &#123;    @Autowired    EntityManager em;    @Autowired    MemberJpaRepository memberJpaRepository;    @Test    public void basicTest()&#123;        Member member = new Member(&quot;member1&quot;, 10);        memberJpaRepository.save(member);        Member findMember = memberJpaRepository.findById(member.getId()).get();        assertThat(findMember).isEqualTo(member);        List&lt;Member&gt; result = memberJpaRepository.findAll();        assertThat(result).containsExactly(member);        List&lt;Member&gt; result2 = memberJpaRepository.findByUsername(&quot;member1&quot;);        assertThat(result2).containsExactly(member);    &#125;&#125;
-
-JPQL QueryDsl 로 변경public List&lt;Member&gt; findAll()&#123;    return em.createQuery(&quot;select m from Member m&quot;, Member.class)            .getResultList();&#125;public List&lt;Member&gt; findAll_Querydsl()&#123;    return queryFactory            .selectFrom(member)            .fetch();&#125;public List&lt;Member&gt; findByUsername(String username)&#123;    return em.createQuery(&quot;select m from Member m where m.username = :username&quot;, Member.class)            .setParameter(&quot;username&quot;, username)            .getResultList();&#125;public List&lt;Member&gt; findByUsername_Querydsl(String username)&#123;    return queryFactory            .selectFrom(member)            .where(member.username.eq(username))            .fetch();&#125;
-
-@Test    public void basicQueryDsl()&#123;        Member member = new Member(&quot;member1&quot;, 10);        memberJpaRepository.save(member);        Member findMember = memberJpaRepository.findById(member.getId()).get();        assertThat(findMember).isEqualTo(member);        List&lt;Member&gt; result = memberJpaRepository.findAll_Querydsl();        assertThat(result).containsExactly(member);        List&lt;Member&gt; result2 = memberJpaRepository.findByUsername_Querydsl(&quot;member1&quot;);        assertThat(result2).containsExactly(member);    &#125;
         </p>
     </div>
 </article>

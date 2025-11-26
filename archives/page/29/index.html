@@ -1151,17 +1151,17 @@ Credentials가 Password와 다를 경우 BadCredentialsException 예외를 던�
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/" class="thumbnail">
+        <a href="/2021/10/07/spring/spring-security/security/authentication/authenticationManager/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/springboot/security/spring-security/securitycontextholder.png)" alt="Spring Security - SecurityContextHolder 와 SecurityContext" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/springboot/security/inflearn-whiteship-security/spring-security.png)" alt="Spring Security - AuthenticationManager" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/securitycontext/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier data-disqus-url="https://ckck803.github.io/2021/10/07/spring/spring-security/security/authentication/authenticationManager/">0</span>
     
 </span>
 
@@ -1179,7 +1179,7 @@ Credentials가 Password와 다를 경우 BadCredentialsException 예외를 던�
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2021/10/07/spring/spring-security/security/authentication/securitycontext/">Spring Security - SecurityContextHolder 와 SecurityContext</a>
+        <a href="/2021/10/07/spring/spring-security/security/authentication/authenticationManager/">Spring Security - AuthenticationManager</a>
         </h1>
     
 
@@ -1202,12 +1202,14 @@ Spring Security - Authentication 객체
 참고
 https://spring.io/guides/topicals/spring-security-architecture
 
-Spring Security - SecurityContextHolder 와 SecurityContext
-인증을 진행하면서 생성된 Authentication 객체는 SecurityContext 객체 내에 저장된다.
+Spring Security - AuthenticationManager
+AuthenticationManager 는 인증을 진행하는 AuthenticationProvider 객체들을 관리하는 객체다. AuthenticationManager 는 AuthenticationProvider 에 인증을 위임하는 형태로 인증을 진행한다.
 
-저장된 Authentication 객체를 저장하고 가져오기 위해서 SecurityContext는 getAuthentication 메소드와 setAuthentication 메소드를 제공한다.
-SecurityContext.java
-public interface SecurityContext extends Serializable &#123;    Authentication getAuthentication();    void setAuthentication(Authentication authentication);&#125;
+public interface AuthenticationManager &#123;    Authentication authenticate(Authentication authentication) throws AuthenticationException;&#125;
+
+ProviderManager
+AuthenticationManager의 가장 대표적인 구현체
+
         </p>
     </div>
 </article>
