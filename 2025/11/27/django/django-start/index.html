@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>Django 시작하기 - 설치부터 프로젝트 생성까지 🚀 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Django,Python,Web Framework,Backend">
+    
+    <meta name="description" content="안녕하세요! 👋 오늘은 Python의 대표적인 웹 프레임워크인 Django를 시작하는 방법에 대해 알아보겠습니다. Django를 처음 접하시는 분들도 쉽게 따라할 수 있도록 자세히 설명해드릴게요! 😊 1️⃣ Django란 무엇인가요? 🤔Django(장고)는 Python으로 작성된 무료 오픈소스 웹 애플리케이션 프레임워크입니다. “빠른 개발”과 “깔끔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django 시작하기 - 설치부터 프로젝트 생성까지 🚀">
+<meta property="og:url" content="https://ckck803.github.io/2025/11/27/django/django-start/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="안녕하세요! 👋 오늘은 Python의 대표적인 웹 프레임워크인 Django를 시작하는 방법에 대해 알아보겠습니다. Django를 처음 접하시는 분들도 쉽게 따라할 수 있도록 자세히 설명해드릴게요! 😊 1️⃣ Django란 무엇인가요? 🤔Django(장고)는 Python으로 작성된 무료 오픈소스 웹 애플리케이션 프레임워크입니다. “빠른 개발”과 “깔끔">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/django/django.png">
+<meta property="article:published_time" content="2025-11-26T15:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-14T06:50:38.405Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Web Framework">
+<meta property="article:tag" content="Backend">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/django/django.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/">Django</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/Python/">Python</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infra/">Infra</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Java/">Java</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Security/">Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Django/">Django</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Django/Python/">Python</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-django/django-start" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Django 시작하기 - 설치부터 프로젝트 생성까지 🚀
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/11/27/django/django-start/" class="article-date">
+       <time datetime="2025-11-26T15:00:00.000Z" itemprop="datePublished">2025-11-27</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/11/27/django/django-start/" class="article-date">
+     <time datetime="2025-12-14T06:50:38.405Z" itemprop="dateModified">2025-12-14</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Backend/" rel="tag">Backend</a>, <a class="tag-link-link" href="/tags/Django/" rel="tag">Django</a>, <a class="tag-link-link" href="/tags/Python/" rel="tag">Python</a>, <a class="tag-link-link" href="/tags/Web-Framework/" rel="tag">Web Framework</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/django/django.png"></p>
+<p>안녕하세요! 👋 오늘은 Python의 대표적인 웹 프레임워크인 Django를 시작하는 방법에 대해 알아보겠습니다. Django를 처음 접하시는 분들도 쉽게 따라할 수 있도록 자세히 설명해드릴게요! 😊</p>
+<h2 id="1️⃣-Django란-무엇인가요-🤔"><a href="#1️⃣-Django란-무엇인가요-🤔" class="headerlink" title="1️⃣ Django란 무엇인가요? 🤔"></a>1️⃣ Django란 무엇인가요? 🤔</h2><p>Django(장고)는 Python으로 작성된 무료 오픈소스 웹 애플리케이션 프레임워크입니다. “빠른 개발”과 “깔끔하고 실용적인 디자인”을 목표로 만들어졌어요.</p>
+<h3 id="Django의-주요-특징-✨"><a href="#Django의-주요-특징-✨" class="headerlink" title="Django의 주요 특징 ✨"></a>Django의 주요 특징 ✨</h3><p><strong>MTV 패턴</strong> 📐<br>Django는 MTV(Model-Template-View) 패턴을 사용합니다. 이는 다른 프레임워크의 MVC 패턴과 유사한데요:</p>
+<ul>
+<li><strong>Model</strong>: 데이터베이스와 상호작용하는 부분 💾</li>
+<li><strong>Template</strong>: 사용자에게 보여지는 화면 (HTML) 🎨</li>
+<li><strong>View</strong>: 비즈니스 로직을 처리하는 부분 ⚙️</li>
+</ul>
+<p><strong>배터리 포함(Batteries Included)</strong> 🔋<br>Django는 웹 개발에 필요한 거의 모든 기능을 기본적으로 제공합니다:</p>
+<ul>
+<li>강력한 ORM(Object-Relational Mapping) 시스템</li>
+<li>사용자 인증 시스템 🔐</li>
+<li>관리자 페이지(Admin Page) 자동 생성 👨‍💼</li>
+<li>폼(Form) 처리 📝</li>
+<li>세션 관리</li>
+<li>보안 기능 (CSRF, XSS, SQL Injection 방지) 🛡️</li>
+</ul>
+<p><strong>확장성과 안정성</strong> 💪<br>Instagram, Pinterest, NASA 등 많은 대형 서비스들이 Django를 사용하고 있어요. 이는 Django가 얼마나 안정적이고 확장 가능한지를 증명합니다!</p>
+<h3 id="Django를-선택하는-이유-🎯"><a href="#Django를-선택하는-이유-🎯" class="headerlink" title="Django를 선택하는 이유 🎯"></a>Django를 선택하는 이유 🎯</h3><ul>
+<li><strong>빠른 개발 속도</strong>: 반복적인 작업을 자동화하여 개발 시간을 단축시켜줍니다 ⚡</li>
+<li><strong>DRY 원칙</strong>: Don’t Repeat Yourself! 코드 중복을 최소화합니다 ♻️</li>
+<li><strong>풍부한 문서</strong>: 공식 문서가 매우 잘 정리되어 있어요 📚</li>
+<li><strong>활발한 커뮤니티</strong>: 전 세계적으로 많은 개발자들이 사용하고 있습니다 🌍</li>
+<li><strong>보안</strong>: 보안 관련 많은 기능들이 기본 내장되어 있어 안전합니다 🔒</li>
+</ul>
+<h2 id="2️⃣-Django-설치하기-📦"><a href="#2️⃣-Django-설치하기-📦" class="headerlink" title="2️⃣ Django 설치하기 📦"></a>2️⃣ Django 설치하기 📦</h2><p>Django를 시작하기 위해서는 먼저 Python이 설치되어 있어야 합니다. Python 3.8 이상 버전을 권장합니다! 🐍</p>
+<h3 id="Step-1-Python-설치-확인-✅"><a href="#Step-1-Python-설치-확인-✅" class="headerlink" title="Step 1: Python 설치 확인 ✅"></a>Step 1: Python 설치 확인 ✅</h3><p>터미널(또는 명령 프롬프트)을 열고 다음 명령어로 Python이 설치되어 있는지 확인해보세요:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python --version</span><br><span class="line"><span class="comment"># 또는</span></span><br><span class="line">python3 --version</span><br></pre></td></tr></table></figure>
+
+<p>Python 버전이 표시되면 정상적으로 설치된 것입니다! 🎉</p>
+<h3 id="Step-2-가상환경-생성하기-🏠"><a href="#Step-2-가상환경-생성하기-🏠" class="headerlink" title="Step 2: 가상환경 생성하기 🏠"></a>Step 2: 가상환경 생성하기 🏠</h3><p>가상환경을 사용하면 프로젝트마다 독립적인 Python 환경을 구성할 수 있어요. 이렇게 하면 프로젝트 간 패키지 충돌을 방지할 수 있습니다!</p>
+<p><strong>가상환경 생성:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Windows</span></span><br><span class="line">python -m venv myenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># macOS/Linux</span></span><br><span class="line">python3 -m venv myenv</span><br></pre></td></tr></table></figure>
+
+<p>여기서 <code>myenv</code>는 가상환경의 이름이에요. 원하는 이름으로 변경해도 됩니다! 😊</p>
+<p><strong>가상환경 활성화:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Windows</span></span><br><span class="line">myenv\Scripts\activate</span><br><span class="line"></span><br><span class="line"><span class="comment"># macOS/Linux</span></span><br><span class="line"><span class="built_in">source</span> myenv/bin/activate</span><br></pre></td></tr></table></figure>
+
+<p>가상환경이 활성화되면 터미널 프롬프트 앞에 <code>(myenv)</code>가 표시됩니다! ✨</p>
+<h3 id="Step-3-Django-설치-🎁"><a href="#Step-3-Django-설치-🎁" class="headerlink" title="Step 3: Django 설치 🎁"></a>Step 3: Django 설치 🎁</h3><p>이제 pip를 사용하여 Django를 설치해볼까요?</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install django</span><br></pre></td></tr></table></figure>
+
+<p>최신 버전의 Django가 자동으로 설치됩니다! 🚀</p>
+<p><strong>특정 버전 설치하기:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 특정 버전 설치</span></span><br><span class="line">pip install django==4.2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 최신 LTS 버전 설치 (권장)</span></span><br><span class="line">pip install django==4.2.7</span><br></pre></td></tr></table></figure>
+
+<h3 id="Step-4-설치-확인-🔍"><a href="#Step-4-설치-확인-🔍" class="headerlink" title="Step 4: 설치 확인 🔍"></a>Step 4: 설치 확인 🔍</h3><p>Django가 제대로 설치되었는지 확인해봅시다:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">django-admin --version</span><br></pre></td></tr></table></figure>
+
+<p>버전 번호가 표시되면 성공적으로 설치된 것입니다! 🎊</p>
+<h3 id="추가-패키지-설치-선택사항-📚"><a href="#추가-패키지-설치-선택사항-📚" class="headerlink" title="추가 패키지 설치 (선택사항) 📚"></a>추가 패키지 설치 (선택사항) 📚</h3><p>Django 개발을 더 편하게 하기 위한 추가 패키지들도 설치할 수 있어요:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 개발 서버 자동 재시작 (이미 Django에 포함됨)</span></span><br><span class="line">pip install django</span><br><span class="line"></span><br><span class="line"><span class="comment"># PostgreSQL 사용 시</span></span><br><span class="line">pip install psycopg2-binary</span><br><span class="line"></span><br><span class="line"><span class="comment"># MySQL 사용 시</span></span><br><span class="line">pip install mysqlclient</span><br><span class="line"></span><br><span class="line"><span class="comment"># 환경변수 관리</span></span><br><span class="line">pip install python-decouple</span><br><span class="line"></span><br><span class="line"><span class="comment"># REST API 개발 시</span></span><br><span class="line">pip install djangorestframework</span><br><span class="line"></span><br><span class="line"><span class="comment"># CORS 처리</span></span><br><span class="line">pip install django-cors-headers</span><br></pre></td></tr></table></figure>
+
+<p>필요한 패키지만 선택해서 설치하시면 됩니다! 😉</p>
+<h2 id="3️⃣-Django-프로젝트-생성하기-🏗️"><a href="#3️⃣-Django-프로젝트-생성하기-🏗️" class="headerlink" title="3️⃣ Django 프로젝트 생성하기 🏗️"></a>3️⃣ Django 프로젝트 생성하기 🏗️</h2><p>자, 이제 본격적으로 Django 프로젝트를 만들어볼 시간입니다! 두근두근! 💓</p>
+<h3 id="Step-1-프로젝트-생성-🎬"><a href="#Step-1-프로젝트-생성-🎬" class="headerlink" title="Step 1: 프로젝트 생성 🎬"></a>Step 1: 프로젝트 생성 🎬</h3><p>원하는 디렉토리로 이동한 후, 다음 명령어로 새 프로젝트를 생성합니다:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">django-admin startproject myproject</span><br></pre></td></tr></table></figure>
+
+<p><code>myproject</code>는 프로젝트 이름이에요. 원하는 이름으로 변경 가능합니다! (예: blog, ecommerce, portfolio 등)</p>
+<p>이 명령어를 실행하면 다음과 같은 구조의 프로젝트가 생성됩니다:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">myproject/</span><br><span class="line">    manage.py</span><br><span class="line">    myproject/</span><br><span class="line">        __init__.py</span><br><span class="line">        settings.py</span><br><span class="line">        urls.py</span><br><span class="line">        asgi.py</span><br><span class="line">        wsgi.py</span><br></pre></td></tr></table></figure>
+
+<p><strong>각 파일의 역할:</strong> 📋</p>
+<ul>
+<li><code>manage.py</code>: Django 프로젝트를 관리하는 커맨드라인 유틸리티 🛠️</li>
+<li><code>settings.py</code>: 프로젝트의 모든 설정이 담긴 파일 ⚙️</li>
+<li><code>urls.py</code>: URL 라우팅을 관리하는 파일 🗺️</li>
+<li><code>wsgi.py</code>: 프로덕션 서버 배포 시 사용 🚀</li>
+<li><code>asgi.py</code>: 비동기 서버 배포 시 사용 ⚡</li>
+</ul>
+<h3 id="Step-2-프로젝트-디렉토리로-이동-🚶‍♂️"><a href="#Step-2-프로젝트-디렉토리로-이동-🚶‍♂️" class="headerlink" title="Step 2: 프로젝트 디렉토리로 이동 🚶‍♂️"></a>Step 2: 프로젝트 디렉토리로 이동 🚶‍♂️</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> myproject</span><br></pre></td></tr></table></figure>
+
+<h3 id="Step-3-데이터베이스-마이그레이션-🗄️"><a href="#Step-3-데이터베이스-마이그레이션-🗄️" class="headerlink" title="Step 3: 데이터베이스 마이그레이션 🗄️"></a>Step 3: 데이터베이스 마이그레이션 🗄️</h3><p>Django는 기본적으로 SQLite 데이터베이스를 사용합니다. 초기 데이터베이스 테이블을 생성해봅시다:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+
+<p>여러 줄의 메시지가 나타나면서 데이터베이스 테이블들이 생성됩니다! ✅</p>
+<h3 id="Step-4-개발-서버-실행-🎮"><a href="#Step-4-개발-서버-실행-🎮" class="headerlink" title="Step 4: 개발 서버 실행 🎮"></a>Step 4: 개발 서버 실행 🎮</h3><p>드디어 Django 서버를 실행할 시간입니다!</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure>
+
+<p>터미널에 다음과 같은 메시지가 표시됩니다:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Starting development server at http://127.0.0.1:8000/</span><br><span class="line">Quit the server with CONTROL-C.</span><br></pre></td></tr></table></figure>
+
+<p>이제 브라우저를 열고 <code>http://127.0.0.1:8000/</code> 또는 <code>http://localhost:8000/</code>에 접속해보세요! 🌐</p>
+<p>Django의 환영 페이지(로켓 그림 🚀)가 보이면 성공입니다! 축하합니다! 🎉🎊</p>
+<p><strong>다른 포트로 실행하기:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python manage.py runserver 8080</span><br></pre></td></tr></table></figure>
+
+<h3 id="Step-5-관리자-계정-생성-👤"><a href="#Step-5-관리자-계정-생성-👤" class="headerlink" title="Step 5: 관리자 계정 생성 👤"></a>Step 5: 관리자 계정 생성 👤</h3><p>Django의 강력한 기능 중 하나인 관리자 페이지를 사용하기 위해 슈퍼유저를 생성해봅시다:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure>
+
+<p>사용자 이름, 이메일, 비밀번호를 입력하라는 메시지가 나타납니다. 차례대로 입력해주세요! 📝</p>
+<p>생성 후 서버를 실행하고 <code>http://127.0.0.1:8000/admin/</code>에 접속하면 로그인 페이지를 볼 수 있습니다! 🔐</p>
+<h3 id="Step-6-앱-App-생성하기-📱"><a href="#Step-6-앱-App-생성하기-📱" class="headerlink" title="Step 6: 앱(App) 생성하기 📱"></a>Step 6: 앱(App) 생성하기 📱</h3><p>Django에서는 기능별로 ‘앱’을 만들어 관리합니다. 예를 들어, 블로그 프로젝트라면 ‘posts’, ‘comments’, ‘users’ 같은 앱들로 구성할 수 있어요!</p>
+<p>새 앱을 생성해봅시다:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python manage.py startapp myapp</span><br></pre></td></tr></table></figure>
+
+<p><code>myapp</code>이라는 이름의 새로운 앱이 생성됩니다! 다음과 같은 구조가 만들어져요:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">myapp/</span><br><span class="line">    __init__.py</span><br><span class="line">    admin.py</span><br><span class="line">    apps.py</span><br><span class="line">    models.py</span><br><span class="line">    tests.py</span><br><span class="line">    views.py</span><br><span class="line">    migrations/</span><br><span class="line">        __init__.py</span><br></pre></td></tr></table></figure>
+
+<p><strong>각 파일의 역할:</strong> 📋</p>
+<ul>
+<li><code>models.py</code>: 데이터 모델 정의 🗃️</li>
+<li><code>views.py</code>: 뷰 함수&#x2F;클래스 정의 🎯</li>
+<li><code>admin.py</code>: 관리자 페이지 설정 👨‍💼</li>
+<li><code>tests.py</code>: 테스트 코드 작성 🧪</li>
+<li><code>migrations/</code>: 데이터베이스 마이그레이션 파일 저장 📦</li>
+</ul>
+<h3 id="Step-7-앱-등록하기-📌"><a href="#Step-7-앱-등록하기-📌" class="headerlink" title="Step 7: 앱 등록하기 📌"></a>Step 7: 앱 등록하기 📌</h3><p>생성한 앱을 프로젝트에 등록해야 Django가 인식할 수 있어요!</p>
+<p><code>myproject/settings.py</code> 파일을 열고 <code>INSTALLED_APPS</code> 리스트에 앱을 추가합니다:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="string">&#x27;django.contrib.admin&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.auth&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.contenttypes&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.sessions&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.messages&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.staticfiles&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;myapp&#x27;</span>,  <span class="comment"># 🆕 새로 추가!</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="간단한-View-만들어보기-🎨"><a href="#간단한-View-만들어보기-🎨" class="headerlink" title="간단한 View 만들어보기 🎨"></a>간단한 View 만들어보기 🎨</h3><p><code>myapp/views.py</code> 파일을 열고 다음 코드를 작성해봅시다:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&quot;안녕하세요! Django 세계에 오신 것을 환영합니다! 🎉&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>myapp/urls.py</code> 파일을 새로 생성하고:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;&#x27;</span>, views.hello, name=<span class="string">&#x27;hello&#x27;</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>메인 <code>myproject/urls.py</code> 파일에 앱의 URL을 연결합니다:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, include</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">&#x27;hello/&#x27;</span>, include(<span class="string">&#x27;myapp.urls&#x27;</span>)),  <span class="comment"># 🆕 새로 추가!</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>서버를 실행하고 <code>http://127.0.0.1:8000/hello/</code>에 접속하면 환영 메시지를 볼 수 있습니다! 🎊</p>
+<h2 id="마치며-🎓"><a href="#마치며-🎓" class="headerlink" title="마치며 🎓"></a>마치며 🎓</h2><p>축하합니다! 🎉 여러분은 이제 Django의 기본을 모두 마스터했어요!</p>
+<p>오늘 배운 내용을 정리하면:</p>
+<ul>
+<li>✅ Django가 무엇인지, 왜 사용하는지 이해했어요</li>
+<li>✅ Django를 설치하고 가상환경을 구성했어요</li>
+<li>✅ 새로운 프로젝트와 앱을 생성했어요</li>
+<li>✅ 간단한 뷰를 만들어 실행해봤어요</li>
+</ul>
+<p>이제 여러분은 Django로 멋진 웹 애플리케이션을 만들 준비가 되었습니다! 💪</p>
+<p>Django는 정말 강력하고 유용한 프레임워크예요. 공식 문서(<a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.djangoproject.com/">https://docs.djangoproject.com</a>)를 참고하면서 더 많은 기능들을 탐험해보세요! 📚</p>
+<p>다음 포스팅에서는 Django 모델과 데이터베이스 연동에 대해 알아보겠습니다! 기대해주세요! 😊</p>
+<p>Happy Coding! 💻✨</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/11/27/django/django-start/" data-id="cmjglsiqn0061288d5vmpc8lf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Django 시작하기 - 설치부터 프로젝트 생성까지 🚀",
+        "image": "https://ckck803.github.io/images/django/django.png",
+        "keywords": "Django Python Web Framework Backend",
+        "genre": "Django Python",
+        "datePublished": "2025-11-27",
+        "dateCreated": "2025-11-27",
+        "dateModified": "2025-12-14",
+        "url": "https://ckck803.github.io/2025/11/27/django/django-start/",
+        "description": "
+안녕하세요! 👋 오늘은 Python의 대표적인 웹 프레임워크인 Django를 시작하는 방법에 대해 알아보겠습니다. Django를 처음 접하시는 분들도 쉽게 따라할 수 있도록 자세히 설명해드릴게요! 😊
+1️⃣ Django란 무엇인가요? 🤔Django(장고)는 Python으로 작성된 무료 오픈소스 웹 애플리케이션 프레임워크입니다. “빠른 개발”과 “깔끔하고 실용적인 디자인”을 목표로 만들어졌어요.
+Django의 주요 특징 ✨MTV 패턴 📐Django는 MTV(Model-Template-View) 패턴을 사용합니다. 이는 다른 프레임워크의 MVC 패턴과 유사한데요:
+
+Model: 데이터베이스와 상호작용하는 부분 💾
+Template: 사용자에게 보여지는 화면 (HTML) 🎨
+View: 비즈니스 로직을 처리하는 부분 ⚙️
+
+배터리 포함(Batteries Included) 🔋Django는 웹 개발에 필요한 거의 모든 기능을 기본적으로 제공합니다:
+
+강력한 ORM(Object-Relational Mapping) 시스템
+사용자 인증 시스템 🔐
+관리자 페이지(Admin Page) 자동 생성 👨‍💼
+폼(Form) 처리 📝
+세션 관리
+보안 기능 (CSRF, XSS, SQL Injection 방지) 🛡️
+
+확장성과 안정성 💪Instagram, Pinterest, NASA 등 많은 대형 서비스들이 Django를 사용하고 있어요. 이는 Django가 얼마나 안정적이고 확장 가능한지를 증명합니다!",
+        "wordCount": 1207
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/11/27/java/jwt/java-version-highlights/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            JAVA - 버전별 주요 특징과 예시
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/11/27/k8s/kubernetes-swap/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Kubernetes Node 재실행 후 swap 으로 인한 kubelet 무한 재시작</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">61</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">184</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/Python/">Python</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infra/">Infra</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">49</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">279</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2025 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/11/27/django/django-start/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

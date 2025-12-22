@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>Nginx SSL/TLS 적용하기 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Nginx,SSL,TLS,HTTPS,Security">
+    
+    <meta name="description" content="SSL&#x2F;TLS란?SSL (Secure Sockets Layer) 과 TLS (Transport Layer Security) 는 인터넷 통신을 암호화하는 프로토콜입니다. 1994년 넷스케이프에서 SSL 1.0을 개발한 이후, SSL은 웹 보안의 표준으로 자리잡았습니다. 그러나 여러 보안 취약점이 발견되면서 1999년 IETF(Internet Eng">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx SSL&#x2F;TLS 적용하기">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/11/infra/nginx-ssl-guide/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="SSL&#x2F;TLS란?SSL (Secure Sockets Layer) 과 TLS (Transport Layer Security) 는 인터넷 통신을 암호화하는 프로토콜입니다. 1994년 넷스케이프에서 SSL 1.0을 개발한 이후, SSL은 웹 보안의 표준으로 자리잡았습니다. 그러나 여러 보안 취약점이 발견되면서 1999년 IETF(Internet Eng">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/springboot/sample-board/nginx/nginx.png">
+<meta property="article:published_time" content="2025-12-11T14:45:00.000Z">
+<meta property="article:modified_time" content="2025-12-11T03:50:50.454Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Nginx">
+<meta property="article:tag" content="SSL">
+<meta property="article:tag" content="TLS">
+<meta property="article:tag" content="HTTPS">
+<meta property="article:tag" content="Security">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/springboot/sample-board/nginx/nginx.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/">Django</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/Python/">Python</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infra/">Infra</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Java/">Java</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Security/">Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Infra/">Infra</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-infra/nginx-ssl-guide" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Nginx SSL/TLS 적용하기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/11/infra/nginx-ssl-guide/" class="article-date">
+       <time datetime="2025-12-11T14:45:00.000Z" itemprop="datePublished">2025-12-11</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/11/infra/nginx-ssl-guide/" class="article-date">
+     <time datetime="2025-12-11T03:50:50.454Z" itemprop="dateModified">2025-12-11</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/HTTPS/" rel="tag">HTTPS</a>, <a class="tag-link-link" href="/tags/Nginx/" rel="tag">Nginx</a>, <a class="tag-link-link" href="/tags/SSL/" rel="tag">SSL</a>, <a class="tag-link-link" href="/tags/Security/" rel="tag">Security</a>, <a class="tag-link-link" href="/tags/TLS/" rel="tag">TLS</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/springboot/sample-board/nginx/nginx.png"></p>
+<h2 id="SSL-TLS란"><a href="#SSL-TLS란" class="headerlink" title="SSL&#x2F;TLS란?"></a>SSL&#x2F;TLS란?</h2><p><strong>SSL (Secure Sockets Layer)</strong> 과 <strong>TLS (Transport Layer Security)</strong> 는 인터넷 통신을 암호화하는 프로토콜입니다. 1994년 넷스케이프에서 SSL 1.0을 개발한 이후, SSL은 웹 보안의 표준으로 자리잡았습니다. 그러나 여러 보안 취약점이 발견되면서 1999년 IETF(Internet Engineering Task Force)는 SSL 3.0을 기반으로 한 TLS 1.0을 발표했습니다.</p>
+<p>현재 SSL 3.0과 TLS 1.0, 1.1은 보안상의 이유로 폐기되었으며, <strong>TLS 1.2</strong>(2008년 발표)와 <strong>TLS 1.3</strong>(2018년 발표)만 사용해야 합니다. 그럼에도 불구하고 역사적 이유와 관례상 “SSL 인증서” 또는 “SSL&#x2F;TLS”라는 용어를 계속 사용하고 있습니다.</p>
+<h3 id="SSL-TLS의-작동-원리"><a href="#SSL-TLS의-작동-원리" class="headerlink" title="SSL&#x2F;TLS의 작동 원리"></a>SSL&#x2F;TLS의 작동 원리</h3><p>SSL&#x2F;TLS는 <strong>비대칭 암호화</strong>와 <strong>대칭 암호화</strong>를 조합하여 안전한 통신을 제공합니다:</p>
+<ol>
+<li><strong>핸드셰이크 단계</strong>: 클라이언트와 서버가 비대칭 암호화(공개키&#x2F;개인키)를 사용하여 안전하게 세션키를 교환합니다.</li>
+<li><strong>데이터 전송 단계</strong>: 교환된 세션키를 사용하여 대칭 암호화로 빠르게 데이터를 암호화&#x2F;복호화합니다.</li>
+<li><strong>검증 단계</strong>: 인증서를 통해 서버의 신원을 확인하고, 메시지 인증 코드(MAC)로 데이터 무결성을 보장합니다.</li>
+</ol>
+<p>이러한 구조 덕분에 SSL&#x2F;TLS는 높은 보안성과 효율성을 동시에 제공할 수 있습니다.</p>
+<h3 id="왜-SSL-TLS가-필수인가"><a href="#왜-SSL-TLS가-필수인가" class="headerlink" title="왜 SSL&#x2F;TLS가 필수인가?"></a>왜 SSL&#x2F;TLS가 필수인가?</h3><h4 id="1-데이터-암호화-도청-방지"><a href="#1-데이터-암호화-도청-방지" class="headerlink" title="1. 데이터 암호화 - 도청 방지"></a>1. <strong>데이터 암호화 - 도청 방지</strong></h4><p>HTTP는 모든 데이터를 평문으로 전송하기 때문에, 중간자 공격(Man-in-the-Middle Attack)을 통해 누구나 패킷을 가로채서 내용을 읽을 수 있습니다. 로그인 정보, 개인정보, 결제 정보 등 민감한 데이터가 노출될 위험이 있습니다. HTTPS는 AES, ChaCha20 같은 강력한 암호화 알고리즘을 사용하여 데이터를 암호화하므로, 가로채더라도 내용을 해독할 수 없습니다.</p>
+<h4 id="2-서버-인증-피싱-방지"><a href="#2-서버-인증-피싱-방지" class="headerlink" title="2. 서버 인증 - 피싱 방지"></a>2. <strong>서버 인증 - 피싱 방지</strong></h4><p>SSL 인증서는 신뢰할 수 있는 인증 기관(CA, Certificate Authority)에서 발급합니다. 브라우저는 인증서를 검증하여 현재 접속한 사이트가 정말 원하는 사이트인지 확인할 수 있습니다. 이를 통해 악의적인 사이트가 정상적인 사이트를 사칭하는 피싱 공격을 방지할 수 있습니다.</p>
+<h4 id="3-데이터-무결성-변조-방지"><a href="#3-데이터-무결성-변조-방지" class="headerlink" title="3. 데이터 무결성 - 변조 방지"></a>3. <strong>데이터 무결성 - 변조 방지</strong></h4><p>SSL&#x2F;TLS는 HMAC(Hash-based Message Authentication Code)를 사용하여 전송 중인 데이터가 변조되지 않았음을 보장합니다. 공격자가 패킷을 가로채서 내용을 수정하더라도, 수신자는 이를 감지하고 거부할 수 있습니다.</p>
+<h4 id="4-SEO-및-검색-순위"><a href="#4-SEO-및-검색-순위" class="headerlink" title="4. SEO 및 검색 순위"></a>4. <strong>SEO 및 검색 순위</strong></h4><p>2014년부터 Google은 HTTPS를 검색 순위 결정 요소로 사용하기 시작했습니다. 동일한 품질의 콘텐츠라면 HTTPS 사이트가 HTTP 사이트보다 높은 순위를 받게 됩니다. 또한 Google Search Console에서는 HTTPS 사이트에 대한 더 많은 분석 데이터를 제공합니다.</p>
+<h4 id="5-브라우저-요구사항-및-사용자-신뢰"><a href="#5-브라우저-요구사항-및-사용자-신뢰" class="headerlink" title="5. 브라우저 요구사항 및 사용자 신뢰"></a>5. <strong>브라우저 요구사항 및 사용자 신뢰</strong></h4><p>Chrome, Firefox, Safari 등 주요 브라우저는 HTTP 사이트에 “안전하지 않음” 경고를 표시합니다. 특히 로그인 폼이나 결제 페이지가 있는 HTTP 사이트는 더욱 강력한 경고를 보여줍니다. 사용자들은 이러한 경고를 보고 사이트를 이탈할 가능성이 높아, 비즈니스에 직접적인 영향을 미칩니다.</p>
+<h4 id="6-최신-웹-기능-활용"><a href="#6-최신-웹-기능-활용" class="headerlink" title="6. 최신 웹 기능 활용"></a>6. <strong>최신 웹 기능 활용</strong></h4><p>HTTP&#x2F;2, HTTP&#x2F;3, Service Workers, Progressive Web Apps(PWA), Geolocation API 등 많은 최신 웹 기능들은 HTTPS를 필수로 요구합니다. HTTPS 없이는 현대적인 웹 애플리케이션을 구축하는 것이 사실상 불가능합니다.</p>
+<h4 id="7-규제-준수"><a href="#7-규제-준수" class="headerlink" title="7. 규제 준수"></a>7. <strong>규제 준수</strong></h4><p>PCI DSS(Payment Card Industry Data Security Standard), GDPR(General Data Protection Regulation), HIPAA(Health Insurance Portability and Accountability Act) 등 많은 보안 및 개인정보 보호 규정에서 민감한 데이터 전송 시 암호화를 의무화하고 있습니다.</p>
+<h2 id="SSL-인증서-종류"><a href="#SSL-인증서-종류" class="headerlink" title="SSL 인증서 종류"></a>SSL 인증서 종류</h2><p>SSL 인증서는 검증 수준과 적용 범위에 따라 여러 종류로 나뉩니다. 각 인증서는 서로 다른 보안 수준과 비용, 발급 속도를 가지므로, 웹사이트의 특성과 요구사항에 맞게 선택해야 합니다.</p>
+<h3 id="검증-수준별-분류"><a href="#검증-수준별-분류" class="headerlink" title="검증 수준별 분류"></a>검증 수준별 분류</h3><h4 id="1-DV-Domain-Validation-도메인-검증-인증서"><a href="#1-DV-Domain-Validation-도메인-검증-인증서" class="headerlink" title="1. DV (Domain Validation) - 도메인 검증 인증서"></a>1. <strong>DV (Domain Validation) - 도메인 검증 인증서</strong></h4><p>DV 인증서는 가장 기본적인 형태의 SSL 인증서로, 신청자가 해당 도메인을 실제로 소유하고 있는지만 확인합니다. 인증 기관은 이메일 인증, DNS 레코드 확인, HTTP 파일 업로드 등의 간단한 방법으로 도메인 소유권을 검증합니다.</p>
+<p><strong>특징:</strong></p>
+<ul>
+<li>발급 시간: 몇 분 ~ 몇 시간 (자동화된 프로세스)</li>
+<li>가격: 무료 ~ 저렴 (Let’s Encrypt는 완전 무료)</li>
+<li>검증 수준: 낮음 (도메인 소유권만 확인)</li>
+<li>브라우저 표시: 기본 자물쇠 아이콘</li>
+</ul>
+<p><strong>적합한 사용처:</strong></p>
+<ul>
+<li>개인 블로그</li>
+<li>소규모 웹사이트</li>
+<li>개발&#x2F;테스트 환경</li>
+<li>비상업적 사이트</li>
+</ul>
+<p><strong>대표 사례:</strong> Let’s Encrypt, Cloudflare SSL, AWS Certificate Manager</p>
+<h4 id="2-OV-Organization-Validation-조직-검증-인증서"><a href="#2-OV-Organization-Validation-조직-검증-인증서" class="headerlink" title="2. OV (Organization Validation) - 조직 검증 인증서"></a>2. <strong>OV (Organization Validation) - 조직 검증 인증서</strong></h4><p>OV 인증서는 도메인 소유권뿐만 아니라 신청 조직의 실체도 검증합니다. 인증 기관은 사업자등록증, 법인등록증 등의 공식 문서를 확인하고, 전화나 이메일로 조직의 실재를 확인합니다.</p>
+<p><strong>특징:</strong></p>
+<ul>
+<li>발급 시간: 1~3일 (수동 검증 필요)</li>
+<li>가격: 연간 50~200달러</li>
+<li>검증 수준: 중간 (조직 정보 검증)</li>
+<li>브라우저 표시: 자물쇠 아이콘 + 인증서에서 조직 정보 확인 가능</li>
+</ul>
+<p><strong>적합한 사용처:</strong></p>
+<ul>
+<li>기업 공식 웹사이트</li>
+<li>B2B 서비스</li>
+<li>고객 정보를 다루는 사이트</li>
+<li>신뢰도가 중요한 비즈니스</li>
+</ul>
+<p><strong>대표 사례:</strong> Sectigo OV, DigiCert OV, GlobalSign OV</p>
+<h4 id="3-EV-Extended-Validation-확장-검증-인증서"><a href="#3-EV-Extended-Validation-확장-검증-인증서" class="headerlink" title="3. EV (Extended Validation) - 확장 검증 인증서"></a>3. <strong>EV (Extended Validation) - 확장 검증 인증서</strong></h4><p>EV 인증서는 가장 엄격한 검증 과정을 거치는 인증서입니다. 인증 기관은 조직의 법적 실체, 물리적 위치, 운영 상태 등을 철저히 검증하며, CA&#x2F;Browser Forum에서 정한 엄격한 가이드라인을 따릅니다.</p>
+<p><strong>특징:</strong></p>
+<ul>
+<li>발급 시간: 3~7일 (매우 엄격한 검증)</li>
+<li>가격: 연간 150~500달러</li>
+<li>검증 수준: 최고 (조직의 모든 측면 검증)</li>
+<li>브라우저 표시: 과거에는 주소창에 회사명이 녹색으로 표시되었으나, 현재는 자물쇠 클릭 시 조직 정보 표시</li>
+</ul>
+<p><strong>적합한 사용처:</strong></p>
+<ul>
+<li>은행, 금융 기관</li>
+<li>전자상거래 사이트</li>
+<li>결제 처리 시스템</li>
+<li>고객 신뢰가 매우 중요한 서비스</li>
+</ul>
+<p><strong>참고:</strong> 2019년 이후 주요 브라우저들이 주소창의 EV 표시를 제거하면서, EV 인증서의 실질적 가치에 대한 논란이 있습니다. 많은 기업들이 비용 대비 효과를 고려하여 OV 인증서로 전환하고 있습니다.</p>
+<h3 id="도메인-범위별-분류"><a href="#도메인-범위별-분류" class="headerlink" title="도메인 범위별 분류"></a>도메인 범위별 분류</h3><h4 id="1-단일-도메인-Single-Domain-인증서"><a href="#1-단일-도메인-Single-Domain-인증서" class="headerlink" title="1. 단일 도메인 (Single Domain) 인증서"></a>1. <strong>단일 도메인 (Single Domain) 인증서</strong></h4><p>하나의 특정 도메인(예: example.com 또는 <a target="_blank" rel="external nofollow noopener noreferrer" href="http://www.example.com)만/">www.example.com)만</a> 보호합니다. 가장 기본적이고 저렴한 형태입니다.</p>
+<p><strong>예시:</strong></p>
+<ul>
+<li>example.com을 위한 인증서는 example.com만 보호</li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="http://www.example.com과는/">www.example.com과는</a> 별개로 취급됨</li>
+<li>대부분의 CA는 www를 자동으로 포함시켜주지만, 항상 확인 필요</li>
+</ul>
+<p><strong>비용:</strong> 가장 저렴 (Let’s Encrypt는 무료)</p>
+<h4 id="2-와일드카드-Wildcard-인증서"><a href="#2-와일드카드-Wildcard-인증서" class="headerlink" title="2. 와일드카드 (Wildcard) 인증서"></a>2. <strong>와일드카드 (Wildcard) 인증서</strong></h4><p>특정 도메인의 모든 1단계 서브도메인을 보호합니다. <code>*.example.com</code> 형태로 발급되며, 서브도메인을 자주 추가하는 경우 매우 유용합니다.</p>
+<p><strong>보호 범위:</strong></p>
+<ul>
+<li>✅ api.example.com</li>
+<li>✅ blog.example.com</li>
+<li>✅ shop.example.com</li>
+<li>❌ example.com (루트 도메인은 별도로 추가해야 함)</li>
+<li>❌ sub.api.example.com (2단계 서브도메인은 보호 안 됨)</li>
+</ul>
+<p><strong>발급 방법:</strong></p>
+<ul>
+<li>DV 인증서로만 발급 가능 (DNS 인증 필수)</li>
+<li>Let’s Encrypt에서 무료 발급 가능하나, DNS API 연동 필요</li>
+</ul>
+<p><strong>비용:</strong> 단일 도메인보다 2~3배 비쌈</p>
+<p><strong>사용 사례:</strong></p>
+<ul>
+<li>마이크로서비스 아키텍처 (각 서비스마다 서브도메인 사용)</li>
+<li>멀티테넌트 SaaS (고객사마다 서브도메인 할당)</li>
+<li>개발&#x2F;스테이징&#x2F;프로덕션 환경 (dev.example.com, staging.example.com 등)</li>
+</ul>
+<h4 id="3-멀티-도메인-SAN-UCC-인증서"><a href="#3-멀티-도메인-SAN-UCC-인증서" class="headerlink" title="3. 멀티 도메인 (SAN&#x2F;UCC) 인증서"></a>3. <strong>멀티 도메인 (SAN&#x2F;UCC) 인증서</strong></h4><p>SAN(Subject Alternative Name) 또는 UCC(Unified Communications Certificate)라고 불리며, 완전히 다른 여러 도메인을 하나의 인증서로 보호할 수 있습니다.</p>
+<p><strong>보호 범위 예시:</strong></p>
+<ul>
+<li>example.com</li>
+<li>example.net</li>
+<li>example.org</li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="http://www.example.com/">www.example.com</a></li>
+<li>shop.anotherdomain.com</li>
+</ul>
+<p><strong>특징:</strong></p>
+<ul>
+<li>일반적으로 3~100개의 도메인 지원</li>
+<li>도메인 추가&#x2F;제거 시 인증서 재발급 필요</li>
+<li>관리 포인트가 하나로 통합됨</li>
+</ul>
+<p><strong>비용:</strong> 도메인 개수에 따라 증가</p>
+<p><strong>사용 사례:</strong></p>
+<ul>
+<li>여러 브랜드를 운영하는 기업</li>
+<li>레거시 시스템 통합</li>
+<li>Microsoft Exchange, Office 365 환경</li>
+</ul>
+<h2 id="방법-1-Let’s-Encrypt-무료"><a href="#방법-1-Let’s-Encrypt-무료" class="headerlink" title="방법 1: Let’s Encrypt (무료)"></a>방법 1: Let’s Encrypt (무료)</h2><p>Let’s Encrypt는 2016년에 시작된 비영리 인증 기관(CA)으로, 누구나 무료로 SSL&#x2F;TLS 인증서를 발급받을 수 있도록 하는 것을 목표로 합니다. Mozilla, Cisco, Facebook, Google 등 주요 기업들의 후원으로 운영되며, 전 세계 수억 개의 웹사이트에서 사용되고 있습니다.</p>
+<h3 id="Let’s-Encrypt의-특징"><a href="#Let’s-Encrypt의-특징" class="headerlink" title="Let’s Encrypt의 특징"></a>Let’s Encrypt의 특징</h3><p><strong>장점:</strong></p>
+<ul>
+<li><strong>완전 무료</strong>: 발급, 갱신, 관리 비용이 전혀 없습니다</li>
+<li><strong>자동화</strong>: ACME(Automatic Certificate Management Environment) 프로토콜을 통한 자동 발급 및 갱신</li>
+<li><strong>신뢰성</strong>: 모든 주요 브라우저에서 신뢰하는 인증서</li>
+<li><strong>간편함</strong>: Certbot 같은 도구로 몇 분 안에 설정 가능</li>
+<li><strong>DV 인증서</strong>: 도메인 검증 인증서를 빠르게 발급</li>
+</ul>
+<p><strong>제한사항:</strong></p>
+<ul>
+<li><strong>90일 유효기간</strong>: 보안을 위해 짧게 설정 (자동 갱신으로 해결)</li>
+<li><strong>DV만 지원</strong>: OV, EV 인증서는 발급 불가</li>
+<li><strong>Rate Limiting</strong>: 같은 도메인에 대해 주당 50개까지만 발급 가능</li>
+<li><strong>와일드카드 제한</strong>: DNS 챌린지만 가능 (HTTP 챌린지 불가)</li>
+</ul>
+<p><strong>Let’s Encrypt가 적합한 경우:</strong></p>
+<ul>
+<li>개인 웹사이트, 블로그</li>
+<li>스타트업 및 중소기업 웹사이트</li>
+<li>API 서버</li>
+<li>개발&#x2F;스테이징 환경</li>
+<li>비영리 조직 웹사이트</li>
+<li>예산이 제한적인 프로젝트</li>
+</ul>
+<h3 id="Certbot-설치"><a href="#Certbot-설치" class="headerlink" title="Certbot 설치"></a>Certbot 설치</h3><h4 id="Ubuntu-Debian"><a href="#Ubuntu-Debian" class="headerlink" title="Ubuntu&#x2F;Debian"></a>Ubuntu&#x2F;Debian</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install certbot python3-certbot-nginx</span><br></pre></td></tr></table></figure>
+
+<h4 id="CentOS-RHEL-8"><a href="#CentOS-RHEL-8" class="headerlink" title="CentOS&#x2F;RHEL 8"></a>CentOS&#x2F;RHEL 8</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo dnf install epel-release</span><br><span class="line">sudo dnf install certbot python3-certbot-nginx</span><br></pre></td></tr></table></figure>
+
+<h4 id="macOS"><a href="#macOS" class="headerlink" title="macOS"></a>macOS</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install certbot</span><br></pre></td></tr></table></figure>
+
+<h3 id="인증서-발급-자동-설정"><a href="#인증서-발급-자동-설정" class="headerlink" title="인증서 발급 (자동 설정)"></a>인증서 발급 (자동 설정)</h3><p>Certbot이 Nginx 설정을 자동으로 수정합니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 단일 도메인</span></span><br><span class="line">sudo certbot --nginx -d example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 여러 도메인 (www 포함)</span></span><br><span class="line">sudo certbot --nginx -d example.com -d www.example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 와일드카드 인증서 (DNS 인증 필요)</span></span><br><span class="line">sudo certbot certonly --manual --preferred-challenges dns -d <span class="string">&quot;*.example.com&quot;</span> -d example.com</span><br></pre></td></tr></table></figure>
+
+<h4 id="자동-설정-과정에서-선택-사항"><a href="#자동-설정-과정에서-선택-사항" class="headerlink" title="자동 설정 과정에서 선택 사항"></a>자동 설정 과정에서 선택 사항</h4><ol>
+<li>이메일 입력 (인증서 만료 알림용)</li>
+<li>서비스 약관 동의</li>
+<li>HTTP 트래픽 처리 방법 선택:<ul>
+<li>HTTP와 HTTPS 모두 허용</li>
+<li>HTTP를 HTTPS로 자동 리다이렉트 (권장)</li>
+</ul>
+</li>
+</ol>
+<h3 id="인증서-발급-수동-설정"><a href="#인증서-발급-수동-설정" class="headerlink" title="인증서 발급 (수동 설정)"></a>인증서 발급 (수동 설정)</h3><p>설정 파일을 직접 수정하려면:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 인증서만 발급 (설정은 수동으로)</span></span><br><span class="line">sudo certbot certonly --nginx -d example.com -d www.example.com</span><br></pre></td></tr></table></figure>
+
+<p>발급된 인증서 위치:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/etc/letsencrypt/live/example.com/fullchain.pem   # 인증서</span><br><span class="line">/etc/letsencrypt/live/example.com/privkey.pem     # 개인키</span><br><span class="line">/etc/letsencrypt/live/example.com/chain.pem       # 체인 인증서</span><br><span class="line">/etc/letsencrypt/live/example.com/cert.pem        # 서버 인증서</span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx-수동-설정"><a href="#Nginx-수동-설정" class="headerlink" title="Nginx 수동 설정"></a>Nginx 수동 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com www.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ACME 챌린지용 (인증서 갱신에 필요)</span></span><br><span class="line">    <span class="section">location</span><span class="regexp"> ^~</span> /.well-known/acme-challenge/ &#123;</span><br><span class="line">        <span class="attribute">root</span> /var/www/html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 나머지 요청은 HTTPS로 리다이렉트</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com www.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># SSL 인증서 설정</span></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/example.com/privkey.pem;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># SSL 프로토콜 설정</span></span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># SSL 암호화 스위트</span></span><br><span class="line">    <span class="attribute">ssl_ciphers</span> <span class="string">&#x27;ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># SSL 세션 캐시</span></span><br><span class="line">    <span class="attribute">ssl_session_cache</span> shared:SSL:<span class="number">10m</span>;</span><br><span class="line">    <span class="attribute">ssl_session_timeout</span> <span class="number">10m</span>;</span><br><span class="line">    <span class="attribute">ssl_session_tickets</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># OCSP Stapling</span></span><br><span class="line">    <span class="attribute">ssl_stapling</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">ssl_stapling_verify</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">ssl_trusted_certificate</span> /etc/letsencrypt/live/example.com/chain.pem;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># DNS 리졸버</span></span><br><span class="line">    <span class="attribute">resolver</span> <span class="number">8.8.8.8</span> <span class="number">8.8.4.4</span> valid=<span class="number">300s</span>;</span><br><span class="line">    <span class="attribute">resolver_timeout</span> <span class="number">5s</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 보안 헤더</span></span><br><span class="line">    <span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=63072000; includeSubDomains; preload&quot;</span> always;</span><br><span class="line">    <span class="attribute">add_header</span> X-Frame-Options <span class="string">&quot;SAMEORIGIN&quot;</span> always;</span><br><span class="line">    <span class="attribute">add_header</span> X-Content-Type-Options <span class="string">&quot;nosniff&quot;</span> always;</span><br><span class="line">    <span class="attribute">add_header</span> X-XSS-Protection <span class="string">&quot;1; mode=block&quot;</span> always;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /var/www/example.com;</span><br><span class="line">    <span class="attribute">index</span> index.html index.htm;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ =<span class="number">404</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="자동-갱신-설정"><a href="#자동-갱신-설정" class="headerlink" title="자동 갱신 설정"></a>자동 갱신 설정</h3><p>Let’s Encrypt 인증서는 <strong>90일</strong>마다 갱신이 필요합니다.</p>
+<h4 id="갱신-테스트"><a href="#갱신-테스트" class="headerlink" title="갱신 테스트"></a>갱신 테스트</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo certbot renew --dry-run</span><br></pre></td></tr></table></figure>
+
+<h4 id="Cron-작업-추가-자동-갱신"><a href="#Cron-작업-추가-자동-갱신" class="headerlink" title="Cron 작업 추가 (자동 갱신)"></a>Cron 작업 추가 (자동 갱신)</h4><p>Certbot 설치 시 자동으로 systemd timer가 설정되지만, 확인:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># systemd timer 확인</span></span><br><span class="line">systemctl status certbot.timer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 수동 실행</span></span><br><span class="line">sudo certbot renew</span><br><span class="line"></span><br><span class="line"><span class="comment"># 갱신 후 Nginx 리로드를 위한 hook</span></span><br><span class="line">sudo certbot renew --deploy-hook <span class="string">&quot;systemctl reload nginx&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>수동으로 cron 설정하려면:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo crontab -e</span><br></pre></td></tr></table></figure>
+
+<p>다음 줄 추가:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 매일 새벽 3시에 인증서 갱신 확인</span><br><span class="line">0 3 * * * certbot renew --quiet --deploy-hook &quot;systemctl reload nginx&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="와일드카드-인증서-발급"><a href="#와일드카드-인증서-발급" class="headerlink" title="와일드카드 인증서 발급"></a>와일드카드 인증서 발급</h3><p>와일드카드 인증서는 DNS 인증이 필요합니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo certbot certonly \</span><br><span class="line">  --manual \</span><br><span class="line">  --preferred-challenges dns \</span><br><span class="line">  -d <span class="string">&quot;*.example.com&quot;</span> \</span><br><span class="line">  -d example.com</span><br></pre></td></tr></table></figure>
+
+<p>과정:</p>
+<ol>
+<li>Certbot이 TXT 레코드 값을 제공</li>
+<li>DNS 설정에서 _acme-challenge.example.com TXT 레코드 추가</li>
+<li>DNS 전파 확인 후 Enter</li>
+</ol>
+<p>DNS 전파 확인:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dig _acme-challenge.example.com TXT</span><br></pre></td></tr></table></figure>
+
+<h2 id="방법-2-유료-인증서"><a href="#방법-2-유료-인증서" class="headerlink" title="방법 2: 유료 인증서"></a>방법 2: 유료 인증서</h2><h3 id="1-인증서-구매"><a href="#1-인증서-구매" class="headerlink" title="1. 인증서 구매"></a>1. 인증서 구매</h3><p>인증서를 구매할 수 있는 곳:</p>
+<ul>
+<li>Comodo&#x2F;Sectigo</li>
+<li>DigiCert</li>
+<li>GlobalSign</li>
+<li>GoDaddy</li>
+<li>Namecheap</li>
+</ul>
+<h3 id="2-CSR-Certificate-Signing-Request-생성"><a href="#2-CSR-Certificate-Signing-Request-생성" class="headerlink" title="2. CSR (Certificate Signing Request) 생성"></a>2. CSR (Certificate Signing Request) 생성</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 개인키 생성</span></span><br><span class="line">sudo openssl genrsa -out /etc/ssl/private/example.com.key 2048</span><br><span class="line"></span><br><span class="line"><span class="comment"># CSR 생성</span></span><br><span class="line">sudo openssl req -new -key /etc/ssl/private/example.com.key \</span><br><span class="line">  -out /etc/ssl/csr/example.com.csr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 입력 정보</span></span><br><span class="line">Country Name (2 letter code) [AU]: KR</span><br><span class="line">State or Province Name (full name) [Some-State]: Seoul</span><br><span class="line">Locality Name (eg, city) []: Seoul</span><br><span class="line">Organization Name (eg, company) []: Example Inc</span><br><span class="line">Organizational Unit Name (eg, section) []: IT</span><br><span class="line">Common Name (e.g. server FQDN or YOUR name) []: example.com</span><br><span class="line">Email Address []: admin@example.com</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-CSR-제출-및-인증서-받기"><a href="#3-CSR-제출-및-인증서-받기" class="headerlink" title="3. CSR 제출 및 인증서 받기"></a>3. CSR 제출 및 인증서 받기</h3><ol>
+<li><p>CSR 파일 내용을 인증 기관에 제출</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/ssl/csr/example.com.csr</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>도메인 검증 완료 (이메일 또는 DNS)</p>
+</li>
+<li><p>인증서 파일 다운로드:</p>
+<ul>
+<li>example.com.crt (서버 인증서)</li>
+<li>intermediate.crt (중간 인증서)</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-인증서-설치"><a href="#4-인증서-설치" class="headerlink" title="4. 인증서 설치"></a>4. 인증서 설치</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 인증서 파일 저장</span></span><br><span class="line">sudo <span class="built_in">cp</span> example.com.crt /etc/ssl/certs/</span><br><span class="line">sudo <span class="built_in">cp</span> intermediate.crt /etc/ssl/certs/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 권한 설정</span></span><br><span class="line">sudo <span class="built_in">chmod</span> 644 /etc/ssl/certs/example.com.crt</span><br><span class="line">sudo <span class="built_in">chmod</span> 644 /etc/ssl/certs/intermediate.crt</span><br><span class="line">sudo <span class="built_in">chmod</span> 600 /etc/ssl/private/example.com.key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 인증서 체인 생성 (옵션)</span></span><br><span class="line">sudo <span class="built_in">cat</span> /etc/ssl/certs/example.com.crt \</span><br><span class="line">         /etc/ssl/certs/intermediate.crt \</span><br><span class="line">         &gt; /etc/ssl/certs/example.com-chain.crt</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-Nginx-설정"><a href="#5-Nginx-설정" class="headerlink" title="5. Nginx 설정"></a>5. Nginx 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/ssl/certs/example.com-chain.crt;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/ssl/private/example.com.key;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 나머지 SSL 설정은 위와 동일</span></span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line">    <span class="attribute">ssl_ciphers</span> <span class="string">&#x27;ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256&#x27;</span>;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="방법-3-자체-서명-인증서-개발-테스트용"><a href="#방법-3-자체-서명-인증서-개발-테스트용" class="headerlink" title="방법 3: 자체 서명 인증서 (개발&#x2F;테스트용)"></a>방법 3: 자체 서명 인증서 (개발&#x2F;테스트용)</h2><p>프로덕션 환경에는 사용하지 마세요!</p>
+<h3 id="인증서-생성"><a href="#인증서-생성" class="headerlink" title="인증서 생성"></a>인증서 생성</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 개인키와 인증서를 한 번에 생성 (유효기간 365일)</span></span><br><span class="line">sudo openssl req -x509 -nodes -days 365 \</span><br><span class="line">  -newkey rsa:2048 \</span><br><span class="line">  -keyout /etc/ssl/private/selfsigned.key \</span><br><span class="line">  -out /etc/ssl/certs/selfsigned.crt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 입력 정보</span></span><br><span class="line">Country Name: KR</span><br><span class="line">State: Seoul</span><br><span class="line">Locality: Seoul</span><br><span class="line">Organization: Dev</span><br><span class="line">Common Name: localhost (또는 개발 도메인)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx-설정"><a href="#Nginx-설정" class="headerlink" title="Nginx 설정"></a>Nginx 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/ssl/certs/selfsigned.crt;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/ssl/private/selfsigned.key;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /var/www/html;</span><br><span class="line">    <span class="attribute">index</span> index.html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="SSL-최적화-설정"><a href="#SSL-최적화-설정" class="headerlink" title="SSL 최적화 설정"></a>SSL 최적화 설정</h2><h3 id="1-Mozilla-SSL-Configuration-Generator"><a href="#1-Mozilla-SSL-Configuration-Generator" class="headerlink" title="1. Mozilla SSL Configuration Generator"></a>1. Mozilla SSL Configuration Generator</h3><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ssl-config.mozilla.org/">Mozilla SSL Configuration Generator</a>를 사용하면 최신 권장 설정을 얻을 수 있습니다.</p>
+<h3 id="2-최신-보안-설정-2025년-기준"><a href="#2-최신-보안-설정-2025년-기준" class="headerlink" title="2. 최신 보안 설정 (2025년 기준)"></a>2. 최신 보안 설정 (2025년 기준)</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># /etc/nginx/conf.d/ssl.conf</span></span><br><span class="line"><span class="comment"># 모든 SSL 사이트에서 공유</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line"><span class="attribute">ssl_ciphers</span> <span class="string">&#x27;ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305&#x27;</span>;</span><br><span class="line"><span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Diffie-Hellman 파라미터</span></span><br><span class="line"><span class="attribute">ssl_dhparam</span> /etc/nginx/dhparam.pem;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 세션 캐시</span></span><br><span class="line"><span class="attribute">ssl_session_cache</span> shared:SSL:<span class="number">10m</span>;</span><br><span class="line"><span class="attribute">ssl_session_timeout</span> <span class="number">1d</span>;</span><br><span class="line"><span class="attribute">ssl_session_tickets</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># OCSP Stapling</span></span><br><span class="line"><span class="attribute">ssl_stapling</span> <span class="literal">on</span>;</span><br><span class="line"><span class="attribute">ssl_stapling_verify</span> <span class="literal">on</span>;</span><br><span class="line"><span class="attribute">resolver</span> <span class="number">8.8.8.8</span> <span class="number">8.8.4.4</span> valid=<span class="number">300s</span>;</span><br><span class="line"><span class="attribute">resolver_timeout</span> <span class="number">5s</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 보안 헤더</span></span><br><span class="line"><span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=63072000; includeSubDomains; preload&quot;</span> always;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-DH-파라미터-생성"><a href="#3-DH-파라미터-생성" class="headerlink" title="3. DH 파라미터 생성"></a>3. DH 파라미터 생성</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo openssl dhparam -out /etc/nginx/dhparam.pem 2048</span><br></pre></td></tr></table></figure>
+
+<p>더 강력한 보안을 원하면 4096 사용 (시간이 오래 걸림):</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo openssl dhparam -out /etc/nginx/dhparam.pem 4096</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-서버별-설정에서-include"><a href="#4-서버별-설정에서-include" class="headerlink" title="4. 서버별 설정에서 include"></a>4. 서버별 설정에서 include</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/example.com/privkey.pem;</span><br><span class="line">    <span class="attribute">ssl_trusted_certificate</span> /etc/letsencrypt/live/example.com/chain.pem;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 공통 SSL 설정 포함</span></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/ssl.conf;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 사이트별 설정</span></span><br><span class="line">    <span class="attribute">root</span> /var/www/example.com;</span><br><span class="line">    <span class="attribute">index</span> index.html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="HSTS-HTTP-Strict-Transport-Security"><a href="#HSTS-HTTP-Strict-Transport-Security" class="headerlink" title="HSTS (HTTP Strict Transport Security)"></a>HSTS (HTTP Strict Transport Security)</h2><h3 id="HSTS란"><a href="#HSTS란" class="headerlink" title="HSTS란?"></a>HSTS란?</h3><p>HSTS(HTTP Strict Transport Security)는 웹사이트가 브라우저에게 “앞으로는 무조건 HTTPS로만 접속하라”고 지시하는 보안 메커니즘입니다. 2012년 RFC 6797로 표준화되었으며, 현재 모든 주요 브라우저에서 지원됩니다.</p>
+<h3 id="HSTS의-작동-원리"><a href="#HSTS의-작동-원리" class="headerlink" title="HSTS의 작동 원리"></a>HSTS의 작동 원리</h3><ol>
+<li><strong>최초 HTTPS 접속</strong>: 사용자가 처음 HTTPS로 사이트에 접속합니다.</li>
+<li><strong>HSTS 헤더 수신</strong>: 서버는 <code>Strict-Transport-Security</code> 헤더를 응답에 포함시킵니다.</li>
+<li><strong>브라우저 저장</strong>: 브라우저는 이 정책을 저장하고 지정된 기간 동안 기억합니다.</li>
+<li><strong>자동 HTTPS 전환</strong>: 이후 사용자가 HTTP로 접속을 시도하면, 브라우저가 자동으로 HTTPS로 리다이렉트합니다 (서버 왕복 없이!).</li>
+</ol>
+<h3 id="HSTS가-해결하는-보안-문제"><a href="#HSTS가-해결하는-보안-문제" class="headerlink" title="HSTS가 해결하는 보안 문제"></a>HSTS가 해결하는 보안 문제</h3><h4 id="1-SSL-Stripping-공격-방지"><a href="#1-SSL-Stripping-공격-방지" class="headerlink" title="1. SSL Stripping 공격 방지"></a>1. SSL Stripping 공격 방지</h4><p><strong>공격 시나리오 (HSTS 없이):</strong></p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">1. 사용자가 http://bank.com 입력</span><br><span class="line">2. 공격자가 중간에서 가로채고 HTTP로 응답</span><br><span class="line">3. 사용자는 HTTP로 통신하게 되어 정보 유출</span><br></pre></td></tr></table></figure>
+
+<p><strong>HSTS로 방어:</strong></p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">1. 사용자가 http://bank.com 입력</span><br><span class="line">2. 브라우저가 자동으로 https://bank.com으로 변경</span><br><span class="line">3. 공격자가 개입할 기회가 없음</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-중간자-공격-Man-in-the-Middle-방지"><a href="#2-중간자-공격-Man-in-the-Middle-방지" class="headerlink" title="2. 중간자 공격 (Man-in-the-Middle) 방지"></a>2. 중간자 공격 (Man-in-the-Middle) 방지</h4><p>사용자가 실수로 HTTP 링크를 클릭하거나, 북마크에 HTTP로 저장했더라도 브라우저가 자동으로 HTTPS로 전환하여 보호합니다.</p>
+<h4 id="3-Mixed-Content-문제-완화"><a href="#3-Mixed-Content-문제-완화" class="headerlink" title="3. Mixed Content 문제 완화"></a>3. Mixed Content 문제 완화</h4><p>HTTPS 페이지에서 HTTP 리소스를 로드할 때 발생하는 보안 경고를 줄입니다.</p>
+<h3 id="HSTS-헤더-구성-요소"><a href="#HSTS-헤더-구성-요소" class="headerlink" title="HSTS 헤더 구성 요소"></a>HSTS 헤더 구성 요소</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line">Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</span><br></pre></td></tr></table></figure>
+
+<p><strong>파라미터 설명:</strong></p>
+<ol>
+<li><p><strong>max-age</strong> (필수)</p>
+<ul>
+<li>브라우저가 HSTS 정책을 기억할 시간 (초 단위)</li>
+<li><code>max-age=31536000</code>: 1년 (365일)</li>
+<li><code>max-age=63072000</code>: 2년 (권장)</li>
+<li>0으로 설정하면 HSTS 비활성화</li>
+</ul>
+</li>
+<li><p><strong>includeSubDomains</strong> (선택)</p>
+<ul>
+<li>모든 서브도메인에도 HSTS 적용</li>
+<li>example.com뿐만 아니라 api.example.com, blog.example.com 등도 포함</li>
+<li>⚠️ <strong>주의</strong>: 모든 서브도메인이 HTTPS를 지원해야 함</li>
+</ul>
+</li>
+<li><p><strong>preload</strong> (선택)</p>
+<ul>
+<li>브라우저의 HSTS Preload List에 등록 신청</li>
+<li>사용자가 한 번도 방문하지 않았어도 보호</li>
+<li>⚠️ <strong>주의</strong>: 되돌릴 수 없으므로 신중하게 결정</li>
+</ul>
+</li>
+</ol>
+<h3 id="HSTS의-한계와-주의사항"><a href="#HSTS의-한계와-주의사항" class="headerlink" title="HSTS의 한계와 주의사항"></a>HSTS의 한계와 주의사항</h3><h4 id="첫-방문-취약점-Trust-On-First-Use-TOFU"><a href="#첫-방문-취약점-Trust-On-First-Use-TOFU" class="headerlink" title="첫 방문 취약점 (Trust-On-First-Use, TOFU)"></a>첫 방문 취약점 (Trust-On-First-Use, TOFU)</h4><p>HSTS는 사용자가 처음 HTTPS로 사이트를 방문한 이후에만 효과가 있습니다. 첫 방문 시에는 여전히 공격에 노출될 수 있습니다.</p>
+<p><strong>해결책</strong>: HSTS Preload List 등록</p>
+<h4 id="Preload의-영구성"><a href="#Preload의-영구성" class="headerlink" title="Preload의 영구성"></a>Preload의 영구성</h4><p>Preload에 등록하면 제거하는 데 몇 달이 걸릴 수 있으며, 모든 브라우저에서 완전히 제거되려면 더 오래 걸립니다.</p>
+<p><strong>주의사항:</strong></p>
+<ul>
+<li>모든 서브도메인이 영구히 HTTPS만 지원해야 함</li>
+<li>HTTP로 돌아갈 계획이 없어야 함</li>
+<li>레거시 서브도메인이 없는지 확인 필요</li>
+</ul>
+<h3 id="설정-단계"><a href="#설정-단계" class="headerlink" title="설정 단계"></a>설정 단계</h3><h4 id="1단계-테스트-설정-짧은-기간"><a href="#1단계-테스트-설정-짧은-기간" class="headerlink" title="1단계: 테스트 설정 (짧은 기간)"></a>1단계: 테스트 설정 (짧은 기간)</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=300&quot;</span> always;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2단계-1주일-테스트"><a href="#2단계-1주일-테스트" class="headerlink" title="2단계: 1주일 테스트"></a>2단계: 1주일 테스트</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=604800&quot;</span> always;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3단계-1년-서브도메인-포함"><a href="#3단계-1년-서브도메인-포함" class="headerlink" title="3단계: 1년 + 서브도메인 포함"></a>3단계: 1년 + 서브도메인 포함</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=31536000; includeSubDomains&quot;</span> always;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4단계-Preload-리스트-등록"><a href="#4단계-Preload-리스트-등록" class="headerlink" title="4단계: Preload 리스트 등록"></a>4단계: Preload 리스트 등록</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=63072000; includeSubDomains; preload&quot;</span> always;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://hstspreload.org/">hstspreload.org</a>에서 도메인 등록</p>
+<p>⚠️ <strong>주의</strong>: preload는 되돌릴 수 없으므로 신중하게!</p>
+<h2 id="SSL-인증서-확인"><a href="#SSL-인증서-확인" class="headerlink" title="SSL 인증서 확인"></a>SSL 인증서 확인</h2><h3 id="인증서-정보-확인"><a href="#인증서-정보-확인" class="headerlink" title="인증서 정보 확인"></a>인증서 정보 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 인증서 내용 확인</span></span><br><span class="line">sudo openssl x509 -<span class="keyword">in</span> /etc/letsencrypt/live/example.com/cert.pem -text -noout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 만료 날짜 확인</span></span><br><span class="line">sudo openssl x509 -<span class="keyword">in</span> /etc/letsencrypt/live/example.com/cert.pem -noout -dates</span><br><span class="line"></span><br><span class="line"><span class="comment"># 도메인 확인</span></span><br><span class="line">sudo openssl x509 -<span class="keyword">in</span> /etc/letsencrypt/live/example.com/cert.pem -noout -subject</span><br><span class="line"></span><br><span class="line"><span class="comment"># 발급자 확인</span></span><br><span class="line">sudo openssl x509 -<span class="keyword">in</span> /etc/letsencrypt/live/example.com/cert.pem -noout -issuer</span><br></pre></td></tr></table></figure>
+
+<h3 id="서버-SSL-테스트"><a href="#서버-SSL-테스트" class="headerlink" title="서버 SSL 테스트"></a>서버 SSL 테스트</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># OpenSSL로 연결 테스트</span></span><br><span class="line">openssl s_client -connect example.com:443 -servername example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 인증서 체인 확인</span></span><br><span class="line">openssl s_client -connect example.com:443 -showcerts</span><br></pre></td></tr></table></figure>
+
+<h3 id="온라인-SSL-테스트-도구"><a href="#온라인-SSL-테스트-도구" class="headerlink" title="온라인 SSL 테스트 도구"></a>온라인 SSL 테스트 도구</h3><ol>
+<li><p><strong>SSL Labs Server Test</strong> (가장 권장)</p>
+<ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.ssllabs.com/ssltest/">https://www.ssllabs.com/ssltest/</a></li>
+<li>A+ 등급을 목표로!</li>
+</ul>
+</li>
+<li><p><strong>SSL Checker</strong></p>
+<ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.sslshopper.com/ssl-checker.html">https://www.sslshopper.com/ssl-checker.html</a></li>
+</ul>
+</li>
+<li><p><strong>Why No Padlock</strong></p>
+<ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.whynopadlock.com/">https://www.whynopadlock.com/</a></li>
+</ul>
+</li>
+</ol>
+<h2 id="멀티-도메인-SSL-설정"><a href="#멀티-도메인-SSL-설정" class="headerlink" title="멀티 도메인 SSL 설정"></a>멀티 도메인 SSL 설정</h2><h3 id="방법-1-각-도메인별-인증서"><a href="#방법-1-각-도메인별-인증서" class="headerlink" title="방법 1: 각 도메인별 인증서"></a>방법 1: 각 도메인별 인증서</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># example.com</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com www.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/example.com/privkey.pem;</span><br><span class="line">    <span class="attribute">ssl_trusted_certificate</span> /etc/letsencrypt/live/example.com/chain.pem;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/ssl.conf;</span><br><span class="line">    <span class="attribute">root</span> /var/www/example.com;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># another-site.com</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> another-site.com www.another-site.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/another-site.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/another-site.com/privkey.pem;</span><br><span class="line">    <span class="attribute">ssl_trusted_certificate</span> /etc/letsencrypt/live/another-site.com/chain.pem;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/ssl.conf;</span><br><span class="line">    <span class="attribute">root</span> /var/www/another-site.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="방법-2-와일드카드-인증서"><a href="#방법-2-와일드카드-인증서" class="headerlink" title="방법 2: 와일드카드 인증서"></a>방법 2: 와일드카드 인증서</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> app1.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 같은 와일드카드 인증서 사용</span></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/example.com/privkey.pem;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/ssl.conf;</span><br><span class="line">    <span class="attribute">root</span> /var/www/app1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> app2.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 같은 와일드카드 인증서 사용</span></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/example.com/privkey.pem;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/ssl.conf;</span><br><span class="line">    <span class="attribute">root</span> /var/www/app2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="리버스-프록시에서-SSL"><a href="#리버스-프록시에서-SSL" class="headerlink" title="리버스 프록시에서 SSL"></a>리버스 프록시에서 SSL</h2><p>리버스 프록시 환경에서 SSL&#x2F;TLS를 구성하는 방법은 크게 두 가지입니다. 각 방법은 서로 다른 보안 수준과 성능 특성을 가지므로, 요구사항에 맞게 선택해야 합니다.</p>
+<h3 id="1-SSL-Termination-SSL-종료-권장-방식"><a href="#1-SSL-Termination-SSL-종료-권장-방식" class="headerlink" title="1. SSL Termination (SSL 종료) - 권장 방식"></a>1. SSL Termination (SSL 종료) - 권장 방식</h3><p><strong>개념:</strong><br>SSL Termination은 Nginx에서 SSL&#x2F;TLS 연결을 종료하고, 백엔드 서버와는 암호화되지 않은 HTTP로 통신하는 방식입니다. 이는 가장 일반적이고 효율적인 구성입니다.</p>
+<p><strong>통신 흐름:</strong></p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">클라이언트 ↔ Nginx (HTTPS) → 백엔드 서버 (HTTP)</span><br></pre></td></tr></table></figure>
+
+<p><strong>장점:</strong></p>
+<ol>
+<li><p><strong>성능 향상</strong></p>
+<ul>
+<li>SSL&#x2F;TLS 암호화&#x2F;복호화를 Nginx에서만 처리하므로 백엔드 서버의 CPU 부담 감소</li>
+<li>백엔드 서버는 애플리케이션 로직에만 집중 가능</li>
+<li>내부 네트워크는 암호화 오버헤드 없이 빠른 통신</li>
+</ul>
+</li>
+<li><p><strong>중앙화된 인증서 관리</strong></p>
+<ul>
+<li>인증서를 Nginx 한 곳에서만 관리</li>
+<li>인증서 갱신이 간단함</li>
+<li>여러 백엔드 서버가 있어도 인증서는 하나만 필요</li>
+</ul>
+</li>
+<li><p><strong>간편한 백엔드 설정</strong></p>
+<ul>
+<li>백엔드 서버에 SSL 설정이 불필요</li>
+<li>백엔드 애플리케이션 코드 수정 불필요</li>
+<li>다양한 백엔드 기술 스택 지원 용이</li>
+</ul>
+</li>
+<li><p><strong>로드 밸런싱과 통합 용이</strong></p>
+<ul>
+<li>SSL Offloading과 로드 밸런싱을 동시에 처리</li>
+<li>헬스 체크가 간단함</li>
+</ul>
+</li>
+</ol>
+<p><strong>단점:</strong></p>
+<ol>
+<li><p><strong>내부 네트워크 보안</strong></p>
+<ul>
+<li>Nginx와 백엔드 사이의 트래픽이 평문으로 전송됨</li>
+<li>같은 네트워크 내의 공격자가 트래픽을 가로챌 수 있음</li>
+<li><strong>해결책</strong>: 내부 네트워크를 격리하거나 VPN 사용</li>
+</ul>
+</li>
+<li><p><strong>규제 준수 문제</strong></p>
+<ul>
+<li>PCI DSS, HIPAA 등 특정 규정에서는 end-to-end 암호화를 요구할 수 있음</li>
+<li><strong>해결책</strong>: 규제 요구사항 확인 후 필요시 End-to-End SSL 사용</li>
+</ul>
+</li>
+</ol>
+<p><strong>적합한 사용 사례:</strong></p>
+<ul>
+<li>신뢰할 수 있는 내부 네트워크 환경</li>
+<li>클라우드 VPC 내부 통신</li>
+<li>동일 데이터센터 내의 서버 간 통신</li>
+<li>성능이 중요한 고트래픽 사이트</li>
+<li>마이크로서비스 아키텍처 (서비스 메시 없이)</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> api.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/api.example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/api.example.com/privkey.pem;</span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/ssl.conf;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://localhost:3000;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 백엔드에 원본 정보 전달</span></span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Port <span class="variable">$server_port</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-End-to-End-SSL-종단-간-암호화"><a href="#2-End-to-End-SSL-종단-간-암호화" class="headerlink" title="2. End-to-End SSL (종단 간 암호화)"></a>2. End-to-End SSL (종단 간 암호화)</h3><p><strong>개념:</strong><br>End-to-End SSL은 클라이언트부터 백엔드 서버까지 전 구간을 암호화하는 방식입니다. Nginx는 클라이언트의 SSL 연결을 종료하지만, 백엔드 서버와도 새로운 SSL 연결을 맺습니다.</p>
+<p><strong>통신 흐름:</strong></p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">클라이언트 ↔ Nginx (HTTPS) → 백엔드 서버 (HTTPS)</span><br></pre></td></tr></table></figure>
+
+<p><strong>장점:</strong></p>
+<ol>
+<li><p><strong>최고 수준의 보안</strong></p>
+<ul>
+<li>전 구간 암호화로 중간자 공격 방지</li>
+<li>내부 네트워크가 침해되어도 트래픽 내용 보호</li>
+<li>Zero Trust 네트워크 모델에 적합</li>
+</ul>
+</li>
+<li><p><strong>규제 준수</strong></p>
+<ul>
+<li>PCI DSS, HIPAA, SOC 2 등 엄격한 보안 규정 충족</li>
+<li>감사 추적(Audit Trail)에 유리</li>
+<li>컴플라이언스 요구사항 만족</li>
+</ul>
+</li>
+<li><p><strong>마이크로서비스 보안</strong></p>
+<ul>
+<li>서비스 간 통신도 암호화</li>
+<li>서비스 메시(Service Mesh)와 통합 가능</li>
+<li>mTLS(mutual TLS)로 확장 가능</li>
+</ul>
+</li>
+</ol>
+<p><strong>단점:</strong></p>
+<ol>
+<li><p><strong>성능 오버헤드</strong></p>
+<ul>
+<li>이중 SSL 핸드셰이크로 지연 시간 증가</li>
+<li>Nginx와 백엔드 모두 암호화&#x2F;복호화 처리</li>
+<li>CPU 사용량 증가 (특히 백엔드 서버)</li>
+</ul>
+</li>
+<li><p><strong>복잡한 인증서 관리</strong></p>
+<ul>
+<li>Nginx와 백엔드 모두 인증서 필요</li>
+<li>백엔드 인증서는 자체 서명 또는 내부 CA 사용</li>
+<li>인증서 갱신이 두 배로 필요</li>
+</ul>
+</li>
+<li><p><strong>디버깅 어려움</strong></p>
+<ul>
+<li>암호화된 트래픽 분석이 어려움</li>
+<li>문제 추적 시 복잡도 증가</li>
+<li>로깅 및 모니터링이 제한적</li>
+</ul>
+</li>
+<li><p><strong>설정 복잡성</strong></p>
+<ul>
+<li>백엔드 애플리케이션에 SSL 설정 필요</li>
+<li>인증서 검증 설정 필요</li>
+<li>잘못 설정 시 연결 실패 위험</li>
+</ul>
+</li>
+</ol>
+<p><strong>적합한 사용 사례:</strong></p>
+<ul>
+<li>금융, 의료, 정부 시스템</li>
+<li>규제 준수가 필수인 환경</li>
+<li>신뢰할 수 없는 네트워크 환경 (예: 멀티 클라우드)</li>
+<li>고도의 보안이 필요한 API</li>
+<li>Zero Trust 아키텍처</li>
+<li>내부 네트워크 격리가 불가능한 환경</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> api.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/api.example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/api.example.com/privkey.pem;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> https://backend-server:8443;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 백엔드 SSL 검증</span></span><br><span class="line">        <span class="attribute">proxy_ssl_verify</span> <span class="literal">on</span>;</span><br><span class="line">        <span class="attribute">proxy_ssl_trusted_certificate</span> /etc/ssl/certs/backend-ca.crt;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="트러블슈팅"><a href="#트러블슈팅" class="headerlink" title="트러블슈팅"></a>트러블슈팅</h2><p>SSL&#x2F;TLS 설정 중 발생할 수 있는 일반적인 문제와 해결 방법을 소개합니다.</p>
+<h3 id="1-ERR-SSL-PROTOCOL-ERROR"><a href="#1-ERR-SSL-PROTOCOL-ERROR" class="headerlink" title="1. ERR_SSL_PROTOCOL_ERROR"></a>1. ERR_SSL_PROTOCOL_ERROR</h3><h4 id="증상"><a href="#증상" class="headerlink" title="증상"></a>증상</h4><p>브라우저에서 “ERR_SSL_PROTOCOL_ERROR” 또는 “이 사이트에 안전하게 연결할 수 없습니다” 메시지가 표시됩니다.</p>
+<h4 id="원인"><a href="#원인" class="headerlink" title="원인"></a>원인</h4><ol>
+<li><p><strong>Nginx SSL 설정 오류</strong></p>
+<ul>
+<li>잘못된 SSL 인증서 경로</li>
+<li>문법 오류가 있는 설정 파일</li>
+<li>충돌하는 server 블록</li>
+</ul>
+</li>
+<li><p><strong>포트 443이 차단됨</strong></p>
+<ul>
+<li>방화벽이 HTTPS 트래픽을 차단</li>
+<li>Nginx가 포트 443에서 리스닝하지 않음</li>
+<li>다른 프로세스가 포트 443을 사용 중</li>
+</ul>
+</li>
+<li><p><strong>SSL 프로토콜 불일치</strong></p>
+<ul>
+<li>오래된 TLS 버전만 지원</li>
+<li>클라이언트와 서버 간 암호화 스위트 불일치</li>
+</ul>
+</li>
+</ol>
+<h4 id="해결-방법"><a href="#해결-방법" class="headerlink" title="해결 방법"></a>해결 방법</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. Nginx 설정 문법 검사</span></span><br><span class="line">sudo nginx -t</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 포트 443 사용 확인</span></span><br><span class="line">sudo netstat -tlnp | grep :443</span><br><span class="line"><span class="comment"># 또는</span></span><br><span class="line">sudo ss -tlnp | grep :443</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 방화벽 설정 확인</span></span><br><span class="line">sudo ufw status</span><br><span class="line">sudo ufw allow 443/tcp</span><br><span class="line"></span><br><span class="line"><span class="comment"># iptables 사용 시</span></span><br><span class="line">sudo iptables -L -n | grep 443</span><br><span class="line">sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. Nginx 프로세스 확인</span></span><br><span class="line">sudo systemctl status nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. SSL 설정 확인</span></span><br><span class="line">sudo nginx -T | grep -A 10 <span class="string">&quot;ssl_certificate&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 에러 로그 확인</span></span><br><span class="line">sudo <span class="built_in">tail</span> -f /var/log/nginx/error.log</span><br></pre></td></tr></table></figure>
+
+<p><strong>설정 예시:</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;  <span class="comment"># http2 빼먹지 않기</span></span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/example.com/privkey.pem;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># TLS 1.2 이상만 허용</span></span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-NET-ERR-CERT-AUTHORITY-INVALID"><a href="#2-NET-ERR-CERT-AUTHORITY-INVALID" class="headerlink" title="2. NET::ERR_CERT_AUTHORITY_INVALID"></a>2. NET::ERR_CERT_AUTHORITY_INVALID</h3><h4 id="증상-1"><a href="#증상-1" class="headerlink" title="증상"></a>증상</h4><p>브라우저에서 “인증서가 신뢰할 수 없습니다” 또는 “보안 인증서 오류” 경고가 표시됩니다.</p>
+<h4 id="원인-1"><a href="#원인-1" class="headerlink" title="원인"></a>원인</h4><ol>
+<li><p><strong>자체 서명 인증서 사용</strong></p>
+<ul>
+<li>브라우저가 인증 기관을 신뢰하지 않음</li>
+<li>프로덕션 환경에서 개발용 인증서 사용</li>
+</ul>
+</li>
+<li><p><strong>인증서 체인 누락</strong></p>
+<ul>
+<li>중간 인증서가 포함되지 않음</li>
+<li><code>cert.pem</code> 대신 <code>fullchain.pem</code>을 사용해야 함</li>
+</ul>
+</li>
+<li><p><strong>만료된 인증서</strong></p>
+<ul>
+<li>인증서 유효기간이 지남</li>
+<li>Let’s Encrypt 자동 갱신 실패</li>
+</ul>
+</li>
+<li><p><strong>도메인 불일치</strong></p>
+<ul>
+<li>인증서가 다른 도메인용</li>
+<li>www 포함 여부 차이</li>
+</ul>
+</li>
+</ol>
+<h4 id="해결-방법-1"><a href="#해결-방법-1" class="headerlink" title="해결 방법"></a>해결 방법</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 인증서 정보 확인</span></span><br><span class="line">openssl x509 -<span class="keyword">in</span> /etc/letsencrypt/live/example.com/cert.pem -text -noout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 만료일 확인</span></span><br><span class="line">openssl x509 -<span class="keyword">in</span> /etc/letsencrypt/live/example.com/cert.pem -noout -dates</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 도메인 확인</span></span><br><span class="line">openssl x509 -<span class="keyword">in</span> /etc/letsencrypt/live/example.com/cert.pem -noout -subject -ext subjectAltName</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 인증서 체인 확인</span></span><br><span class="line">openssl s_client -connect example.com:443 -showcerts</span><br></pre></td></tr></table></figure>
+
+<p><strong>설정 수정:</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ❌ 잘못된 설정</span></span><br><span class="line"><span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/cert.pem;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 올바른 설정 (체인 포함)</span></span><br><span class="line"><span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/fullchain.pem;</span><br><span class="line"><span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/example.com/privkey.pem;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 추가 설정 (OCSP Stapling)</span></span><br><span class="line"><span class="attribute">ssl_trusted_certificate</span> /etc/letsencrypt/live/example.com/chain.pem;</span><br><span class="line"><span class="attribute">ssl_stapling</span> <span class="literal">on</span>;</span><br><span class="line"><span class="attribute">ssl_stapling_verify</span> <span class="literal">on</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Mixed-Content-Warning"><a href="#3-Mixed-Content-Warning" class="headerlink" title="3. Mixed Content Warning"></a>3. Mixed Content Warning</h3><h4 id="증상-2"><a href="#증상-2" class="headerlink" title="증상"></a>증상</h4><p>HTTPS 사이트가 로드되지만, 브라우저 콘솔에 “Mixed Content” 경고가 표시되고 일부 리소스(이미지, CSS, JS)가 로드되지 않습니다.</p>
+<h4 id="원인-2"><a href="#원인-2" class="headerlink" title="원인"></a>원인</h4><p>HTTPS 페이지에서 HTTP 프로토콜로 리소스(이미지, 스크립트, 스타일시트)를 로드하려고 시도합니다.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- HTTPS 페이지에서 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://example.com/script.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  <span class="comment">&lt;!-- ❌ Mixed Content --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://cdn.example.com/image.jpg&quot;</span>&gt;</span>  <span class="comment">&lt;!-- ❌ Mixed Content --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="해결-방법-2"><a href="#해결-방법-2" class="headerlink" title="해결 방법"></a>해결 방법</h4><p><strong>방법 1: Content Security Policy 헤더 (자동 업그레이드)</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># HTTP 리소스를 자동으로 HTTPS로 업그레이드</span></span><br><span class="line">    <span class="attribute">add_header</span> Content-Security-Policy <span class="string">&quot;upgrade-insecure-requests&quot;</span> always;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>방법 2: HTML 코드 수정</strong></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 프로토콜 생략 (상대 프로토콜) --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;//example.com/script.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 또는 HTTPS로 명시 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://example.com/script.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>방법 3: 리버스 프록시로 외부 리소스 프록시</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 외부 HTTP 리소스를 프록시</span></span><br><span class="line">    <span class="section">location</span> /external/ &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://external-site.com/;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host external-site.com;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-인증서-갱신-실패"><a href="#4-인증서-갱신-실패" class="headerlink" title="4. 인증서 갱신 실패"></a>4. 인증서 갱신 실패</h3><h4 id="증상-3"><a href="#증상-3" class="headerlink" title="증상"></a>증상</h4><p>Let’s Encrypt 인증서 자동 갱신이 실패하고, <code>certbot renew</code> 명령이 오류를 반환합니다.</p>
+<h4 id="원인-3"><a href="#원인-3" class="headerlink" title="원인"></a>원인</h4><ol>
+<li><p><strong>포트 80이 차단됨</strong></p>
+<ul>
+<li>ACME HTTP-01 챌린지를 위해 포트 80 필요</li>
+<li>방화벽이나 보안 그룹이 포트 80 차단</li>
+</ul>
+</li>
+<li><p><strong>웹 루트 접근 불가</strong></p>
+<ul>
+<li><code>.well-known/acme-challenge</code> 경로 접근 불가</li>
+<li>Nginx 설정에서 해당 경로를 차단</li>
+</ul>
+</li>
+<li><p><strong>도메인 DNS 문제</strong></p>
+<ul>
+<li>DNS가 올바른 IP를 가리키지 않음</li>
+<li>DNS 전파 지연</li>
+</ul>
+</li>
+<li><p><strong>Rate Limiting</strong></p>
+<ul>
+<li>Let’s Encrypt의 발급 제한 초과</li>
+<li>같은 도메인에 너무 많은 요청</li>
+</ul>
+</li>
+</ol>
+<h4 id="해결-방법-3"><a href="#해결-방법-3" class="headerlink" title="해결 방법"></a>해결 방법</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 포트 80 확인 및 개방</span></span><br><span class="line">sudo ufw allow 80/tcp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. ACME 챌린지 경로 테스트</span></span><br><span class="line">curl -I http://example.com/.well-known/acme-challenge/test</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 수동 갱신 시도 (상세 로그)</span></span><br><span class="line">sudo certbot renew --dry-run --verbose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 강제 갱신</span></span><br><span class="line">sudo certbot renew --force-renewal</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. DNS 확인</span></span><br><span class="line">dig example.com</span><br><span class="line">nslookup example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. Certbot 로그 확인</span></span><br><span class="line">sudo <span class="built_in">tail</span> -f /var/log/letsencrypt/letsencrypt.log</span><br></pre></td></tr></table></figure>
+
+<p><strong>Nginx 설정 확인:</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ACME 챌린지 경로는 반드시 허용</span></span><br><span class="line">    <span class="section">location</span><span class="regexp"> ^~</span> /.well-known/acme-challenge/ &#123;</span><br><span class="line">        <span class="attribute">root</span> /var/www/html;</span><br><span class="line">        <span class="attribute">allow</span> all;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 나머지는 HTTPS로 리다이렉트</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-Too-Many-Redirects-무한-리다이렉트"><a href="#5-Too-Many-Redirects-무한-리다이렉트" class="headerlink" title="5. Too Many Redirects (무한 리다이렉트)"></a>5. Too Many Redirects (무한 리다이렉트)</h3><h4 id="증상-4"><a href="#증상-4" class="headerlink" title="증상"></a>증상</h4><p>브라우저에서 “ERR_TOO_MANY_REDIRECTS” 또는 “리다이렉트가 너무 많습니다” 오류가 발생합니다.</p>
+<h4 id="원인-4"><a href="#원인-4" class="headerlink" title="원인"></a>원인</h4><ol>
+<li><p><strong>리버스 프록시 리다이렉트 루프</strong></p>
+<ul>
+<li>로드 밸런서&#x2F;CDN이 HTTPS를 HTTP로 변환</li>
+<li>Nginx가 HTTP를 감지하고 다시 HTTPS로 리다이렉트</li>
+<li>무한 루프 발생</li>
+</ul>
+</li>
+<li><p><strong>잘못된 리다이렉트 로직</strong></p>
+<ul>
+<li>HTTP와 HTTPS server 블록이 서로를 리다이렉트</li>
+</ul>
+</li>
+</ol>
+<h4 id="해결-방법-4"><a href="#해결-방법-4" class="headerlink" title="해결 방법"></a>해결 방법</h4><p><strong>X-Forwarded-Proto 헤더 확인:</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># X-Forwarded-Proto가 https면 리다이렉트 안 함</span></span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$http_x_forwarded_proto</span> = <span class="string">&quot;https&quot;</span>) &#123;</span><br><span class="line">        <span class="comment"># 이미 HTTPS이므로 정상 처리</span></span><br><span class="line">        <span class="comment"># (실제로는 443 포트에서 처리되어야 하지만 예외 처리)</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># HTTP인 경우에만 리다이렉트</span></span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$http_x_forwarded_proto</span> != <span class="string">&quot;https&quot;</span>) &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>CloudFlare&#x2F;AWS ELB 사용 시:</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># CloudFlare의 경우</span></span><br><span class="line">    <span class="attribute">set</span> <span class="variable">$redirect</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$http_cf_visitor</span> <span class="regexp">~* &quot;https&quot;)</span> &#123;</span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$redirect</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$http_cf_visitor</span> !<span class="regexp">~* &quot;https&quot;)</span> &#123;</span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$redirect</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$redirect</span> = <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>더 간단한 해결책 (리버스 프록시 환경):</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 80 포트에서는 리다이렉트 로직 제거</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 로드 밸런서가 이미 HTTPS 처리</span></span><br><span class="line">    <span class="comment"># 추가 리다이렉트 불필요</span></span><br><span class="line">    <span class="attribute">root</span> /var/www/example.com;</span><br><span class="line">    <span class="attribute">index</span> index.html;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/letsencrypt/live/example.com/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/letsencrypt/live/example.com/privkey.pem;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /var/www/example.com;</span><br><span class="line">    <span class="attribute">index</span> index.html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-SSL-Handshake-Failed"><a href="#6-SSL-Handshake-Failed" class="headerlink" title="6. SSL Handshake Failed"></a>6. SSL Handshake Failed</h3><h4 id="증상-5"><a href="#증상-5" class="headerlink" title="증상"></a>증상</h4><p><code>curl</code> 또는 브라우저에서 “SSL handshake failed” 오류가 발생합니다.</p>
+<h4 id="원인-5"><a href="#원인-5" class="headerlink" title="원인"></a>원인</h4><ol>
+<li><strong>TLS 버전 불일치</strong></li>
+<li><strong>암호화 스위트 불일치</strong></li>
+<li><strong>SNI(Server Name Indication) 문제</strong></li>
+</ol>
+<h4 id="해결-방법-5"><a href="#해결-방법-5" class="headerlink" title="해결 방법"></a>해결 방법</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. SSL 연결 테스트</span></span><br><span class="line">openssl s_client -connect example.com:443 -servername example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 특정 TLS 버전 테스트</span></span><br><span class="line">openssl s_client -connect example.com:443 -tls1_2</span><br><span class="line">openssl s_client -connect example.com:443 -tls1_3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 암호화 스위트 확인</span></span><br><span class="line">nmap --script ssl-enum-ciphers -p 443 example.com</span><br></pre></td></tr></table></figure>
+
+<p><strong>설정 개선:</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 최신 TLS만 허용</span></span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 안전한 암호화 스위트</span></span><br><span class="line">    <span class="attribute">ssl_ciphers</span> <span class="string">&#x27;ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384&#x27;</span>;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># DH 파라미터 (2048비트 이상)</span></span><br><span class="line">    <span class="attribute">ssl_dhparam</span> /etc/nginx/dhparam.pem;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker-환경에서-SSL"><a href="#Docker-환경에서-SSL" class="headerlink" title="Docker 환경에서 SSL"></a>Docker 환경에서 SSL</h2><h3 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:alpine</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:80&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;443:443&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./nginx.conf:/etc/nginx/nginx.conf:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./conf.d:/etc/nginx/conf.d:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./ssl:/etc/nginx/ssl:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/letsencrypt:/etc/letsencrypt:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./html:/usr/share/nginx/html:ro</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">certbot:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">certbot/certbot</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/letsencrypt:/etc/letsencrypt</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./html:/usr/share/nginx/html</span></span><br><span class="line">    <span class="attr">entrypoint:</span> <span class="string">&quot;/bin/sh -c &#x27;trap exit TERM; while :; do certbot renew; sleep 12h &amp; wait $$&#123;!&#125;; done;&#x27;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="초기-인증서-발급"><a href="#초기-인증서-발급" class="headerlink" title="초기 인증서 발급"></a>초기 인증서 발급</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Certbot 컨테이너로 인증서 발급</span></span><br><span class="line">docker-compose run --<span class="built_in">rm</span> certbot certonly --webroot \</span><br><span class="line">  --webroot-path=/usr/share/nginx/html \</span><br><span class="line">  -d example.com \</span><br><span class="line">  -d www.example.com \</span><br><span class="line">  --email admin@example.com \</span><br><span class="line">  --agree-tos \</span><br><span class="line">  --no-eff-email</span><br></pre></td></tr></table></figure>
+
+<h2 id="성능-벤치마크"><a href="#성능-벤치마크" class="headerlink" title="성능 벤치마크"></a>성능 벤치마크</h2><h3 id="SSL-TLS-성능-테스트"><a href="#SSL-TLS-성능-테스트" class="headerlink" title="SSL&#x2F;TLS 성능 테스트"></a>SSL&#x2F;TLS 성능 테스트</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 초당 연결 수 테스트</span></span><br><span class="line">openssl s_time -connect example.com:443 -www / -new -time 30</span><br><span class="line"></span><br><span class="line"><span class="comment"># Apache Bench로 HTTPS 부하 테스트</span></span><br><span class="line">ab -n 1000 -c 100 https://example.com/</span><br></pre></td></tr></table></figure>
+
+<h3 id="성능-비교"><a href="#성능-비교" class="headerlink" title="성능 비교"></a>성능 비교</h3><table>
+<thead>
+<tr>
+<th>설정</th>
+<th>TPS (Transactions Per Second)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTTP (no SSL)</td>
+<td>~5,000</td>
+</tr>
+<tr>
+<td>HTTPS (TLS 1.2)</td>
+<td>~3,500</td>
+</tr>
+<tr>
+<td>HTTPS (TLS 1.3)</td>
+<td>~4,200</td>
+</tr>
+<tr>
+<td>HTTPS + 세션 재사용</td>
+<td>~4,800</td>
+</tr>
+</tbody></table>
+<h2 id="보안-체크리스트"><a href="#보안-체크리스트" class="headerlink" title="보안 체크리스트"></a>보안 체크리스트</h2><ul>
+<li><input disabled type="checkbox"> TLS 1.2 이상만 사용</li>
+<li><input disabled type="checkbox"> 강력한 암호화 스위트 설정</li>
+<li><input disabled type="checkbox"> HSTS 헤더 설정</li>
+<li><input disabled type="checkbox"> OCSP Stapling 활성화</li>
+<li><input disabled type="checkbox"> Perfect Forward Secrecy (PFS) 지원</li>
+<li><input disabled type="checkbox"> 인증서 자동 갱신 설정</li>
+<li><input disabled type="checkbox"> 보안 헤더 설정 (X-Frame-Options, CSP 등)</li>
+<li><input disabled type="checkbox"> SSL Labs에서 A+ 등급 획득</li>
+<li><input disabled type="checkbox"> HTTP에서 HTTPS로 리다이렉트</li>
+<li><input disabled type="checkbox"> 인증서 만료 모니터링</li>
+</ul>
+<h2 id="인증서-모니터링"><a href="#인증서-모니터링" class="headerlink" title="인증서 모니터링"></a>인증서 모니터링</h2><h3 id="만료-알림-스크립트"><a href="#만료-알림-스크립트" class="headerlink" title="만료 알림 스크립트"></a>만료 알림 스크립트</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># check-ssl-expiry.sh</span></span><br><span class="line"></span><br><span class="line">DOMAIN=<span class="string">&quot;example.com&quot;</span></span><br><span class="line">DAYS_WARN=30</span><br><span class="line"></span><br><span class="line"><span class="comment"># 만료일 확인</span></span><br><span class="line">EXPIRY_DATE=$(<span class="built_in">echo</span> | openssl s_client -servername <span class="variable">$DOMAIN</span> -connect <span class="variable">$DOMAIN</span>:443 2&gt;/dev/null | openssl x509 -noout -enddate | <span class="built_in">cut</span> -d= -f2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 남은 일수 계산</span></span><br><span class="line">EXPIRY_EPOCH=$(<span class="built_in">date</span> -d <span class="string">&quot;<span class="variable">$EXPIRY_DATE</span>&quot;</span> +%s)</span><br><span class="line">NOW_EPOCH=$(<span class="built_in">date</span> +%s)</span><br><span class="line">DAYS_LEFT=$(( (<span class="variable">$EXPIRY_EPOCH</span> - <span class="variable">$NOW_EPOCH</span>) / <span class="number">86400</span> ))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$DAYS_LEFT</span> -lt <span class="variable">$DAYS_WARN</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Warning: SSL certificate for <span class="variable">$DOMAIN</span> expires in <span class="variable">$DAYS_LEFT</span> days!&quot;</span></span><br><span class="line">    <span class="comment"># 이메일 또는 Slack 알림 전송</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>Cron으로 매일 실행:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0 9 * * * /path/to/check-ssl-expiry.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="참고-자료"><a href="#참고-자료" class="headerlink" title="참고 자료"></a>참고 자료</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://letsencrypt.org/docs/">Let’s Encrypt 공식 문서</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ssl-config.mozilla.org/">Mozilla SSL Configuration Generator</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.ssllabs.com/ssltest/">SSL Labs Server Test</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://certbot.eff.org/docs/">Certbot 문서</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html">OWASP TLS Cheat Sheet</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html">Nginx SSL 모듈 문서</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/11/infra/nginx-ssl-guide/" data-id="cmjglsiqo006c288dg48hbe82" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Nginx SSL/TLS 적용하기",
+        "image": "https://ckck803.github.io/images/springboot/sample-board/nginx/nginx.png",
+        "keywords": "Nginx SSL TLS HTTPS Security",
+        "genre": "Infra",
+        "datePublished": "2025-12-11",
+        "dateCreated": "2025-12-11",
+        "dateModified": "2025-12-11",
+        "url": "https://ckck803.github.io/2025/12/11/infra/nginx-ssl-guide/",
+        "description": "
+SSL&#x2F;TLS란?SSL (Secure Sockets Layer) 과 TLS (Transport Layer Security) 는 인터넷 통신을 암호화하는 프로토콜입니다. 1994년 넷스케이프에서 SSL 1.0을 개발한 이후, SSL은 웹 보안의 표준으로 자리잡았습니다. 그러나 여러 보안 취약점이 발견되면서 1999년 IETF(Internet Engineering Task Force)는 SSL 3.0을 기반으로 한 TLS 1.0을 발표했습니다.
+현재 SSL 3.0과 TLS 1.0, 1.1은 보안상의 이유로 폐기되었으며, TLS 1.2(2008년 발표)와 TLS 1.3(2018년 발표)만 사용해야 합니다. 그럼에도 불구하고 역사적 이유와 관례상 “SSL 인증서” 또는 “SSL&#x2F;TLS”라는 용어를 계속 사용하고 있습니다.
+SSL&#x2F;TLS의 작동 원리SSL&#x2F;TLS는 비대칭 암호화와 대칭 암호화를 조합하여 안전한 통신을 제공합니다:
+
+핸드셰이크 단계: 클라이언트와 서버가 비대칭 암호화(공개키&#x2F;개인키)를 사용하여 안전하게 세션키를 교환합니다.
+데이터 전송 단계: 교환된 세션키를 사용하여 대칭 암호화로 빠르게 데이터를 암호화&#x2F;복호화합니다.
+검증 단계: 인증서를 통해 서버의 신원을 확인하고, 메시지 인증 코드(MAC)로 데이터 무결성을 보장합니다.
+
+이러한 구조 덕분에 SSL&#x2F;TLS는 높은 보안성과 효율성을 동시에 제공할 수 있습니다.
+왜 SSL&#x2F;TLS가 필수인가?1. 데이터 암호화 - 도청 방지",
+        "wordCount": 6179
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/12/21/java/excel-cell-style-limit/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            [JAVA POI] - The maximum number of Cell Styles was exceeded.
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/12/11/infra/nginx/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Nginx 완벽 가이드</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">61</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">184</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/Python/">Python</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infra/">Infra</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">49</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">279</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2025 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/11/infra/nginx-ssl-guide/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

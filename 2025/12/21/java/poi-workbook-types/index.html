@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>[JAVA POI] HSSFWorkbook vs XSSFWorkbook vs SXSSFWorkbook 비교 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Java,Apache POI,Excel,HSSFWorkbook,XSSFWorkbook,SXSSFWorkbook">
+    
+    <meta name="description" content="Apache POI Workbook 종류Apache POI는 Microsoft Office 파일을 처리하기 위한 Java 라이브러리입니다. Excel 파일을 다루기 위해 세 가지 주요 Workbook 구현체를 제공합니다. 📌 HSSFWorkbookHSSF (Horrible SpreadSheet Format) 는 Excel 97-2003 파일 형식(.xl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[JAVA POI] HSSFWorkbook vs XSSFWorkbook vs SXSSFWorkbook 비교">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/21/java/poi-workbook-types/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="Apache POI Workbook 종류Apache POI는 Microsoft Office 파일을 처리하기 위한 Java 라이브러리입니다. Excel 파일을 다루기 위해 세 가지 주요 Workbook 구현체를 제공합니다. 📌 HSSFWorkbookHSSF (Horrible SpreadSheet Format) 는 Excel 97-2003 파일 형식(.xl">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/java/java.png">
+<meta property="article:published_time" content="2025-12-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-21T07:16:30.754Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Apache POI">
+<meta property="article:tag" content="Excel">
+<meta property="article:tag" content="HSSFWorkbook">
+<meta property="article:tag" content="XSSFWorkbook">
+<meta property="article:tag" content="SXSSFWorkbook">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/java/java.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/">Django</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/Python/">Python</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infra/">Infra</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Java/">Java</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Security/">Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Develop/JAVA/">JAVA</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-java/poi-workbook-types" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        [JAVA POI] HSSFWorkbook vs XSSFWorkbook vs SXSSFWorkbook 비교
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/21/java/poi-workbook-types/" class="article-date">
+       <time datetime="2025-12-20T16:00:00.000Z" itemprop="datePublished">2025-12-21</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/21/java/poi-workbook-types/" class="article-date">
+     <time datetime="2025-12-21T07:16:30.754Z" itemprop="dateModified">2025-12-21</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Apache-POI/" rel="tag">Apache POI</a>, <a class="tag-link-link" href="/tags/Excel/" rel="tag">Excel</a>, <a class="tag-link-link" href="/tags/HSSFWorkbook/" rel="tag">HSSFWorkbook</a>, <a class="tag-link-link" href="/tags/Java/" rel="tag">Java</a>, <a class="tag-link-link" href="/tags/SXSSFWorkbook/" rel="tag">SXSSFWorkbook</a>, <a class="tag-link-link" href="/tags/XSSFWorkbook/" rel="tag">XSSFWorkbook</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/java/java.png"></p>
+<h2 id="Apache-POI-Workbook-종류"><a href="#Apache-POI-Workbook-종류" class="headerlink" title="Apache POI Workbook 종류"></a>Apache POI Workbook 종류</h2><p>Apache POI는 Microsoft Office 파일을 처리하기 위한 Java 라이브러리입니다. Excel 파일을 다루기 위해 세 가지 주요 Workbook 구현체를 제공합니다.</p>
+<h2 id="📌-HSSFWorkbook"><a href="#📌-HSSFWorkbook" class="headerlink" title="📌 HSSFWorkbook"></a>📌 HSSFWorkbook</h2><p><strong>HSSF (Horrible SpreadSheet Format)</strong> 는 Excel 97-2003 파일 형식(<code>.xls</code>)을 처리하는 구현체입니다.</p>
+<h3 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h3><ul>
+<li><strong>파일 형식</strong>: <code>.xls</code> (Excel 97-2003)</li>
+<li><strong>최대 행 수</strong>: 65,536행 (2^16)</li>
+<li><strong>최대 열 수</strong>: 256열 (2^8)</li>
+<li><strong>최대 Cell Style</strong>: 4,000개</li>
+<li><strong>메모리 사용</strong>: 중간 수준 (전체 파일을 메모리에 로드)</li>
+<li><strong>처리 속도</strong>: XSSF보다 빠름</li>
+</ul>
+<h3 id="사용-예시"><a href="#사용-예시" class="headerlink" title="사용 예시"></a>사용 예시</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.poi.hssf.usermodel.HSSFWorkbook;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.ss.usermodel.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HSSFExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// HSSFWorkbook 생성</span></span><br><span class="line">        <span class="type">Workbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HSSFWorkbook</span>();</span><br><span class="line">        <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.createSheet(<span class="string">&quot;Sample&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 데이터 작성</span></span><br><span class="line">        <span class="type">Row</span> <span class="variable">row</span> <span class="operator">=</span> sheet.createRow(<span class="number">0</span>);</span><br><span class="line">        <span class="type">Cell</span> <span class="variable">cell</span> <span class="operator">=</span> row.createCell(<span class="number">0</span>);</span><br><span class="line">        cell.setCellValue(<span class="string">&quot;Hello, HSSF!&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// .xls 파일로 저장</span></span><br><span class="line">        <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fileOut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;sample.xls&quot;</span>)) &#123;</span><br><span class="line">            workbook.write(fileOut);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        workbook.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="장점"><a href="#장점" class="headerlink" title="장점"></a>장점</h3><ul>
+<li>오래된 Excel 버전과의 호환성</li>
+<li>XSSF보다 빠른 처리 속도</li>
+<li>작은 파일 크기</li>
+</ul>
+<h3 id="단점"><a href="#단점" class="headerlink" title="단점"></a>단점</h3><ul>
+<li>행&#x2F;열 제한이 작음 (65,536행, 256열)</li>
+<li>Cell Style 제한 (4,000개)</li>
+<li>구형 파일 포맷 (현대적인 Excel 기능 제한)</li>
+</ul>
+<h2 id="📌-XSSFWorkbook"><a href="#📌-XSSFWorkbook" class="headerlink" title="📌 XSSFWorkbook"></a>📌 XSSFWorkbook</h2><p><strong>XSSF (XML SpreadSheet Format)</strong> 는 Excel 2007 이후 파일 형식(<code>.xlsx</code>)을 처리하는 구현체입니다.</p>
+<p><code>.xlsx</code> 파일을 전체 DOM 구조로 메모리에 로드해 모든 시트 &#x2F; 행 &#x2F; 셀 객체가 메모리에 상주하기 때문에 랜덤 접근(임의 셀 수정, 이동) 에 매우 편리하는 이점이 있습니다.</p>
+<p>하지만 파일내 모든 데이터를 메모리에 로드하기 때문에 대용량 파일에는 메모리 부담이 크다는 단점이 있습니다.</p>
+<h3 id="특징-1"><a href="#특징-1" class="headerlink" title="특징"></a>특징</h3><ul>
+<li><strong>파일 형식</strong>: <code>.xlsx</code> (Excel 2007+)</li>
+<li><strong>최대 행 수</strong>: 1,048,576행 (2^20)</li>
+<li><strong>최대 열 수</strong>: 16,384열 (2^14)</li>
+<li><strong>최대 Cell Style</strong>: 64,000개</li>
+<li><strong>메모리 사용</strong>: 높음 (전체 파일을 메모리에 로드)</li>
+<li><strong>처리 속도</strong>: HSSF보다 느림 (XML 파싱 오버헤드)</li>
+</ul>
+<h3 id="사용-예시-1"><a href="#사용-예시-1" class="headerlink" title="사용 예시"></a>사용 예시</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.poi.xssf.usermodel.XSSFWorkbook;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.ss.usermodel.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">XSSFExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// XSSFWorkbook 생성</span></span><br><span class="line">        <span class="type">Workbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">XSSFWorkbook</span>();</span><br><span class="line">        <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.createSheet(<span class="string">&quot;Sample&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 데이터 작성</span></span><br><span class="line">        <span class="type">Row</span> <span class="variable">row</span> <span class="operator">=</span> sheet.createRow(<span class="number">0</span>);</span><br><span class="line">        <span class="type">Cell</span> <span class="variable">cell</span> <span class="operator">=</span> row.createCell(<span class="number">0</span>);</span><br><span class="line">        cell.setCellValue(<span class="string">&quot;Hello, XSSF!&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 스타일 적용</span></span><br><span class="line">        <span class="type">CellStyle</span> <span class="variable">style</span> <span class="operator">=</span> workbook.createCellStyle();</span><br><span class="line">        <span class="type">Font</span> <span class="variable">font</span> <span class="operator">=</span> workbook.createFont();</span><br><span class="line">        font.setBold(<span class="literal">true</span>);</span><br><span class="line">        font.setFontHeightInPoints((<span class="type">short</span>) <span class="number">14</span>);</span><br><span class="line">        style.setFont(font);</span><br><span class="line">        cell.setCellStyle(style);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// .xlsx 파일로 저장</span></span><br><span class="line">        <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fileOut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;sample.xlsx&quot;</span>)) &#123;</span><br><span class="line">            workbook.write(fileOut);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        workbook.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="장점-1"><a href="#장점-1" class="headerlink" title="장점"></a>장점</h3><ul>
+<li>대용량 데이터 지원 (100만 행 이상)</li>
+<li>많은 Cell Style 지원 (64,000개)</li>
+<li>현대적인 Excel 기능 지원</li>
+<li>압축된 XML 형식으로 파일 크기 감소</li>
+</ul>
+<h3 id="단점-1"><a href="#단점-1" class="headerlink" title="단점"></a>단점</h3><ul>
+<li>높은 메모리 사용량</li>
+<li>HSSF보다 느린 처리 속도</li>
+<li>대용량 파일 처리 시 OutOfMemoryError 발생 가능</li>
+</ul>
+<h2 id="📌-SXSSFWorkbook"><a href="#📌-SXSSFWorkbook" class="headerlink" title="📌 SXSSFWorkbook"></a>📌 SXSSFWorkbook</h2><p><strong>SXSSF (Streaming XML SpreadSheet Format)</strong> 는 XSSFWorkbook의 메모리 최적화 버전으로, 대용량 Excel 파일을 생성할 때 사용합니다.</p>
+<h3 id="특징-2"><a href="#특징-2" class="headerlink" title="특징"></a>특징</h3><ul>
+<li><strong>파일 형식</strong>: <code>.xlsx</code> (Excel 2007+)</li>
+<li><strong>최대 행 수</strong>: 1,048,576행 (2^20)</li>
+<li><strong>최대 열 수</strong>: 16,384열 (2^14)</li>
+<li><strong>최대 Cell Style</strong>: 64,000개</li>
+<li><strong>메모리 사용</strong>: 낮음 (윈도우 방식으로 일부만 메모리에 유지)</li>
+<li><strong>처리 속도</strong>: 쓰기는 빠르지만 읽기 불가</li>
+<li><strong>기본 윈도우 크기</strong>: 100행 (변경 가능)</li>
+</ul>
+<h3 id="사용-예시-2"><a href="#사용-예시-2" class="headerlink" title="사용 예시"></a>사용 예시</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.poi.xssf.streaming.SXSSFWorkbook;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.ss.usermodel.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SXSSFExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// SXSSFWorkbook 생성 (메모리에 100행만 유지)</span></span><br><span class="line">        <span class="type">SXSSFWorkbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>(<span class="number">100</span>);</span><br><span class="line">        <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.createSheet(<span class="string">&quot;Large Data&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 대용량 데이터 작성</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">rowNum</span> <span class="operator">=</span> <span class="number">0</span>; rowNum &lt; <span class="number">100000</span>; rowNum++) &#123;</span><br><span class="line">            <span class="type">Row</span> <span class="variable">row</span> <span class="operator">=</span> sheet.createRow(rowNum);</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">colNum</span> <span class="operator">=</span> <span class="number">0</span>; colNum &lt; <span class="number">10</span>; colNum++) &#123;</span><br><span class="line">                <span class="type">Cell</span> <span class="variable">cell</span> <span class="operator">=</span> row.createCell(colNum);</span><br><span class="line">                cell.setCellValue(<span class="string">&quot;Row &quot;</span> + rowNum + <span class="string">&quot;, Col &quot;</span> + colNum);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// .xlsx 파일로 저장</span></span><br><span class="line">        <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fileOut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;large_sample.xlsx&quot;</span>)) &#123;</span><br><span class="line">            workbook.write(fileOut);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 임시 파일 정리 (중요!)</span></span><br><span class="line">        workbook.dispose();</span><br><span class="line">        workbook.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="고급-설정"><a href="#고급-설정" class="headerlink" title="고급 설정"></a>고급 설정</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.poi.xssf.streaming.SXSSFWorkbook;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SXSSFAdvanced</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 윈도우 크기 설정 (메모리에 유지할 행 수)</span></span><br><span class="line">        <span class="type">SXSSFWorkbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 임시 파일 압축 사용 (메모리 절약)</span></span><br><span class="line">        workbook.setCompressTempFiles(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 자동 플러시 설정</span></span><br><span class="line">        <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.createSheet(<span class="string">&quot;Data&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ... 데이터 작성 ...</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 반드시 dispose() 호출하여 임시 파일 정리</span></span><br><span class="line">        workbook.dispose();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="장점-2"><a href="#장점-2" class="headerlink" title="장점"></a>장점</h3><ul>
+<li>매우 낮은 메모리 사용량</li>
+<li>대용량 데이터 처리 가능 (수백만 행)</li>
+<li>OutOfMemoryError 방지</li>
+<li>스트리밍 방식으로 빠른 쓰기 성능</li>
+</ul>
+<h3 id="단점-2"><a href="#단점-2" class="headerlink" title="단점"></a>단점</h3><ul>
+<li><strong>읽기 불가능</strong> (쓰기 전용)</li>
+<li>이전 행으로 돌아가서 수정 불가 (윈도우 밖의 행)</li>
+<li>임시 파일 생성 (반드시 <code>dispose()</code> 호출 필요)</li>
+<li>랜덤 액세스 불가</li>
+</ul>
+<h3 id="주의사항"><a href="#주의사항" class="headerlink" title="주의사항"></a>주의사항</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 잘못된 예시 - 메모리 누수 발생</span></span><br><span class="line"><span class="type">SXSSFWorkbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>();</span><br><span class="line">workbook.write(outputStream);</span><br><span class="line">workbook.close(); <span class="comment">// dispose() 호출 안 함 - 임시 파일이 삭제되지 않음!</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 올바른 예시</span></span><br><span class="line"><span class="type">SXSSFWorkbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    workbook.write(outputStream);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    workbook.dispose(); <span class="comment">// 임시 파일 정리</span></span><br><span class="line">    workbook.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="비교표"><a href="#비교표" class="headerlink" title="비교표"></a>비교표</h2><table>
+<thead>
+<tr>
+<th>구분</th>
+<th>HSSFWorkbook</th>
+<th>XSSFWorkbook</th>
+<th>SXSSFWorkbook</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>파일 형식</strong></td>
+<td>.xls</td>
+<td>.xlsx</td>
+<td>.xlsx</td>
+</tr>
+<tr>
+<td><strong>Excel 버전</strong></td>
+<td>97-2003</td>
+<td>2007+</td>
+<td>2007+</td>
+</tr>
+<tr>
+<td><strong>최대 행</strong></td>
+<td>65,536</td>
+<td>1,048,576</td>
+<td>1,048,576</td>
+</tr>
+<tr>
+<td><strong>최대 열</strong></td>
+<td>256</td>
+<td>16,384</td>
+<td>16,384</td>
+</tr>
+<tr>
+<td><strong>Cell Style 제한</strong></td>
+<td>4,000</td>
+<td>64,000</td>
+<td>64,000</td>
+</tr>
+<tr>
+<td><strong>메모리 사용</strong></td>
+<td>중간</td>
+<td>높음</td>
+<td>낮음</td>
+</tr>
+<tr>
+<td><strong>처리 속도</strong></td>
+<td>빠름</td>
+<td>보통</td>
+<td>빠름 (쓰기)</td>
+</tr>
+<tr>
+<td><strong>읽기 지원</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>쓰기 지원</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>랜덤 액세스</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>⚠️ 제한적</td>
+</tr>
+<tr>
+<td><strong>대용량 처리</strong></td>
+<td>❌</td>
+<td>⚠️ 제한적</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>임시 파일</strong></td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+</tbody></table>
+<h2 id="사용-시나리오별-추천"><a href="#사용-시나리오별-추천" class="headerlink" title="사용 시나리오별 추천"></a>사용 시나리오별 추천</h2><h3 id="HSSFWorkbook-사용-권장"><a href="#HSSFWorkbook-사용-권장" class="headerlink" title="HSSFWorkbook 사용 권장"></a>HSSFWorkbook 사용 권장</h3><ul>
+<li>오래된 Excel 파일(.xls) 호환성이 필요한 경우</li>
+<li>데이터가 65,536행 이하인 경우</li>
+<li>빠른 처리 속도가 중요한 경우</li>
+<li>레거시 시스템과의 통합</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 레거시 시스템용</span></span><br><span class="line"><span class="keyword">if</span> (legacySystem) &#123;</span><br><span class="line">    <span class="type">Workbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HSSFWorkbook</span>();</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="XSSFWorkbook-사용-권장"><a href="#XSSFWorkbook-사용-권장" class="headerlink" title="XSSFWorkbook 사용 권장"></a>XSSFWorkbook 사용 권장</h3><ul>
+<li>현대적인 Excel 기능이 필요한 경우</li>
+<li>읽기와 쓰기를 모두 수행해야 하는 경우</li>
+<li>데이터 수정이 필요한 경우</li>
+<li>중간 규모의 데이터 (수만 행)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 읽기 및 수정 작업</span></span><br><span class="line"><span class="keyword">try</span> (<span class="type">FileInputStream</span> <span class="variable">fis</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(<span class="string">&quot;input.xlsx&quot;</span>)) &#123;</span><br><span class="line">    <span class="type">XSSFWorkbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">XSSFWorkbook</span>(fis);</span><br><span class="line">    <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.getSheetAt(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 데이터 읽기 및 수정</span></span><br><span class="line">    <span class="type">Row</span> <span class="variable">row</span> <span class="operator">=</span> sheet.getRow(<span class="number">0</span>);</span><br><span class="line">    <span class="type">Cell</span> <span class="variable">cell</span> <span class="operator">=</span> row.getCell(<span class="number">0</span>);</span><br><span class="line">    cell.setCellValue(<span class="string">&quot;Updated Value&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 저장</span></span><br><span class="line">    <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;output.xlsx&quot;</span>)) &#123;</span><br><span class="line">        workbook.write(fos);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SXSSFWorkbook-사용-권장"><a href="#SXSSFWorkbook-사용-권장" class="headerlink" title="SXSSFWorkbook 사용 권장"></a>SXSSFWorkbook 사용 권장</h3><ul>
+<li>대용량 데이터 생성 (10만 행 이상)</li>
+<li>메모리가 제한적인 환경</li>
+<li>쓰기 전용 작업</li>
+<li>리포트 생성, 데이터 내보내기</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 대용량 리포트 생성</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">generateLargeReport</span><span class="params">(List&lt;Data&gt; dataList)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="type">SXSSFWorkbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.createSheet(<span class="string">&quot;Report&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">rowNum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Data data : dataList) &#123; <span class="comment">// 수백만 건</span></span><br><span class="line">            <span class="type">Row</span> <span class="variable">row</span> <span class="operator">=</span> sheet.createRow(rowNum++);</span><br><span class="line">            row.createCell(<span class="number">0</span>).setCellValue(data.getId());</span><br><span class="line">            row.createCell(<span class="number">1</span>).setCellValue(data.getName());</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;report.xlsx&quot;</span>)) &#123;</span><br><span class="line">            workbook.write(fos);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        workbook.dispose(); <span class="comment">// 임시 파일 정리</span></span><br><span class="line">        workbook.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="성능-비교"><a href="#성능-비교" class="headerlink" title="성능 비교"></a>성능 비교</h2><h3 id="메모리-사용량-100-000행-기준"><a href="#메모리-사용량-100-000행-기준" class="headerlink" title="메모리 사용량 (100,000행 기준)"></a>메모리 사용량 (100,000행 기준)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HSSFWorkbook:  지원 불가 (행 수 제한 초과)</span><br><span class="line">XSSFWorkbook:  약 500MB - 1GB</span><br><span class="line">SXSSFWorkbook: 약 50MB - 100MB (윈도우 크기에 따라)</span><br></pre></td></tr></table></figure>
+
+<h3 id="처리-시간-100-000행-쓰기"><a href="#처리-시간-100-000행-쓰기" class="headerlink" title="처리 시간 (100,000행 쓰기)"></a>처리 시간 (100,000행 쓰기)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HSSFWorkbook:  N/A</span><br><span class="line">XSSFWorkbook:  약 15-20초</span><br><span class="line">SXSSFWorkbook: 약 8-12초</span><br></pre></td></tr></table></figure>
+
+<h2 id="실무-예제-조건부-Workbook-선택"><a href="#실무-예제-조건부-Workbook-선택" class="headerlink" title="실무 예제: 조건부 Workbook 선택"></a>실무 예제: 조건부 Workbook 선택</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.poi.ss.usermodel.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.hssf.usermodel.HSSFWorkbook;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.xssf.usermodel.XSSFWorkbook;</span><br><span class="line"><span class="keyword">import</span> org.apache.poi.xssf.streaming.SXSSFWorkbook;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WorkbookFactory</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Workbook <span class="title function_">createWorkbook</span><span class="params">(String fileType, <span class="type">int</span> estimatedRows)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;xls&quot;</span>.equalsIgnoreCase(fileType)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (estimatedRows &gt; <span class="number">65000</span>) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(</span><br><span class="line">                    <span class="string">&quot;XLS format does not support more than 65,536 rows&quot;</span></span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HSSFWorkbook</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// xlsx 형식</span></span><br><span class="line">        <span class="keyword">if</span> (estimatedRows &gt; <span class="number">50000</span>) &#123;</span><br><span class="line">            <span class="comment">// 대용량: SXSSFWorkbook 사용</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>(<span class="number">100</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 중소량: XSSFWorkbook 사용</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">XSSFWorkbook</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 사용 예시</span></span><br><span class="line">        <span class="type">Workbook</span> <span class="variable">workbook</span> <span class="operator">=</span> createWorkbook(<span class="string">&quot;xlsx&quot;</span>, <span class="number">200000</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.createSheet(<span class="string">&quot;Data&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 데이터 작성...</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;output.xlsx&quot;</span>)) &#123;</span><br><span class="line">                workbook.write(fos);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">// SXSSFWorkbook인 경우 dispose() 호출</span></span><br><span class="line">            <span class="keyword">if</span> (workbook <span class="keyword">instanceof</span> SXSSFWorkbook) &#123;</span><br><span class="line">                ((SXSSFWorkbook) workbook).dispose();</span><br><span class="line">            &#125;</span><br><span class="line">            workbook.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Best-Practices"><a href="#Best-Practices" class="headerlink" title="Best Practices"></a>Best Practices</h2><h3 id="1-적절한-Workbook-선택"><a href="#1-적절한-Workbook-선택" class="headerlink" title="1. 적절한 Workbook 선택"></a>1. 적절한 Workbook 선택</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 파일 크기와 용도에 따라 선택</span></span><br><span class="line"><span class="keyword">public</span> Workbook <span class="title function_">chooseWorkbook</span><span class="params">(<span class="type">int</span> rowCount, <span class="type">boolean</span> needsRead)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (needsRead) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">XSSFWorkbook</span>(); <span class="comment">// 읽기 필요 시 XSSF</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (rowCount &gt; <span class="number">100000</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>(<span class="number">1000</span>); <span class="comment">// 대용량은 SXSSF</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">XSSFWorkbook</span>(); <span class="comment">// 기본은 XSSF</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-리소스-관리"><a href="#2-리소스-관리" class="headerlink" title="2. 리소스 관리"></a>2. 리소스 관리</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// try-with-resources 사용</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">processExcel</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="keyword">try</span> (<span class="type">SXSSFWorkbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>();</span><br><span class="line">         <span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;output.xlsx&quot;</span>)) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 작업 수행</span></span><br><span class="line">        <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.createSheet();</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">        workbook.write(fos);</span><br><span class="line">        workbook.dispose(); <span class="comment">// SXSSF는 반드시 dispose() 호출</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-메모리-최적화"><a href="#3-메모리-최적화" class="headerlink" title="3. 메모리 최적화"></a>3. 메모리 최적화</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// SXSSFWorkbook 사용 시 윈도우 크기 조정</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">optimizeMemory</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 메모리가 충분한 경우</span></span><br><span class="line">    <span class="type">SXSSFWorkbook</span> <span class="variable">workbook1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 메모리가 제한적인 경우</span></span><br><span class="line">    <span class="type">SXSSFWorkbook</span> <span class="variable">workbook2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 임시 파일 압축 활성화</span></span><br><span class="line">    workbook2.setCompressTempFiles(<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-에러-처리"><a href="#4-에러-처리" class="headerlink" title="4. 에러 처리"></a>4. 에러 처리</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">safeExcelGeneration</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">SXSSFWorkbook</span> <span class="variable">workbook</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        workbook = <span class="keyword">new</span> <span class="title class_">SXSSFWorkbook</span>();</span><br><span class="line">        <span class="type">Sheet</span> <span class="variable">sheet</span> <span class="operator">=</span> workbook.createSheet();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 작업 수행...</span></span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="comment">// 에러 처리</span></span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (workbook != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                workbook.dispose(); <span class="comment">// 임시 파일 정리</span></span><br><span class="line">                workbook.close();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="참고사항"><a href="#참고사항" class="headerlink" title="참고사항"></a>참고사항</h2><ul>
+<li>Apache POI 5.x 버전 기준입니다.</li>
+<li>실제 성능은 시스템 사양과 데이터 특성에 따라 다를 수 있습니다.</li>
+<li>프로덕션 환경에서는 충분한 테스트를 거친 후 사용하시기 바랍니다.</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/21/java/poi-workbook-types/" data-id="cmjglsiqy00a2288db5su4vb3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "[JAVA POI] HSSFWorkbook vs XSSFWorkbook vs SXSSFWorkbook 비교",
+        "image": "https://ckck803.github.io/images/java/java.png",
+        "keywords": "Java Apache POI Excel HSSFWorkbook XSSFWorkbook SXSSFWorkbook",
+        "genre": "Develop JAVA",
+        "datePublished": "2025-12-21",
+        "dateCreated": "2025-12-21",
+        "dateModified": "2025-12-21",
+        "url": "https://ckck803.github.io/2025/12/21/java/poi-workbook-types/",
+        "description": "
+Apache POI Workbook 종류Apache POI는 Microsoft Office 파일을 처리하기 위한 Java 라이브러리입니다. Excel 파일을 다루기 위해 세 가지 주요 Workbook 구현체를 제공합니다.
+📌 HSSFWorkbookHSSF (Horrible SpreadSheet Format) 는 Excel 97-2003 파일 형식(.xls)을 처리하는 구현체입니다.
+특징
+파일 형식: .xls (Excel 97-2003)
+최대 행 수: 65,536행 (2^16)
+최대 열 수: 256열 (2^8)
+최대 Cell Style: 4,000개
+메모리 사용: 중간 수준 (전체 파일을 메모리에 로드)
+처리 속도: XSSF보다 빠름
+
+사용 예시import org.apache.poi.hssf.usermodel.HSSFWorkbook;import org.apache.poi.ss.usermodel.*;import java.io.FileOutputStream;import java.io.IOException;public class HSSFExample &#123;    public static void main(String[] args) throws IOException &#123;        // HSSFWorkbook 생성        Workbook workbook = new HSSFWorkbook();        Sheet sheet = workbook.createSheet(&quot;Sample&quot;);        // 데이터 작성        Row row = sheet.createRow(0);        Cell cell = row.createCell(0);        cell.setCellValue(&quot;Hello, HSSF!&quot;);        // .xls 파일로 저장        try (FileOutputStream fileOut = new FileOutputStream(&quot;sample.xls&quot;)) &#123;            workbook.write(fileOut);        &#125;        workbook.close();    &#125;&#125;
+
+장점",
+        "wordCount": 3287
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2025/12/21/java/excel-cell-style-limit/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">[JAVA POI] - The maximum number of Cell Styles was exceeded.</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">61</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">184</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/Python/">Python</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infra/">Infra</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">49</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">279</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2025 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/21/java/poi-workbook-types/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

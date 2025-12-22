@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>Nginx 완벽 가이드 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Nginx,Web Server,Reverse Proxy,Load Balancer">
+    
+    <meta name="description" content="Nginx란?Nginx(엔진엑스)는 2004년 러시아 개발자 Igor Sysoev가 만든 고성능 웹 서버이자 리버스 프록시 서버입니다. 처음에는 Rambler.ru라는 러시아 포털 사이트의 C10K 문제(동시에 10,000개의 연결을 처리하는 문제)를 해결하기 위해 개발되었으며, 현재는 전 세계 웹사이트의 30% 이상에서 사용되고 있습니다. Apache가">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx 완벽 가이드">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/11/infra/nginx/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="Nginx란?Nginx(엔진엑스)는 2004년 러시아 개발자 Igor Sysoev가 만든 고성능 웹 서버이자 리버스 프록시 서버입니다. 처음에는 Rambler.ru라는 러시아 포털 사이트의 C10K 문제(동시에 10,000개의 연결을 처리하는 문제)를 해결하기 위해 개발되었으며, 현재는 전 세계 웹사이트의 30% 이상에서 사용되고 있습니다. Apache가">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/springboot/sample-board/nginx/nginx.png">
+<meta property="article:published_time" content="2025-12-11T14:30:00.000Z">
+<meta property="article:modified_time" content="2025-12-14T06:32:20.913Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Nginx">
+<meta property="article:tag" content="Web Server">
+<meta property="article:tag" content="Reverse Proxy">
+<meta property="article:tag" content="Load Balancer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/springboot/sample-board/nginx/nginx.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/">Django</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/Python/">Python</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infra/">Infra</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Java/">Java</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Security/">Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Infra/">Infra</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-infra/nginx" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Nginx 완벽 가이드
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/11/infra/nginx/" class="article-date">
+       <time datetime="2025-12-11T14:30:00.000Z" itemprop="datePublished">2025-12-11</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/11/infra/nginx/" class="article-date">
+     <time datetime="2025-12-14T06:32:20.913Z" itemprop="dateModified">2025-12-14</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Load-Balancer/" rel="tag">Load Balancer</a>, <a class="tag-link-link" href="/tags/Nginx/" rel="tag">Nginx</a>, <a class="tag-link-link" href="/tags/Reverse-Proxy/" rel="tag">Reverse Proxy</a>, <a class="tag-link-link" href="/tags/Web-Server/" rel="tag">Web Server</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/springboot/sample-board/nginx/nginx.png"></p>
+<h2 id="Nginx란"><a href="#Nginx란" class="headerlink" title="Nginx란?"></a>Nginx란?</h2><p><strong>Nginx</strong>(엔진엑스)는 2004년 러시아 개발자 Igor Sysoev가 만든 고성능 웹 서버이자 리버스 프록시 서버입니다. 처음에는 Rambler.ru라는 러시아 포털 사이트의 C10K 문제(동시에 10,000개의 연결을 처리하는 문제)를 해결하기 위해 개발되었으며, 현재는 전 세계 웹사이트의 30% 이상에서 사용되고 있습니다.</p>
+<p>Apache가 오랫동안 웹 서버 시장을 지배했지만, Nginx는 높은 동시 접속 처리 능력과 낮은 메모리 사용량으로 빠르게 시장 점유율을 확대했습니다. Netflix, Airbnb, GitHub, WordPress.com 등 트래픽이 많은 대형 사이트들이 Nginx를 사용하고 있습니다.</p>
+<h3 id="주요-특징"><a href="#주요-특징" class="headerlink" title="주요 특징"></a>주요 특징</h3><h4 id="1-높은-성능과-확장성"><a href="#1-높은-성능과-확장성" class="headerlink" title="1. 높은 성능과 확장성"></a>1. 높은 성능과 확장성</h4><p>Nginx는 <strong>비동기 이벤트 기반(Event-Driven) 아키텍처</strong>를 채택하여 적은 수의 워커 프로세스로 수만 개의 동시 연결을 처리할 수 있습니다. Apache의 프로세스&#x2F;스레드 기반 모델과 달리, 각 연결마다 새로운 프로세스나 스레드를 생성하지 않아 메모리 효율이 뛰어납니다.</p>
+<h4 id="2-낮은-리소스-사용"><a href="#2-낮은-리소스-사용" class="headerlink" title="2. 낮은 리소스 사용"></a>2. 낮은 리소스 사용</h4><p>동일한 트래픽을 처리할 때 Apache 대비 메모리 사용량이 현저히 낮습니다. 이는 클라우드 환경에서 비용 절감으로 직결되며, 제한된 리소스를 가진 서버에서도 우수한 성능을 발휘합니다.</p>
+<h4 id="3-확장성과-모듈화"><a href="#3-확장성과-모듈화" class="headerlink" title="3. 확장성과 모듈화"></a>3. 확장성과 모듈화</h4><p>다양한 모듈을 통해 기능을 확장할 수 있습니다. 기본 제공되는 코어 모듈 외에도 서드파티 모듈을 컴파일하여 사용할 수 있으며, Nginx Plus(상용 버전)에서는 더욱 강력한 기능을 제공합니다.</p>
+<h4 id="4-무중단-운영"><a href="#4-무중단-운영" class="headerlink" title="4. 무중단 운영"></a>4. 무중단 운영</h4><p>설정 파일을 수정한 후 <code>nginx -s reload</code> 명령으로 서비스 중단 없이 새로운 설정을 적용할 수 있습니다. 또한 바이너리 업그레이드도 무중단으로 가능하여 24&#x2F;7 운영이 필요한 환경에 적합합니다.</p>
+<h4 id="5-다양한-역할-수행"><a href="#5-다양한-역할-수행" class="headerlink" title="5. 다양한 역할 수행"></a>5. 다양한 역할 수행</h4><ul>
+<li><strong>웹 서버</strong>: 정적 파일(HTML, CSS, JavaScript, 이미지)을 매우 빠르게 제공</li>
+<li><strong>리버스 프록시</strong>: 백엔드 애플리케이션 서버 앞단에서 요청을 중계</li>
+<li><strong>로드 밸런서</strong>: 여러 백엔드 서버로 트래픽을 분산</li>
+<li><strong>HTTP 캐시</strong>: 응답을 캐싱하여 백엔드 부하 감소</li>
+<li><strong>API Gateway</strong>: 마이크로서비스 아키텍처에서 진입점 역할</li>
+</ul>
+<h2 id="Nginx-vs-Apache-비교"><a href="#Nginx-vs-Apache-비교" class="headerlink" title="Nginx vs Apache 비교"></a>Nginx vs Apache 비교</h2><p>웹 서버를 선택할 때 가장 많이 비교되는 두 솔루션이 Nginx와 Apache입니다. 각각의 장단점을 이해하면 프로젝트에 적합한 웹 서버를 선택하는 데 도움이 됩니다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>Nginx</th>
+<th>Apache</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>아키텍처</td>
+<td>이벤트 기반 (비동기)</td>
+<td>프로세스&#x2F;스레드 기반 (동기)</td>
+</tr>
+<tr>
+<td>동시 접속 처리</td>
+<td>우수</td>
+<td>보통</td>
+</tr>
+<tr>
+<td>메모리 사용량</td>
+<td>낮음</td>
+<td>높음</td>
+</tr>
+<tr>
+<td>정적 콘텐츠 제공</td>
+<td>매우 빠름</td>
+<td>보통</td>
+</tr>
+<tr>
+<td>동적 콘텐츠 처리</td>
+<td>프록시 필요</td>
+<td>자체 처리 가능</td>
+</tr>
+<tr>
+<td>설정 파일</td>
+<td>간결함</td>
+<td>복잡함 (.htaccess 지원)</td>
+</tr>
+<tr>
+<td>모듈 시스템</td>
+<td>정적 컴파일</td>
+<td>동적 로딩</td>
+</tr>
+</tbody></table>
+<h3 id="언제-Nginx를-선택해야-할까"><a href="#언제-Nginx를-선택해야-할까" class="headerlink" title="언제 Nginx를 선택해야 할까?"></a>언제 Nginx를 선택해야 할까?</h3><ul>
+<li><strong>고트래픽 웹사이트</strong>: 동시 접속자가 많은 경우 (수천~수만 명)</li>
+<li><strong>정적 파일 서빙</strong>: 이미지, CSS, JavaScript 등 정적 자원 제공이 주된 목적</li>
+<li><strong>리버스 프록시</strong>: Node.js, Python, Java 등의 애플리케이션 서버 앞단</li>
+<li><strong>로드 밸런싱</strong>: 여러 백엔드 서버로 트래픽 분산 필요</li>
+<li><strong>클라우드 환경</strong>: 리소스 효율이 중요하고 비용 절감 필요</li>
+</ul>
+<h3 id="언제-Apache를-선택해야-할까"><a href="#언제-Apache를-선택해야-할까" class="headerlink" title="언제 Apache를 선택해야 할까?"></a>언제 Apache를 선택해야 할까?</h3><ul>
+<li><strong>레거시 애플리케이션</strong>: .htaccess 기반 설정에 의존하는 경우</li>
+<li><strong>PHP 애플리케이션</strong>: mod_php를 통한 PHP 직접 처리가 필요한 경우</li>
+<li><strong>다양한 모듈 활용</strong>: 동적 모듈 로딩으로 유연한 기능 확장이 필요</li>
+<li><strong>공유 호스팅</strong>: 디렉토리별 권한 제어와 사용자별 설정이 중요</li>
+<li><strong>완전한 호환성</strong>: 오래된 웹 애플리케이션과의 호환성 우선</li>
+</ul>
+<h3 id="실무에서의-선택"><a href="#실무에서의-선택" class="headerlink" title="실무에서의 선택"></a>실무에서의 선택</h3><p>많은 현대적인 웹 아키텍처에서는 <strong>Nginx를 프론트엔드 리버스 프록시</strong>로, <strong>Apache나 다른 애플리케이션 서버를 백엔드</strong>로 함께 사용합니다. 이런 구성으로 Nginx의 빠른 정적 파일 서빙과 효율적인 연결 처리, Apache의 동적 콘텐츠 처리 능력을 모두 활용할 수 있습니다.</p>
+<h2 id="Nginx-설치"><a href="#Nginx-설치" class="headerlink" title="Nginx 설치"></a>Nginx 설치</h2><h3 id="Ubuntu-Debian"><a href="#Ubuntu-Debian" class="headerlink" title="Ubuntu&#x2F;Debian"></a>Ubuntu&#x2F;Debian</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># Nginx 시작</span></span><br><span class="line">sudo systemctl start nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 부팅 시 자동 시작 설정</span></span><br><span class="line">sudo systemctl <span class="built_in">enable</span> nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 상태 확인</span></span><br><span class="line">sudo systemctl status nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="CentOS-RHEL"><a href="#CentOS-RHEL" class="headerlink" title="CentOS&#x2F;RHEL"></a>CentOS&#x2F;RHEL</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install epel-release</span><br><span class="line">sudo yum install nginx</span><br><span class="line"></span><br><span class="line">sudo systemctl start nginx</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="macOS-Homebrew"><a href="#macOS-Homebrew" class="headerlink" title="macOS (Homebrew)"></a>macOS (Homebrew)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># Nginx 시작</span></span><br><span class="line">brew services start nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d -p 80:80 --name nginx nginx:latest</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nginx-기본-구조"><a href="#Nginx-기본-구조" class="headerlink" title="Nginx 기본 구조"></a>Nginx 기본 구조</h2><h3 id="디렉토리-구조"><a href="#디렉토리-구조" class="headerlink" title="디렉토리 구조"></a>디렉토리 구조</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/etc/nginx/</span><br><span class="line">├── nginx.conf              # 메인 설정 파일</span><br><span class="line">├── sites-available/        # 사용 가능한 사이트 설정</span><br><span class="line">├── sites-enabled/          # 활성화된 사이트 설정 (심볼릭 링크)</span><br><span class="line">├── conf.d/                 # 추가 설정 파일</span><br><span class="line">├── snippets/               # 재사용 가능한 설정 조각</span><br><span class="line">└── modules-enabled/        # 활성화된 모듈</span><br><span class="line"></span><br><span class="line">/var/log/nginx/            # 로그 디렉토리</span><br><span class="line">├── access.log             # 접근 로그</span><br><span class="line">└── error.log              # 에러 로그</span><br><span class="line"></span><br><span class="line">/var/www/html/             # 기본 웹 루트 디렉토리</span><br></pre></td></tr></table></figure>
+
+<h3 id="nginx-conf-기본-구조"><a href="#nginx-conf-기본-구조" class="headerlink" title="nginx.conf 기본 구조"></a>nginx.conf 기본 구조</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 워커 프로세스를 실행할 사용자</span></span><br><span class="line"><span class="attribute">user</span> www-data;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 워커 프로세스 수 (auto = CPU 코어 수)</span></span><br><span class="line"><span class="attribute">worker_processes</span> auto;</span><br><span class="line"></span><br><span class="line"><span class="comment"># PID 파일 위치</span></span><br><span class="line"><span class="attribute">pid</span> /run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 이벤트 블록: 연결 처리 방식 설정</span></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="comment"># 워커 프로세스당 최대 동시 연결 수</span></span><br><span class="line">    <span class="attribute">worker_connections</span> <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 연결 처리 방법 (epoll은 Linux에서 효율적)</span></span><br><span class="line">    <span class="attribute">use</span> <span class="literal">epoll</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># HTTP 블록: 웹 서버 설정</span></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="comment"># 기본 설정</span></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span> application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 로그 형식</span></span><br><span class="line">    <span class="attribute">log_format</span> main <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                    <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                    <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 접근 로그 설정</span></span><br><span class="line">    <span class="attribute">access_log</span> /var/log/nginx/access.log main;</span><br><span class="line">    <span class="attribute">error_log</span> /var/log/nginx/<span class="literal">error</span>.log;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 성능 최적화</span></span><br><span class="line">    <span class="attribute">sendfile</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">tcp_nopush</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">tcp_nodelay</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">keepalive_timeout</span> <span class="number">65</span>;</span><br><span class="line">    <span class="attribute">types_hash_max_size</span> <span class="number">2048</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Gzip 압축</span></span><br><span class="line">    <span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_vary</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_proxied</span> any;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">6</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span> text/plain text/css text/xml text/javascript</span><br><span class="line">               application/json application/javascript application/xml+rss;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 가상 호스트 설정 포함</span></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/sites-enabled/*;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="핵심-설정-가이드"><a href="#핵심-설정-가이드" class="headerlink" title="핵심 설정 가이드"></a>핵심 설정 가이드</h2><h3 id="1-기본-웹-서버-설정"><a href="#1-기본-웹-서버-설정" class="headerlink" title="1. 기본 웹 서버 설정"></a>1. 기본 웹 서버 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="comment"># 포트 설정</span></span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">80</span>;  <span class="comment"># IPv6</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 서버 이름 (도메인)</span></span><br><span class="line">    <span class="attribute">server_name</span> example.com www.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 문서 루트</span></span><br><span class="line">    <span class="attribute">root</span> /var/www/example.com;</span><br><span class="line">    <span class="attribute">index</span> index.html index.htm;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 로그 파일</span></span><br><span class="line">    <span class="attribute">access_log</span> /var/log/nginx/example.com.access.log;</span><br><span class="line">    <span class="attribute">error_log</span> /var/log/nginx/example.com.<span class="literal">error</span>.log;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 기본 location 블록</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ =<span class="number">404</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-HTTPS-SSL-설정"><a href="#2-HTTPS-SSL-설정" class="headerlink" title="2. HTTPS&#x2F;SSL 설정"></a>2. HTTPS&#x2F;SSL 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">443</span> ssl http2;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># SSL 인증서</span></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/nginx/ssl/example.com.crt;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/nginx/ssl/example.com.key;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># SSL 프로토콜 및 암호화</span></span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line">    <span class="attribute">ssl_ciphers</span> HIGH:!aNULL:!MD5;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># SSL 세션 캐시</span></span><br><span class="line">    <span class="attribute">ssl_session_cache</span> shared:SSL:<span class="number">10m</span>;</span><br><span class="line">    <span class="attribute">ssl_session_timeout</span> <span class="number">10m</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># HSTS (HTTP Strict Transport Security)</span></span><br><span class="line">    <span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=31536000; includeSubDomains&quot;</span> always;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /var/www/example.com;</span><br><span class="line">    <span class="attribute">index</span> index.html;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># HTTP를 HTTPS로 리다이렉트</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-리버스-프록시-설정"><a href="#3-리버스-프록시-설정" class="headerlink" title="3. 리버스 프록시 설정"></a>3. 리버스 프록시 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> api.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="comment"># 백엔드 서버로 프록시</span></span><br><span class="line">        <span class="attribute">proxy_pass</span> http://localhost:3000;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 헤더 설정</span></span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 타임아웃 설정</span></span><br><span class="line">        <span class="attribute">proxy_connect_timeout</span> <span class="number">60s</span>;</span><br><span class="line">        <span class="attribute">proxy_send_timeout</span> <span class="number">60s</span>;</span><br><span class="line">        <span class="attribute">proxy_read_timeout</span> <span class="number">60s</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 버퍼 설정</span></span><br><span class="line">        <span class="attribute">proxy_buffering</span> <span class="literal">on</span>;</span><br><span class="line">        <span class="attribute">proxy_buffer_size</span> <span class="number">4k</span>;</span><br><span class="line">        <span class="attribute">proxy_buffers</span> <span class="number">8</span> <span class="number">4k</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-로드-밸런싱-설정"><a href="#4-로드-밸런싱-설정" class="headerlink" title="4. 로드 밸런싱 설정"></a>4. 로드 밸런싱 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Upstream 블록: 백엔드 서버 그룹 정의</span></span><br><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    <span class="comment"># 로드 밸런싱 방법</span></span><br><span class="line">    <span class="comment"># - 기본: 라운드 로빈</span></span><br><span class="line">    <span class="comment"># - least_conn: 최소 연결</span></span><br><span class="line">    <span class="comment"># - ip_hash: 클라이언트 IP 기반</span></span><br><span class="line">    <span class="comment"># - random: 랜덤</span></span><br><span class="line">    least_conn;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 백엔드 서버 목록</span></span><br><span class="line">    <span class="attribute">server</span> backend1.example.com:<span class="number">8080</span> weight=<span class="number">3</span>;</span><br><span class="line">    <span class="attribute">server</span> backend2.example.com:<span class="number">8080</span> weight=<span class="number">2</span>;</span><br><span class="line">    <span class="attribute">server</span> backend3.example.com:<span class="number">8080</span> backup;  <span class="comment"># 백업 서버</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 헬스 체크 (Nginx Plus 기능)</span></span><br><span class="line">    <span class="comment"># server backend4.example.com:8080 max_fails=3 fail_timeout=30s;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://backend;</span><br><span class="line">        <span class="attribute">proxy_next_upstream</span> <span class="literal">error</span> timeout invalid_header http_500;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="로드-밸런싱-알고리즘"><a href="#로드-밸런싱-알고리즘" class="headerlink" title="로드 밸런싱 알고리즘"></a>로드 밸런싱 알고리즘</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 라운드 로빈 (기본값)</span></span><br><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    <span class="attribute">server</span> srv1.example.com;</span><br><span class="line">    <span class="attribute">server</span> srv2.example.com;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 가중치 기반 라운드 로빈</span></span><br><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    <span class="attribute">server</span> srv1.example.com weight=<span class="number">3</span>;</span><br><span class="line">    <span class="attribute">server</span> srv2.example.com weight=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 최소 연결</span></span><br><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    least_conn;</span><br><span class="line">    <span class="attribute">server</span> srv1.example.com;</span><br><span class="line">    <span class="attribute">server</span> srv2.example.com;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. IP 해시 (세션 유지)</span></span><br><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    <span class="attribute">server</span> srv1.example.com;</span><br><span class="line">    <span class="attribute">server</span> srv2.example.com;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 랜덤</span></span><br><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    random;</span><br><span class="line">    <span class="attribute">server</span> srv1.example.com;</span><br><span class="line">    <span class="attribute">server</span> srv2.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-정적-파일-서빙-최적화"><a href="#5-정적-파일-서빙-최적화" class="headerlink" title="5. 정적 파일 서빙 최적화"></a>5. 정적 파일 서빙 최적화</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> static.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /var/www/static;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 정적 파일 캐싱</span></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$</span> &#123;</span><br><span class="line">        <span class="attribute">expires</span> <span class="number">1y</span>;</span><br><span class="line">        <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;public, immutable&quot;</span>;</span><br><span class="line">        <span class="attribute">access_log</span> <span class="literal">off</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Gzip 압축</span></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~* \.(css|js|json|xml)$</span> &#123;</span><br><span class="line">        <span class="attribute">gzip_static</span> <span class="literal">on</span>;</span><br><span class="line">        <span class="attribute">expires</span> <span class="number">1y</span>;</span><br><span class="line">        <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;public&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-캐싱-설정"><a href="#6-캐싱-설정" class="headerlink" title="6. 캐싱 설정"></a>6. 캐싱 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 캐시 존 정의</span></span><br><span class="line"><span class="attribute">proxy_cache_path</span> /var/cache/nginx</span><br><span class="line">                 levels=<span class="number">1</span>:<span class="number">2</span></span><br><span class="line">                 keys_zone=my_cache:<span class="number">10m</span></span><br><span class="line">                 max_size=<span class="number">1g</span></span><br><span class="line">                 inactive=<span class="number">60m</span></span><br><span class="line">                 use_temp_path=<span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://backend;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 캐시 활성화</span></span><br><span class="line">        <span class="attribute">proxy_cache</span> my_cache;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 캐시 키</span></span><br><span class="line">        <span class="attribute">proxy_cache_key</span> <span class="string">&quot;<span class="variable">$scheme</span><span class="variable">$request_method</span><span class="variable">$host</span><span class="variable">$request_uri</span>&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 캐시 유효 시간</span></span><br><span class="line">        <span class="attribute">proxy_cache_valid</span> <span class="number">200</span> <span class="number">60m</span>;</span><br><span class="line">        <span class="attribute">proxy_cache_valid</span> <span class="number">404</span> <span class="number">10m</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 캐시 우회 조건</span></span><br><span class="line">        <span class="attribute">proxy_cache_bypass</span> <span class="variable">$cookie_nocache</span> <span class="variable">$arg_nocache</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 캐시 상태 헤더 추가</span></span><br><span class="line">        <span class="attribute">add_header</span> X-Cache-Status <span class="variable">$upstream_cache_status</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-WebSocket-프록시"><a href="#7-WebSocket-프록시" class="headerlink" title="7. WebSocket 프록시"></a>7. WebSocket 프록시</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">map</span> <span class="variable">$http_upgrade</span> <span class="variable">$connection_upgrade</span> &#123;</span><br><span class="line">    <span class="attribute">default</span> upgrade;</span><br><span class="line">    &#x27;&#x27; close;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> ws.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> /ws &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://backend;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># WebSocket 지원</span></span><br><span class="line">        <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Connection <span class="variable">$connection_upgrade</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 타임아웃 설정 (WebSocket은 긴 연결)</span></span><br><span class="line">        <span class="attribute">proxy_read_timeout</span> <span class="number">3600s</span>;</span><br><span class="line">        <span class="attribute">proxy_send_timeout</span> <span class="number">3600s</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-Rate-Limiting-요청-제한"><a href="#8-Rate-Limiting-요청-제한" class="headerlink" title="8. Rate Limiting (요청 제한)"></a>8. Rate Limiting (요청 제한)</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Zone 정의: 초당 10개 요청으로 제한</span></span><br><span class="line"><span class="attribute">limit_req_zone</span> <span class="variable">$binary_remote_addr</span> zone=mylimit:<span class="number">10m</span> rate=10r/s;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> /api/ &#123;</span><br><span class="line">        <span class="comment"># Rate limiting 적용</span></span><br><span class="line">        <span class="attribute">limit_req</span> zone=mylimit burst=<span class="number">20</span> nodelay;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 429 에러 시 커스텀 응답</span></span><br><span class="line">        <span class="attribute">limit_req_status</span> <span class="number">429</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_pass</span> http://backend;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-보안-헤더-설정"><a href="#9-보안-헤더-설정" class="headerlink" title="9. 보안 헤더 설정"></a>9. 보안 헤더 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 보안 헤더</span></span><br><span class="line">    <span class="attribute">add_header</span> X-Frame-Options <span class="string">&quot;SAMEORIGIN&quot;</span> always;</span><br><span class="line">    <span class="attribute">add_header</span> X-Content-Type-Options <span class="string">&quot;nosniff&quot;</span> always;</span><br><span class="line">    <span class="attribute">add_header</span> X-XSS-Protection <span class="string">&quot;1; mode=block&quot;</span> always;</span><br><span class="line">    <span class="attribute">add_header</span> Referrer-Policy <span class="string">&quot;no-referrer-when-downgrade&quot;</span> always;</span><br><span class="line">    <span class="attribute">add_header</span> Content-Security-Policy <span class="string">&quot;default-src &#x27;self&#x27; https: data: &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27;;&quot;</span> always;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># HSTS</span></span><br><span class="line">    <span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=31536000; includeSubDomains; preload&quot;</span> always;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span> /var/www/example.com;</span><br><span class="line">        <span class="attribute">index</span> index.html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-리다이렉트-및-Rewrite"><a href="#10-리다이렉트-및-Rewrite" class="headerlink" title="10. 리다이렉트 및 Rewrite"></a>10. 리다이렉트 및 Rewrite</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 단순 리다이렉트</span></span><br><span class="line">    <span class="section">location</span> /old-page &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">301</span> /new-page;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 도메인 리다이렉트</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">301</span> https://newdomain.com<span class="variable">$request_uri</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Rewrite 규칙</span></span><br><span class="line">    <span class="section">location</span> /users/ &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/users/(.*)$</span> /user-profile?id=<span class="variable">$1</span> <span class="literal">last</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 조건부 리다이렉트</span></span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$host</span> != <span class="string">&#x27;example.com&#x27;</span>) &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">301</span> https://example.com<span class="variable">$request_uri</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="SPA-Single-Page-Application-설정"><a href="#SPA-Single-Page-Application-설정" class="headerlink" title="SPA (Single Page Application) 설정"></a>SPA (Single Page Application) 설정</h2><h3 id="React-Vue-Angular-배포"><a href="#React-Vue-Angular-배포" class="headerlink" title="React&#x2F;Vue&#x2F;Angular 배포"></a>React&#x2F;Vue&#x2F;Angular 배포</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> app.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">root</span> /var/www/app/dist;</span><br><span class="line">    <span class="attribute">index</span> index.html;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># SPA 라우팅 지원</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># API 요청은 백엔드로 프록시</span></span><br><span class="line">    <span class="section">location</span> /api &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://localhost:3000;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 정적 자산 캐싱</span></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$</span> &#123;</span><br><span class="line">        <span class="attribute">expires</span> <span class="number">1y</span>;</span><br><span class="line">        <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;public, immutable&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="마이크로서비스-라우팅"><a href="#마이크로서비스-라우팅" class="headerlink" title="마이크로서비스 라우팅"></a>마이크로서비스 라우팅</h2><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> api.example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Auth Service</span></span><br><span class="line">    <span class="section">location</span> /auth &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://auth-service:8001;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># User Service</span></span><br><span class="line">    <span class="section">location</span> /users &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://user-service:8002;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Order Service</span></span><br><span class="line">    <span class="section">location</span> /orders &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://order-service:8003;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Payment Service</span></span><br><span class="line">    <span class="section">location</span> /payments &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://payment-service:8004;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="성능-최적화"><a href="#성능-최적화" class="headerlink" title="성능 최적화"></a>성능 최적화</h2><h3 id="1-Worker-프로세스-최적화"><a href="#1-Worker-프로세스-최적화" class="headerlink" title="1. Worker 프로세스 최적화"></a>1. Worker 프로세스 최적화</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># CPU 코어 수에 맞게 설정</span></span><br><span class="line"><span class="attribute">worker_processes</span> auto;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 워커 프로세스를 특정 CPU에 바인딩</span></span><br><span class="line"><span class="attribute">worker_cpu_affinity</span> auto;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 워커 프로세스당 파일 디스크립터 수</span></span><br><span class="line"><span class="attribute">worker_rlimit_nofile</span> <span class="number">65535</span>;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="comment"># 워커당 연결 수 증가</span></span><br><span class="line">    <span class="attribute">worker_connections</span> <span class="number">4096</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 동시에 여러 연결 수락</span></span><br><span class="line">    <span class="attribute">multi_accept</span> <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># epoll 사용 (Linux)</span></span><br><span class="line">    <span class="attribute">use</span> <span class="literal">epoll</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-버퍼-및-타임아웃-최적화"><a href="#2-버퍼-및-타임아웃-최적화" class="headerlink" title="2. 버퍼 및 타임아웃 최적화"></a>2. 버퍼 및 타임아웃 최적화</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="comment"># 클라이언트 요청 버퍼</span></span><br><span class="line">    <span class="attribute">client_body_buffer_size</span> <span class="number">128k</span>;</span><br><span class="line">    <span class="attribute">client_max_body_size</span> <span class="number">100M</span>;</span><br><span class="line">    <span class="attribute">client_header_buffer_size</span> <span class="number">1k</span>;</span><br><span class="line">    <span class="attribute">large_client_header_buffers</span> <span class="number">4</span> <span class="number">16k</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 타임아웃 설정</span></span><br><span class="line">    <span class="attribute">client_body_timeout</span> <span class="number">12</span>;</span><br><span class="line">    <span class="attribute">client_header_timeout</span> <span class="number">12</span>;</span><br><span class="line">    <span class="attribute">keepalive_timeout</span> <span class="number">15</span>;</span><br><span class="line">    <span class="attribute">send_timeout</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 파일 전송 최적화</span></span><br><span class="line">    <span class="attribute">sendfile</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">tcp_nopush</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">tcp_nodelay</span> <span class="literal">on</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-압축-최적화"><a href="#3-압축-최적화" class="headerlink" title="3. 압축 최적화"></a>3. 압축 최적화</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_vary</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_proxied</span> any;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">6</span>;</span><br><span class="line">    <span class="attribute">gzip_min_length</span> <span class="number">1000</span>;</span><br><span class="line">    <span class="attribute">gzip_disable</span> <span class="string">&quot;msie6&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">gzip_types</span></span><br><span class="line">        text/plain</span><br><span class="line">        text/css</span><br><span class="line">        text/xml</span><br><span class="line">        text/javascript</span><br><span class="line">        application/json</span><br><span class="line">        application/javascript</span><br><span class="line">        application/xml+rss</span><br><span class="line">        application/rss+xml</span><br><span class="line">        font/truetype</span><br><span class="line">        font/opentype</span><br><span class="line">        application/vnd.ms-fontobject</span><br><span class="line">        image/svg+xml;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="모니터링-및-로깅"><a href="#모니터링-및-로깅" class="headerlink" title="모니터링 및 로깅"></a>모니터링 및 로깅</h2><h3 id="1-액세스-로그-커스터마이징"><a href="#1-액세스-로그-커스터마이징" class="headerlink" title="1. 액세스 로그 커스터마이징"></a>1. 액세스 로그 커스터마이징</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="comment"># 상세한 로그 형식 정의</span></span><br><span class="line">    <span class="attribute">log_format</span> detailed <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &#x27;</span></span><br><span class="line">                       <span class="string">&#x27;&quot;<span class="variable">$request</span>&quot; <span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &#x27;</span></span><br><span class="line">                       <span class="string">&#x27;&quot;<span class="variable">$http_referer</span>&quot; &quot;<span class="variable">$http_user_agent</span>&quot; &#x27;</span></span><br><span class="line">                       <span class="string">&#x27;rt=<span class="variable">$request_time</span> uct=&quot;<span class="variable">$upstream_connect_time</span>&quot; &#x27;</span></span><br><span class="line">                       <span class="string">&#x27;uht=&quot;<span class="variable">$upstream_header_time</span>&quot; urt=&quot;<span class="variable">$upstream_response_time</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># JSON 로그 형식</span></span><br><span class="line">    <span class="attribute">log_format</span> json escape=json <span class="string">&#x27;&#123;&#x27;</span></span><br><span class="line">        <span class="string">&#x27;&quot;time&quot;:&quot;<span class="variable">$time_iso8601</span>&quot;,&#x27;</span></span><br><span class="line">        <span class="string">&#x27;&quot;remote_addr&quot;:&quot;<span class="variable">$remote_addr</span>&quot;,&#x27;</span></span><br><span class="line">        <span class="string">&#x27;&quot;request&quot;:&quot;<span class="variable">$request</span>&quot;,&#x27;</span></span><br><span class="line">        <span class="string">&#x27;&quot;status&quot;:<span class="variable">$status</span>,&#x27;</span></span><br><span class="line">        <span class="string">&#x27;&quot;body_bytes_sent&quot;:<span class="variable">$body_bytes_sent</span>,&#x27;</span></span><br><span class="line">        <span class="string">&#x27;&quot;request_time&quot;:<span class="variable">$request_time</span>,&#x27;</span></span><br><span class="line">        <span class="string">&#x27;&quot;upstream_response_time&quot;:&quot;<span class="variable">$upstream_response_time</span>&quot;&#x27;</span></span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span> /var/log/nginx/access.log detailed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Status-페이지-활성화"><a href="#2-Status-페이지-활성화" class="headerlink" title="2. Status 페이지 활성화"></a>2. Status 페이지 활성화</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">    <span class="attribute">server_name</span> localhost;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> /nginx_status &#123;</span><br><span class="line">        <span class="attribute">stub_status</span> <span class="literal">on</span>;</span><br><span class="line">        <span class="attribute">access_log</span> <span class="literal">off</span>;</span><br><span class="line">        <span class="attribute">allow</span> <span class="number">127.0.0.1</span>;</span><br><span class="line">        <span class="attribute">deny</span> all;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker와-Nginx"><a href="#Docker와-Nginx" class="headerlink" title="Docker와 Nginx"></a>Docker와 Nginx</h2><h3 id="Dockerfile-예제"><a href="#Dockerfile-예제" class="headerlink" title="Dockerfile 예제"></a>Dockerfile 예제</h3><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"></span><br><span class="line"><span class="comment"># 커스텀 설정 파일 복사</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> nginx.conf /etc/nginx/nginx.conf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> conf.d/ /etc/nginx/conf.d/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 정적 파일 복사</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> dist/ /usr/share/nginx/html/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 포트 노출</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span> <span class="number">443</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="docker-compose-yml-예제"><a href="#docker-compose-yml-예제" class="headerlink" title="docker-compose.yml 예제"></a>docker-compose.yml 예제</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:alpine</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:80&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;443:443&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./nginx.conf:/etc/nginx/nginx.conf:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./conf.d:/etc/nginx/conf.d:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./ssl:/etc/nginx/ssl:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./html:/usr/share/nginx/html:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./logs:/var/log/nginx</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app-network</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">myapp:latest</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app-network</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">app-network:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Nginx-관리-명령어"><a href="#Nginx-관리-명령어" class="headerlink" title="Nginx 관리 명령어"></a>Nginx 관리 명령어</h2><h3 id="기본-명령어"><a href="#기본-명령어" class="headerlink" title="기본 명령어"></a>기본 명령어</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 설정 테스트</span></span><br><span class="line">nginx -t</span><br><span class="line"></span><br><span class="line"><span class="comment"># 설정 리로드 (무중단)</span></span><br><span class="line">nginx -s reload</span><br><span class="line"></span><br><span class="line"><span class="comment"># Nginx 중지</span></span><br><span class="line">nginx -s stop</span><br><span class="line"></span><br><span class="line"><span class="comment"># Graceful 종료</span></span><br><span class="line">nginx -s quit</span><br><span class="line"></span><br><span class="line"><span class="comment"># Nginx 재시작</span></span><br><span class="line">systemctl restart nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 버전 확인</span></span><br><span class="line">nginx -v</span><br><span class="line">nginx -V  <span class="comment"># 상세 정보 포함</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 설정 파일 경로 확인</span></span><br><span class="line">nginx -t 2&gt;&amp;1 | grep <span class="string">&quot;configuration file&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="로그-관리"><a href="#로그-관리" class="headerlink" title="로그 관리"></a>로그 관리</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 로그 로테이션 신호 전송</span></span><br><span class="line">nginx -s reopen</span><br><span class="line"></span><br><span class="line"><span class="comment"># 실시간 로그 확인</span></span><br><span class="line"><span class="built_in">tail</span> -f /var/log/nginx/access.log</span><br><span class="line"><span class="built_in">tail</span> -f /var/log/nginx/error.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 에러 로그 필터링</span></span><br><span class="line">grep <span class="string">&quot;error&quot;</span> /var/log/nginx/error.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 IP 요청 확인</span></span><br><span class="line">grep <span class="string">&quot;192.168.1.100&quot;</span> /var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
+
+<h2 id="트러블슈팅"><a href="#트러블슈팅" class="headerlink" title="트러블슈팅"></a>트러블슈팅</h2><h3 id="1-502-Bad-Gateway"><a href="#1-502-Bad-Gateway" class="headerlink" title="1. 502 Bad Gateway"></a>1. 502 Bad Gateway</h3><p><strong>원인</strong>:</p>
+<ul>
+<li>백엔드 서버가 다운되었거나 응답하지 않음</li>
+<li>방화벽이 연결을 차단</li>
+<li>SELinux가 프록시 연결을 차단 (CentOS&#x2F;RHEL)</li>
+</ul>
+<p><strong>해결</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 백엔드 서버 상태 확인</span></span><br><span class="line">curl http://localhost:3000</span><br><span class="line"></span><br><span class="line"><span class="comment"># SELinux 문제 해결</span></span><br><span class="line">setsebool -P httpd_can_network_connect 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 방화벽 확인</span></span><br><span class="line">iptables -L -n</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-413-Request-Entity-Too-Large"><a href="#2-413-Request-Entity-Too-Large" class="headerlink" title="2. 413 Request Entity Too Large"></a>2. 413 Request Entity Too Large</h3><p><strong>원인</strong>: 업로드 파일 크기 제한 초과</p>
+<p><strong>해결</strong>:</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">client_max_body_size</span> <span class="number">100M</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-504-Gateway-Timeout"><a href="#3-504-Gateway-Timeout" class="headerlink" title="3. 504 Gateway Timeout"></a>3. 504 Gateway Timeout</h3><p><strong>원인</strong>: 백엔드 서버 응답 시간 초과</p>
+<p><strong>해결</strong>:</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span> / &#123;</span><br><span class="line">    <span class="attribute">proxy_connect_timeout</span> <span class="number">600s</span>;</span><br><span class="line">    <span class="attribute">proxy_send_timeout</span> <span class="number">600s</span>;</span><br><span class="line">    <span class="attribute">proxy_read_timeout</span> <span class="number">600s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-너무-많은-리다이렉트"><a href="#4-너무-많은-리다이렉트" class="headerlink" title="4. 너무 많은 리다이렉트"></a>4. 너무 많은 리다이렉트</h3><p><strong>원인</strong>: 무한 리다이렉트 루프</p>
+<p><strong>해결</strong>:</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># X-Forwarded-Proto 헤더 확인</span></span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$http_x_forwarded_proto</span> = <span class="string">&quot;https&quot;</span>) &#123;</span><br><span class="line">    <span class="attribute">set</span> <span class="variable">$https_redirect</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$https_redirect</span> = <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="보안-베스트-프랙티스"><a href="#보안-베스트-프랙티스" class="headerlink" title="보안 베스트 프랙티스"></a>보안 베스트 프랙티스</h2><h3 id="1-기본-보안-설정"><a href="#1-기본-보안-설정" class="headerlink" title="1. 기본 보안 설정"></a>1. 기본 보안 설정</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="comment"># 서버 버전 숨기기</span></span><br><span class="line">    <span class="attribute">server_tokens</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 불필요한 메서드 차단</span></span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$request_method</span> !<span class="regexp">~ ^(GET|POST|PUT|DELETE|HEAD)$)</span> &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">405</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 특정 파일 접근 차단</span></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ /\.</span> &#123;</span><br><span class="line">        <span class="attribute">deny</span> all;</span><br><span class="line">        <span class="attribute">access_log</span> <span class="literal">off</span>;</span><br><span class="line">        <span class="attribute">log_not_found</span> <span class="literal">off</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 백업 파일 접근 차단</span></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ ~$</span> &#123;</span><br><span class="line">        <span class="attribute">deny</span> all;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-DDoS-방어"><a href="#2-DDoS-방어" class="headerlink" title="2. DDoS 방어"></a>2. DDoS 방어</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 연결 제한</span></span><br><span class="line"><span class="attribute">limit_conn_zone</span> <span class="variable">$binary_remote_addr</span> zone=conn_limit:<span class="number">10m</span>;</span><br><span class="line"><span class="attribute">limit_req_zone</span> <span class="variable">$binary_remote_addr</span> zone=req_limit:<span class="number">10m</span> rate=10r/s;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="comment"># 동시 연결 제한</span></span><br><span class="line">    <span class="attribute">limit_conn</span> conn_limit <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 요청 빈도 제한</span></span><br><span class="line">    <span class="attribute">limit_req</span> zone=req_limit burst=<span class="number">20</span> nodelay;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-IP-화이트리스트-블랙리스트"><a href="#3-IP-화이트리스트-블랙리스트" class="headerlink" title="3. IP 화이트리스트&#x2F;블랙리스트"></a>3. IP 화이트리스트&#x2F;블랙리스트</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 특정 IP만 허용</span></span><br><span class="line"><span class="section">location</span> /admin &#123;</span><br><span class="line">    <span class="attribute">allow</span> <span class="number">192.168.1.0</span>/<span class="number">24</span>;</span><br><span class="line">    <span class="attribute">allow</span> <span class="number">10.0.0.1</span>;</span><br><span class="line">    <span class="attribute">deny</span> all;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># GeoIP 기반 차단 (모듈 필요)</span></span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$geoip_country_code</span> <span class="regexp">~ (CN|RU))</span> &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Basic-Auth-설정"><a href="#4-Basic-Auth-설정" class="headerlink" title="4. Basic Auth 설정"></a>4. Basic Auth 설정</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># htpasswd 파일 생성</span></span><br><span class="line">sudo apt install apache2-utils</span><br><span class="line">sudo htpasswd -c /etc/nginx/.htpasswd username</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span> /admin &#123;</span><br><span class="line">    <span class="attribute">auth_basic</span> <span class="string">&quot;Restricted Area&quot;</span>;</span><br><span class="line">    <span class="attribute">auth_basic_user_file</span> /etc/nginx/.htpasswd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Let’s-Encrypt-SSL-인증서"><a href="#Let’s-Encrypt-SSL-인증서" class="headerlink" title="Let’s Encrypt SSL 인증서"></a>Let’s Encrypt SSL 인증서</h2><h3 id="Certbot-사용"><a href="#Certbot-사용" class="headerlink" title="Certbot 사용"></a>Certbot 사용</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Certbot 설치</span></span><br><span class="line">sudo apt install certbot python3-certbot-nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 인증서 발급</span></span><br><span class="line">sudo certbot --nginx -d example.com -d www.example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 자동 갱신 테스트</span></span><br><span class="line">sudo certbot renew --dry-run</span><br><span class="line"></span><br><span class="line"><span class="comment"># Cron 작업으로 자동 갱신</span></span><br><span class="line">0 3 * * * certbot renew --quiet</span><br></pre></td></tr></table></figure>
+
+<h2 id="참고-자료"><a href="#참고-자료" class="headerlink" title="참고 자료"></a>참고 자료</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://nginx.org/en/docs/">공식 Nginx 문서</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.digitalocean.com/community/tools/nginx">Nginx 설정 생성기</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.nginx.com/blog/tuning-nginx/">Nginx 성능 튜닝 가이드</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://letsencrypt.org/">Let’s Encrypt</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/11/infra/nginx/" data-id="cmjglsiqp006l288d1jax2zt2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Nginx 완벽 가이드",
+        "image": "https://ckck803.github.io/images/springboot/sample-board/nginx/nginx.png",
+        "keywords": "Nginx Web Server Reverse Proxy Load Balancer",
+        "genre": "Infra",
+        "datePublished": "2025-12-11",
+        "dateCreated": "2025-12-11",
+        "dateModified": "2025-12-14",
+        "url": "https://ckck803.github.io/2025/12/11/infra/nginx/",
+        "description": "
+Nginx란?Nginx(엔진엑스)는 2004년 러시아 개발자 Igor Sysoev가 만든 고성능 웹 서버이자 리버스 프록시 서버입니다. 처음에는 Rambler.ru라는 러시아 포털 사이트의 C10K 문제(동시에 10,000개의 연결을 처리하는 문제)를 해결하기 위해 개발되었으며, 현재는 전 세계 웹사이트의 30% 이상에서 사용되고 있습니다.
+Apache가 오랫동안 웹 서버 시장을 지배했지만, Nginx는 높은 동시 접속 처리 능력과 낮은 메모리 사용량으로 빠르게 시장 점유율을 확대했습니다. Netflix, Airbnb, GitHub, WordPress.com 등 트래픽이 많은 대형 사이트들이 Nginx를 사용하고 있습니다.
+주요 특징1. 높은 성능과 확장성Nginx는 비동기 이벤트 기반(Event-Driven) 아키텍처를 채택하여 적은 수의 워커 프로세스로 수만 개의 동시 연결을 처리할 수 있습니다. Apache의 프로세스&#x2F;스레드 기반 모델과 달리, 각 연결마다 새로운 프로세스나 스레드를 생성하지 않아 메모리 효율이 뛰어납니다.
+2. 낮은 리소스 사용동일한 트래픽을 처리할 때 Apache 대비 메모리 사용량이 현저히 낮습니다. 이는 클라우드 환경에서 비용 절감으로 직결되며, 제한된 리소스를 가진 서버에서도 우수한 성능을 발휘합니다.
+3. 확장성과 모듈화",
+        "wordCount": 5557
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/12/11/infra/nginx-ssl-guide/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            Nginx SSL/TLS 적용하기
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/12/11/computer-science/network/reverse-proxy/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">[Network] Reverse Proxy 란?</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">61</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">184</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/Python/">Python</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infra/">Infra</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">49</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">279</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2025 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/11/infra/nginx/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
