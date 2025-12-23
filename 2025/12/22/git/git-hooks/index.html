@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>Git - Git Hook으로 워크플로우 자동화하기 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Git,Automation,Hook">
+    
+    <meta name="description" content="Git Hook이란?Git Hook은 Git에서 특정 이벤트가 발생했을 때 자동으로 실행되는 스크립트입니다. 커밋, 푸시, 머지 등의 작업 전후에 사용자 정의 스크립트를 실행하여 코드 품질 검사, 테스트 자동화, 메시지 검증 등 다양한 워크플로우를 자동화할 수 있습니다. Git Hook의 종류Git Hook은 크게 클라이언트 훅(Client-side Ho">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git - Git Hook으로 워크플로우 자동화하기">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/22/git/git-hooks/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="Git Hook이란?Git Hook은 Git에서 특정 이벤트가 발생했을 때 자동으로 실행되는 스크립트입니다. 커밋, 푸시, 머지 등의 작업 전후에 사용자 정의 스크립트를 실행하여 코드 품질 검사, 테스트 자동화, 메시지 검증 등 다양한 워크플로우를 자동화할 수 있습니다. Git Hook의 종류Git Hook은 크게 클라이언트 훅(Client-side Ho">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/git/git.png">
+<meta property="article:published_time" content="2025-12-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-22T03:57:05.035Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="Automation">
+<meta property="article:tag" content="Hook">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/git/git.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/">Django</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Django/Python/">Python</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infra/">Infra</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Java/">Java</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Security/">Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Develop/Git/">Git</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-git/git-hooks" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Git - Git Hook으로 워크플로우 자동화하기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/22/git/git-hooks/" class="article-date">
+       <time datetime="2025-12-21T16:00:00.000Z" itemprop="datePublished">2025-12-22</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/22/git/git-hooks/" class="article-date">
+     <time datetime="2025-12-22T03:57:05.035Z" itemprop="dateModified">2025-12-22</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Automation/" rel="tag">Automation</a>, <a class="tag-link-link" href="/tags/Git/" rel="tag">Git</a>, <a class="tag-link-link" href="/tags/Hook/" rel="tag">Hook</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/git/git.png"></p>
+<h2 id="Git-Hook이란"><a href="#Git-Hook이란" class="headerlink" title="Git Hook이란?"></a>Git Hook이란?</h2><p>Git Hook은 Git에서 특정 이벤트가 발생했을 때 자동으로 실행되는 스크립트입니다. 커밋, 푸시, 머지 등의 작업 전후에 사용자 정의 스크립트를 실행하여 코드 품질 검사, 테스트 자동화, 메시지 검증 등 다양한 워크플로우를 자동화할 수 있습니다.</p>
+<h2 id="Git-Hook의-종류"><a href="#Git-Hook의-종류" class="headerlink" title="Git Hook의 종류"></a>Git Hook의 종류</h2><p>Git Hook은 크게 <strong>클라이언트 훅(Client-side Hooks)</strong> 과 <strong>서버 훅(Server-side Hooks)</strong> 으로 나뉩니다.</p>
+<h3 id="클라이언트-훅-Client-side-Hooks"><a href="#클라이언트-훅-Client-side-Hooks" class="headerlink" title="클라이언트 훅 (Client-side Hooks)"></a>클라이언트 훅 (Client-side Hooks)</h3><p>개발자의 로컬 저장소에서 실행되는 훅입니다.</p>
+<h4 id="Commit-관련-훅"><a href="#Commit-관련-훅" class="headerlink" title="Commit 관련 훅"></a>Commit 관련 훅</h4><ul>
+<li><strong>pre-commit</strong>: 커밋 메시지 작성 전 실행 (코드 린트, 테스트 실행)</li>
+<li><strong>prepare-commit-msg</strong>: 커밋 메시지 에디터가 열리기 전 실행 (메시지 템플릿 설정)</li>
+<li><strong>commit-msg</strong>: 커밋 메시지 검증 (메시지 형식 확인)</li>
+<li><strong>post-commit</strong>: 커밋이 완료된 후 실행 (알림 전송)</li>
+</ul>
+<h4 id="Merge-Rebase-관련-훅"><a href="#Merge-Rebase-관련-훅" class="headerlink" title="Merge&#x2F;Rebase 관련 훅"></a>Merge&#x2F;Rebase 관련 훅</h4><ul>
+<li><strong>pre-merge-commit</strong>: 머지 커밋 생성 전 실행</li>
+<li><strong>post-merge</strong>: 머지가 완료된 후 실행 (의존성 업데이트)</li>
+<li><strong>pre-rebase</strong>: 리베이스 전 실행</li>
+</ul>
+<h4 id="Push-관련-훅"><a href="#Push-관련-훅" class="headerlink" title="Push 관련 훅"></a>Push 관련 훅</h4><ul>
+<li><strong>pre-push</strong>: 푸시 전 실행 (원격 저장소 업데이트 전 검증)</li>
+</ul>
+<h4 id="기타-훅"><a href="#기타-훅" class="headerlink" title="기타 훅"></a>기타 훅</h4><ul>
+<li><strong>pre-auto-gc</strong>: Git의 자동 가비지 컬렉션 전 실행</li>
+<li><strong>post-checkout</strong>: 브랜치 체크아웃 후 실행</li>
+<li><strong>post-rewrite</strong>: 커밋을 재작성하는 명령 후 실행</li>
+</ul>
+<h3 id="서버-훅-Server-side-Hooks"><a href="#서버-훅-Server-side-Hooks" class="headerlink" title="서버 훅 (Server-side Hooks)"></a>서버 훅 (Server-side Hooks)</h3><p>원격 저장소(서버)에서 실행되는 훅입니다.</p>
+<ul>
+<li><strong>pre-receive</strong>: 푸시를 받기 전 실행 (푸시 거부 가능)</li>
+<li><strong>update</strong>: 각 브랜치별로 실행 (브랜치 단위 검증)</li>
+<li><strong>post-receive</strong>: 푸시가 완료된 후 실행 (배포, 알림)</li>
+</ul>
+<h2 id="Hook-파일-위치"><a href="#Hook-파일-위치" class="headerlink" title="Hook 파일 위치"></a>Hook 파일 위치</h2><p>Git Hook 스크립트는 <code>.git/hooks/</code> 디렉토리에 저장됩니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Hook 디렉토리 확인</span></span><br><span class="line"><span class="built_in">ls</span> -la .git/hooks/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 샘플 파일들</span></span><br><span class="line">.git/hooks/pre-commit.sample</span><br><span class="line">.git/hooks/commit-msg.sample</span><br><span class="line">.git/hooks/pre-push.sample</span><br></pre></td></tr></table></figure>
+
+<p>샘플 파일의 <code>.sample</code> 확장자를 제거하면 활성화됩니다.</p>
+<h2 id="Git-Hook-작성-예시"><a href="#Git-Hook-작성-예시" class="headerlink" title="Git Hook 작성 예시"></a>Git Hook 작성 예시</h2><h3 id="1-Pre-commit-Hook-코드-품질-검사"><a href="#1-Pre-commit-Hook-코드-품질-검사" class="headerlink" title="1. Pre-commit Hook - 코드 품질 검사"></a>1. Pre-commit Hook - 코드 품질 검사</h3><p>커밋 전 자동으로 린트와 테스트를 실행합니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># .git/hooks/pre-commit</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Running pre-commit checks...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># JavaScript/TypeScript 프로젝트</span></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">&quot;package.json&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Running ESLint...&quot;</span></span><br><span class="line">    npm run lint</span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;❌ ESLint check failed. Please fix the errors and try again.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Running tests...&quot;</span></span><br><span class="line">    npm <span class="built_in">test</span></span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;❌ Tests failed. Please fix the tests and try again.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Python 프로젝트</span></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">&quot;requirements.txt&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Running flake8...&quot;</span></span><br><span class="line">    flake8 .</span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;❌ Flake8 check failed.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Trailing whitespace 제거</span></span><br><span class="line">git diff --check</span><br><span class="line"><span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;❌ Detected trailing whitespace. Please remove it.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;✅ All pre-commit checks passed!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Commit-msg-Hook-커밋-메시지-검증"><a href="#2-Commit-msg-Hook-커밋-메시지-검증" class="headerlink" title="2. Commit-msg Hook - 커밋 메시지 검증"></a>2. Commit-msg Hook - 커밋 메시지 검증</h3><p>Conventional Commits 형식을 강제합니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># .git/hooks/commit-msg</span></span><br><span class="line"></span><br><span class="line">commit_msg_file=<span class="variable">$1</span></span><br><span class="line">commit_msg=$(<span class="built_in">cat</span> <span class="string">&quot;<span class="variable">$commit_msg_file</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Conventional Commits 패턴</span></span><br><span class="line"><span class="comment"># feat: 새로운 기능</span></span><br><span class="line"><span class="comment"># fix: 버그 수정</span></span><br><span class="line"><span class="comment"># docs: 문서 변경</span></span><br><span class="line"><span class="comment"># style: 코드 포맷팅</span></span><br><span class="line"><span class="comment"># refactor: 리팩토링</span></span><br><span class="line"><span class="comment"># test: 테스트 추가</span></span><br><span class="line"><span class="comment"># chore: 빌드 업무, 패키지 매니저 설정</span></span><br><span class="line"></span><br><span class="line">pattern=<span class="string">&quot;^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .&#123;1,50&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$commit_msg</span>&quot;</span> | grep -qE <span class="string">&quot;<span class="variable">$pattern</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;❌ Invalid commit message format!&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Commit message must follow Conventional Commits format:&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;  &lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Examples:&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;  feat: add user authentication&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;  fix(api): resolve CORS issue&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;  docs: update README&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;✅ Commit message format is valid&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Pre-push-Hook-푸시-전-검증"><a href="#3-Pre-push-Hook-푸시-전-검증" class="headerlink" title="3. Pre-push Hook - 푸시 전 검증"></a>3. Pre-push Hook - 푸시 전 검증</h3><p>원격 저장소에 푸시하기 전 모든 테스트를 실행합니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># .git/hooks/pre-push</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Running pre-push checks...&quot;</span></span><br><span class="line"></span><br><span class="line">protected_branch=<span class="string">&#x27;main&#x27;</span></span><br><span class="line">current_branch=$(git symbolic-ref HEAD | sed -e <span class="string">&#x27;s,.*/\(.*\),\1,&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># main 브랜치 직접 푸시 방지</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$current_branch</span>&quot;</span> = <span class="string">&quot;<span class="variable">$protected_branch</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;❌ Direct push to main branch is not allowed!&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Please create a feature branch and open a pull request.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 전체 테스트 실행</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Running full test suite...&quot;</span></span><br><span class="line">npm run <span class="built_in">test</span>:ci</span><br><span class="line"><span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;❌ Tests failed. Push aborted.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 빌드 테스트</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Testing build...&quot;</span></span><br><span class="line">npm run build</span><br><span class="line"><span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;❌ Build failed. Push aborted.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;✅ All pre-push checks passed!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Post-merge-Hook-머지-후-의존성-업데이트"><a href="#4-Post-merge-Hook-머지-후-의존성-업데이트" class="headerlink" title="4. Post-merge Hook - 머지 후 의존성 업데이트"></a>4. Post-merge Hook - 머지 후 의존성 업데이트</h3><p>브랜치 머지 후 자동으로 의존성을 설치합니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># .git/hooks/post-merge</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Checking for dependency changes...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># package.json 또는 package-lock.json 변경 확인</span></span><br><span class="line">changed_files=<span class="string">&quot;<span class="subst">$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_run</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$changed_files</span>&quot;</span> | grep --quiet <span class="string">&quot;<span class="variable">$1</span>&quot;</span> &amp;&amp; <span class="built_in">eval</span> <span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Node.js 의존성 업데이트</span></span><br><span class="line">check_run package.json <span class="string">&quot;echo &#x27;📦 package.json changed. Running npm install...&#x27; &amp;&amp; npm install&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Python 의존성 업데이트</span></span><br><span class="line">check_run requirements.txt <span class="string">&quot;echo &#x27;📦 requirements.txt changed. Running pip install...&#x27; &amp;&amp; pip install -r requirements.txt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Go 모듈 업데이트</span></span><br><span class="line">check_run go.mod <span class="string">&quot;echo &#x27;📦 go.mod changed. Running go mod download...&#x27; &amp;&amp; go mod download&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;✅ Post-merge checks completed!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-Prepare-commit-msg-Hook-이슈-번호-자동-추가"><a href="#5-Prepare-commit-msg-Hook-이슈-번호-자동-추가" class="headerlink" title="5. Prepare-commit-msg Hook - 이슈 번호 자동 추가"></a>5. Prepare-commit-msg Hook - 이슈 번호 자동 추가</h3><p>브랜치 이름에서 이슈 번호를 추출하여 커밋 메시지에 자동으로 추가합니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># .git/hooks/prepare-commit-msg</span></span><br><span class="line"></span><br><span class="line">commit_msg_file=<span class="variable">$1</span></span><br><span class="line">commit_source=<span class="variable">$2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 머지 커밋이면 스킵</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$commit_source</span>&quot;</span> = <span class="string">&quot;merge&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 브랜치 이름에서 이슈 번호 추출 (예: feature/ISSUE-123-description)</span></span><br><span class="line">branch_name=$(git symbolic-ref --short HEAD)</span><br><span class="line">issue_number=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$branch_name</span>&quot;</span> | grep -o -E <span class="string">&#x27;[A-Z]+-[0-9]+&#x27;</span> | <span class="built_in">head</span> -1)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$issue_number</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># 기존 메시지 읽기</span></span><br><span class="line">    commit_msg=$(<span class="built_in">cat</span> <span class="string">&quot;<span class="variable">$commit_msg_file</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 이미 이슈 번호가 있으면 스킵</span></span><br><span class="line">    <span class="keyword">if</span> ! <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$commit_msg</span>&quot;</span> | grep -q <span class="string">&quot;<span class="variable">$issue_number</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">        <span class="comment"># 이슈 번호 추가</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$commit_msg</span>&quot;</span> | sed <span class="string">&quot;1s/^/[<span class="variable">$issue_number</span>] /&quot;</span> &gt; <span class="string">&quot;<span class="variable">$commit_msg_file</span>&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;✅ Added issue number: <span class="variable">$issue_number</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Hook-파일-실행-권한-부여"><a href="#Hook-파일-실행-권한-부여" class="headerlink" title="Hook 파일 실행 권한 부여"></a>Hook 파일 실행 권한 부여</h2><p>Hook 스크립트를 작성한 후 실행 권한을 부여해야 합니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x .git/hooks/pre-commit</span><br><span class="line"><span class="built_in">chmod</span> +x .git/hooks/commit-msg</span><br><span class="line"><span class="built_in">chmod</span> +x .git/hooks/pre-push</span><br><span class="line"><span class="built_in">chmod</span> +x .git/hooks/post-merge</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hook-공유하기"><a href="#Hook-공유하기" class="headerlink" title="Hook 공유하기"></a>Hook 공유하기</h2><p><code>.git/hooks/</code> 디렉토리는 Git으로 추적되지 않아 팀원과 공유할 수 없습니다. 다음 방법으로 Hook을 공유할 수 있습니다.</p>
+<h3 id="방법-1-스크립트를-저장소에-포함"><a href="#방법-1-스크립트를-저장소에-포함" class="headerlink" title="방법 1: 스크립트를 저장소에 포함"></a>방법 1: 스크립트를 저장소에 포함</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 프로젝트 루트에 hooks 디렉토리 생성</span></span><br><span class="line"><span class="built_in">mkdir</span> -p .githooks</span><br><span class="line"></span><br><span class="line"><span class="comment"># Hook 스크립트를 .githooks에 작성</span></span><br><span class="line"><span class="comment"># .githooks/pre-commit</span></span><br><span class="line"><span class="comment"># .githooks/commit-msg</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Git 설정 변경</span></span><br><span class="line">git config core.hooksPath .githooks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 팀원도 동일하게 설정</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="방법-2-설치-스크립트-제공"><a href="#방법-2-설치-스크립트-제공" class="headerlink" title="방법 2: 설치 스크립트 제공"></a>방법 2: 설치 스크립트 제공</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># scripts/install-hooks.sh</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Installing Git hooks...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Hooks 복사</span></span><br><span class="line"><span class="built_in">cp</span> scripts/hooks/* .git/hooks/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 실행 권한 부여</span></span><br><span class="line"><span class="built_in">chmod</span> +x .git/hooks/*</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;✅ Git hooks installed successfully!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prepare&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sh scripts/install-hooks.sh&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="방법-3-Husky-사용-Node-js-프로젝트"><a href="#방법-3-Husky-사용-Node-js-프로젝트" class="headerlink" title="방법 3: Husky 사용 (Node.js 프로젝트)"></a>방법 3: Husky 사용 (Node.js 프로젝트)</h3><p>Husky는 Git Hook을 쉽게 관리할 수 있는 도구입니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Husky 설치</span></span><br><span class="line">npm install --save-dev husky</span><br><span class="line"></span><br><span class="line"><span class="comment"># Husky 초기화</span></span><br><span class="line">npx husky init</span><br><span class="line"></span><br><span class="line"><span class="comment"># Hook 추가</span></span><br><span class="line">npx husky add .husky/pre-commit <span class="string">&quot;npm run lint&quot;</span></span><br><span class="line">npx husky add .husky/commit-msg <span class="string">&#x27;npx --no -- commitlint --edit &quot;$1&quot;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prepare&quot;</span><span class="punctuation">:</span> <span class="string">&quot;husky install&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="다양한-언어로-Hook-작성"><a href="#다양한-언어로-Hook-작성" class="headerlink" title="다양한 언어로 Hook 작성"></a>다양한 언어로 Hook 작성</h2><h3 id="Bash"><a href="#Bash" class="headerlink" title="Bash"></a>Bash</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Running bash hook&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Running Python hook&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    sys.exit(main())</span><br></pre></td></tr></table></figure>
+
+<h3 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Running Node.js hook&#x27;</span>);</span><br><span class="line">process.<span class="title function_">exit</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Ruby"><a href="#Ruby" class="headerlink" title="Ruby"></a>Ruby</h3><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env ruby</span></span><br><span class="line"></span><br><span class="line">puts <span class="string">&quot;Running Ruby hook&quot;</span></span><br><span class="line">exit <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Hook-우회하기"><a href="#Hook-우회하기" class="headerlink" title="Hook 우회하기"></a>Hook 우회하기</h2><p>테스트나 긴급한 상황에서 Hook을 일시적으로 우회할 수 있습니다.</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># --no-verify 또는 -n 옵션 사용</span></span><br><span class="line">git commit --no-verify -m <span class="string">&quot;urgent fix&quot;</span></span><br><span class="line">git commit -n -m <span class="string">&quot;urgent fix&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 푸시 시</span></span><br><span class="line">git push --no-verify</span><br></pre></td></tr></table></figure>
+
+<p><strong>주의</strong>: 프로덕션 환경에서는 Hook을 우회하지 않는 것이 좋습니다.</p>
+<h2 id="실전-활용-예시"><a href="#실전-활용-예시" class="headerlink" title="실전 활용 예시"></a>실전 활용 예시</h2><h3 id="보안-검사-Gitleaks-통합"><a href="#보안-검사-Gitleaks-통합" class="headerlink" title="보안 검사 - Gitleaks 통합"></a>보안 검사 - Gitleaks 통합</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># .git/hooks/pre-commit</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Running Gitleaks security scan...&quot;</span></span><br><span class="line"></span><br><span class="line">gitleaks protect --verbose --redact --staged</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ $? -eq 1 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;❌ Gitleaks detected sensitive information.&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Please remove secrets before committing.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;✅ No secrets detected&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="코드-포맷팅-Prettier-자동-실행"><a href="#코드-포맷팅-Prettier-자동-실행" class="headerlink" title="코드 포맷팅 - Prettier 자동 실행"></a>코드 포맷팅 - Prettier 자동 실행</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># .git/hooks/pre-commit</span></span><br><span class="line"></span><br><span class="line">files=$(git diff --cached --name-only --diff-filter=ACMR | grep -E <span class="string">&#x27;\.(js|jsx|ts|tsx|json|css|md)$&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$files</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Formatting files with Prettier...&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$files</span>&quot;</span> | xargs npx prettier --write</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$files</span>&quot;</span> | xargs git add</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;✅ Files formatted&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="브랜치-네이밍-검증"><a href="#브랜치-네이밍-검증" class="headerlink" title="브랜치 네이밍 검증"></a>브랜치 네이밍 검증</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># .git/hooks/pre-push</span></span><br><span class="line"></span><br><span class="line">branch_name=$(git symbolic-ref --short HEAD)</span><br><span class="line">valid_pattern=<span class="string">&quot;^(feature|bugfix|hotfix|release)/[a-z0-9-]+$&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$branch_name</span>&quot;</span> | grep -qE <span class="string">&quot;<span class="variable">$valid_pattern</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;❌ Invalid branch name: <span class="variable">$branch_name</span>&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Branch name must follow pattern: type/description&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Valid types: feature, bugfix, hotfix, release&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Example: feature/user-authentication&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;✅ Branch name is valid&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Hook-디버깅"><a href="#Hook-디버깅" class="headerlink" title="Hook 디버깅"></a>Hook 디버깅</h2><p>Hook이 제대로 동작하지 않을 때 디버깅 방법:</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Hook 스크립트에 디버그 모드 추가</span></span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"><span class="built_in">set</span> -x  <span class="comment"># 모든 명령어 출력</span></span><br><span class="line"><span class="built_in">set</span> -e  <span class="comment"># 에러 발생 시 즉시 중단</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 로그 파일 생성</span></span><br><span class="line"><span class="built_in">exec</span> 2&gt; /tmp/git-hook-debug.log</span><br><span class="line"><span class="built_in">set</span> -x</span><br><span class="line"></span><br><span class="line"><span class="comment"># 환경 변수 확인</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;PATH: <span class="variable">$PATH</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;PWD: <span class="variable">$PWD</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 스크립트 내용...</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="베스트-프랙티스"><a href="#베스트-프랙티스" class="headerlink" title="베스트 프랙티스"></a>베스트 프랙티스</h2><ol>
+<li><strong>빠른 실행</strong>: Hook은 자주 실행되므로 빠르게 동작해야 합니다</li>
+<li><strong>명확한 에러 메시지</strong>: 실패 시 개발자가 문제를 쉽게 파악할 수 있도록 작성</li>
+<li><strong>점진적 도입</strong>: 처음에는 경고만 출력하고, 팀이 적응한 후 강제 적용</li>
+<li><strong>문서화</strong>: 프로젝트에 어떤 Hook이 설정되어 있는지 README에 명시</li>
+<li><strong>우회 가능</strong>: 긴급 상황을 위해 <code>--no-verify</code> 옵션 사용 가능하도록 유지</li>
+<li><strong>팀 공유</strong>: Husky 등의 도구를 사용하여 팀원 모두가 동일한 Hook 사용</li>
+<li><strong>적절한 범위</strong>: Pre-commit은 빠른 검사만, 전체 테스트는 CI&#x2F;CD에서 수행</li>
+</ol>
+<h2 id="참고-자료"><a href="#참고-자료" class="headerlink" title="참고 자료"></a>참고 자료</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">Git Hooks 공식 문서</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://typicode.github.io/husky/">Husky</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.conventionalcommits.org/">Conventional Commits</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://commitlint.js.org/">commitlint</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/22/git/git-hooks/" data-id="cmji2769w006gcg8d0dqkfn4t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Git - Git Hook으로 워크플로우 자동화하기",
+        "image": "https://ckck803.github.io/images/git/git.png",
+        "keywords": "Git Automation Hook",
+        "genre": "Develop Git",
+        "datePublished": "2025-12-22",
+        "dateCreated": "2025-12-22",
+        "dateModified": "2025-12-22",
+        "url": "https://ckck803.github.io/2025/12/22/git/git-hooks/",
+        "description": "
+Git Hook이란?Git Hook은 Git에서 특정 이벤트가 발생했을 때 자동으로 실행되는 스크립트입니다. 커밋, 푸시, 머지 등의 작업 전후에 사용자 정의 스크립트를 실행하여 코드 품질 검사, 테스트 자동화, 메시지 검증 등 다양한 워크플로우를 자동화할 수 있습니다.
+Git Hook의 종류Git Hook은 크게 클라이언트 훅(Client-side Hooks) 과 서버 훅(Server-side Hooks) 으로 나뉩니다.
+클라이언트 훅 (Client-side Hooks)개발자의 로컬 저장소에서 실행되는 훅입니다.
+Commit 관련 훅
+pre-commit: 커밋 메시지 작성 전 실행 (코드 린트, 테스트 실행)
+prepare-commit-msg: 커밋 메시지 에디터가 열리기 전 실행 (메시지 템플릿 설정)
+commit-msg: 커밋 메시지 검증 (메시지 형식 확인)
+post-commit: 커밋이 완료된 후 실행 (알림 전송)
+
+Merge&#x2F;Rebase 관련 훅",
+        "wordCount": 2302
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2025/12/22/git/gitleaks/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Git - Gitleaks로 민감정보 탐지하기</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">61</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">186</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Django/">Django</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Django/Python/">Python</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infra/">Infra</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">49</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Security/">Security</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">279</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2025 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/22/git/git-hooks/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
