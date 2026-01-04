@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>Linux에서 파일과 디렉토리 찾기 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="linux,find,search,grep,locate">
+    
+    <meta name="description" content="Linux 시스템에서 파일과 디렉토리를 효율적으로 찾는 다양한 방법을 소개합니다. 1. find - 강력한 파일 검색 명령어가장 강력하고 유연한 파일 검색 도구입니다. 기본 사용법# 현재 디렉토리에서 특정 파일명 찾기find . -name &quot;filename.txt&quot;# 대소문자 구분 없이 찾기find . -iname &quot;filena">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux에서 파일과 디렉토리 찾기">
+<meta property="og:url" content="https://ckck803.github.io/2026/01/02/linux/find-files-and-directories/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="Linux 시스템에서 파일과 디렉토리를 효율적으로 찾는 다양한 방법을 소개합니다. 1. find - 강력한 파일 검색 명령어가장 강력하고 유연한 파일 검색 도구입니다. 기본 사용법# 현재 디렉토리에서 특정 파일명 찾기find . -name &quot;filename.txt&quot;# 대소문자 구분 없이 찾기find . -iname &quot;filena">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/linux/linux.png">
+<meta property="article:published_time" content="2026-01-01T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-02T03:03:17.870Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="find">
+<meta property="article:tag" content="search">
+<meta property="article:tag" content="grep">
+<meta property="article:tag" content="locate">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/linux/linux.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Linux/">Linux</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-linux/find-files-and-directories" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Linux에서 파일과 디렉토리 찾기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2026/01/02/linux/find-files-and-directories/" class="article-date">
+       <time datetime="2026-01-01T15:00:00.000Z" itemprop="datePublished">2026-01-02</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2026/01/02/linux/find-files-and-directories/" class="article-date">
+     <time datetime="2026-01-02T03:03:17.870Z" itemprop="dateModified">2026-01-02</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/find/" rel="tag">find</a>, <a class="tag-link-link" href="/tags/grep/" rel="tag">grep</a>, <a class="tag-link-link" href="/tags/linux/" rel="tag">linux</a>, <a class="tag-link-link" href="/tags/locate/" rel="tag">locate</a>, <a class="tag-link-link" href="/tags/search/" rel="tag">search</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/linux/linux.png"></p>
+<p>Linux 시스템에서 파일과 디렉토리를 효율적으로 찾는 다양한 방법을 소개합니다.</p>
+<h2 id="1-find-강력한-파일-검색-명령어"><a href="#1-find-강력한-파일-검색-명령어" class="headerlink" title="1. find - 강력한 파일 검색 명령어"></a>1. find - 강력한 파일 검색 명령어</h2><p>가장 강력하고 유연한 파일 검색 도구입니다.</p>
+<h3 id="기본-사용법"><a href="#기본-사용법" class="headerlink" title="기본 사용법"></a>기본 사용법</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 현재 디렉토리에서 특정 파일명 찾기</span></span><br><span class="line">find . -name <span class="string">&quot;filename.txt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 대소문자 구분 없이 찾기</span></span><br><span class="line">find . -iname <span class="string">&quot;filename.txt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 디렉토리에서 찾기</span></span><br><span class="line">find /home/user -name <span class="string">&quot;*.log&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="파일-타입으로-찾기"><a href="#파일-타입으로-찾기" class="headerlink" title="파일 타입으로 찾기"></a>파일 타입으로 찾기</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 일반 파일만</span></span><br><span class="line">find . -<span class="built_in">type</span> f -name <span class="string">&quot;*.txt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 디렉토리만</span></span><br><span class="line">find . -<span class="built_in">type</span> d -name <span class="string">&quot;backup&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 심볼릭 링크만</span></span><br><span class="line">find . -<span class="built_in">type</span> l</span><br></pre></td></tr></table></figure>
+
+<h3 id="파일-크기로-찾기"><a href="#파일-크기로-찾기" class="headerlink" title="파일 크기로 찾기"></a>파일 크기로 찾기</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 100MB보다 큰 파일</span></span><br><span class="line">find . -<span class="built_in">type</span> f -size +100M</span><br><span class="line"></span><br><span class="line"><span class="comment"># 10KB보다 작은 파일</span></span><br><span class="line">find . -<span class="built_in">type</span> f -size -10k</span><br><span class="line"></span><br><span class="line"><span class="comment"># 정확히 1GB 파일</span></span><br><span class="line">find . -<span class="built_in">type</span> f -size 1G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 크기 단위: c(bytes), k(KB), M(MB), G(GB)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="수정-시간으로-찾기"><a href="#수정-시간으로-찾기" class="headerlink" title="수정 시간으로 찾기"></a>수정 시간으로 찾기</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 7일 이내 수정된 파일</span></span><br><span class="line">find . -<span class="built_in">type</span> f -mtime -7</span><br><span class="line"></span><br><span class="line"><span class="comment"># 30일 이전 수정된 파일</span></span><br><span class="line">find . -<span class="built_in">type</span> f -mtime +30</span><br><span class="line"></span><br><span class="line"><span class="comment"># 24시간 이내 수정된 파일</span></span><br><span class="line">find . -<span class="built_in">type</span> f -mmin -1440</span><br><span class="line"></span><br><span class="line"><span class="comment"># 최근 1시간 이내</span></span><br><span class="line">find . -<span class="built_in">type</span> f -mmin -60</span><br></pre></td></tr></table></figure>
+
+<h3 id="권한으로-찾기"><a href="#권한으로-찾기" class="headerlink" title="권한으로 찾기"></a>권한으로 찾기</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 특정 권한을 가진 파일</span></span><br><span class="line">find . -<span class="built_in">type</span> f -perm 0644</span><br><span class="line"></span><br><span class="line"><span class="comment"># 실행 권한이 있는 파일</span></span><br><span class="line">find . -<span class="built_in">type</span> f -perm /111</span><br><span class="line"></span><br><span class="line"><span class="comment"># SUID가 설정된 파일</span></span><br><span class="line">find / -<span class="built_in">type</span> f -perm -4000 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<h3 id="소유자로-찾기"><a href="#소유자로-찾기" class="headerlink" title="소유자로 찾기"></a>소유자로 찾기</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 특정 사용자 소유 파일</span></span><br><span class="line">find . -user username</span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 그룹 소유 파일</span></span><br><span class="line">find . -group groupname</span><br></pre></td></tr></table></figure>
+
+<h3 id="찾은-파일에-명령-실행"><a href="#찾은-파일에-명령-실행" class="headerlink" title="찾은 파일에 명령 실행"></a>찾은 파일에 명령 실행</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 찾은 파일 삭제</span></span><br><span class="line">find . -name <span class="string">&quot;*.tmp&quot;</span> -<span class="built_in">type</span> f -delete</span><br><span class="line"></span><br><span class="line"><span class="comment"># 찾은 파일에 명령 실행</span></span><br><span class="line">find . -name <span class="string">&quot;*.log&quot;</span> -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; \;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 확인 후 실행</span></span><br><span class="line">find . -name <span class="string">&quot;*.log&quot;</span> -<span class="built_in">type</span> f -ok <span class="built_in">rm</span> &#123;&#125; \;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 여러 파일을 한번에 처리 (더 빠름)</span></span><br><span class="line">find . -name <span class="string">&quot;*.log&quot;</span> -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; +</span><br></pre></td></tr></table></figure>
+
+<h3 id="복합-조건"><a href="#복합-조건" class="headerlink" title="복합 조건"></a>복합 조건</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># AND 조건 (기본)</span></span><br><span class="line">find . -name <span class="string">&quot;*.txt&quot;</span> -size +1M</span><br><span class="line"></span><br><span class="line"><span class="comment"># OR 조건</span></span><br><span class="line">find . -name <span class="string">&quot;*.txt&quot;</span> -o -name <span class="string">&quot;*.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># NOT 조건</span></span><br><span class="line">find . -<span class="built_in">type</span> f -not -name <span class="string">&quot;*.txt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 괄호 사용 (복잡한 조건)</span></span><br><span class="line">find . \( -name <span class="string">&quot;*.txt&quot;</span> -o -name <span class="string">&quot;*.log&quot;</span> \) -size +1M</span><br></pre></td></tr></table></figure>
+
+<h3 id="실용적인-예시"><a href="#실용적인-예시" class="headerlink" title="실용적인 예시"></a>실용적인 예시</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 빈 파일 찾기</span></span><br><span class="line">find . -<span class="built_in">type</span> f -empty</span><br><span class="line"></span><br><span class="line"><span class="comment"># 빈 디렉토리 찾기</span></span><br><span class="line">find . -<span class="built_in">type</span> d -empty</span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 확장자를 제외하고 찾기</span></span><br><span class="line">find . -<span class="built_in">type</span> f ! -name <span class="string">&quot;*.git*&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 숨김 파일 찾기</span></span><br><span class="line">find . -name <span class="string">&quot;.*&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 중복 파일 찾기 (같은 이름)</span></span><br><span class="line">find . -<span class="built_in">type</span> f -<span class="built_in">printf</span> <span class="string">&#x27;%f\n&#x27;</span> | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -d</span><br><span class="line"></span><br><span class="line"><span class="comment"># 최근 수정된 파일 10개</span></span><br><span class="line">find . -<span class="built_in">type</span> f -<span class="built_in">printf</span> <span class="string">&#x27;%T+ %p\n&#x27;</span> | <span class="built_in">sort</span> -r | <span class="built_in">head</span> -10</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-locate-빠른-파일-검색"><a href="#2-locate-빠른-파일-검색" class="headerlink" title="2. locate - 빠른 파일 검색"></a>2. locate - 빠른 파일 검색</h2><p>데이터베이스를 사용하여 매우 빠르게 파일을 찾습니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># locate 설치</span></span><br><span class="line">sudo apt install mlocate      <span class="comment"># Ubuntu/Debian</span></span><br><span class="line">sudo yum install mlocate      <span class="comment"># CentOS/RHEL</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 데이터베이스 업데이트</span></span><br><span class="line">sudo updatedb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 파일 찾기</span></span><br><span class="line">locate filename.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 대소문자 구분 없이</span></span><br><span class="line">locate -i filename.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 정확한 경로만</span></span><br><span class="line">locate -b <span class="string">&#x27;\filename.txt&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 개수 제한</span></span><br><span class="line">locate -l 10 <span class="string">&quot;*.conf&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 통계 정보</span></span><br><span class="line">locate -S</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-grep-파일-내용으로-검색"><a href="#3-grep-파일-내용으로-검색" class="headerlink" title="3. grep - 파일 내용으로 검색"></a>3. grep - 파일 내용으로 검색</h2><p>파일 내용을 검색하여 특정 텍스트를 포함한 파일을 찾습니다.</p>
+<h3 id="기본-사용법-1"><a href="#기본-사용법-1" class="headerlink" title="기본 사용법"></a>기본 사용법</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 단일 파일에서 검색</span></span><br><span class="line">grep <span class="string">&quot;search_text&quot;</span> file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 여러 파일에서 검색</span></span><br><span class="line">grep <span class="string">&quot;search_text&quot;</span> *.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 재귀적으로 검색</span></span><br><span class="line">grep -r <span class="string">&quot;search_text&quot;</span> /path/to/dir</span><br><span class="line"></span><br><span class="line"><span class="comment"># 대소문자 구분 없이</span></span><br><span class="line">grep -i <span class="string">&quot;search_text&quot;</span> file.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="유용한-옵션"><a href="#유용한-옵션" class="headerlink" title="유용한 옵션"></a>유용한 옵션</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 파일 이름만 출력</span></span><br><span class="line">grep -l <span class="string">&quot;search_text&quot;</span> *.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 파일 이름과 줄 번호</span></span><br><span class="line">grep -n <span class="string">&quot;search_text&quot;</span> file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 매칭되지 않는 줄</span></span><br><span class="line">grep -v <span class="string">&quot;search_text&quot;</span> file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 단어 단위로 매칭</span></span><br><span class="line">grep -w <span class="string">&quot;word&quot;</span> file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 앞뒤 줄 포함 (컨텍스트)</span></span><br><span class="line">grep -A 3 -B 3 <span class="string">&quot;search_text&quot;</span> file.txt  <span class="comment"># 앞뒤 3줄</span></span><br><span class="line">grep -C 3 <span class="string">&quot;search_text&quot;</span> file.txt       <span class="comment"># 같은 의미</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 색상 강조</span></span><br><span class="line">grep --color=auto <span class="string">&quot;search_text&quot;</span> file.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="정규-표현식"><a href="#정규-표현식" class="headerlink" title="정규 표현식"></a>정규 표현식</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 기본 정규식</span></span><br><span class="line">grep <span class="string">&quot;^start&quot;</span> file.txt        <span class="comment"># 줄 시작</span></span><br><span class="line">grep <span class="string">&quot;end$&quot;</span> file.txt          <span class="comment"># 줄 끝</span></span><br><span class="line">grep <span class="string">&quot;test.*text&quot;</span> file.txt    <span class="comment"># 패턴 매칭</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 확장 정규식</span></span><br><span class="line">grep -E <span class="string">&quot;pattern1|pattern2&quot;</span> file.txt</span><br><span class="line">grep -E <span class="string">&quot;[0-9]&#123;3&#125;-[0-9]&#123;4&#125;&quot;</span> file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Perl 정규식</span></span><br><span class="line">grep -P <span class="string">&quot;\d&#123;3&#125;-\d&#123;4&#125;&quot;</span> file.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="실용-예시"><a href="#실용-예시" class="headerlink" title="실용 예시"></a>실용 예시</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 에러 로그 찾기</span></span><br><span class="line">grep -r <span class="string">&quot;ERROR&quot;</span> /var/log/</span><br><span class="line"></span><br><span class="line"><span class="comment"># IP 주소 찾기</span></span><br><span class="line">grep -E <span class="string">&quot;[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;&quot;</span> file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 확장자에서만 검색</span></span><br><span class="line">grep -r --include=<span class="string">&quot;*.py&quot;</span> <span class="string">&quot;def function_name&quot;</span> .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 확장자 제외</span></span><br><span class="line">grep -r --exclude=<span class="string">&quot;*.min.js&quot;</span> <span class="string">&quot;search_text&quot;</span> .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 디렉토리 제외</span></span><br><span class="line">grep -r --exclude-dir=node_modules <span class="string">&quot;search_text&quot;</span> .</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-which-실행-파일-경로-찾기"><a href="#4-which-실행-파일-경로-찾기" class="headerlink" title="4. which - 실행 파일 경로 찾기"></a>4. which - 실행 파일 경로 찾기</h2><p>PATH에 있는 실행 파일의 위치를 찾습니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 명령어 위치 찾기</span></span><br><span class="line"><span class="built_in">which</span> python</span><br><span class="line"><span class="built_in">which</span> java</span><br><span class="line"><span class="built_in">which</span> node</span><br><span class="line"></span><br><span class="line"><span class="comment"># 모든 매칭 경로</span></span><br><span class="line"><span class="built_in">which</span> -a python</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-whereis-바이너리-소스-매뉴얼-찾기"><a href="#5-whereis-바이너리-소스-매뉴얼-찾기" class="headerlink" title="5. whereis - 바이너리, 소스, 매뉴얼 찾기"></a>5. whereis - 바이너리, 소스, 매뉴얼 찾기</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 전체 정보</span></span><br><span class="line">whereis python</span><br><span class="line"></span><br><span class="line"><span class="comment"># 바이너리만</span></span><br><span class="line">whereis -b python</span><br><span class="line"></span><br><span class="line"><span class="comment"># 매뉴얼만</span></span><br><span class="line">whereis -m python</span><br><span class="line"></span><br><span class="line"><span class="comment"># 소스만</span></span><br><span class="line">whereis -s python</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-type-명령어-타입-확인"><a href="#6-type-명령어-타입-확인" class="headerlink" title="6. type - 명령어 타입 확인"></a>6. type - 명령어 타입 확인</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 명령어가 무엇인지 확인</span></span><br><span class="line"><span class="built_in">type</span> <span class="built_in">ls</span>          <span class="comment"># ls is aliased to `ls --color=auto&#x27;</span></span><br><span class="line"><span class="built_in">type</span> <span class="built_in">cd</span>          <span class="comment"># cd is a shell builtin</span></span><br><span class="line"><span class="built_in">type</span> python      <span class="comment"># python is /usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 모든 정보</span></span><br><span class="line"><span class="built_in">type</span> -a python</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-fd-현대적인-find-대안"><a href="#7-fd-현대적인-find-대안" class="headerlink" title="7. fd - 현대적인 find 대안"></a>7. fd - 현대적인 find 대안</h2><p>더 빠르고 사용하기 쉬운 find의 대안입니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># fd 설치</span></span><br><span class="line">sudo apt install fd-find      <span class="comment"># Ubuntu/Debian</span></span><br><span class="line">brew install fd               <span class="comment"># macOS</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 기본 사용</span></span><br><span class="line">fd pattern</span><br><span class="line"></span><br><span class="line"><span class="comment"># 파일 타입 지정</span></span><br><span class="line">fd -t f pattern   <span class="comment"># 파일만</span></span><br><span class="line">fd -t d pattern   <span class="comment"># 디렉토리만</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 숨김 파일 포함</span></span><br><span class="line">fd -H pattern</span><br><span class="line"></span><br><span class="line"><span class="comment"># 전체 경로 검색</span></span><br><span class="line">fd -p path/pattern</span><br><span class="line"></span><br><span class="line"><span class="comment"># 확장자로 검색</span></span><br><span class="line">fd -e txt</span><br><span class="line">fd -e <span class="built_in">log</span> -e txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 제외 패턴</span></span><br><span class="line">fd -E node_modules pattern</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-ripgrep-rg-빠른-grep-대안"><a href="#8-ripgrep-rg-빠른-grep-대안" class="headerlink" title="8. ripgrep (rg) - 빠른 grep 대안"></a>8. ripgrep (rg) - 빠른 grep 대안</h2><p>매우 빠른 코드 검색 도구입니다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ripgrep 설치</span></span><br><span class="line">sudo apt install ripgrep      <span class="comment"># Ubuntu/Debian</span></span><br><span class="line">brew install ripgrep          <span class="comment"># macOS</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 기본 사용</span></span><br><span class="line">rg <span class="string">&quot;search_text&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 타입만</span></span><br><span class="line">rg -t py <span class="string">&quot;def &quot;</span>           <span class="comment"># Python 파일만</span></span><br><span class="line">rg -t js <span class="string">&quot;function&quot;</span>       <span class="comment"># JavaScript 파일만</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 대소문자 구분 없이</span></span><br><span class="line">rg -i <span class="string">&quot;search_text&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 숨김 파일 포함</span></span><br><span class="line">rg --hidden <span class="string">&quot;search_text&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 디렉토리 제외</span></span><br><span class="line">rg <span class="string">&quot;search_text&quot;</span> -g <span class="string">&#x27;!node_modules&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 파일 이름만</span></span><br><span class="line">rg -l <span class="string">&quot;search_text&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 통계 정보</span></span><br><span class="line">rg --stats <span class="string">&quot;search_text&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="9-tree-디렉토리-구조-시각화"><a href="#9-tree-디렉토리-구조-시각화" class="headerlink" title="9. tree - 디렉토리 구조 시각화"></a>9. tree - 디렉토리 구조 시각화</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># tree 설치</span></span><br><span class="line">sudo apt install tree</span><br><span class="line"></span><br><span class="line"><span class="comment"># 기본 사용</span></span><br><span class="line">tree</span><br><span class="line"></span><br><span class="line"><span class="comment"># 레벨 제한</span></span><br><span class="line">tree -L 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 디렉토리만</span></span><br><span class="line">tree -d</span><br><span class="line"></span><br><span class="line"><span class="comment"># 숨김 파일 포함</span></span><br><span class="line">tree -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 패턴 매칭</span></span><br><span class="line">tree -P <span class="string">&quot;*.txt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 패턴 제외</span></span><br><span class="line">tree -I <span class="string">&quot;node_modules|.git&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 크기 표시</span></span><br><span class="line">tree -h</span><br></pre></td></tr></table></figure>
+
+<h2 id="10-실전-활용-스크립트"><a href="#10-실전-활용-스크립트" class="headerlink" title="10. 실전 활용 스크립트"></a>10. 실전 활용 스크립트</h2><h3 id="대용량-파일-찾기"><a href="#대용량-파일-찾기" class="headerlink" title="대용량 파일 찾기"></a>대용량 파일 찾기</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 1GB 이상 파일을 크기순으로 정렬</span></span><br><span class="line">find . -<span class="built_in">type</span> f -size +1G -<span class="built_in">exec</span> <span class="built_in">ls</span> -lh &#123;&#125; \; | awk <span class="string">&#x27;&#123;print $5, $9&#125;&#x27;</span> | <span class="built_in">sort</span> -hr</span><br></pre></td></tr></table></figure>
+
+<h3 id="오래된-로그-파일-정리"><a href="#오래된-로그-파일-정리" class="headerlink" title="오래된 로그 파일 정리"></a>오래된 로그 파일 정리</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 30일 이상된 .log 파일 삭제</span></span><br><span class="line">find /var/log -name <span class="string">&quot;*.log&quot;</span> -<span class="built_in">type</span> f -mtime +30 -delete</span><br></pre></td></tr></table></figure>
+
+<h3 id="특정-텍스트를-포함한-파일-찾기"><a href="#특정-텍스트를-포함한-파일-찾기" class="headerlink" title="특정 텍스트를 포함한 파일 찾기"></a>특정 텍스트를 포함한 파일 찾기</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># ERROR를 포함한 로그 파일 찾기</span></span><br><span class="line">grep -r <span class="string">&quot;ERROR&quot;</span> /var/log --include=<span class="string">&quot;*.log&quot;</span> -l</span><br></pre></td></tr></table></figure>
+
+<h3 id="중복-파일-찾기-md5-해시-기반"><a href="#중복-파일-찾기-md5-해시-기반" class="headerlink" title="중복 파일 찾기 (md5 해시 기반)"></a>중복 파일 찾기 (md5 해시 기반)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 현재 디렉토리에서 중복 파일 찾기</span></span><br><span class="line">find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">md5sum</span> &#123;&#125; \; | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -w32 -dD</span><br></pre></td></tr></table></figure>
+
+<h3 id="최근-수정된-파일-모니터링"><a href="#최근-수정된-파일-모니터링" class="headerlink" title="최근 수정된 파일 모니터링"></a>최근 수정된 파일 모니터링</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 최근 5분 이내 수정된 파일</span></span><br><span class="line">find /path/to/watch -<span class="built_in">type</span> f -mmin -5</span><br></pre></td></tr></table></figure>
+
+<h2 id="성능-비교"><a href="#성능-비교" class="headerlink" title="성능 비교"></a>성능 비교</h2><table>
+<thead>
+<tr>
+<th>도구</th>
+<th>속도</th>
+<th>용도</th>
+<th>설치 필요</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>find</code></td>
+<td>보통</td>
+<td>범용적인 파일 검색</td>
+<td>기본 설치</td>
+</tr>
+<tr>
+<td><code>locate</code></td>
+<td>매우 빠름</td>
+<td>파일명 검색</td>
+<td>필요</td>
+</tr>
+<tr>
+<td><code>grep</code></td>
+<td>보통</td>
+<td>파일 내용 검색</td>
+<td>기본 설치</td>
+</tr>
+<tr>
+<td><code>fd</code></td>
+<td>빠름</td>
+<td>현대적인 파일 검색</td>
+<td>필요</td>
+</tr>
+<tr>
+<td><code>rg</code></td>
+<td>매우 빠름</td>
+<td>코드 검색</td>
+<td>필요</td>
+</tr>
+</tbody></table>
+<h2 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h2><ul>
+<li><strong>파일명으로 찾기</strong>: <code>find</code>, <code>locate</code>, <code>fd</code></li>
+<li><strong>파일 내용으로 찾기</strong>: <code>grep</code>, <code>rg</code></li>
+<li><strong>실행 파일 찾기</strong>: <code>which</code>, <code>whereis</code>, <code>type</code></li>
+<li><strong>대용량 검색</strong>: <code>locate</code> (사전 인덱싱) 또는 <code>fd</code>, <code>rg</code> (빠른 성능)</li>
+<li><strong>정확한 제어</strong>: <code>find</code> (가장 강력한 옵션)</li>
+</ul>
+<p>일반적으로 **<code>find</code>**와 **<code>grep</code>**을 조합하면 대부분의 검색 작업을 수행할 수 있습니다. 성능이 중요하다면 **<code>fd</code>**와 **<code>rg</code>**를 설치하여 사용하는 것을 추천합니다.</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2026/01/02/linux/find-files-and-directories/" data-id="cmjzcxjyy0001wr8dasx035st" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Linux에서 파일과 디렉토리 찾기",
+        "image": "https://ckck803.github.io/images/linux/linux.png",
+        "keywords": "linux find search grep locate",
+        "genre": "Linux",
+        "datePublished": "2026-01-02",
+        "dateCreated": "2026-01-02",
+        "dateModified": "2026-01-02",
+        "url": "https://ckck803.github.io/2026/01/02/linux/find-files-and-directories/",
+        "description": "
+Linux 시스템에서 파일과 디렉토리를 효율적으로 찾는 다양한 방법을 소개합니다.
+1. find - 강력한 파일 검색 명령어가장 강력하고 유연한 파일 검색 도구입니다.
+기본 사용법# 현재 디렉토리에서 특정 파일명 찾기find . -name &quot;filename.txt&quot;# 대소문자 구분 없이 찾기find . -iname &quot;filename.txt&quot;# 특정 디렉토리에서 찾기find /home/user -name &quot;*.log&quot;
+
+파일 타입으로 찾기# 일반 파일만find . -type f -name &quot;*.txt&quot;# 디렉토리만find . -type d -name &quot;backup&quot;# 심볼릭 링크만find . -type l
+
+파일 크기로 찾기# 100MB보다 큰 파일find . -type f -size +100M# 10KB보다 작은 파일find . -type f -size -10k# 정확히 1GB 파일find . -type f -size 1G# 크기 단위: c(bytes), k(KB), M(MB), G(GB)",
+        "wordCount": 1808
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2026/01/02/linux/check-disk-volumes/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            Linux에서 연결된 볼륨 확인하기
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2026/01/01/ai/ollma/install-gpt-oss-20b/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Ollama를 이용한 GPT OSS 20B 모델 설치 가이드</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">194</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2026/01/02/linux/find-files-and-directories/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

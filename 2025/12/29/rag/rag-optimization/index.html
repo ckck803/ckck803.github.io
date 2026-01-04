@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>RAG 성능 최적화 기법 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="RAG,Optimization,Performance,Best Practices">
+    
+    <meta name="description" content="RAG 시스템 최적화 개요RAG 시스템의 성능은 다음 세 가지 측면에서 최적화할 수 있습니다:  검색 품질 - 관련성 높은 문서 찾기 응답 품질 - 정확하고 유용한 답변 생성 성능&#x2F;비용 - 빠른 응답과 비용 효율성  1. 청킹 전략 최적화1.1 고정 크기 청킹from langchain.text_splitter import RecursiveChar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAG 성능 최적화 기법">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/29/rag/rag-optimization/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="RAG 시스템 최적화 개요RAG 시스템의 성능은 다음 세 가지 측면에서 최적화할 수 있습니다:  검색 품질 - 관련성 높은 문서 찾기 응답 품질 - 정확하고 유용한 답변 생성 성능&#x2F;비용 - 빠른 응답과 비용 효율성  1. 청킹 전략 최적화1.1 고정 크기 청킹from langchain.text_splitter import RecursiveChar">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/ai/rag.png">
+<meta property="article:published_time" content="2025-12-29T09:33:00.000Z">
+<meta property="article:modified_time" content="2025-12-30T03:19:30.703Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="RAG">
+<meta property="article:tag" content="Optimization">
+<meta property="article:tag" content="Performance">
+<meta property="article:tag" content="Best Practices">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/ai/rag.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/AI/">AI</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/AI/RAG/">RAG</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-rag/rag-optimization" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        RAG 성능 최적화 기법
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/29/rag/rag-optimization/" class="article-date">
+       <time datetime="2025-12-29T09:33:00.000Z" itemprop="datePublished">2025-12-29</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/29/rag/rag-optimization/" class="article-date">
+     <time datetime="2025-12-30T03:19:30.703Z" itemprop="dateModified">2025-12-30</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Best-Practices/" rel="tag">Best Practices</a>, <a class="tag-link-link" href="/tags/Optimization/" rel="tag">Optimization</a>, <a class="tag-link-link" href="/tags/Performance/" rel="tag">Performance</a>, <a class="tag-link-link" href="/tags/RAG/" rel="tag">RAG</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/ai/rag.png"></p>
+<h2 id="RAG-시스템-최적화-개요"><a href="#RAG-시스템-최적화-개요" class="headerlink" title="RAG 시스템 최적화 개요"></a>RAG 시스템 최적화 개요</h2><p>RAG 시스템의 성능은 다음 세 가지 측면에서 최적화할 수 있습니다:</p>
+<ol>
+<li><strong>검색 품질</strong> - 관련성 높은 문서 찾기</li>
+<li><strong>응답 품질</strong> - 정확하고 유용한 답변 생성</li>
+<li><strong>성능&#x2F;비용</strong> - 빠른 응답과 비용 효율성</li>
+</ol>
+<h2 id="1-청킹-전략-최적화"><a href="#1-청킹-전략-최적화" class="headerlink" title="1. 청킹 전략 최적화"></a>1. 청킹 전략 최적화</h2><h3 id="1-1-고정-크기-청킹"><a href="#1-1-고정-크기-청킹" class="headerlink" title="1.1 고정 크기 청킹"></a>1.1 고정 크기 청킹</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 기본 설정</span></span><br><span class="line">text_splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=<span class="number">1000</span>,</span><br><span class="line">    chunk_overlap=<span class="number">200</span>,</span><br><span class="line">    length_function=<span class="built_in">len</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 문서 유형별 최적화</span></span><br><span class="line"><span class="comment">## 기술 문서 - 작은 청크</span></span><br><span class="line">tech_splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=<span class="number">500</span>,</span><br><span class="line">    chunk_overlap=<span class="number">100</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">## 소설/긴 글 - 큰 청크</span></span><br><span class="line">narrative_splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">    chunk_size=<span class="number">2000</span>,</span><br><span class="line">    chunk_overlap=<span class="number">400</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-의미-기반-청킹"><a href="#1-2-의미-기반-청킹" class="headerlink" title="1.2 의미 기반 청킹"></a>1.2 의미 기반 청킹</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_experimental.text_splitter <span class="keyword">import</span> SemanticChunker</span><br><span class="line"><span class="keyword">from</span> langchain_openai.embeddings <span class="keyword">import</span> OpenAIEmbeddings</span><br><span class="line"></span><br><span class="line"><span class="comment"># 의미론적 유사도로 분할</span></span><br><span class="line">semantic_chunker = SemanticChunker(</span><br><span class="line">    OpenAIEmbeddings(),</span><br><span class="line">    breakpoint_threshold_type=<span class="string">&quot;percentile&quot;</span>,  <span class="comment"># or &quot;standard_deviation&quot;</span></span><br><span class="line">    breakpoint_threshold_amount=<span class="number">95</span>  <span class="comment"># 상위 5%에서 분할</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">chunks = semantic_chunker.split_documents(documents)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-문서-구조-기반-청킹"><a href="#1-3-문서-구조-기반-청킹" class="headerlink" title="1.3 문서 구조 기반 청킹"></a>1.3 문서 구조 기반 청킹</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> MarkdownHeaderTextSplitter</span><br><span class="line"></span><br><span class="line"><span class="comment"># Markdown 헤더 기준 분할</span></span><br><span class="line">headers_to_split_on = [</span><br><span class="line">    (<span class="string">&quot;#&quot;</span>, <span class="string">&quot;Header 1&quot;</span>),</span><br><span class="line">    (<span class="string">&quot;##&quot;</span>, <span class="string">&quot;Header 2&quot;</span>),</span><br><span class="line">    (<span class="string">&quot;###&quot;</span>, <span class="string">&quot;Header 3&quot;</span>),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">markdown_splitter = MarkdownHeaderTextSplitter(</span><br><span class="line">    headers_to_split_on=headers_to_split_on</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">md_chunks = markdown_splitter.split_text(markdown_document)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-청크에-컨텍스트-추가"><a href="#1-4-청크에-컨텍스트-추가" class="headerlink" title="1.4 청크에 컨텍스트 추가"></a>1.4 청크에 컨텍스트 추가</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_context_to_chunks</span>(<span class="params">chunks, context_window=<span class="number">1</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;이전/다음 청크 정보를 메타데이터에 추가&quot;&quot;&quot;</span></span><br><span class="line">    enhanced_chunks = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, chunk <span class="keyword">in</span> <span class="built_in">enumerate</span>(chunks):</span><br><span class="line">        <span class="comment"># 이전 청크의 마지막 부분</span></span><br><span class="line">        prev_context = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> i &gt; <span class="number">0</span>:</span><br><span class="line">            prev_context = chunks[i-<span class="number">1</span>].page_content[-<span class="number">100</span>:]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 다음 청크의 시작 부분</span></span><br><span class="line">        next_context = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(chunks) - <span class="number">1</span>:</span><br><span class="line">            next_context = chunks[i+<span class="number">1</span>].page_content[:<span class="number">100</span>]</span><br><span class="line"></span><br><span class="line">        chunk.metadata[<span class="string">&quot;prev_context&quot;</span>] = prev_context</span><br><span class="line">        chunk.metadata[<span class="string">&quot;next_context&quot;</span>] = next_context</span><br><span class="line">        enhanced_chunks.append(chunk)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> enhanced_chunks</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-임베딩-최적화"><a href="#2-임베딩-최적화" class="headerlink" title="2. 임베딩 최적화"></a>2. 임베딩 최적화</h2><h3 id="2-1-임베딩-모델-선택"><a href="#2-1-임베딩-모델-선택" class="headerlink" title="2.1 임베딩 모델 선택"></a>2.1 임베딩 모델 선택</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> OpenAIEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain_community.embeddings <span class="keyword">import</span> HuggingFaceEmbeddings</span><br><span class="line"></span><br><span class="line"><span class="comment"># OpenAI - 고품질, 유료</span></span><br><span class="line">openai_embeddings = OpenAIEmbeddings(</span><br><span class="line">    model=<span class="string">&quot;text-embedding-3-large&quot;</span>,  <span class="comment"># 3072 차원</span></span><br><span class="line">    <span class="comment"># model=&quot;text-embedding-3-small&quot;,  # 1536 차원 (더 빠름, 저렴)</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 오픈소스 - 무료, 로컬 실행</span></span><br><span class="line">hf_embeddings = HuggingFaceEmbeddings(</span><br><span class="line">    model_name=<span class="string">&quot;BAAI/bge-large-en-v1.5&quot;</span>,  <span class="comment"># 영어</span></span><br><span class="line">    <span class="comment"># model_name=&quot;BAAI/bge-m3&quot;,  # 다국어</span></span><br><span class="line">    model_kwargs=&#123;<span class="string">&#x27;device&#x27;</span>: <span class="string">&#x27;cpu&#x27;</span>&#125;,  <span class="comment"># 또는 &#x27;cuda&#x27;</span></span><br><span class="line">    encode_kwargs=&#123;<span class="string">&#x27;normalize_embeddings&#x27;</span>: <span class="literal">True</span>&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 한국어 특화</span></span><br><span class="line">ko_embeddings = HuggingFaceEmbeddings(</span><br><span class="line">    model_name=<span class="string">&quot;jhgan/ko-sroberta-multitask&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-차원-축소-OpenAI-Embeddings"><a href="#2-2-차원-축소-OpenAI-Embeddings" class="headerlink" title="2.2 차원 축소 (OpenAI Embeddings)"></a>2.2 차원 축소 (OpenAI Embeddings)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 비용 절감을 위한 차원 축소</span></span><br><span class="line">small_embeddings = OpenAIEmbeddings(</span><br><span class="line">    model=<span class="string">&quot;text-embedding-3-large&quot;</span>,</span><br><span class="line">    dimensions=<span class="number">1024</span>  <span class="comment"># 기본 3072에서 축소</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-배치-임베딩"><a href="#2-3-배치-임베딩" class="headerlink" title="2.3 배치 임베딩"></a>2.3 배치 임베딩</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Chroma</span><br><span class="line"></span><br><span class="line"><span class="comment"># 대량 문서 임베딩 - 배치 처리</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">batch_embed_documents</span>(<span class="params">docs, embeddings, batch_size=<span class="number">100</span></span>):</span><br><span class="line">    vectorstore = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(docs), batch_size):</span><br><span class="line">        batch = docs[i:i+batch_size]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> vectorstore <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            vectorstore = Chroma.from_documents(</span><br><span class="line">                batch,</span><br><span class="line">                embeddings,</span><br><span class="line">                persist_directory=<span class="string">&quot;./chroma_db&quot;</span></span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            vectorstore.add_documents(batch)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Processed <span class="subst">&#123;<span class="built_in">min</span>(i+batch_size, <span class="built_in">len</span>(docs))&#125;</span>/<span class="subst">&#123;<span class="built_in">len</span>(docs)&#125;</span> documents&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> vectorstore</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-검색-최적화"><a href="#3-검색-최적화" class="headerlink" title="3. 검색 최적화"></a>3. 검색 최적화</h2><h3 id="3-1-하이브리드-검색-BM25-Vector"><a href="#3-1-하이브리드-검색-BM25-Vector" class="headerlink" title="3.1 하이브리드 검색 (BM25 + Vector)"></a>3.1 하이브리드 검색 (BM25 + Vector)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> BM25Retriever, EnsembleRetriever</span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Chroma</span><br><span class="line"></span><br><span class="line"><span class="comment"># 키워드 검색 (BM25)</span></span><br><span class="line">bm25_retriever = BM25Retriever.from_documents(documents)</span><br><span class="line">bm25_retriever.k = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 벡터 검색</span></span><br><span class="line">vectorstore = Chroma.from_documents(documents, embeddings)</span><br><span class="line">vector_retriever = vectorstore.as_retriever(search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 하이브리드 (가중치 조정 가능)</span></span><br><span class="line">hybrid_retriever = EnsembleRetriever(</span><br><span class="line">    retrievers=[bm25_retriever, vector_retriever],</span><br><span class="line">    weights=[<span class="number">0.4</span>, <span class="number">0.6</span>]  <span class="comment"># BM25 40%, Vector 60%</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">results = hybrid_retriever.get_relevant_documents(<span class="string">&quot;query&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-MMR-Maximum-Marginal-Relevance"><a href="#3-2-MMR-Maximum-Marginal-Relevance" class="headerlink" title="3.2 MMR (Maximum Marginal Relevance)"></a>3.2 MMR (Maximum Marginal Relevance)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 다양성을 고려한 검색 - 중복 방지</span></span><br><span class="line">retriever = vectorstore.as_retriever(</span><br><span class="line">    search_type=<span class="string">&quot;mmr&quot;</span>,</span><br><span class="line">    search_kwargs=&#123;</span><br><span class="line">        <span class="string">&quot;k&quot;</span>: <span class="number">5</span>,           <span class="comment"># 최종 반환 문서 수</span></span><br><span class="line">        <span class="string">&quot;fetch_k&quot;</span>: <span class="number">20</span>,    <span class="comment"># 초기 후보 문서 수</span></span><br><span class="line">        <span class="string">&quot;lambda_mult&quot;</span>: <span class="number">0.5</span>  <span class="comment"># 0: 최대 다양성, 1: 최대 관련성</span></span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-재순위화-Re-ranking"><a href="#3-3-재순위화-Re-ranking" class="headerlink" title="3.3 재순위화 (Re-ranking)"></a>3.3 재순위화 (Re-ranking)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> ContextualCompressionRetriever</span><br><span class="line"><span class="keyword">from</span> langchain.retrievers.document_compressors <span class="keyword">import</span> CohereRerank</span><br><span class="line"></span><br><span class="line"><span class="comment"># Cohere Reranker 사용</span></span><br><span class="line">compressor = CohereRerank(</span><br><span class="line">    cohere_api_key=<span class="string">&quot;YOUR_API_KEY&quot;</span>,</span><br><span class="line">    top_n=<span class="number">3</span>  <span class="comment"># 상위 3개만 선택</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">compression_retriever = ContextualCompressionRetriever(</span><br><span class="line">    base_compressor=compressor,</span><br><span class="line">    base_retriever=vector_retriever</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 또는 LLM 기반 재순위화</span></span><br><span class="line"><span class="keyword">from</span> langchain.retrievers.document_compressors <span class="keyword">import</span> LLMChainExtractor</span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"></span><br><span class="line">llm = ChatOpenAI(temperature=<span class="number">0</span>)</span><br><span class="line">compressor = LLMChainExtractor.from_llm(llm)</span><br><span class="line"></span><br><span class="line">compression_retriever = ContextualCompressionRetriever(</span><br><span class="line">    base_compressor=compressor,</span><br><span class="line">    base_retriever=vector_retriever</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-메타데이터-필터링"><a href="#3-4-메타데이터-필터링" class="headerlink" title="3.4 메타데이터 필터링"></a>3.4 메타데이터 필터링</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 메타데이터 기반 사전 필터링</span></span><br><span class="line">retriever = vectorstore.as_retriever(</span><br><span class="line">    search_kwargs=&#123;</span><br><span class="line">        <span class="string">&quot;k&quot;</span>: <span class="number">5</span>,</span><br><span class="line">        <span class="string">&quot;filter&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;source&quot;</span>: <span class="string">&quot;technical_docs&quot;</span>,</span><br><span class="line">            <span class="string">&quot;year&quot;</span>: &#123;<span class="string">&quot;$gte&quot;</span>: <span class="number">2023</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 또는 동적 필터링</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_filtered_retriever</span>(<span class="params">vectorstore, category=<span class="literal">None</span>, date_from=<span class="literal">None</span></span>):</span><br><span class="line">    filter_dict = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> category:</span><br><span class="line">        filter_dict[<span class="string">&quot;category&quot;</span>] = category</span><br><span class="line">    <span class="keyword">if</span> date_from:</span><br><span class="line">        filter_dict[<span class="string">&quot;date&quot;</span>] = &#123;<span class="string">&quot;$gte&quot;</span>: date_from&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> vectorstore.as_retriever(</span><br><span class="line">        search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">5</span>, <span class="string">&quot;filter&quot;</span>: filter_dict&#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-쿼리-최적화"><a href="#4-쿼리-최적화" class="headerlink" title="4. 쿼리 최적화"></a>4. 쿼리 최적화</h2><h3 id="4-1-쿼리-확장"><a href="#4-1-쿼리-확장" class="headerlink" title="4.1 쿼리 확장"></a>4.1 쿼리 확장</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> LLMChain</span><br><span class="line"><span class="keyword">from</span> langchain.prompts <span class="keyword">import</span> PromptTemplate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 쿼리 확장 프롬프트</span></span><br><span class="line">query_expansion_prompt = PromptTemplate(</span><br><span class="line">    input_variables=[<span class="string">&quot;question&quot;</span>],</span><br><span class="line">    template=<span class="string">&quot;&quot;&quot;원래 질문: &#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">이 질문과 관련된 3가지 유사한 질문을 생성하세요:</span></span><br><span class="line"><span class="string">1.</span></span><br><span class="line"><span class="string">2.</span></span><br><span class="line"><span class="string">3.&quot;&quot;&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">expansion_chain = LLMChain(llm=llm, prompt=query_expansion_prompt)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 원본 + 확장 쿼리로 검색</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">search_with_expansion</span>(<span class="params">question, retriever</span>):</span><br><span class="line">    <span class="comment"># 원본 쿼리로 검색</span></span><br><span class="line">    original_docs = retriever.get_relevant_documents(question)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 쿼리 확장</span></span><br><span class="line">    expanded = expansion_chain.run(question=question)</span><br><span class="line">    expanded_questions = expanded.split(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 확장된 쿼리로 추가 검색</span></span><br><span class="line">    all_docs = original_docs</span><br><span class="line">    <span class="keyword">for</span> exp_q <span class="keyword">in</span> expanded_questions:</span><br><span class="line">        exp_docs = retriever.get_relevant_documents(exp_q.strip())</span><br><span class="line">        all_docs.extend(exp_docs)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 중복 제거</span></span><br><span class="line">    unique_docs = <span class="built_in">list</span>(&#123;doc.page_content: doc <span class="keyword">for</span> doc <span class="keyword">in</span> all_docs&#125;.values())</span><br><span class="line">    <span class="keyword">return</span> unique_docs[:<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-HyDE-Hypothetical-Document-Embeddings"><a href="#4-2-HyDE-Hypothetical-Document-Embeddings" class="headerlink" title="4.2 HyDE (Hypothetical Document Embeddings)"></a>4.2 HyDE (Hypothetical Document Embeddings)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> HypotheticalDocumentEmbedder</span><br><span class="line"></span><br><span class="line"><span class="comment"># 가상 답변 생성 후 검색</span></span><br><span class="line">hyde_prompt = PromptTemplate(</span><br><span class="line">    input_variables=[<span class="string">&quot;question&quot;</span>],</span><br><span class="line">    template=<span class="string">&quot;&quot;&quot;질문: &#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">이 질문에 대한 상세한 답변을 작성하세요 (실제 사실 여부와 무관):&quot;&quot;&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">hyde_chain = LLMChain(llm=llm, prompt=hyde_prompt)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hyde_search</span>(<span class="params">question, retriever</span>):</span><br><span class="line">    <span class="comment"># 1. LLM이 가상 답변 생성</span></span><br><span class="line">    hypothetical_answer = hyde_chain.run(question=question)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 가상 답변의 임베딩으로 검색</span></span><br><span class="line">    docs = retriever.get_relevant_documents(hypothetical_answer)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> docs</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-쿼리-재작성"><a href="#4-3-쿼리-재작성" class="headerlink" title="4.3 쿼리 재작성"></a>4.3 쿼리 재작성</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 쿼리 재작성 프롬프트</span></span><br><span class="line">rewrite_prompt = PromptTemplate(</span><br><span class="line">    input_variables=[<span class="string">&quot;question&quot;</span>],</span><br><span class="line">    template=<span class="string">&quot;&quot;&quot;다음 질문을 검색에 최적화된 형태로 재작성하세요.</span></span><br><span class="line"><span class="string">핵심 키워드를 강조하고, 불필요한 단어는 제거하세요.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">원래 질문: &#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">재작성된 질문:&quot;&quot;&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">rewrite_chain = LLMChain(llm=llm, prompt=rewrite_prompt)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">search_with_rewrite</span>(<span class="params">question, retriever</span>):</span><br><span class="line">    rewritten = rewrite_chain.run(question=question)</span><br><span class="line">    <span class="keyword">return</span> retriever.get_relevant_documents(rewritten)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-프롬프트-엔지니어링"><a href="#5-프롬프트-엔지니어링" class="headerlink" title="5. 프롬프트 엔지니어링"></a>5. 프롬프트 엔지니어링</h2><h3 id="5-1-고급-시스템-프롬프트"><a href="#5-1-고급-시스템-프롬프트" class="headerlink" title="5.1 고급 시스템 프롬프트"></a>5.1 고급 시스템 프롬프트</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.prompts <span class="keyword">import</span> PromptTemplate</span><br><span class="line"></span><br><span class="line">advanced_prompt = PromptTemplate(</span><br><span class="line">    input_variables=[<span class="string">&quot;context&quot;</span>, <span class="string">&quot;question&quot;</span>],</span><br><span class="line">    template=<span class="string">&quot;&quot;&quot;당신은 정확하고 신뢰할 수 있는 AI 어시스턴트입니다.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">지침:</span></span><br><span class="line"><span class="string">1. 제공된 컨텍스트만을 사용하여 답변하세요</span></span><br><span class="line"><span class="string">2. 컨텍스트에 답이 없으면 &quot;제공된 정보에서 답을 찾을 수 없습니다&quot;라고 답하세요</span></span><br><span class="line"><span class="string">3. 추측하거나 외부 지식을 사용하지 마세요</span></span><br><span class="line"><span class="string">4. 답변에 관련 섹션을 인용하세요</span></span><br><span class="line"><span class="string">5. 간결하고 명확하게 답변하세요</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">컨텍스트:</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">질문: &#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">답변 (인용 포함):&quot;&quot;&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-Few-shot-프롬프트"><a href="#5-2-Few-shot-프롬프트" class="headerlink" title="5.2 Few-shot 프롬프트"></a>5.2 Few-shot 프롬프트</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">few_shot_prompt = PromptTemplate(</span><br><span class="line">    input_variables=[<span class="string">&quot;context&quot;</span>, <span class="string">&quot;question&quot;</span>],</span><br><span class="line">    template=<span class="string">&quot;&quot;&quot;다음 예제를 참고하여 답변하세요:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">예제 1:</span></span><br><span class="line"><span class="string">질문: RAG의 장점은?</span></span><br><span class="line"><span class="string">답변: RAG의 주요 장점은 다음과 같습니다:</span></span><br><span class="line"><span class="string">1. 최신 정보 활용 가능</span></span><br><span class="line"><span class="string">2. 환각 현상 감소</span></span><br><span class="line"><span class="string">[출처: RAG Overview, p.5]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">예제 2:</span></span><br><span class="line"><span class="string">질문: 벡터 데이터베이스란?</span></span><br><span class="line"><span class="string">답변: 벡터 데이터베이스는 고차원 벡터를 효율적으로 저장하고 검색하는 데이터베이스입니다.</span></span><br><span class="line"><span class="string">[출처: Vector DB Guide, p.12]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">이제 다음 질문에 답하세요:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">컨텍스트:</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">질문: &#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">답변:&quot;&quot;&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-Chain-of-Thought-프롬프트"><a href="#5-3-Chain-of-Thought-프롬프트" class="headerlink" title="5.3 Chain-of-Thought 프롬프트"></a>5.3 Chain-of-Thought 프롬프트</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cot_prompt = PromptTemplate(</span><br><span class="line">    input_variables=[<span class="string">&quot;context&quot;</span>, <span class="string">&quot;question&quot;</span>],</span><br><span class="line">    template=<span class="string">&quot;&quot;&quot;단계별로 생각하며 답변하세요:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">컨텍스트:</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">질문: &#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">답변 과정:</span></span><br><span class="line"><span class="string">1. 먼저 질문의 핵심을 파악합니다:</span></span><br><span class="line"><span class="string">2. 관련 정보를 컨텍스트에서 찾습니다:</span></span><br><span class="line"><span class="string">3. 찾은 정보를 종합합니다:</span></span><br><span class="line"><span class="string">4. 최종 답변:&quot;&quot;&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-응답-생성-최적화"><a href="#6-응답-생성-최적화" class="headerlink" title="6. 응답 생성 최적화"></a>6. 응답 생성 최적화</h2><h3 id="6-1-스트리밍-응답"><a href="#6-1-스트리밍-응답" class="headerlink" title="6.1 스트리밍 응답"></a>6.1 스트리밍 응답</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.callbacks.streaming_stdout <span class="keyword">import</span> StreamingStdOutCallbackHandler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 스트리밍으로 빠른 첫 응답</span></span><br><span class="line">streaming_llm = ChatOpenAI(</span><br><span class="line">    model=<span class="string">&quot;gpt-4o&quot;</span>,</span><br><span class="line">    temperature=<span class="number">0</span>,</span><br><span class="line">    streaming=<span class="literal">True</span>,</span><br><span class="line">    callbacks=[StreamingStdOutCallbackHandler()]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">qa_chain = RetrievalQA.from_chain_type(</span><br><span class="line">    llm=streaming_llm,</span><br><span class="line">    retriever=retriever</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-응답-캐싱"><a href="#6-2-응답-캐싱" class="headerlink" title="6.2 응답 캐싱"></a>6.2 응답 캐싱</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.cache <span class="keyword">import</span> InMemoryCache, SQLiteCache</span><br><span class="line"><span class="keyword">from</span> langchain.<span class="built_in">globals</span> <span class="keyword">import</span> set_llm_cache</span><br><span class="line"></span><br><span class="line"><span class="comment"># 메모리 캐시</span></span><br><span class="line">set_llm_cache(InMemoryCache())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 또는 영구 캐시</span></span><br><span class="line">set_llm_cache(SQLiteCache(database_path=<span class="string">&quot;.langchain.db&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 동일한 질문에 대해 캐시된 답변 사용</span></span><br><span class="line">result1 = qa_chain.run(<span class="string">&quot;RAG란?&quot;</span>)  <span class="comment"># LLM 호출</span></span><br><span class="line">result2 = qa_chain.run(<span class="string">&quot;RAG란?&quot;</span>)  <span class="comment"># 캐시에서 반환 (빠름)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-토큰-최적화"><a href="#6-3-토큰-최적화" class="headerlink" title="6.3 토큰 최적화"></a>6.3 토큰 최적화</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tiktoken</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">count_tokens</span>(<span class="params">text, model=<span class="string">&quot;gpt-4&quot;</span></span>):</span><br><span class="line">    encoding = tiktoken.encoding_for_model(model)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(encoding.encode(text))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">optimize_context</span>(<span class="params">docs, max_tokens=<span class="number">3000</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;컨텍스트를 토큰 제한 내로 압축&quot;&quot;&quot;</span></span><br><span class="line">    context = <span class="string">&quot;&quot;</span></span><br><span class="line">    total_tokens = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> doc <span class="keyword">in</span> docs:</span><br><span class="line">        doc_tokens = count_tokens(doc.page_content)</span><br><span class="line">        <span class="keyword">if</span> total_tokens + doc_tokens &lt;= max_tokens:</span><br><span class="line">            context += doc.page_content + <span class="string">&quot;\n\n&quot;</span></span><br><span class="line">            total_tokens += doc_tokens</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> context</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-평가-및-모니터링"><a href="#7-평가-및-모니터링" class="headerlink" title="7. 평가 및 모니터링"></a>7. 평가 및 모니터링</h2><h3 id="7-1-검색-품질-평가"><a href="#7-1-검색-품질-평가" class="headerlink" title="7.1 검색 품질 평가"></a>7.1 검색 품질 평가</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.evaluation <span class="keyword">import</span> load_evaluator</span><br><span class="line"></span><br><span class="line"><span class="comment"># 관련성 평가</span></span><br><span class="line">relevance_evaluator = load_evaluator(<span class="string">&quot;criteria&quot;</span>, criteria=<span class="string">&quot;relevance&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate_retrieval</span>(<span class="params">query, retrieved_docs</span>):</span><br><span class="line">    scores = []</span><br><span class="line">    <span class="keyword">for</span> doc <span class="keyword">in</span> retrieved_docs:</span><br><span class="line">        result = relevance_evaluator.evaluate_strings(</span><br><span class="line">            prediction=doc.page_content,</span><br><span class="line">            <span class="built_in">input</span>=query</span><br><span class="line">        )</span><br><span class="line">        scores.append(result[<span class="string">&#x27;score&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&#x27;avg_score&#x27;</span>: <span class="built_in">sum</span>(scores) / <span class="built_in">len</span>(scores),</span><br><span class="line">        <span class="string">&#x27;scores&#x27;</span>: scores</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 평가 실행</span></span><br><span class="line">eval_result = evaluate_retrieval(</span><br><span class="line">    <span class="string">&quot;RAG의 장점은?&quot;</span>,</span><br><span class="line">    retrieved_docs</span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;평균 관련성 점수: <span class="subst">&#123;eval_result[<span class="string">&#x27;avg_score&#x27;</span>]&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-답변-품질-평가"><a href="#7-2-답변-품질-평가" class="headerlink" title="7.2 답변 품질 평가"></a>7.2 답변 품질 평가</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.evaluation.qa <span class="keyword">import</span> QAEvalChain</span><br><span class="line"></span><br><span class="line"><span class="comment"># 테스트 데이터셋</span></span><br><span class="line">test_questions = [</span><br><span class="line">    &#123;<span class="string">&quot;question&quot;</span>: <span class="string">&quot;RAG란?&quot;</span>, <span class="string">&quot;answer&quot;</span>: <span class="string">&quot;Retrieval-Augmented Generation...&quot;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;question&quot;</span>: <span class="string">&quot;벡터 DB는?&quot;</span>, <span class="string">&quot;answer&quot;</span>: <span class="string">&quot;고차원 벡터를 저장...&quot;</span>&#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 평가 체인</span></span><br><span class="line">eval_chain = QAEvalChain.from_llm(llm)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 예측 및 평가</span></span><br><span class="line">predictions = []</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> test_questions:</span><br><span class="line">    pred = qa_chain.run(item[<span class="string">&quot;question&quot;</span>])</span><br><span class="line">    predictions.append(&#123;<span class="string">&quot;query&quot;</span>: item[<span class="string">&quot;question&quot;</span>], <span class="string">&quot;result&quot;</span>: pred&#125;)</span><br><span class="line"></span><br><span class="line">graded_outputs = eval_chain.evaluate(</span><br><span class="line">    test_questions,</span><br><span class="line">    predictions,</span><br><span class="line">    question_key=<span class="string">&quot;question&quot;</span>,</span><br><span class="line">    answer_key=<span class="string">&quot;answer&quot;</span>,</span><br><span class="line">    prediction_key=<span class="string">&quot;result&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, output <span class="keyword">in</span> <span class="built_in">enumerate</span>(graded_outputs):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Q: <span class="subst">&#123;test_questions[i][<span class="string">&#x27;question&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Grade: <span class="subst">&#123;output[<span class="string">&#x27;results&#x27;</span>]&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-성능-모니터링"><a href="#7-3-성능-모니터링" class="headerlink" title="7.3 성능 모니터링"></a>7.3 성능 모니터링</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RAGMonitor</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.metrics = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">log_query</span>(<span class="params">self, query, retrieval_time, generation_time, num_docs</span>):</span><br><span class="line">        self.metrics.append(&#123;</span><br><span class="line">            <span class="string">&#x27;timestamp&#x27;</span>: datetime.now(),</span><br><span class="line">            <span class="string">&#x27;query&#x27;</span>: query,</span><br><span class="line">            <span class="string">&#x27;retrieval_time&#x27;</span>: retrieval_time,</span><br><span class="line">            <span class="string">&#x27;generation_time&#x27;</span>: generation_time,</span><br><span class="line">            <span class="string">&#x27;total_time&#x27;</span>: retrieval_time + generation_time,</span><br><span class="line">            <span class="string">&#x27;num_docs&#x27;</span>: num_docs</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_stats</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.metrics:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&#x27;total_queries&#x27;</span>: <span class="built_in">len</span>(self.metrics),</span><br><span class="line">            <span class="string">&#x27;avg_retrieval_time&#x27;</span>: <span class="built_in">sum</span>(m[<span class="string">&#x27;retrieval_time&#x27;</span>] <span class="keyword">for</span> m <span class="keyword">in</span> self.metrics) / <span class="built_in">len</span>(self.metrics),</span><br><span class="line">            <span class="string">&#x27;avg_generation_time&#x27;</span>: <span class="built_in">sum</span>(m[<span class="string">&#x27;generation_time&#x27;</span>] <span class="keyword">for</span> m <span class="keyword">in</span> self.metrics) / <span class="built_in">len</span>(self.metrics),</span><br><span class="line">            <span class="string">&#x27;avg_total_time&#x27;</span>: <span class="built_in">sum</span>(m[<span class="string">&#x27;total_time&#x27;</span>] <span class="keyword">for</span> m <span class="keyword">in</span> self.metrics) / <span class="built_in">len</span>(self.metrics),</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 사용 예</span></span><br><span class="line">monitor = RAGMonitor()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">monitored_query</span>(<span class="params">question</span>):</span><br><span class="line">    <span class="comment"># 검색 시간 측정</span></span><br><span class="line">    start = time.time()</span><br><span class="line">    docs = retriever.get_relevant_documents(question)</span><br><span class="line">    retrieval_time = time.time() - start</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 생성 시간 측정</span></span><br><span class="line">    start = time.time()</span><br><span class="line">    answer = qa_chain.run(question)</span><br><span class="line">    generation_time = time.time() - start</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 로깅</span></span><br><span class="line">    monitor.log_query(question, retrieval_time, generation_time, <span class="built_in">len</span>(docs))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> answer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 통계 확인</span></span><br><span class="line">stats = monitor.get_stats()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;평균 검색 시간: <span class="subst">&#123;stats[<span class="string">&#x27;avg_retrieval_time&#x27;</span>]:<span class="number">.3</span>f&#125;</span>s&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;평균 생성 시간: <span class="subst">&#123;stats[<span class="string">&#x27;avg_generation_time&#x27;</span>]:<span class="number">.3</span>f&#125;</span>s&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-고급-최적화-패턴"><a href="#8-고급-최적화-패턴" class="headerlink" title="8. 고급 최적화 패턴"></a>8. 고급 최적화 패턴</h2><h3 id="8-1-부모-자식-청킹"><a href="#8-1-부모-자식-청킹" class="headerlink" title="8.1 부모-자식 청킹"></a>8.1 부모-자식 청킹</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.storage <span class="keyword">import</span> InMemoryStore</span><br><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> ParentDocumentRetriever</span><br><span class="line"></span><br><span class="line"><span class="comment"># 부모 문서 저장소</span></span><br><span class="line">parent_store = InMemoryStore()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 자식 청크로 검색, 부모 문서 반환</span></span><br><span class="line">parent_retriever = ParentDocumentRetriever(</span><br><span class="line">    vectorstore=vectorstore,</span><br><span class="line">    docstore=parent_store,</span><br><span class="line">    child_splitter=RecursiveCharacterTextSplitter(chunk_size=<span class="number">400</span>),</span><br><span class="line">    parent_splitter=RecursiveCharacterTextSplitter(chunk_size=<span class="number">2000</span>),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">parent_retriever.add_documents(documents)</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-셀프-쿼리-Self-Query"><a href="#8-2-셀프-쿼리-Self-Query" class="headerlink" title="8.2 셀프 쿼리 (Self-Query)"></a>8.2 셀프 쿼리 (Self-Query)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.chains.query_constructor.base <span class="keyword">import</span> AttributeInfo</span><br><span class="line"><span class="keyword">from</span> langchain.retrievers.self_query.base <span class="keyword">import</span> SelfQueryRetriever</span><br><span class="line"></span><br><span class="line"><span class="comment"># 메타데이터 정의</span></span><br><span class="line">metadata_field_info = [</span><br><span class="line">    AttributeInfo(</span><br><span class="line">        name=<span class="string">&quot;source&quot;</span>,</span><br><span class="line">        description=<span class="string">&quot;문서 출처&quot;</span>,</span><br><span class="line">        <span class="built_in">type</span>=<span class="string">&quot;string&quot;</span>,</span><br><span class="line">    ),</span><br><span class="line">    AttributeInfo(</span><br><span class="line">        name=<span class="string">&quot;year&quot;</span>,</span><br><span class="line">        description=<span class="string">&quot;문서 작성 연도&quot;</span>,</span><br><span class="line">        <span class="built_in">type</span>=<span class="string">&quot;integer&quot;</span>,</span><br><span class="line">    ),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 자동으로 메타데이터 필터링</span></span><br><span class="line">self_query_retriever = SelfQueryRetriever.from_llm(</span><br><span class="line">    llm,</span><br><span class="line">    vectorstore,</span><br><span class="line">    <span class="string">&quot;기술 문서 데이터베이스&quot;</span>,</span><br><span class="line">    metadata_field_info,</span><br><span class="line">    verbose=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># &quot;2023년 이후 작성된 RAG 문서를 찾아줘&quot; -&gt; 자동 필터링</span></span><br><span class="line">docs = self_query_retriever.get_relevant_documents(</span><br><span class="line">    <span class="string">&quot;2023년 이후 작성된 RAG 문서&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-비용-최적화"><a href="#9-비용-최적화" class="headerlink" title="9. 비용 최적화"></a>9. 비용 최적화</h2><h3 id="9-1-모델-선택-전략"><a href="#9-1-모델-선택-전략" class="headerlink" title="9.1 모델 선택 전략"></a>9.1 모델 선택 전략</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 간단한 질문 - 저렴한 모델</span></span><br><span class="line">simple_llm = ChatOpenAI(model=<span class="string">&quot;gpt-4o-mini&quot;</span>, temperature=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 복잡한 질문 - 고성능 모델</span></span><br><span class="line">complex_llm = ChatOpenAI(model=<span class="string">&quot;gpt-4o&quot;</span>, temperature=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">route_query</span>(<span class="params">question</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;질문 복잡도에 따라 모델 선택&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(question.split()) &lt; <span class="number">10</span>:</span><br><span class="line">        <span class="keyword">return</span> simple_llm</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> complex_llm</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-임베딩-재사용"><a href="#9-2-임베딩-재사용" class="headerlink" title="9.2 임베딩 재사용"></a>9.2 임베딩 재사용</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 한 번만 임베딩, 여러 번 재사용</span></span><br><span class="line">vectorstore.persist()  <span class="comment"># 저장</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 나중에 로드 (재임베딩 불필요)</span></span><br><span class="line">vectorstore = Chroma(</span><br><span class="line">    persist_directory=<span class="string">&quot;./chroma_db&quot;</span>,</span><br><span class="line">    embedding_function=embeddings</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="요약-최적화-체크리스트"><a href="#요약-최적화-체크리스트" class="headerlink" title="요약: 최적화 체크리스트"></a>요약: 최적화 체크리스트</h2><h3 id="검색-품질"><a href="#검색-품질" class="headerlink" title="검색 품질"></a>검색 품질</h3><ul>
+<li><input disabled type="checkbox"> 적절한 청크 크기 선택 (500-1500 토큰)</li>
+<li><input disabled type="checkbox"> 청크 오버랩 설정 (10-20%)</li>
+<li><input disabled type="checkbox"> 하이브리드 검색 적용</li>
+<li><input disabled type="checkbox"> MMR로 다양성 확보</li>
+<li><input disabled type="checkbox"> 재순위화 적용</li>
+<li><input disabled type="checkbox"> 메타데이터 필터링 활용</li>
+</ul>
+<h3 id="응답-품질"><a href="#응답-품질" class="headerlink" title="응답 품질"></a>응답 품질</h3><ul>
+<li><input disabled type="checkbox"> 명확한 시스템 프롬프트</li>
+<li><input disabled type="checkbox"> Few-shot 예제 제공</li>
+<li><input disabled type="checkbox"> 출처 인용 요구</li>
+<li><input disabled type="checkbox"> 답변 평가 체계 구축</li>
+</ul>
+<h3 id="성능-비용"><a href="#성능-비용" class="headerlink" title="성능&#x2F;비용"></a>성능&#x2F;비용</h3><ul>
+<li><input disabled type="checkbox"> 응답 캐싱</li>
+<li><input disabled type="checkbox"> 스트리밍 응답</li>
+<li><input disabled type="checkbox"> 적절한 모델 선택</li>
+<li><input disabled type="checkbox"> 임베딩 재사용</li>
+<li><input disabled type="checkbox"> 배치 처리</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/29/rag/rag-optimization/" data-id="cmjtkdjtc00brvk8d2rjedk24" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "RAG 성능 최적화 기법",
+        "image": "https://ckck803.github.io/images/ai/rag.png",
+        "keywords": "RAG Optimization Performance Best Practices",
+        "genre": "AI RAG",
+        "datePublished": "2025-12-29",
+        "dateCreated": "2025-12-29",
+        "dateModified": "2025-12-30",
+        "url": "https://ckck803.github.io/2025/12/29/rag/rag-optimization/",
+        "description": "
+RAG 시스템 최적화 개요RAG 시스템의 성능은 다음 세 가지 측면에서 최적화할 수 있습니다:
+
+검색 품질 - 관련성 높은 문서 찾기
+응답 품질 - 정확하고 유용한 답변 생성
+성능&#x2F;비용 - 빠른 응답과 비용 효율성
+
+1. 청킹 전략 최적화1.1 고정 크기 청킹from langchain.text_splitter import RecursiveCharacterTextSplitter# 기본 설정text_splitter = RecursiveCharacterTextSplitter(    chunk_size=1000,    chunk_overlap=200,    length_function=len,)# 문서 유형별 최적화## 기술 문서 - 작은 청크tech_splitter = RecursiveCharacterTextSplitter(    chunk_size=500,    chunk_overlap=100)## 소설/긴 글 - 큰 청크narrative_splitter = RecursiveCharacterTextSplitter(    chunk_size=2000,    chunk_overlap=400)
+
+1.2 의미 기반 청킹from langchain_experimental.text_splitter import SemanticChunkerfrom langchain_openai.embeddings import OpenAIEmbeddings# 의미론적 유사도로 분할semantic_chunker = SemanticChunker(    OpenAIEmbeddings(),    breakpoint_threshold_type=&quot;percentile&quot;,  # or &quot;standard_deviation&quot;    breakpoint_threshold_amount=95  # 상위 5%에서 분할)chunks = semantic_chunker.split_documents(documents)
+
+1.3 문서 구조 기반 청킹",
+        "wordCount": 3745
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/12/30/linux/wireguard-vpn-guide/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            WireGuard VPN 설치 및 Dual Tunneling 설정 가이드
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/12/29/rag/vector-database-comparison/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">벡터 데이터베이스 비교 및 선택 가이드</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">194</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/29/rag/rag-optimization/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

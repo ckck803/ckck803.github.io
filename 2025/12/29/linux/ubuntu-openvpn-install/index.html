@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>Ubuntu Linux에 OpenVPN 설치 및 설정 가이드 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Security,Linux,Ubuntu,OpenVPN,VPN">
+    
+    <meta name="description" content="OpenVPN 개요OpenVPN은 오픈소스 VPN 솔루션으로, 안전한 원격 접속과 네트워크 간 통신을 제공합니다. SSL&#x2F;TLS를 사용하여 강력한 암호화를 지원하며, 방화벽을 통과하기 쉬운 구조로 설계되어 있습니다. 1. OpenVPN 서버 설치# 패키지 목록 업데이트sudo apt updatesudo apt upgrade -y# OpenVPN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu Linux에 OpenVPN 설치 및 설정 가이드">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/29/linux/ubuntu-openvpn-install/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="OpenVPN 개요OpenVPN은 오픈소스 VPN 솔루션으로, 안전한 원격 접속과 네트워크 간 통신을 제공합니다. SSL&#x2F;TLS를 사용하여 강력한 암호화를 지원하며, 방화벽을 통과하기 쉬운 구조로 설계되어 있습니다. 1. OpenVPN 서버 설치# 패키지 목록 업데이트sudo apt updatesudo apt upgrade -y# OpenVPN">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/linux/linux.png">
+<meta property="article:published_time" content="2025-12-29T05:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-28T18:35:22.115Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Security">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Ubuntu">
+<meta property="article:tag" content="OpenVPN">
+<meta property="article:tag" content="VPN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/linux/linux.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/">Database</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Develop/Linux/">Linux</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-linux/ubuntu-openvpn-install" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Ubuntu Linux에 OpenVPN 설치 및 설정 가이드
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/29/linux/ubuntu-openvpn-install/" class="article-date">
+       <time datetime="2025-12-29T05:00:00.000Z" itemprop="datePublished">2025-12-29</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/29/linux/ubuntu-openvpn-install/" class="article-date">
+     <time datetime="2025-12-28T18:35:22.115Z" itemprop="dateModified">2025-12-29</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Linux/" rel="tag">Linux</a>, <a class="tag-link-link" href="/tags/OpenVPN/" rel="tag">OpenVPN</a>, <a class="tag-link-link" href="/tags/Security/" rel="tag">Security</a>, <a class="tag-link-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a>, <a class="tag-link-link" href="/tags/VPN/" rel="tag">VPN</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/linux/linux.png"></p>
+<h2 id="OpenVPN-개요"><a href="#OpenVPN-개요" class="headerlink" title="OpenVPN 개요"></a>OpenVPN 개요</h2><p>OpenVPN은 오픈소스 VPN 솔루션으로, 안전한 원격 접속과 네트워크 간 통신을 제공합니다. SSL&#x2F;TLS를 사용하여 강력한 암호화를 지원하며, 방화벽을 통과하기 쉬운 구조로 설계되어 있습니다.</p>
+<h2 id="1-OpenVPN-서버-설치"><a href="#1-OpenVPN-서버-설치" class="headerlink" title="1. OpenVPN 서버 설치"></a>1. OpenVPN 서버 설치</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 패키지 목록 업데이트</span></span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># OpenVPN 설치</span></span><br><span class="line">sudo apt install openvpn -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># Easy-RSA 설치 (인증서 관리 도구)</span></span><br><span class="line">sudo apt install easy-rsa -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># OpenVPN 버전 확인</span></span><br><span class="line">openvpn --version</span><br><span class="line"></span><br><span class="line"><span class="comment"># 설치된 파일 확인</span></span><br><span class="line">dpkg -L openvpn | grep bin</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-PKI-Public-Key-Infrastructure-설정"><a href="#2-PKI-Public-Key-Infrastructure-설정" class="headerlink" title="2. PKI (Public Key Infrastructure) 설정"></a>2. PKI (Public Key Infrastructure) 설정</h2><h3 id="Easy-RSA-디렉토리-설정"><a href="#Easy-RSA-디렉토리-설정" class="headerlink" title="Easy-RSA 디렉토리 설정"></a>Easy-RSA 디렉토리 설정</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Easy-RSA 디렉토리 생성</span></span><br><span class="line">make-cadir ~/openvpn-ca</span><br><span class="line"></span><br><span class="line"><span class="comment"># 디렉토리 이동</span></span><br><span class="line"><span class="built_in">cd</span> ~/openvpn-ca</span><br></pre></td></tr></table></figure>
+
+<h3 id="CA-Certificate-Authority-설정"><a href="#CA-Certificate-Authority-설정" class="headerlink" title="CA (Certificate Authority) 설정"></a>CA (Certificate Authority) 설정</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vars 파일 편집</span></span><br><span class="line">nano vars</span><br><span class="line"></span><br><span class="line"><span class="comment"># 다음 내용 수정 (예시)</span></span><br><span class="line">set_var EASYRSA_REQ_COUNTRY    <span class="string">&quot;KR&quot;</span></span><br><span class="line">set_var EASYRSA_REQ_PROVINCE   <span class="string">&quot;Seoul&quot;</span></span><br><span class="line">set_var EASYRSA_REQ_CITY       <span class="string">&quot;Seoul&quot;</span></span><br><span class="line">set_var EASYRSA_REQ_ORG        <span class="string">&quot;MyCompany&quot;</span></span><br><span class="line">set_var EASYRSA_REQ_EMAIL      <span class="string">&quot;admin@example.com&quot;</span></span><br><span class="line">set_var EASYRSA_REQ_OU         <span class="string">&quot;IT Department&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PKI-초기화-및-CA-생성"><a href="#PKI-초기화-및-CA-생성" class="headerlink" title="PKI 초기화 및 CA 생성"></a>PKI 초기화 및 CA 생성</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># PKI 초기화</span></span><br><span class="line">./easyrsa init-pki</span><br><span class="line"></span><br><span class="line"><span class="comment"># CA 생성 (비밀번호 설정 필요)</span></span><br><span class="line">./easyrsa build-ca</span><br><span class="line"></span><br><span class="line"><span class="comment"># CA 인증서 확인</span></span><br><span class="line"><span class="built_in">ls</span> pki/ca.crt</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-서버-인증서-및-키-생성"><a href="#3-서버-인증서-및-키-생성" class="headerlink" title="3. 서버 인증서 및 키 생성"></a>3. 서버 인증서 및 키 생성</h2><h3 id="서버-인증서-생성"><a href="#서버-인증서-생성" class="headerlink" title="서버 인증서 생성"></a>서버 인증서 생성</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 서버 인증서 요청 생성 (nopass: 비밀번호 없이)</span></span><br><span class="line">./easyrsa gen-req server nopass</span><br><span class="line"></span><br><span class="line"><span class="comment"># 서버 인증서 서명</span></span><br><span class="line">./easyrsa sign-req server server</span><br><span class="line"></span><br><span class="line"><span class="comment"># DH (Diffie-Hellman) 파라미터 생성 (시간이 오래 걸릴 수 있음)</span></span><br><span class="line">./easyrsa gen-dh</span><br><span class="line"></span><br><span class="line"><span class="comment"># TLS 인증키 생성</span></span><br><span class="line">openvpn --genkey secret ta.key</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Using Easy-RSA <span class="string">&#x27;vars&#x27;</span> configuration:</span><br><span class="line">* /home/ubuntu/openvpn-ca/vars</span><br><span class="line"></span><br><span class="line">Using SSL:</span><br><span class="line">* openssl OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)</span><br><span class="line">You are about to sign the following certificate:</span><br><span class="line">Please check over the details shown below <span class="keyword">for</span> accuracy. Note that this request</span><br><span class="line">has not been cryptographically verified. Please be sure it came from a trusted</span><br><span class="line"><span class="built_in">source</span> or that you have verified the request checksum with the sender.</span><br><span class="line">Request subject, to be signed as a server certificate</span><br><span class="line"><span class="keyword">for</span> <span class="string">&#x27;825&#x27;</span> days:</span><br><span class="line"></span><br><span class="line">subject=</span><br><span class="line">    commonName                = server</span><br><span class="line"></span><br><span class="line">Type the word <span class="string">&#x27;yes&#x27;</span> to <span class="built_in">continue</span>, or any other input to abort.</span><br><span class="line">  Confirm request details: <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line">Using configuration from /home/ubuntu/openvpn-ca/pki/openssl-easyrsa.cnf</span><br><span class="line">Enter pass phrase <span class="keyword">for</span> /home/ubuntu/openvpn-ca/pki/private/ca.key:</span><br><span class="line">Check that the request matches the signature</span><br><span class="line">Signature ok</span><br><span class="line">The Subject<span class="string">&#x27;s Distinguished Name is as follows</span></span><br><span class="line"><span class="string">commonName            :ASN.1 12:&#x27;</span>server<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Certificate is to be certified until Apr  1 17:15:48 2028 GMT (825 days)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Write out database with 1 new entries</span></span><br><span class="line"><span class="string">Database updated</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notice</span></span><br><span class="line"><span class="string">------</span></span><br><span class="line"><span class="string">Certificate created at:</span></span><br><span class="line"><span class="string">* /home/ubuntu/openvpn-ca/pki/issued/server.crt</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="생성된-파일-확인"><a href="#생성된-파일-확인" class="headerlink" title="생성된 파일 확인"></a>생성된 파일 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> pki/issued/server.crt        <span class="comment"># 서버 인증서</span></span><br><span class="line"><span class="built_in">ls</span> pki/private/server.key       <span class="comment"># 서버 개인키</span></span><br><span class="line"><span class="built_in">ls</span> pki/dh.pem                   <span class="comment"># DH 파라미터</span></span><br><span class="line"><span class="built_in">ls</span> ta.key                       <span class="comment"># TLS 인증키</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-서버-설정-파일-구성"><a href="#4-서버-설정-파일-구성" class="headerlink" title="4. 서버 설정 파일 구성"></a>4. 서버 설정 파일 구성</h2><h3 id="인증서-및-키-파일-복사"><a href="#인증서-및-키-파일-복사" class="headerlink" title="인증서 및 키 파일 복사"></a>인증서 및 키 파일 복사</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># OpenVPN 디렉토리로 파일 복사</span></span><br><span class="line">sudo <span class="built_in">cp</span> pki/ca.crt /etc/openvpn/server/</span><br><span class="line">sudo <span class="built_in">cp</span> pki/issued/server.crt /etc/openvpn/server/</span><br><span class="line">sudo <span class="built_in">cp</span> pki/private/server.key /etc/openvpn/server/</span><br><span class="line">sudo <span class="built_in">cp</span> pki/dh.pem /etc/openvpn/server/</span><br><span class="line">sudo <span class="built_in">cp</span> ta.key /etc/openvpn/server/</span><br></pre></td></tr></table></figure>
+
+<h3 id="서버-설정-파일-생성"><a href="#서버-설정-파일-생성" class="headerlink" title="서버 설정 파일 생성"></a>서버 설정 파일 생성</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 샘플 설정 파일 복사 (존재하는 경우)</span></span><br><span class="line">sudo <span class="built_in">cp</span> /usr/share/doc/openvpn/examples/sample-config-files/server.conf /etc/openvpn/server/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 또는 직접 생성</span></span><br><span class="line">sudo nano /etc/openvpn/server/server.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="서버-설정-파일-내용-server-conf"><a href="#서버-설정-파일-내용-server-conf" class="headerlink" title="서버 설정 파일 내용 (server.conf)"></a>서버 설정 파일 내용 (server.conf)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 포트 설정</span><br><span class="line">port 1194</span><br><span class="line"></span><br><span class="line"># 프로토콜 (udp 또는 tcp)</span><br><span class="line">proto udp</span><br><span class="line"></span><br><span class="line"># 가상 네트워크 인터페이스</span><br><span class="line">dev tun</span><br><span class="line"></span><br><span class="line"># 인증서 및 키 파일 경로</span><br><span class="line">ca ca.crt</span><br><span class="line">cert server.crt</span><br><span class="line">key server.key</span><br><span class="line">dh dh.pem</span><br><span class="line"></span><br><span class="line"># VPN 서브넷 설정</span><br><span class="line">server 10.8.0.0 255.255.255.0</span><br><span class="line"></span><br><span class="line"># 클라이언트 설정 유지</span><br><span class="line">ifconfig-pool-persist /var/log/openvpn/ipp.txt</span><br><span class="line"></span><br><span class="line"># 클라이언트에게 기본 게이트웨이 푸시 (모든 트래픽을 VPN으로)</span><br><span class="line">push &quot;redirect-gateway def1 bypass-dhcp&quot;</span><br><span class="line"></span><br><span class="line"># DNS 서버 푸시</span><br><span class="line">push &quot;dhcp-option DNS 8.8.8.8&quot;</span><br><span class="line">push &quot;dhcp-option DNS 8.8.4.4&quot;</span><br><span class="line"></span><br><span class="line"># 클라이언트 간 통신 허용 (선택사항)</span><br><span class="line">client-to-client</span><br><span class="line"></span><br><span class="line"># 연결 유지</span><br><span class="line">keepalive 10 120</span><br><span class="line"></span><br><span class="line"># TLS 인증</span><br><span class="line">tls-auth ta.key 0</span><br><span class="line"></span><br><span class="line"># 암호화 알고리즘</span><br><span class="line">cipher AES-256-GCM</span><br><span class="line">auth SHA256</span><br><span class="line"></span><br><span class="line"># 압축 (보안상 비활성화 권장)</span><br><span class="line">;comp-lzo</span><br><span class="line"></span><br><span class="line"># 최대 클라이언트 수</span><br><span class="line">max-clients 10</span><br><span class="line"></span><br><span class="line"># 권한 낮추기 (보안 강화)</span><br><span class="line">user nobody</span><br><span class="line">group nogroup</span><br><span class="line"></span><br><span class="line"># 재시작 시 키 유지</span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line"></span><br><span class="line"># 로그 설정</span><br><span class="line">status /var/log/openvpn/openvpn-status.log</span><br><span class="line">log-append /var/log/openvpn/openvpn.log</span><br><span class="line">verb 3</span><br><span class="line"></span><br><span class="line"># 명시적 종료 알림</span><br><span class="line">explicit-exit-notify 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="로그-디렉토리-생성"><a href="#로그-디렉토리-생성" class="headerlink" title="로그 디렉토리 생성"></a>로그 디렉토리 생성</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">mkdir</span> -p /var/log/openvpn</span><br><span class="line">sudo <span class="built_in">chown</span> nobody:nogroup /var/log/openvpn</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-네트워크-설정"><a href="#5-네트워크-설정" class="headerlink" title="5. 네트워크 설정"></a>5. 네트워크 설정</h2><h3 id="IP-포워딩-활성화"><a href="#IP-포워딩-활성화" class="headerlink" title="IP 포워딩 활성화"></a>IP 포워딩 활성화</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sysctl 설정 편집</span></span><br><span class="line">sudo nano /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 다음 라인 주석 해제 또는 추가</span></span><br><span class="line">net.ipv4.ip_forward=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 설정 적용</span></span><br><span class="line">sudo sysctl -p</span><br></pre></td></tr></table></figure>
+
+<h3 id="방화벽-설정-UFW-사용-시"><a href="#방화벽-설정-UFW-사용-시" class="headerlink" title="방화벽 설정 (UFW 사용 시)"></a>방화벽 설정 (UFW 사용 시)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 기본 인터페이스 확인</span></span><br><span class="line">ip route list default</span><br><span class="line"></span><br><span class="line"><span class="comment"># NAT 설정을 위한 before.rules 편집</span></span><br><span class="line">sudo nano /etc/ufw/before.rules</span><br><span class="line"></span><br><span class="line"><span class="comment"># *nat 섹션을 파일 맨 위에 추가 (COMMIT 전)</span></span><br><span class="line"><span class="comment"># NAT table rules</span></span><br><span class="line">*nat</span><br><span class="line">:POSTROUTING ACCEPT [0:0]</span><br><span class="line"><span class="comment"># OpenVPN NAT 규칙 (eth0는 실제 인터페이스명으로 변경)</span></span><br><span class="line">-A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE</span><br><span class="line">COMMIT</span><br><span class="line"></span><br><span class="line"><span class="comment"># UFW 포워딩 정책 변경</span></span><br><span class="line">sudo nano /etc/default/ufw</span><br><span class="line"></span><br><span class="line"><span class="comment"># 다음 라인 수정</span></span><br><span class="line">DEFAULT_FORWARD_POLICY=<span class="string">&quot;ACCEPT&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OpenVPN 포트 허용</span></span><br><span class="line">sudo ufw allow 1194/udp</span><br><span class="line">sudo ufw allow OpenSSH</span><br><span class="line"></span><br><span class="line"><span class="comment"># UFW 재시작</span></span><br><span class="line">sudo ufw <span class="built_in">disable</span></span><br><span class="line">sudo ufw <span class="built_in">enable</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="방화벽-설정-iptables-직접-사용-시"><a href="#방화벽-설정-iptables-직접-사용-시" class="headerlink" title="방화벽 설정 (iptables 직접 사용 시)"></a>방화벽 설정 (iptables 직접 사용 시)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># NAT 규칙 추가 (eth0는 실제 인터페이스명으로 변경)</span></span><br><span class="line">sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE</span><br><span class="line"></span><br><span class="line"><span class="comment"># OpenVPN 포트 허용</span></span><br><span class="line">sudo iptables -A INPUT -p udp --dport 1194 -j ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 규칙 저장</span></span><br><span class="line">sudo apt install iptables-persistent</span><br><span class="line">sudo netfilter-persistent save</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-OpenVPN-서버-시작"><a href="#6-OpenVPN-서버-시작" class="headerlink" title="6. OpenVPN 서버 시작"></a>6. OpenVPN 서버 시작</h2><h3 id="서비스-시작-및-활성화"><a href="#서비스-시작-및-활성화" class="headerlink" title="서비스 시작 및 활성화"></a>서비스 시작 및 활성화</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># OpenVPN 서버 시작</span></span><br><span class="line">sudo systemctl start openvpn-server@server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 부팅 시 자동 시작 설정</span></span><br><span class="line">sudo systemctl <span class="built_in">enable</span> openvpn-server@server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 서비스 상태 확인</span></span><br><span class="line">sudo systemctl status openvpn-server@server</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">ubuntu@ip-172-31-32-24:~/openvpn-ca$ sudo systemctl status openvpn@server</span><br><span class="line">● openvpn@server.service - OpenVPN connection to server</span><br><span class="line">     Loaded: loaded (/usr/lib/systemd/system/openvpn@.service; enabled; preset: enabled)</span><br><span class="line">     Active: active (running) since Sun 2025-12-28 17:18:08 UTC; 10s ago</span><br><span class="line">       Docs: man:openvpn(8)</span><br><span class="line">             https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage</span><br><span class="line">             https://community.openvpn.net/openvpn/wiki/HOWTO</span><br><span class="line">   Main PID: 2355 (openvpn)</span><br><span class="line">     Status: <span class="string">&quot;Initialization Sequence Completed&quot;</span></span><br><span class="line">      Tasks: 1 (<span class="built_in">limit</span>: 10)</span><br><span class="line">     Memory: 1.4M (peak: 1.6M)</span><br><span class="line">        CPU: 18ms</span><br><span class="line">     CGroup: /system.slice/system-openvpn.slice/openvpn@server.service</span><br><span class="line">             └─2355 /usr/sbin/openvpn --daemon ovpn-server --status /run/openvpn/server.status 10 --<span class="built_in">cd</span> /etc/openvpn --script-security 2 --config /etc/openvpn/server.conf --writepid /run/openvpn/server.pid</span><br></pre></td></tr></table></figure>
+
+<h3 id="로그-확인"><a href="#로그-확인" class="headerlink" title="로그 확인"></a>로그 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 실시간 로그 모니터링</span></span><br><span class="line">sudo <span class="built_in">tail</span> -f /var/log/openvpn/openvpn.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 시스템 로그 확인</span></span><br><span class="line">sudo journalctl -u openvpn-server@server -f</span><br></pre></td></tr></table></figure>
+
+<h3 id="네트워크-인터페이스-확인"><a href="#네트워크-인터페이스-확인" class="headerlink" title="네트워크 인터페이스 확인"></a>네트워크 인터페이스 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># tun0 인터페이스 확인</span></span><br><span class="line">ip addr show tun0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 라우팅 테이블 확인</span></span><br><span class="line">ip route</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-클라이언트-인증서-생성"><a href="#7-클라이언트-인증서-생성" class="headerlink" title="7. 클라이언트 인증서 생성"></a>7. 클라이언트 인증서 생성</h2><h3 id="클라이언트-인증서-생성-스크립트"><a href="#클라이언트-인증서-생성-스크립트" class="headerlink" title="클라이언트 인증서 생성 스크립트"></a>클라이언트 인증서 생성 스크립트</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Easy-RSA 디렉토리로 이동</span></span><br><span class="line"><span class="built_in">cd</span> ~/openvpn-ca</span><br><span class="line"></span><br><span class="line"><span class="comment"># 클라이언트 인증서 생성 (client1을 원하는 이름으로 변경)</span></span><br><span class="line">./easyrsa gen-req client1 nopass</span><br><span class="line"></span><br><span class="line"><span class="comment"># 클라이언트 인증서 서명</span></span><br><span class="line">./easyrsa sign-req client client1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 클라이언트 파일 확인</span></span><br><span class="line"><span class="built_in">ls</span> pki/issued/client1.crt</span><br><span class="line"><span class="built_in">ls</span> pki/private/client1.key</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter <span class="string">&#x27;.&#x27;</span>, the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Common Name (eg: your user, host, or server name) [client1]:ㅇ demo1</span><br><span class="line"></span><br><span class="line">Notice</span><br><span class="line">------</span><br><span class="line">Private-Key and Public-Certificate-Request files created.</span><br><span class="line">Your files are:</span><br><span class="line">* req: /home/ubuntu/openvpn-ca/pki/reqs/client1.req</span><br><span class="line">* key: /home/ubuntu/openvpn-ca/pki/private/client1.key</span><br><span class="line"></span><br><span class="line">Using Easy-RSA <span class="string">&#x27;vars&#x27;</span> configuration:</span><br><span class="line">* /home/ubuntu/openvpn-ca/vars</span><br><span class="line"></span><br><span class="line">Using SSL:</span><br><span class="line">* openssl OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)</span><br><span class="line">You are about to sign the following certificate:</span><br><span class="line">Please check over the details shown below <span class="keyword">for</span> accuracy. Note that this request</span><br><span class="line">has not been cryptographically verified. Please be sure it came from a trusted</span><br><span class="line"><span class="built_in">source</span> or that you have verified the request checksum with the sender.</span><br><span class="line">Request subject, to be signed as a client certificate</span><br><span class="line"><span class="keyword">for</span> <span class="string">&#x27;825&#x27;</span> days:</span><br><span class="line"></span><br><span class="line">subject=</span><br><span class="line">    commonName                = demo1</span><br><span class="line"></span><br><span class="line">Type the word <span class="string">&#x27;yes&#x27;</span> to <span class="built_in">continue</span>, or any other input to abort.</span><br><span class="line">  Confirm request details: ㅛ<span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line">Using configuration from /home/ubuntu/openvpn-ca/pki/openssl-easyrsa.cnf</span><br><span class="line">Enter pass phrase <span class="keyword">for</span> /home/ubuntu/openvpn-ca/pki/private/ca.key:</span><br><span class="line">Check that the request matches the signature</span><br><span class="line">Signature ok</span><br><span class="line">The Subject<span class="string">&#x27;s Distinguished Name is as follows</span></span><br><span class="line"><span class="string">commonName            :ASN.1 12:&#x27;</span>demo1<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Certificate is to be certified until Apr  1 17:20:09 2028 GMT (825 days)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Write out database with 1 new entries</span></span><br><span class="line"><span class="string">Database updated</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notice</span></span><br><span class="line"><span class="string">------</span></span><br><span class="line"><span class="string">Certificate created at:</span></span><br><span class="line"><span class="string">* /home/ubuntu/openvpn-ca/pki/issued/client1.crt</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="클라이언트-설정-디렉토리-생성"><a href="#클라이언트-설정-디렉토리-생성" class="headerlink" title="클라이언트 설정 디렉토리 생성"></a>클라이언트 설정 디렉토리 생성</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 클라이언트 설정 디렉토리 생성</span></span><br><span class="line"><span class="built_in">mkdir</span> -p ~/client-configs/files</span><br><span class="line"></span><br><span class="line"><span class="comment"># 베이스 설정 파일 생성</span></span><br><span class="line">nano ~/client-configs/base.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="클라이언트-베이스-설정-base-conf"><a href="#클라이언트-베이스-설정-base-conf" class="headerlink" title="클라이언트 베이스 설정 (base.conf)"></a>클라이언트 베이스 설정 (base.conf)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">client</span><br><span class="line">dev tun</span><br><span class="line">proto udp</span><br><span class="line"></span><br><span class="line"># 서버 주소와 포트 (YOUR_SERVER_IP를 실제 IP로 변경)</span><br><span class="line">remote YOUR_SERVER_IP 1194</span><br><span class="line"></span><br><span class="line">resolv-retry infinite</span><br><span class="line">nobind</span><br><span class="line"></span><br><span class="line"># 권한 낮추기</span><br><span class="line">user nobody</span><br><span class="line">group nogroup</span><br><span class="line"></span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line"></span><br><span class="line"># 인증서 확인</span><br><span class="line">remote-cert-tls server</span><br><span class="line"></span><br><span class="line">cipher AES-256-GCM</span><br><span class="line">auth SHA256</span><br><span class="line"></span><br><span class="line">key-direction 1</span><br><span class="line"></span><br><span class="line">verb 3</span><br></pre></td></tr></table></figure>
+
+<h3 id="클라이언트-설정-생성-스크립트"><a href="#클라이언트-설정-생성-스크립트" class="headerlink" title="클라이언트 설정 생성 스크립트"></a>클라이언트 설정 생성 스크립트</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 설정 생성 스크립트 작성</span></span><br><span class="line">nano ~/client-configs/make_config.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 첫 번째 인자: 클라이언트 이름</span></span><br><span class="line">KEY_DIR=~/openvpn-ca/pki</span><br><span class="line">OUTPUT_DIR=~/client-configs/files</span><br><span class="line">BASE_CONFIG=~/client-configs/base.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> <span class="variable">$&#123;BASE_CONFIG&#125;</span> \</span><br><span class="line">    &lt;(<span class="built_in">echo</span> -e <span class="string">&#x27;&lt;ca&gt;&#x27;</span>) \</span><br><span class="line">    <span class="variable">$&#123;KEY_DIR&#125;</span>/ca.crt \</span><br><span class="line">    &lt;(<span class="built_in">echo</span> -e <span class="string">&#x27;&lt;/ca&gt;\n&lt;cert&gt;&#x27;</span>) \</span><br><span class="line">    <span class="variable">$&#123;KEY_DIR&#125;</span>/issued/<span class="variable">$&#123;1&#125;</span>.crt \</span><br><span class="line">    &lt;(<span class="built_in">echo</span> -e <span class="string">&#x27;&lt;/cert&gt;\n&lt;key&gt;&#x27;</span>) \</span><br><span class="line">    <span class="variable">$&#123;KEY_DIR&#125;</span>/private/<span class="variable">$&#123;1&#125;</span>.key \</span><br><span class="line">    &lt;(<span class="built_in">echo</span> -e <span class="string">&#x27;&lt;/key&gt;\n&lt;tls-auth&gt;&#x27;</span>) \</span><br><span class="line">    ~/openvpn-ca/ta.key \</span><br><span class="line">    &lt;(<span class="built_in">echo</span> -e <span class="string">&#x27;&lt;/tls-auth&gt;&#x27;</span>) \</span><br><span class="line">    &gt; <span class="variable">$&#123;OUTPUT_DIR&#125;</span>/<span class="variable">$&#123;1&#125;</span>.ovpn</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 실행 권한 부여</span></span><br><span class="line"><span class="built_in">chmod</span> +x ~/client-configs/make_config.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 클라이언트 설정 파일 생성</span></span><br><span class="line"><span class="built_in">cd</span> ~/client-configs</span><br><span class="line">./make_config.sh client1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 생성된 파일 확인</span></span><br><span class="line"><span class="built_in">ls</span> ~/client-configs/files/</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-클라이언트-연결"><a href="#8-클라이언트-연결" class="headerlink" title="8. 클라이언트 연결"></a>8. 클라이언트 연결</h2><h3 id="Linux-클라이언트"><a href="#Linux-클라이언트" class="headerlink" title="Linux 클라이언트"></a>Linux 클라이언트</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># OpenVPN 클라이언트 설치</span></span><br><span class="line">sudo apt install openvpn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 설정 파일로 연결</span></span><br><span class="line">sudo openvpn --config client1.ovpn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 백그라운드 서비스로 실행</span></span><br><span class="line">sudo <span class="built_in">cp</span> client1.ovpn /etc/openvpn/client/</span><br><span class="line">sudo systemctl start openvpn-client@client1</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> openvpn-client@client1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo journalctl -u openvpn@server -f</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: TCP connection established with [AF_INET]180.229.206.205:56590</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 TLS: Initial packet from [AF_INET]180.229.206.205:56590, sid=09a1036e 53265092</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 VERIFY OK: depth=1, CN=Easy-RSA CA</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 VERIFY OK: depth=0, CN=demo1</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_VER=3.11.3</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_PLAT=mac</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_NCP=2</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_TCPNL=1</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_PROTO=8094</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_MTU=1600</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_CIPHERS=AES-128-CBC:AES-192-CBC:AES-256-CBC:AES-128-GCM:AES-192-GCM:AES-256-GCM:CHACHA20-POLY1305</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_AUTO_SESS=1</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_GUI_VER=OCmacOS_3.8.1-5790</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 peer info: IV_SSO=webauth,crtext</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 TLS: move_session: dest=TM_ACTIVE src=TM_INITIAL reinit_src=1</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 TLS: tls_multi_process: initial untrusted session promoted to trusted</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 Control Channel: TLSv1.3, cipher TLSv1.3 TLS_AES_256_GCM_SHA384, peer certificate: 2048 bits RSA, signature: RSA-SHA256, peer temporary key: 253 bits X25519</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: 180.229.206.205:56590 [demo1] Peer Connection Initiated with [AF_INET]180.229.206.205:56590</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: demo1/180.229.206.205:56590 MULTI_sva: pool returned IPv4=10.8.0.6, IPv6=(Not enabled)</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: demo1/180.229.206.205:56590 MULTI: Learn: 10.8.0.6 -&gt; demo1/180.229.206.205:56590</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: demo1/180.229.206.205:56590 MULTI: primary virtual IP <span class="keyword">for</span> demo1/180.229.206.205:56590: 10.8.0.6</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: demo1/180.229.206.205:56590 SENT CONTROL [demo1]: <span class="string">&#x27;PUSH_REPLY,redirect-gateway def1 bypass-dhcp,dhcp-option DNS 8.8.8.8,route 10.8.0.1,topology net30,ping 10,ping-restart 120,ifconfig 10.8.0.6 10.8.0.5,peer-id 0,cipher AES-256-GCM,protocol-flags cc-exit tls-ekm dyn-tls-crypt,tun-mtu 1500&#x27;</span> (status=1)</span><br><span class="line">Dec 28 18:33:20 ip-172-31-32-24 ovpn-server[2692]: demo1/180.229.206.205:56590 PUSH: Received control message: <span class="string">&#x27;PUSH_REQUEST&#x27;</span></span><br><span class="line">Dec 28 18:33:21 ip-172-31-32-24 ovpn-server[2692]: demo1/180.229.206.205:56590 Data Channel: cipher <span class="string">&#x27;AES-256-GCM&#x27;</span>, peer-id: 0</span><br><span class="line">Dec 28 18:33:21 ip-172-31-32-24 ovpn-server[2692]: demo1/180.229.206.205:56590 Timers: ping 10, ping-restart 240</span><br><span class="line">Dec 28 18:33:21 ip-172-31-32-24 ovpn-server[2692]: demo1/180.229.206.205:56590 Protocol options: protocol-flags cc-exit tls-ekm dyn-tls-crypt</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Windows-클라이언트"><a href="#Windows-클라이언트" class="headerlink" title="Windows 클라이언트"></a>Windows 클라이언트</h3><ol>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://openvpn.net/community-downloads/">OpenVPN GUI</a> 다운로드 및 설치</li>
+<li>client1.ovpn 파일을 <code>C:\Program Files\OpenVPN\config\</code> 디렉토리에 복사</li>
+<li>OpenVPN GUI 실행 후 연결</li>
+</ol>
+<h3 id="macOS-클라이언트"><a href="#macOS-클라이언트" class="headerlink" title="macOS 클라이언트"></a>macOS 클라이언트</h3><ol>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://tunnelblick.net/">Tunnelblick</a> 다운로드 및 설치</li>
+<li>client1.ovpn 파일을 더블클릭하여 Tunnelblick에 추가</li>
+<li>Tunnelblick에서 연결</li>
+</ol>
+<h3 id="Android-iOS"><a href="#Android-iOS" class="headerlink" title="Android&#x2F;iOS"></a>Android&#x2F;iOS</h3><ol>
+<li>앱스토어에서 “OpenVPN Connect” 설치</li>
+<li>client1.ovpn 파일을 기기로 전송</li>
+<li>앱에서 파일 가져오기 후 연결</li>
+</ol>
+<h2 id="9-연결-확인-및-문제-해결"><a href="#9-연결-확인-및-문제-해결" class="headerlink" title="9. 연결 확인 및 문제 해결"></a>9. 연결 확인 및 문제 해결</h2><h3 id="서버에서-연결-확인"><a href="#서버에서-연결-확인" class="headerlink" title="서버에서 연결 확인"></a>서버에서 연결 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 연결된 클라이언트 확인</span></span><br><span class="line">sudo <span class="built_in">cat</span> /var/log/openvpn/openvpn-status.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 실시간 연결 모니터링</span></span><br><span class="line">sudo <span class="built_in">tail</span> -f /var/log/openvpn/openvpn-status.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="클라이언트에서-연결-확인"><a href="#클라이언트에서-연결-확인" class="headerlink" title="클라이언트에서 연결 확인"></a>클라이언트에서 연결 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># VPN IP 확인</span></span><br><span class="line">ip addr show tun0</span><br><span class="line"></span><br><span class="line"><span class="comment"># VPN을 통한 라우팅 확인</span></span><br><span class="line">ip route</span><br><span class="line"></span><br><span class="line"><span class="comment"># 외부 IP 확인 (VPN 서버 IP가 나와야 함)</span></span><br><span class="line">curl ifconfig.me</span><br></pre></td></tr></table></figure>
+
+<h3 id="일반적인-문제-해결"><a href="#일반적인-문제-해결" class="headerlink" title="일반적인 문제 해결"></a>일반적인 문제 해결</h3><h4 id="연결이-안-될-때"><a href="#연결이-안-될-때" class="headerlink" title="연결이 안 될 때"></a>연결이 안 될 때</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 방화벽 상태 확인</span></span><br><span class="line">sudo ufw status</span><br><span class="line">sudo iptables -L -n -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># OpenVPN 서비스 상태 확인</span></span><br><span class="line">sudo systemctl status openvpn-server@server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 로그 확인</span></span><br><span class="line">sudo journalctl -u openvpn-server@server -n 50</span><br></pre></td></tr></table></figure>
+
+<h4 id="IP-포워딩-확인"><a href="#IP-포워딩-확인" class="headerlink" title="IP 포워딩 확인"></a>IP 포워딩 확인</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># IP 포워딩 활성화 여부 확인</span></span><br><span class="line"><span class="built_in">cat</span> /proc/sys/net/ipv4/ip_forward</span><br><span class="line"><span class="comment"># 1이어야 함</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 재설정</span></span><br><span class="line">sudo sysctl -w net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+
+<h4 id="DNS-문제"><a href="#DNS-문제" class="headerlink" title="DNS 문제"></a>DNS 문제</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 클라이언트 설정 파일에 DNS 푸시 추가</span></span><br><span class="line">push <span class="string">&quot;dhcp-option DNS 8.8.8.8&quot;</span></span><br><span class="line">push <span class="string">&quot;dhcp-option DNS 1.1.1.1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="10-보안-강화"><a href="#10-보안-강화" class="headerlink" title="10. 보안 강화"></a>10. 보안 강화</h2><h3 id="강력한-암호화-설정"><a href="#강력한-암호화-설정" class="headerlink" title="강력한 암호화 설정"></a>강력한 암호화 설정</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># server.conf에 추가</span><br><span class="line">cipher AES-256-GCM</span><br><span class="line">auth SHA512</span><br><span class="line">tls-version-min 1.2</span><br><span class="line">tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256</span><br></pre></td></tr></table></figure>
+
+<h3 id="인증서-폐기-CRL"><a href="#인증서-폐기-CRL" class="headerlink" title="인증서 폐기 (CRL)"></a>인증서 폐기 (CRL)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 클라이언트 인증서 폐기</span></span><br><span class="line"><span class="built_in">cd</span> ~/openvpn-ca</span><br><span class="line">./easyrsa revoke client1</span><br><span class="line">./easyrsa gen-crl</span><br><span class="line"></span><br><span class="line"><span class="comment"># CRL 파일 복사</span></span><br><span class="line">sudo <span class="built_in">cp</span> ~/openvpn-ca/pki/crl.pem /etc/openvpn/server/</span><br><span class="line"></span><br><span class="line"><span class="comment"># server.conf에 추가</span></span><br><span class="line">crl-verify crl.pem</span><br></pre></td></tr></table></figure>
+
+<h3 id="Fail2ban-설정"><a href="#Fail2ban-설정" class="headerlink" title="Fail2ban 설정"></a>Fail2ban 설정</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Fail2ban 설치</span></span><br><span class="line">sudo apt install fail2ban</span><br><span class="line"></span><br><span class="line"><span class="comment"># OpenVPN 필터 생성</span></span><br><span class="line">sudo nano /etc/fail2ban/filter.d/openvpn.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[Definition]</span><br><span class="line">failregex = ^.*TLS Error: TLS key negotiation failed to occur within.*&lt;HOST&gt;</span><br><span class="line">            ^.*Connection reset, restarting.*&lt;HOST&gt;</span><br><span class="line">            ^.*TLS handshake failed.*&lt;HOST&gt;</span><br><span class="line">ignoreregex =</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Jail 설정</span></span><br><span class="line">sudo nano /etc/fail2ban/jail.local</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[openvpn]</span><br><span class="line">enabled = true</span><br><span class="line">port = 1194</span><br><span class="line">protocol = udp</span><br><span class="line">filter = openvpn</span><br><span class="line">logpath = /var/log/openvpn/openvpn.log</span><br><span class="line">maxretry = 3</span><br><span class="line">bantime = 600</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Fail2ban 재시작</span></span><br><span class="line">sudo systemctl restart fail2ban</span><br><span class="line">sudo fail2ban-client status openvpn</span><br></pre></td></tr></table></figure>
+
+<h2 id="11-성능-최적화"><a href="#11-성능-최적화" class="headerlink" title="11. 성능 최적화"></a>11. 성능 최적화</h2><h3 id="압축-설정"><a href="#압축-설정" class="headerlink" title="압축 설정"></a>압축 설정</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># server.conf와 client.conf에 추가</span><br><span class="line"># 압축은 VORACLE 공격 위험이 있으므로 주의</span><br><span class="line">compress lz4-v2</span><br><span class="line">push &quot;compress lz4-v2&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-최적화-UDP-사용-시-불필요"><a href="#TCP-최적화-UDP-사용-시-불필요" class="headerlink" title="TCP 최적화 (UDP 사용 시 불필요)"></a>TCP 최적화 (UDP 사용 시 불필요)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># TCP 사용 시 성능 향상</span><br><span class="line">tcp-nodelay</span><br></pre></td></tr></table></figure>
+
+<h3 id="MTU-최적화"><a href="#MTU-최적화" class="headerlink" title="MTU 최적화"></a>MTU 최적화</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 최적 MTU 값 찾기 (클라이언트에서)</span></span><br><span class="line">ping -M <span class="keyword">do</span> -s 1472 vpn_server_ip</span><br><span class="line"></span><br><span class="line"><span class="comment"># server.conf에 추가</span></span><br><span class="line">tun-mtu 1500</span><br><span class="line">mssfix 1450</span><br></pre></td></tr></table></figure>
+
+<h2 id="12-모니터링-및-로깅"><a href="#12-모니터링-및-로깅" class="headerlink" title="12. 모니터링 및 로깅"></a>12. 모니터링 및 로깅</h2><h3 id="상태-파일-모니터링"><a href="#상태-파일-모니터링" class="headerlink" title="상태 파일 모니터링"></a>상태 파일 모니터링</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 연결 상태 주기적으로 확인</span></span><br><span class="line">watch -n 5 <span class="string">&#x27;sudo cat /var/log/openvpn/openvpn-status.log&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="대역폭-모니터링"><a href="#대역폭-모니터링" class="headerlink" title="대역폭 모니터링"></a>대역폭 모니터링</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># iftop 설치</span></span><br><span class="line">sudo apt install iftop</span><br><span class="line"></span><br><span class="line"><span class="comment"># tun0 인터페이스 모니터링</span></span><br><span class="line">sudo iftop -i tun0</span><br></pre></td></tr></table></figure>
+
+<h3 id="로그-레벨-조정"><a href="#로그-레벨-조정" class="headerlink" title="로그 레벨 조정"></a>로그 레벨 조정</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># server.conf에서 로그 레벨 설정</span><br><span class="line">verb 3  # 0-11, 3이 기본값 (권장)</span><br></pre></td></tr></table></figure>
+
+<h2 id="13-백업-및-복구"><a href="#13-백업-및-복구" class="headerlink" title="13. 백업 및 복구"></a>13. 백업 및 복구</h2><h3 id="중요-파일-백업"><a href="#중요-파일-백업" class="headerlink" title="중요 파일 백업"></a>중요 파일 백업</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 백업할 파일 목록</span></span><br><span class="line"><span class="comment"># - /etc/openvpn/server/*</span></span><br><span class="line"><span class="comment"># - ~/openvpn-ca/pki/*</span></span><br><span class="line"><span class="comment"># - /etc/sysctl.conf</span></span><br><span class="line"><span class="comment"># - /etc/ufw/before.rules (UFW 사용 시)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 백업 스크립트</span></span><br><span class="line">tar -czf openvpn-backup-$(<span class="built_in">date</span> +%Y%m%d).tar.gz \</span><br><span class="line">    /etc/openvpn/server/ \</span><br><span class="line">    ~/openvpn-ca/pki/ \</span><br><span class="line">    /etc/sysctl.conf \</span><br><span class="line">    /etc/ufw/before.rules</span><br></pre></td></tr></table></figure>
+
+<h2 id="14-고급-설정"><a href="#14-고급-설정" class="headerlink" title="14. 고급 설정"></a>14. 고급 설정</h2><h3 id="특정-서브넷만-VPN으로-라우팅"><a href="#특정-서브넷만-VPN으로-라우팅" class="headerlink" title="특정 서브넷만 VPN으로 라우팅"></a>특정 서브넷만 VPN으로 라우팅</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 클라이언트 설정에서 redirect-gateway 제거하고</span><br><span class="line"># 특정 네트워크만 라우팅</span><br><span class="line">route 192.168.1.0 255.255.255.0</span><br><span class="line">route 10.0.0.0 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="클라이언트별-고정-IP-할당"><a href="#클라이언트별-고정-IP-할당" class="headerlink" title="클라이언트별 고정 IP 할당"></a>클라이언트별 고정 IP 할당</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 클라이언트 설정 디렉토리 생성</span></span><br><span class="line">sudo <span class="built_in">mkdir</span> /etc/openvpn/ccd</span><br><span class="line"></span><br><span class="line"><span class="comment"># server.conf에 추가</span></span><br><span class="line">client-config-dir ccd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 클라이언트별 설정</span></span><br><span class="line">sudo nano /etc/openvpn/ccd/client1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ifconfig-push 10.8.0.100 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="클라이언트에서-서버-LAN-접근"><a href="#클라이언트에서-서버-LAN-접근" class="headerlink" title="클라이언트에서 서버 LAN 접근"></a>클라이언트에서 서버 LAN 접근</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># server.conf에 추가 (192.168.1.0은 서버 LAN 서브넷)</span><br><span class="line">push &quot;route 192.168.1.0 255.255.255.0&quot;</span><br><span class="line"></span><br><span class="line"># 서버 방화벽에서 포워딩 허용</span><br><span class="line">sudo iptables -A FORWARD -i tun0 -o eth0 -s 10.8.0.0/24 -d 192.168.1.0/24 -j ACCEPT</span><br><span class="line">sudo iptables -A FORWARD -i eth0 -o tun0 -s 192.168.1.0/24 -d 10.8.0.0/24 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<h2 id="참고-자료"><a href="#참고-자료" class="headerlink" title="참고 자료"></a>참고 자료</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://openvpn.net/community-resources/">OpenVPN 공식 문서</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://easy-rsa.readthedocs.io/">Easy-RSA 문서</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ubuntu.com/server/docs/service-openvpn">Ubuntu Server Guide - OpenVPN</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://community.openvpn.net/openvpn/wiki/Hardening">OpenVPN Hardening Guide</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-and-configure-an-openvpn-server-on-ubuntu-20-04">Digital Ocean - OpenVPN on Ubuntu</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/29/linux/ubuntu-openvpn-install/" data-id="cmjtkdjt6008mvk8deu1rfixn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Ubuntu Linux에 OpenVPN 설치 및 설정 가이드",
+        "image": "https://ckck803.github.io/images/linux/linux.png",
+        "keywords": "Security Linux Ubuntu OpenVPN VPN",
+        "genre": "Develop Linux",
+        "datePublished": "2025-12-29",
+        "dateCreated": "2025-12-29",
+        "dateModified": "2025-12-29",
+        "url": "https://ckck803.github.io/2025/12/29/linux/ubuntu-openvpn-install/",
+        "description": "
+OpenVPN 개요OpenVPN은 오픈소스 VPN 솔루션으로, 안전한 원격 접속과 네트워크 간 통신을 제공합니다. SSL&#x2F;TLS를 사용하여 강력한 암호화를 지원하며, 방화벽을 통과하기 쉬운 구조로 설계되어 있습니다.
+1. OpenVPN 서버 설치# 패키지 목록 업데이트sudo apt updatesudo apt upgrade -y# OpenVPN 설치sudo apt install openvpn -y# Easy-RSA 설치 (인증서 관리 도구)sudo apt install easy-rsa -y# OpenVPN 버전 확인openvpn --version# 설치된 파일 확인dpkg -L openvpn | grep bin
+
+2. PKI (Public Key Infrastructure) 설정Easy-RSA 디렉토리 설정# Easy-RSA 디렉토리 생성make-cadir ~/openvpn-ca# 디렉토리 이동cd ~/openvpn-ca
+
+CA (Certificate Authority) 설정# vars 파일 편집nano vars# 다음 내용 수정 (예시)set_var EASYRSA_REQ_COUNTRY    &quot;KR&quot;set_var EASYRSA_REQ_PROVINCE   &quot;Seoul&quot;set_var EASYRSA_REQ_CITY       &quot;Seoul&quot;set_var EASYRSA_REQ_ORG        &quot;MyCompany&quot;set_var EASYRSA_REQ_EMAIL      &quot;admin@example.com&quot;set_var EASYRSA_REQ_OU         &quot;IT Department&quot;",
+        "wordCount": 3307
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/12/29/mysql/top-queries/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            MySQL - Top N 쿼리 확인 방법
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/12/29/linux/fail2ban-guide/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Fail2ban 설치 및 사용 가이드</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">194</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/29/linux/ubuntu-openvpn-install/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
