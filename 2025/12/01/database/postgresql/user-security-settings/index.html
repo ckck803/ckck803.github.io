@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>[PostgreSQL] 사용자별 보안 설정 가이드 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content>
+    
+    <meta name="description" content="🔒 PostgreSQL 사용자별 보안 설정 완벽 가이드PostgreSQL에서는 사용자(Role)별로 다양한 보안 설정을 적용하여 데이터베이스를 안전하게 보호할 수 있습니다.이 문서에서는 세션 타임아웃부터 접속 제한, 권한 관리까지 실무에서 꼭 필요한 보안 설정들을 정리합니다. 1️⃣ 세션 타임아웃 설정✅ idle_session_timeout (Postg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[PostgreSQL] 사용자별 보안 설정 가이드">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/01/database/postgresql/user-security-settings/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="🔒 PostgreSQL 사용자별 보안 설정 완벽 가이드PostgreSQL에서는 사용자(Role)별로 다양한 보안 설정을 적용하여 데이터베이스를 안전하게 보호할 수 있습니다.이 문서에서는 세션 타임아웃부터 접속 제한, 권한 관리까지 실무에서 꼭 필요한 보안 설정들을 정리합니다. 1️⃣ 세션 타임아웃 설정✅ idle_session_timeout (Postg">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/database/postgresql-logo.png">
+<meta property="article:published_time" content="2025-11-30T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-12T06:41:06.841Z">
+<meta property="article:author" content="ckck803">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/database/postgresql-logo.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Database/">Database</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/NestJS/">NestJS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Develop/Database/">Database</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-database/postgresql/user-security-settings" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        [PostgreSQL] 사용자별 보안 설정 가이드
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/01/database/postgresql/user-security-settings/" class="article-date">
+       <time datetime="2025-11-30T15:00:00.000Z" itemprop="datePublished">2025-12-01</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/01/database/postgresql/user-security-settings/" class="article-date">
+     <time datetime="2026-02-12T06:41:06.841Z" itemprop="dateModified">2026-02-12</time>
+  </a>
+</div>
+
+
+                
+
+                
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/database/postgresql-logo.png"></p>
+<h2 id="🔒-PostgreSQL-사용자별-보안-설정-완벽-가이드"><a href="#🔒-PostgreSQL-사용자별-보안-설정-완벽-가이드" class="headerlink" title="🔒 PostgreSQL 사용자별 보안 설정 완벽 가이드"></a>🔒 PostgreSQL 사용자별 보안 설정 완벽 가이드</h2><p>PostgreSQL에서는 사용자(Role)별로 다양한 보안 설정을 적용하여 데이터베이스를 안전하게 보호할 수 있습니다.<br>이 문서에서는 세션 타임아웃부터 접속 제한, 권한 관리까지 실무에서 꼭 필요한 보안 설정들을 정리합니다.</p>
+<h2 id="1️⃣-세션-타임아웃-설정"><a href="#1️⃣-세션-타임아웃-설정" class="headerlink" title="1️⃣ 세션 타임아웃 설정"></a>1️⃣ 세션 타임아웃 설정</h2><h3 id="✅-idle-session-timeout-PostgreSQL-14"><a href="#✅-idle-session-timeout-PostgreSQL-14" class="headerlink" title="✅ idle_session_timeout (PostgreSQL 14+)"></a>✅ idle_session_timeout (PostgreSQL 14+)</h3><p>유휴 세션을 자동으로 종료하여 불필요한 연결을 정리합니다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 세션 레벨에서 설정 (30분)</span></span><br><span class="line"><span class="keyword">SET</span> idle_session_timeout <span class="operator">=</span> <span class="string">&#x27;30min&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 전역 설정 (postgresql.conf)</span></span><br><span class="line">idle_session_timeout <span class="operator">=</span> <span class="string">&#x27;30min&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 특정 사용자에 설정</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user <span class="keyword">SET</span> idle_session_timeout <span class="operator">=</span> <span class="string">&#x27;30min&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 특정 데이터베이스에 설정</span></span><br><span class="line"><span class="keyword">ALTER</span> DATABASE mydb <span class="keyword">SET</span> idle_session_timeout <span class="operator">=</span> <span class="string">&#x27;1h&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="✅-statement-timeout"><a href="#✅-statement-timeout" class="headerlink" title="✅ statement_timeout"></a>✅ statement_timeout</h3><p>단일 쿼리의 최대 실행 시간을 제한하여 과도한 리소스 사용을 방지합니다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 세션 레벨 (10초)</span></span><br><span class="line"><span class="keyword">SET</span> statement_timeout <span class="operator">=</span> <span class="string">&#x27;10s&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 웹 애플리케이션 사용자: 짧은 타임아웃</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user <span class="keyword">SET</span> statement_timeout <span class="operator">=</span> <span class="string">&#x27;30s&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 배치 작업 사용자: 긴 타임아웃</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE batch_user <span class="keyword">SET</span> statement_timeout <span class="operator">=</span> <span class="string">&#x27;10min&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 관리자: 제한 없음</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE admin_user <span class="keyword">SET</span> statement_timeout <span class="operator">=</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="✅-idle-in-transaction-session-timeout"><a href="#✅-idle-in-transaction-session-timeout" class="headerlink" title="✅ idle_in_transaction_session_timeout"></a>✅ idle_in_transaction_session_timeout</h3><p>트랜잭션 내에서 유휴 상태인 세션을 종료합니다. 데드락과 테이블 락 문제를 예방합니다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 세션 레벨 (5분)</span></span><br><span class="line"><span class="keyword">SET</span> idle_in_transaction_session_timeout <span class="operator">=</span> <span class="string">&#x27;5min&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 전역 설정 (postgresql.conf)</span></span><br><span class="line">idle_in_transaction_session_timeout <span class="operator">=</span> <span class="string">&#x27;5min&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- OLTP 애플리케이션: 짧게 설정</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user <span class="keyword">SET</span> idle_in_transaction_session_timeout <span class="operator">=</span> <span class="string">&#x27;60s&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="📊-현재-타임아웃-설정-확인"><a href="#📊-현재-타임아웃-설정-확인" class="headerlink" title="📊 현재 타임아웃 설정 확인"></a>📊 현재 타임아웃 설정 확인</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 현재 세션의 설정 확인</span></span><br><span class="line"><span class="keyword">SHOW</span> idle_session_timeout;</span><br><span class="line"><span class="keyword">SHOW</span> statement_timeout;</span><br><span class="line"><span class="keyword">SHOW</span> idle_in_transaction_session_timeout;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 모든 타임아웃 설정 확인</span></span><br><span class="line"><span class="keyword">SELECT</span> name, setting, unit, context</span><br><span class="line"><span class="keyword">FROM</span> pg_settings</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;%timeout%&#x27;</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 사용자별 설정 확인</span></span><br><span class="line"><span class="keyword">SELECT</span> rolname, rolconfig</span><br><span class="line"><span class="keyword">FROM</span> pg_roles</span><br><span class="line"><span class="keyword">WHERE</span> rolconfig <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2️⃣-연결-수-제한"><a href="#2️⃣-연결-수-제한" class="headerlink" title="2️⃣ 연결 수 제한"></a>2️⃣ 연결 수 제한</h2><h3 id="✅-CONNECTION-LIMIT"><a href="#✅-CONNECTION-LIMIT" class="headerlink" title="✅ CONNECTION LIMIT"></a>✅ CONNECTION LIMIT</h3><p>사용자별 동시 연결 수를 제한하여 리소스 고갈을 방지합니다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 새 사용자 생성 시 연결 수 제한</span></span><br><span class="line"><span class="keyword">CREATE</span> ROLE webapp_user <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;secure_password&#x27;</span></span><br><span class="line">CONNECTION LIMIT <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 기존 사용자의 연결 수 제한</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE readonly_user CONNECTION LIMIT <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 무제한 연결 (주의: 관리자만)</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE admin_user CONNECTION LIMIT <span class="number">-1</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="📊-현재-연결-상태-모니터링"><a href="#📊-현재-연결-상태-모니터링" class="headerlink" title="📊 현재 연결 상태 모니터링"></a>📊 현재 연결 상태 모니터링</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 사용자별 현재 연결 수 확인</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    usename,</span><br><span class="line">    <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">as</span> active_connections,</span><br><span class="line">    <span class="built_in">MAX</span>(backend_start) <span class="keyword">as</span> last_connection</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> usename</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> active_connections <span class="keyword">DESC</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 유휴 연결 확인</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    pid,</span><br><span class="line">    usename,</span><br><span class="line">    application_name,</span><br><span class="line">    state,</span><br><span class="line">    state_change,</span><br><span class="line">    NOW() <span class="operator">-</span> state_change <span class="keyword">as</span> idle_duration</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">WHERE</span> state <span class="operator">=</span> <span class="string">&#x27;idle&#x27;</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> idle_duration <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3️⃣-비밀번호-정책"><a href="#3️⃣-비밀번호-정책" class="headerlink" title="3️⃣ 비밀번호 정책"></a>3️⃣ 비밀번호 정책</h2><h3 id="✅-비밀번호-만료-설정"><a href="#✅-비밀번호-만료-설정" class="headerlink" title="✅ 비밀번호 만료 설정"></a>✅ 비밀번호 만료 설정</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 비밀번호 90일 후 만료</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user VALID UNTIL <span class="string">&#x27;2025-03-01&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 현재 시간 기준 90일 후 만료</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user VALID UNTIL NOW() <span class="operator">+</span> <span class="type">INTERVAL</span> <span class="string">&#x27;90 days&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 만료 없음</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE admin_user VALID UNTIL <span class="string">&#x27;infinity&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="✅-SCRAM-SHA-256-암호화"><a href="#✅-SCRAM-SHA-256-암호화" class="headerlink" title="✅ SCRAM-SHA-256 암호화"></a>✅ SCRAM-SHA-256 암호화</h3><p>md5보다 안전한 해시 알고리즘을 사용합니다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- postgresql.conf</span></span><br><span class="line">password_encryption <span class="operator">=</span> scram<span class="operator">-</span>sha<span class="number">-256</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 기존 사용자 비밀번호 재설정 (SCRAM으로 변환)</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user PASSWORD <span class="string">&#x27;new_secure_password&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 사용자의 암호화 방식 확인</span></span><br><span class="line"><span class="keyword">SELECT</span> rolname, rolpassword</span><br><span class="line"><span class="keyword">FROM</span> pg_authid</span><br><span class="line"><span class="keyword">WHERE</span> rolname <span class="operator">=</span> <span class="string">&#x27;webapp_user&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4️⃣-네트워크-및-IP-접근-제어"><a href="#4️⃣-네트워크-및-IP-접근-제어" class="headerlink" title="4️⃣ 네트워크 및 IP 접근 제어"></a>4️⃣ 네트워크 및 IP 접근 제어</h2><h3 id="✅-pg-hba-conf-설정"><a href="#✅-pg-hba-conf-설정" class="headerlink" title="✅ pg_hba.conf 설정"></a>✅ pg_hba.conf 설정</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># TYPE  DATABASE    USER            ADDRESS         METHOD</span><br><span class="line"></span><br><span class="line"># 로컬 연결만 허용 (관리자)</span><br><span class="line">local   all         admin_user                      scram-sha-256</span><br><span class="line"></span><br><span class="line"># 특정 IP 대역에서만 접속 허용</span><br><span class="line">hostssl all         webapp_user     10.0.1.0/24     scram-sha-256</span><br><span class="line"></span><br><span class="line"># 특정 데이터베이스만 접근 허용</span><br><span class="line">hostssl myapp_db    app_user        10.0.2.0/24     scram-sha-256</span><br><span class="line"></span><br><span class="line"># 읽기 전용 사용자는 특정 IP에서만</span><br><span class="line">hostssl all         readonly_user   192.168.1.100/32 scram-sha-256</span><br><span class="line"></span><br><span class="line"># SSL 연결 강제 + 클라이언트 인증서 검증</span><br><span class="line">hostssl all         all             0.0.0.0/0       scram-sha-256 clientcert=verify-full</span><br></pre></td></tr></table></figure>
+
+<h2 id="5️⃣-권한-최소화-원칙-Least-Privilege"><a href="#5️⃣-권한-최소화-원칙-Least-Privilege" class="headerlink" title="5️⃣ 권한 최소화 원칙 (Least Privilege)"></a>5️⃣ 권한 최소화 원칙 (Least Privilege)</h2><h3 id="✅-읽기-전용-사용자"><a href="#✅-읽기-전용-사용자" class="headerlink" title="✅ 읽기 전용 사용자"></a>✅ 읽기 전용 사용자</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 읽기 전용 사용자 생성</span></span><br><span class="line"><span class="keyword">CREATE</span> ROLE readonly_user <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;secure_password&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 특정 스키마의 읽기 권한만 부여</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CONNECT</span> <span class="keyword">ON</span> DATABASE mydb <span class="keyword">TO</span> readonly_user;</span><br><span class="line"><span class="keyword">GRANT</span> USAGE <span class="keyword">ON</span> SCHEMA public <span class="keyword">TO</span> readonly_user;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> <span class="keyword">ALL</span> TABLES <span class="keyword">IN</span> SCHEMA public <span class="keyword">TO</span> readonly_user;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 향후 생성될 테이블에도 자동 적용</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DEFAULT</span> PRIVILEGES <span class="keyword">IN</span> SCHEMA public</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> TABLES <span class="keyword">TO</span> readonly_user;</span><br></pre></td></tr></table></figure>
+
+<h3 id="✅-애플리케이션-사용자-읽기-쓰기"><a href="#✅-애플리케이션-사용자-읽기-쓰기" class="headerlink" title="✅ 애플리케이션 사용자 (읽기&#x2F;쓰기)"></a>✅ 애플리케이션 사용자 (읽기&#x2F;쓰기)</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 애플리케이션 사용자 생성</span></span><br><span class="line"><span class="keyword">CREATE</span> ROLE app_user <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;secure_password&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 특정 테이블에만 읽기/쓰기 권한</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CONNECT</span> <span class="keyword">ON</span> DATABASE mydb <span class="keyword">TO</span> app_user;</span><br><span class="line"><span class="keyword">GRANT</span> USAGE <span class="keyword">ON</span> SCHEMA public <span class="keyword">TO</span> app_user;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span> <span class="keyword">ON</span> <span class="keyword">TABLE</span> users, orders <span class="keyword">TO</span> app_user;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> <span class="keyword">TABLE</span> products <span class="keyword">TO</span> app_user; <span class="comment">-- 읽기만</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- DELETE 권한은 별도 관리</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">DELETE</span> <span class="keyword">ON</span> <span class="keyword">TABLE</span> orders <span class="keyword">TO</span> app_user;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 시퀀스 사용 권한 (INSERT 시 필요)</span></span><br><span class="line"><span class="keyword">GRANT</span> USAGE <span class="keyword">ON</span> <span class="keyword">ALL</span> SEQUENCES <span class="keyword">IN</span> SCHEMA public <span class="keyword">TO</span> app_user;</span><br></pre></td></tr></table></figure>
+
+<h3 id="✅-관리자-vs-일반-사용자-분리"><a href="#✅-관리자-vs-일반-사용자-분리" class="headerlink" title="✅ 관리자 vs 일반 사용자 분리"></a>✅ 관리자 vs 일반 사용자 분리</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 일반 사용자는 슈퍼유저 권한 없이</span></span><br><span class="line"><span class="keyword">CREATE</span> ROLE app_user <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;password&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 관리자는 필요한 권한만</span></span><br><span class="line"><span class="keyword">CREATE</span> ROLE db_admin <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;password&#x27;</span></span><br><span class="line">CREATEROLE CREATEDB;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 슈퍼유저는 최소화 (postgres만 사용)</span></span><br><span class="line"><span class="comment">-- CREATE ROLE super_admin WITH LOGIN PASSWORD &#x27;password&#x27; SUPERUSER;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6️⃣-Row-Level-Security-RLS"><a href="#6️⃣-Row-Level-Security-RLS" class="headerlink" title="6️⃣ Row Level Security (RLS)"></a>6️⃣ Row Level Security (RLS)</h2><p>테이블 행 단위로 접근을 제어합니다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- RLS 활성화</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> users ENABLE <span class="type">ROW</span> LEVEL SECURITY;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 정책 생성: 사용자는 자신의 데이터만 조회</span></span><br><span class="line"><span class="keyword">CREATE</span> POLICY user_isolation_policy <span class="keyword">ON</span> users</span><br><span class="line">    <span class="keyword">FOR</span> <span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">USING</span> (user_id <span class="operator">=</span> <span class="built_in">current_user</span>::text);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 정책 생성: 관리자는 모든 데이터 조회</span></span><br><span class="line"><span class="keyword">CREATE</span> POLICY admin_all_policy <span class="keyword">ON</span> users</span><br><span class="line">    <span class="keyword">FOR</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">TO</span> admin_user</span><br><span class="line">    <span class="keyword">USING</span> (<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 특정 역할에 RLS 우회 권한</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> users FORCE <span class="type">ROW</span> LEVEL SECURITY;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7️⃣-감사-로깅-Audit-Logging"><a href="#7️⃣-감사-로깅-Audit-Logging" class="headerlink" title="7️⃣ 감사 로깅 (Audit Logging)"></a>7️⃣ 감사 로깅 (Audit Logging)</h2><h3 id="✅-기본-로깅-설정"><a href="#✅-기본-로깅-설정" class="headerlink" title="✅ 기본 로깅 설정"></a>✅ 기본 로깅 설정</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- postgresql.conf</span></span><br><span class="line">log_connections <span class="operator">=</span> <span class="keyword">on</span></span><br><span class="line">log_disconnections <span class="operator">=</span> <span class="keyword">on</span></span><br><span class="line">log_duration <span class="operator">=</span> <span class="keyword">on</span></span><br><span class="line">log_statement <span class="operator">=</span> <span class="string">&#x27;ddl&#x27;</span>  # <span class="keyword">none</span>, ddl, mod, <span class="keyword">all</span></span><br><span class="line">log_line_prefix <span class="operator">=</span> <span class="string">&#x27;%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h &#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="✅-pgAudit-확장-모듈"><a href="#✅-pgAudit-확장-모듈" class="headerlink" title="✅ pgAudit 확장 모듈"></a>✅ pgAudit 확장 모듈</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- postgresql.conf</span></span><br><span class="line">shared_preload_libraries <span class="operator">=</span> <span class="string">&#x27;pgaudit&#x27;</span></span><br><span class="line">pgaudit.log <span class="operator">=</span> <span class="string">&#x27;read,write,ddl&#x27;</span></span><br><span class="line">pgaudit.log_relation <span class="operator">=</span> <span class="keyword">on</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 특정 사용자만 감사</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user <span class="keyword">SET</span> pgaudit.log <span class="operator">=</span> <span class="string">&#x27;write&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="📊-로그인-이력-조회"><a href="#📊-로그인-이력-조회" class="headerlink" title="📊 로그인 이력 조회"></a>📊 로그인 이력 조회</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 최근 로그인 이력 (PostgreSQL 14+)</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    usename,</span><br><span class="line">    backend_start <span class="keyword">as</span> login_time,</span><br><span class="line">    application_name,</span><br><span class="line">    client_addr,</span><br><span class="line">    state</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> backend_start <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8️⃣-실전-사용자-프로필-예시"><a href="#8️⃣-실전-사용자-프로필-예시" class="headerlink" title="8️⃣ 실전 사용자 프로필 예시"></a>8️⃣ 실전 사용자 프로필 예시</h2><h3 id="🌐-웹-애플리케이션-사용자"><a href="#🌐-웹-애플리케이션-사용자" class="headerlink" title="🌐 웹 애플리케이션 사용자"></a>🌐 웹 애플리케이션 사용자</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ROLE webapp_user <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;secure_password&#x27;</span></span><br><span class="line">CONNECTION LIMIT <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 타임아웃 설정</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user <span class="keyword">SET</span> statement_timeout <span class="operator">=</span> <span class="string">&#x27;30s&#x27;</span>;</span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user <span class="keyword">SET</span> idle_in_transaction_session_timeout <span class="operator">=</span> <span class="string">&#x27;60s&#x27;</span>;</span><br><span class="line"><span class="keyword">ALTER</span> ROLE webapp_user <span class="keyword">SET</span> idle_session_timeout <span class="operator">=</span> <span class="string">&#x27;30min&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 권한 설정</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CONNECT</span> <span class="keyword">ON</span> DATABASE myapp <span class="keyword">TO</span> webapp_user;</span><br><span class="line"><span class="keyword">GRANT</span> USAGE <span class="keyword">ON</span> SCHEMA public <span class="keyword">TO</span> webapp_user;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span> <span class="keyword">ON</span> <span class="keyword">ALL</span> TABLES <span class="keyword">IN</span> SCHEMA public <span class="keyword">TO</span> webapp_user;</span><br><span class="line"><span class="keyword">GRANT</span> USAGE <span class="keyword">ON</span> <span class="keyword">ALL</span> SEQUENCES <span class="keyword">IN</span> SCHEMA public <span class="keyword">TO</span> webapp_user;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 삭제는 특정 테이블만</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">DELETE</span> <span class="keyword">ON</span> <span class="keyword">TABLE</span> sessions, logs <span class="keyword">TO</span> webapp_user;</span><br></pre></td></tr></table></figure>
+
+<h3 id="📊-분석-리포팅-사용자"><a href="#📊-분석-리포팅-사용자" class="headerlink" title="📊 분석&#x2F;리포팅 사용자"></a>📊 분석&#x2F;리포팅 사용자</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ROLE analyst_user <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;secure_password&#x27;</span></span><br><span class="line">CONNECTION LIMIT <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 긴 쿼리 허용</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE analyst_user <span class="keyword">SET</span> statement_timeout <span class="operator">=</span> <span class="string">&#x27;10min&#x27;</span>;</span><br><span class="line"><span class="keyword">ALTER</span> ROLE analyst_user <span class="keyword">SET</span> idle_session_timeout <span class="operator">=</span> <span class="string">&#x27;2h&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 읽기 전용</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CONNECT</span> <span class="keyword">ON</span> DATABASE myapp <span class="keyword">TO</span> analyst_user;</span><br><span class="line"><span class="keyword">GRANT</span> USAGE <span class="keyword">ON</span> SCHEMA public <span class="keyword">TO</span> analyst_user;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> <span class="keyword">ALL</span> TABLES <span class="keyword">IN</span> SCHEMA public <span class="keyword">TO</span> analyst_user;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 뷰 사용 권한</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> <span class="keyword">ALL</span> VIEWS <span class="keyword">IN</span> SCHEMA public <span class="keyword">TO</span> analyst_user;</span><br></pre></td></tr></table></figure>
+
+<h3 id="🔧-배치-작업-사용자"><a href="#🔧-배치-작업-사용자" class="headerlink" title="🔧 배치 작업 사용자"></a>🔧 배치 작업 사용자</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ROLE batch_user <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;secure_password&#x27;</span></span><br><span class="line">CONNECTION LIMIT <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 긴 트랜잭션 허용</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE batch_user <span class="keyword">SET</span> statement_timeout <span class="operator">=</span> <span class="string">&#x27;1h&#x27;</span>;</span><br><span class="line"><span class="keyword">ALTER</span> ROLE batch_user <span class="keyword">SET</span> idle_in_transaction_session_timeout <span class="operator">=</span> <span class="string">&#x27;30min&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 필요한 권한만</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CONNECT</span> <span class="keyword">ON</span> DATABASE myapp <span class="keyword">TO</span> batch_user;</span><br><span class="line"><span class="keyword">GRANT</span> USAGE <span class="keyword">ON</span> SCHEMA public <span class="keyword">TO</span> batch_user;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span>, <span class="keyword">DELETE</span> <span class="keyword">ON</span> <span class="keyword">TABLE</span> batch_jobs, import_data <span class="keyword">TO</span> batch_user;</span><br></pre></td></tr></table></figure>
+
+<h3 id="👀-읽기-전용-모니터링-사용자"><a href="#👀-읽기-전용-모니터링-사용자" class="headerlink" title="👀 읽기 전용 모니터링 사용자"></a>👀 읽기 전용 모니터링 사용자</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ROLE monitoring_user <span class="keyword">WITH</span> LOGIN PASSWORD <span class="string">&#x27;secure_password&#x27;</span></span><br><span class="line">CONNECTION LIMIT <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 짧은 타임아웃</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE monitoring_user <span class="keyword">SET</span> statement_timeout <span class="operator">=</span> <span class="string">&#x27;5s&#x27;</span>;</span><br><span class="line"><span class="keyword">ALTER</span> ROLE monitoring_user <span class="keyword">SET</span> idle_session_timeout <span class="operator">=</span> <span class="string">&#x27;10min&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 시스템 뷰 접근 권한</span></span><br><span class="line"><span class="keyword">GRANT</span> pg_monitor <span class="keyword">TO</span> monitoring_user;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CONNECT</span> <span class="keyword">ON</span> DATABASE postgres <span class="keyword">TO</span> monitoring_user;</span><br></pre></td></tr></table></figure>
+
+<h2 id="9️⃣-보안-체크리스트"><a href="#9️⃣-보안-체크리스트" class="headerlink" title="9️⃣ 보안 체크리스트"></a>9️⃣ 보안 체크리스트</h2><table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설정</th>
+<th>권장값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>비밀번호 암호화</td>
+<td><code>password_encryption</code></td>
+<td><code>scram-sha-256</code></td>
+</tr>
+<tr>
+<td>SSL&#x2F;TLS</td>
+<td><code>ssl</code></td>
+<td><code>on</code></td>
+</tr>
+<tr>
+<td>최소 TLS 버전</td>
+<td><code>ssl_min_protocol_version</code></td>
+<td><code>TLSv1.2</code></td>
+</tr>
+<tr>
+<td>연결 로깅</td>
+<td><code>log_connections</code></td>
+<td><code>on</code></td>
+</tr>
+<tr>
+<td>해제 로깅</td>
+<td><code>log_disconnections</code></td>
+<td><code>on</code></td>
+</tr>
+<tr>
+<td>Statement 타임아웃</td>
+<td><code>statement_timeout</code></td>
+<td>사용자별 설정</td>
+</tr>
+<tr>
+<td>유휴 세션 타임아웃</td>
+<td><code>idle_session_timeout</code></td>
+<td><code>30min</code></td>
+</tr>
+<tr>
+<td>트랜잭션 유휴 타임아웃</td>
+<td><code>idle_in_transaction_session_timeout</code></td>
+<td><code>5min</code></td>
+</tr>
+<tr>
+<td>연결 수 제한</td>
+<td><code>CONNECTION LIMIT</code></td>
+<td>역할별 설정</td>
+</tr>
+<tr>
+<td>최소 권한 원칙</td>
+<td>Role Privileges</td>
+<td>필요한 권한만</td>
+</tr>
+<tr>
+<td>Row Level Security</td>
+<td>RLS</td>
+<td>민감 데이터에 적용</td>
+</tr>
+<tr>
+<td>감사 로깅</td>
+<td><code>pgaudit</code></td>
+<td>중요 작업 기록</td>
+</tr>
+</tbody></table>
+<h2 id="🔍-유용한-모니터링-쿼리"><a href="#🔍-유용한-모니터링-쿼리" class="headerlink" title="🔍 유용한 모니터링 쿼리"></a>🔍 유용한 모니터링 쿼리</h2><h3 id="현재-활성-세션-및-타임아웃-정보"><a href="#현재-활성-세션-및-타임아웃-정보" class="headerlink" title="현재 활성 세션 및 타임아웃 정보"></a>현재 활성 세션 및 타임아웃 정보</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    pid,</span><br><span class="line">    usename,</span><br><span class="line">    application_name,</span><br><span class="line">    client_addr,</span><br><span class="line">    state,</span><br><span class="line">    NOW() <span class="operator">-</span> backend_start <span class="keyword">as</span> connection_duration,</span><br><span class="line">    NOW() <span class="operator">-</span> state_change <span class="keyword">as</span> state_duration,</span><br><span class="line">    query</span><br><span class="line"><span class="keyword">FROM</span> pg_stat_activity</span><br><span class="line"><span class="keyword">WHERE</span> state <span class="operator">!=</span> <span class="string">&#x27;idle&#x27;</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> backend_start;</span><br></pre></td></tr></table></figure>
+
+<h3 id="사용자별-권한-확인"><a href="#사용자별-권한-확인" class="headerlink" title="사용자별 권한 확인"></a>사용자별 권한 확인</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    grantee,</span><br><span class="line">    table_schema,</span><br><span class="line">    table_name,</span><br><span class="line">    string_agg(privilege_type, <span class="string">&#x27;, &#x27;</span>) <span class="keyword">as</span> privileges</span><br><span class="line"><span class="keyword">FROM</span> information_schema.role_table_grants</span><br><span class="line"><span class="keyword">WHERE</span> grantee <span class="operator">=</span> <span class="string">&#x27;webapp_user&#x27;</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> grantee, table_schema, table_name</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> table_schema, table_name;</span><br></pre></td></tr></table></figure>
+
+<h3 id="비밀번호-만료-확인"><a href="#비밀번호-만료-확인" class="headerlink" title="비밀번호 만료 확인"></a>비밀번호 만료 확인</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    rolname,</span><br><span class="line">    rolvaliduntil,</span><br><span class="line">    <span class="keyword">CASE</span></span><br><span class="line">        <span class="keyword">WHEN</span> rolvaliduntil <span class="keyword">IS</span> <span class="keyword">NULL</span> <span class="keyword">THEN</span> <span class="string">&#x27;No expiration&#x27;</span></span><br><span class="line">        <span class="keyword">WHEN</span> rolvaliduntil <span class="operator">&gt;</span> NOW() <span class="keyword">THEN</span> <span class="string">&#x27;Valid&#x27;</span></span><br><span class="line">        <span class="keyword">ELSE</span> <span class="string">&#x27;Expired&#x27;</span></span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">as</span> status</span><br><span class="line"><span class="keyword">FROM</span> pg_roles</span><br><span class="line"><span class="keyword">WHERE</span> rolcanlogin <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> rolvaliduntil NULLS <span class="keyword">LAST</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="✅-결론"><a href="#✅-결론" class="headerlink" title="✅ 결론"></a>✅ 결론</h2><p>PostgreSQL의 사용자별 보안 설정을 제대로 구성하면:</p>
+<ol>
+<li><strong>리소스 보호</strong>: 타임아웃과 연결 수 제한으로 리소스 고갈 방지</li>
+<li><strong>최소 권한</strong>: 역할별로 필요한 권한만 부여하여 공격 표면 최소화</li>
+<li><strong>감사 추적</strong>: 모든 접속과 작업을 로깅하여 보안 사고 대응</li>
+<li><strong>세밀한 제어</strong>: RLS로 행 단위까지 접근 제어</li>
+<li><strong>계층적 보안</strong>: 네트워크, 인증, 권한, 데이터 레벨까지 다층 방어</li>
+</ol>
+<p>보안은 한 번 설정하고 끝이 아닙니다. 정기적으로 권한을 검토하고, 로그를 모니터링하며, 불필요한 권한은 즉시 회수하세요.</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/01/database/postgresql/user-security-settings/" data-id="cmo6upc8200ore0utfb3egkfp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "[PostgreSQL] 사용자별 보안 설정 가이드",
+        "image": "https://ckck803.github.io/images/database/postgresql-logo.png",
+        "keywords": "",
+        "genre": "Develop Database PostgreSQL",
+        "datePublished": "2025-12-01",
+        "dateCreated": "2025-12-01",
+        "dateModified": "2026-02-12",
+        "url": "https://ckck803.github.io/2025/12/01/database/postgresql/user-security-settings/",
+        "description": "
+🔒 PostgreSQL 사용자별 보안 설정 완벽 가이드PostgreSQL에서는 사용자(Role)별로 다양한 보안 설정을 적용하여 데이터베이스를 안전하게 보호할 수 있습니다.이 문서에서는 세션 타임아웃부터 접속 제한, 권한 관리까지 실무에서 꼭 필요한 보안 설정들을 정리합니다.
+1️⃣ 세션 타임아웃 설정✅ idle_session_timeout (Postg",
+        "wordCount": 2332
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/12/04/security/xss/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            [Web Security] XSS 공격과 방어 기법 완벽 가이드
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/11/29/linux/linux-log-management/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Linux 로그 확인 및 관리 방법</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">217</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/">NestJS</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Advanced/">Advanced</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Controller/">Controller</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Database/">Database</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Module/">Module</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Service/">Service</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/01/database/postgresql/user-security-settings/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

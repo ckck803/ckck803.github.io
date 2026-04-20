@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>[Web Security] CSRF 공격과 방어 기법 완벽 가이드 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="CSRF,Web Security,XSS,Token">
+    
+    <meta name="description" content="🎯 CSRF(Cross-Site Request Forgery)란?CSRF는 사용자가 의도하지 않은 요청을 공격자가 만든 웹사이트를 통해 실행시키는 공격입니다.사용자가 이미 로그인되어 있는 사이트에서, 공격자가 조작한 요청을 사용자 몰래 전송하게 만듭니다. 공격 시나리오 예시 사용자가 은행 사이트(bank.com)에 로그인되어 있음 공격자가 만든 악성 사이">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Web Security] CSRF 공격과 방어 기법 완벽 가이드">
+<meta property="og:url" content="https://ckck803.github.io/2025/12/04/security/csrf/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="🎯 CSRF(Cross-Site Request Forgery)란?CSRF는 사용자가 의도하지 않은 요청을 공격자가 만든 웹사이트를 통해 실행시키는 공격입니다.사용자가 이미 로그인되어 있는 사이트에서, 공격자가 조작한 요청을 사용자 몰래 전송하게 만듭니다. 공격 시나리오 예시 사용자가 은행 사이트(bank.com)에 로그인되어 있음 공격자가 만든 악성 사이">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-03T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-12T06:41:06.872Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="CSRF">
+<meta property="article:tag" content="Web Security">
+<meta property="article:tag" content="XSS">
+<meta property="article:tag" content="Token">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Database/">Database</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/NestJS/">NestJS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/CS/">CS</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/CS/Network/">Network</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/CS/Network/Security/">Security</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-security/csrf" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        [Web Security] CSRF 공격과 방어 기법 완벽 가이드
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/12/04/security/csrf/" class="article-date">
+       <time datetime="2025-12-03T15:00:00.000Z" itemprop="datePublished">2025-12-04</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/12/04/security/csrf/" class="article-date">
+     <time datetime="2026-02-12T06:41:06.872Z" itemprop="dateModified">2026-02-12</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/CSRF/" rel="tag">CSRF</a>, <a class="tag-link-link" href="/tags/Token/" rel="tag">Token</a>, <a class="tag-link-link" href="/tags/Web-Security/" rel="tag">Web Security</a>, <a class="tag-link-link" href="/tags/XSS/" rel="tag">XSS</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <h2 id="🎯-CSRF-Cross-Site-Request-Forgery-란"><a href="#🎯-CSRF-Cross-Site-Request-Forgery-란" class="headerlink" title="🎯 CSRF(Cross-Site Request Forgery)란?"></a>🎯 CSRF(Cross-Site Request Forgery)란?</h2><p>CSRF는 <strong>사용자가 의도하지 않은 요청을 공격자가 만든 웹사이트를 통해 실행시키는 공격</strong>입니다.<br>사용자가 이미 로그인되어 있는 사이트에서, 공격자가 조작한 요청을 <strong>사용자 몰래</strong> 전송하게 만듭니다.</p>
+<h3 id="공격-시나리오-예시"><a href="#공격-시나리오-예시" class="headerlink" title="공격 시나리오 예시"></a>공격 시나리오 예시</h3><ol>
+<li>사용자가 은행 사이트(<code>bank.com</code>)에 로그인되어 있음</li>
+<li>공격자가 만든 악성 사이트(<code>evil.com</code>)를 방문</li>
+<li>악성 사이트에 숨겨진 코드가 <code>bank.com</code>으로 송금 요청을 전송</li>
+<li>브라우저는 자동으로 쿠키를 포함해 요청을 전송</li>
+<li>은행 서버는 정상적인 요청으로 인식하고 처리</li>
+</ol>
+<h2 id="🔍-CSRF-공격의-핵심-원리"><a href="#🔍-CSRF-공격의-핵심-원리" class="headerlink" title="🔍 CSRF 공격의 핵심 원리"></a>🔍 CSRF 공격의 핵심 원리</h2><h3 id="브라우저의-쿠키-자동-전송"><a href="#브라우저의-쿠키-자동-전송" class="headerlink" title="브라우저의 쿠키 자동 전송"></a>브라우저의 쿠키 자동 전송</h3><p>브라우저는 <strong>같은 도메인으로의 모든 요청에 자동으로 쿠키를 첨부</strong>합니다.</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/transfer?to=attacker&amp;amount=10000</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>bank.com</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>session_id=abc123  ← 자동으로 포함됨!</span><br></pre></td></tr></table></figure>
+
+<h3 id="공격-코드-예시"><a href="#공격-코드-예시" class="headerlink" title="공격 코드 예시"></a>공격 코드 예시</h3><h4 id="1-이미지-태그를-이용한-공격"><a href="#1-이미지-태그를-이용한-공격" class="headerlink" title="1. 이미지 태그를 이용한 공격"></a>1. 이미지 태그를 이용한 공격</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 사용자가 evil.com을 방문했을 때 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://bank.com/transfer?to=attacker&amp;amount=10000&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">style</span>=<span class="string">&quot;display:none&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-자동-제출-폼을-이용한-공격"><a href="#2-자동-제출-폼을-이용한-공격" class="headerlink" title="2. 자동 제출 폼을 이용한 공격"></a>2. 자동 제출 폼을 이용한 공격</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://bank.com/transfer&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">id</span>=<span class="string">&quot;hack&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;to&quot;</span> <span class="attr">value</span>=<span class="string">&quot;attacker&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;amount&quot;</span> <span class="attr">value</span>=<span class="string">&quot;10000&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;hack&#x27;</span>).<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-AJAX를-이용한-공격"><a href="#3-AJAX를-이용한-공격" class="headerlink" title="3. AJAX를 이용한 공격"></a>3. AJAX를 이용한 공격</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;https://bank.com/transfer&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">credentials</span>: <span class="string">&#x27;include&#x27;</span>,  <span class="comment">// 쿠키 포함</span></span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">    <span class="attr">to</span>: <span class="string">&#x27;attacker&#x27;</span>,</span><br><span class="line">    <span class="attr">amount</span>: <span class="number">10000</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="🛡️-CSRF-방어-기법"><a href="#🛡️-CSRF-방어-기법" class="headerlink" title="🛡️ CSRF 방어 기법"></a>🛡️ CSRF 방어 기법</h2><h3 id="1-CSRF-Token-가장-기본적이고-강력한-방법"><a href="#1-CSRF-Token-가장-기본적이고-강력한-방법" class="headerlink" title="1. CSRF Token (가장 기본적이고 강력한 방법)"></a>1. CSRF Token (가장 기본적이고 강력한 방법)</h3><p>서버가 생성한 <strong>랜덤한 토큰</strong>을 폼에 포함시키고, 요청 시 검증합니다.</p>
+<h4 id="서버-측-구현-Spring-Security-예시"><a href="#서버-측-구현-Spring-Security-예시" class="headerlink" title="서버 측 구현 (Spring Security 예시)"></a>서버 측 구현 (Spring Security 예시)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SecurityConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> SecurityFilterChain <span class="title function_">filterChain</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        http</span><br><span class="line">            .csrf(csrf -&gt; csrf</span><br><span class="line">                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())</span><br><span class="line">            );</span><br><span class="line">        <span class="keyword">return</span> http.build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="클라이언트-측-구현"><a href="#클라이언트-측-구현" class="headerlink" title="클라이언트 측 구현"></a>클라이언트 측 구현</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- HTML 폼 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;/transfer&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;_csrf&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;csrfToken&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;to&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;number&quot;</span> <span class="attr">name</span>=<span class="string">&quot;amount&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span>송금<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// JavaScript (AJAX)</span></span><br><span class="line"><span class="keyword">const</span> csrfToken = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;meta[name=&quot;_csrf&quot;]&#x27;</span>).<span class="property">content</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;/transfer&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;X-CSRF-TOKEN&#x27;</span>: csrfToken</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">    <span class="attr">to</span>: <span class="string">&#x27;recipient&#x27;</span>,</span><br><span class="line">    <span class="attr">amount</span>: <span class="number">1000</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SameSite-Cookie-속성"><a href="#2-SameSite-Cookie-속성" class="headerlink" title="2. SameSite Cookie 속성"></a>2. SameSite Cookie 속성</h3><p>브라우저가 <strong>외부 사이트에서의 요청에는 쿠키를 전송하지 않도록</strong> 설정합니다.</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">Set-Cookie</span><span class="punctuation">: </span>session_id=abc123; SameSite=Strict; HttpOnly; Secure</span><br></pre></td></tr></table></figure>
+
+<h4 id="SameSite-옵션"><a href="#SameSite-옵션" class="headerlink" title="SameSite 옵션"></a>SameSite 옵션</h4><table>
+<thead>
+<tr>
+<th>값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Strict</code></td>
+<td>외부 사이트에서 온 요청에는 절대 쿠키를 전송하지 않음</td>
+</tr>
+<tr>
+<td><code>Lax</code></td>
+<td>GET 요청 등 일부 안전한 요청에만 쿠키 전송 (기본값)</td>
+</tr>
+<tr>
+<td><code>None</code></td>
+<td>모든 요청에 쿠키 전송 (HTTPS + Secure 속성 필수)</td>
+</tr>
+</tbody></table>
+<h4 id="Spring-Boot-설정"><a href="#Spring-Boot-설정" class="headerlink" title="Spring Boot 설정"></a>Spring Boot 설정</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># application.yml</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">session:</span></span><br><span class="line">      <span class="attr">cookie:</span></span><br><span class="line">        <span class="attr">same-site:</span> <span class="string">strict</span></span><br><span class="line">        <span class="attr">http-only:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">secure:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Java 코드로 설정</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> CookieSameSiteSupplier <span class="title function_">cookieSameSiteSupplier</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> CookieSameSiteSupplier.ofStrict();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Referer-Origin-헤더-검증"><a href="#3-Referer-Origin-헤더-검증" class="headerlink" title="3. Referer&#x2F;Origin 헤더 검증"></a>3. Referer&#x2F;Origin 헤더 검증</h3><p>요청이 <strong>신뢰할 수 있는 도메인에서 왔는지</strong> 확인합니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CsrfRefererFilter</span> <span class="keyword">extends</span> <span class="title class_">OncePerRequestFilter</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doFilterInternal</span><span class="params">(HttpServletRequest request,</span></span><br><span class="line"><span class="params">                                    HttpServletResponse response,</span></span><br><span class="line"><span class="params">                                    FilterChain chain)</span></span><br><span class="line">            <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">referer</span> <span class="operator">=</span> request.getHeader(<span class="string">&quot;Referer&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">origin</span> <span class="operator">=</span> request.getHeader(<span class="string">&quot;Origin&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="string">&quot;POST&quot;</span>.equals(request.getMethod())) &#123;</span><br><span class="line">            chain.doFilter(request, response);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (referer == <span class="literal">null</span> || !referer.startsWith(<span class="string">&quot;https://bank.com&quot;</span>)) &#123;</span><br><span class="line">            response.sendError(HttpServletResponse.SC_FORBIDDEN,</span><br><span class="line">                               <span class="string">&quot;Invalid referer&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        chain.doFilter(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Double-Submit-Cookie-패턴"><a href="#4-Double-Submit-Cookie-패턴" class="headerlink" title="4. Double Submit Cookie 패턴"></a>4. Double Submit Cookie 패턴</h3><p>CSRF 토큰을 <strong>쿠키와 요청 파라미터 양쪽에</strong> 포함시키고, 서버에서 두 값이 일치하는지 확인합니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 쿠키에서 토큰 읽기</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getCookie</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> value = <span class="string">`; <span class="subst">$&#123;<span class="variable language_">document</span>.cookie&#125;</span>`</span>;</span><br><span class="line">  <span class="keyword">const</span> parts = value.<span class="title function_">split</span>(<span class="string">`; <span class="subst">$&#123;name&#125;</span>=`</span>);</span><br><span class="line">  <span class="keyword">if</span> (parts.<span class="property">length</span> === <span class="number">2</span>) <span class="keyword">return</span> parts.<span class="title function_">pop</span>().<span class="title function_">split</span>(<span class="string">&#x27;;&#x27;</span>).<span class="title function_">shift</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 요청 시 헤더에 토큰 포함</span></span><br><span class="line"><span class="keyword">const</span> csrfToken = <span class="title function_">getCookie</span>(<span class="string">&#x27;XSRF-TOKEN&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;/api/transfer&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;X-XSRF-TOKEN&#x27;</span>: csrfToken,</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-Custom-Header-사용"><a href="#5-Custom-Header-사용" class="headerlink" title="5. Custom Header 사용"></a>5. Custom Header 사용</h3><p>AJAX 요청에 <strong>커스텀 헤더</strong>를 추가하는 방법입니다.<br>Same-Origin Policy에 의해 외부 사이트는 커스텀 헤더를 추가할 수 없습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;/api/transfer&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;X-Requested-With&#x27;</span>: <span class="string">&#x27;XMLHttpRequest&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 서버 측 검증</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="string">&quot;XMLHttpRequest&quot;</span>.equals(request.getHeader(<span class="string">&quot;X-Requested-With&quot;</span>))) &#123;</span><br><span class="line">    response.sendError(HttpServletResponse.SC_FORBIDDEN);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="🔐-실전-방어-전략"><a href="#🔐-실전-방어-전략" class="headerlink" title="🔐 실전 방어 전략"></a>🔐 실전 방어 전략</h2><h3 id="권장-조합"><a href="#권장-조합" class="headerlink" title="권장 조합"></a>권장 조합</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 최고 수준의 보호</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">CSRF</span> <span class="string">Token</span> <span class="string">(Stateful)</span></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">SameSite=Strict</span> <span class="string">Cookie</span></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">Referer/Origin</span> <span class="string">헤더</span> <span class="string">검증</span></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">HTTPS</span> <span class="string">강제</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># API 서버용 (Stateless)</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">Double</span> <span class="string">Submit</span> <span class="string">Cookie</span></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">SameSite=Lax</span> <span class="string">Cookie</span></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">Custom</span> <span class="string">Header</span> <span class="string">검증</span></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">CORS</span> <span class="string">정책</span> <span class="string">엄격히</span> <span class="string">설정</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring-Security-React-예시"><a href="#Spring-Security-React-예시" class="headerlink" title="Spring Security + React 예시"></a>Spring Security + React 예시</h3><h4 id="Backend-Spring-Boot"><a href="#Backend-Spring-Boot" class="headerlink" title="Backend (Spring Boot)"></a>Backend (Spring Boot)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SecurityConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> SecurityFilterChain <span class="title function_">filterChain</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        http</span><br><span class="line">            .csrf(csrf -&gt; csrf</span><br><span class="line">                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())</span><br><span class="line">                .csrfTokenRequestHandler(<span class="keyword">new</span> <span class="title class_">SpaCsrfTokenRequestHandler</span>())</span><br><span class="line">            )</span><br><span class="line">            .cors(cors -&gt; cors.configurationSource(corsConfigurationSource()));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> http.build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> CorsConfigurationSource <span class="title function_">corsConfigurationSource</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">CorsConfiguration</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CorsConfiguration</span>();</span><br><span class="line">        config.setAllowedOrigins(List.of(<span class="string">&quot;https://frontend.com&quot;</span>));</span><br><span class="line">        config.setAllowedMethods(List.of(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>, <span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;DELETE&quot;</span>));</span><br><span class="line">        config.setAllowCredentials(<span class="literal">true</span>);</span><br><span class="line">        config.setAllowedHeaders(List.of(<span class="string">&quot;*&quot;</span>));</span><br><span class="line"></span><br><span class="line">        <span class="type">UrlBasedCorsConfigurationSource</span> <span class="variable">source</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UrlBasedCorsConfigurationSource</span>();</span><br><span class="line">        source.registerCorsConfiguration(<span class="string">&quot;/**&quot;</span>, config);</span><br><span class="line">        <span class="keyword">return</span> source;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CSRF 토큰 엔드포인트</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CsrfController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/api/csrf-token&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> CsrfToken <span class="title function_">getCsrfToken</span><span class="params">(CsrfToken token)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> token;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Frontend-React"><a href="#Frontend-React" class="headerlink" title="Frontend (React)"></a>Frontend (React)</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// API 클라이언트 설정</span></span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> api = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">  <span class="attr">baseURL</span>: <span class="string">&#x27;https://api.bank.com&#x27;</span>,</span><br><span class="line">  <span class="attr">withCredentials</span>: <span class="literal">true</span>  <span class="comment">// 쿠키 포함</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// CSRF 토큰 가져오기</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">getCsrfToken</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> api.<span class="title function_">get</span>(<span class="string">&#x27;/api/csrf-token&#x27;</span>);</span><br><span class="line">  <span class="keyword">return</span> response.<span class="property">data</span>.<span class="property">token</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 요청 인터셉터에 CSRF 토큰 추가</span></span><br><span class="line">api.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(<span class="keyword">async</span> (config) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> ([<span class="string">&#x27;post&#x27;</span>, <span class="string">&#x27;put&#x27;</span>, <span class="string">&#x27;delete&#x27;</span>].<span class="title function_">includes</span>(config.<span class="property">method</span>)) &#123;</span><br><span class="line">    <span class="keyword">const</span> token = <span class="keyword">await</span> <span class="title function_">getCsrfToken</span>();</span><br><span class="line">    config.<span class="property">headers</span>[<span class="string">&#x27;X-CSRF-TOKEN&#x27;</span>] = token;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용 예시</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">transfer</span>(<span class="params">to, amount</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> api.<span class="title function_">post</span>(<span class="string">&#x27;/api/transfer&#x27;</span>, &#123; to, amount &#125;);</span><br><span class="line">  <span class="keyword">return</span> response.<span class="property">data</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="⚠️-주의사항"><a href="#⚠️-주의사항" class="headerlink" title="⚠️ 주의사항"></a>⚠️ 주의사항</h2><h3 id="CSRF-방어가-필요-없는-경우"><a href="#CSRF-방어가-필요-없는-경우" class="headerlink" title="CSRF 방어가 필요 없는 경우"></a>CSRF 방어가 필요 없는 경우</h3><ol>
+<li><p><strong>순수 읽기 전용 API (GET)</strong></p>
+<ul>
+<li>단, GET 요청으로 상태를 변경하면 안 됨!</li>
+</ul>
+</li>
+<li><p><strong>상태를 변경하지 않는 요청</strong></p>
+<ul>
+<li>조회, 검색 등</li>
+</ul>
+</li>
+</ol>
+<h3 id="GET-요청의-위험성"><a href="#GET-요청의-위험성" class="headerlink" title="GET 요청의 위험성"></a>GET 요청의 위험성</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ❌ 잘못된 예시 - GET으로 상태 변경</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/delete-account&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">deleteAccount</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 계정 삭제 로직</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 올바른 예시</span></span><br><span class="line"><span class="meta">@PostMapping(&quot;/delete-account&quot;)</span></span><br><span class="line"><span class="meta">@CsrfProtected</span>  <span class="comment">// CSRF 보호 필요</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">deleteAccount</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 계정 삭제 로직</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="API-인증-방식별-CSRF-취약점"><a href="#API-인증-방식별-CSRF-취약점" class="headerlink" title="API 인증 방식별 CSRF 취약점"></a>API 인증 방식별 CSRF 취약점</h3><table>
+<thead>
+<tr>
+<th>인증 방식</th>
+<th>CSRF 취약점</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Session Cookie</td>
+<td>✅ 취약</td>
+<td>브라우저가 자동으로 쿠키 전송</td>
+</tr>
+<tr>
+<td>JWT (Cookie)</td>
+<td>✅ 취약</td>
+<td>쿠키 저장 시 자동 전송</td>
+</tr>
+<tr>
+<td>JWT (LocalStorage)</td>
+<td>❌ 안전</td>
+<td>JavaScript로만 접근 가능 (XSS 주의)</td>
+</tr>
+<tr>
+<td>Bearer Token</td>
+<td>❌ 안전</td>
+<td>Authorization 헤더는 자동 전송 안 됨</td>
+</tr>
+</tbody></table>
+<h2 id="🧪-CSRF-공격-테스트"><a href="#🧪-CSRF-공격-테스트" class="headerlink" title="🧪 CSRF 공격 테스트"></a>🧪 CSRF 공격 테스트</h2><h3 id="취약점-확인-방법"><a href="#취약점-확인-방법" class="headerlink" title="취약점 확인 방법"></a>취약점 확인 방법</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- test.html - 공격 시뮬레이션 페이지 --&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>CSRF Test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>CSRF Attack Simulation<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://target.com/api/transfer&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">id</span>=<span class="string">&quot;attackForm&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;to&quot;</span> <span class="attr">value</span>=<span class="string">&quot;attacker&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;amount&quot;</span> <span class="attr">value</span>=<span class="string">&quot;10000&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 페이지 로드 시 자동 제출</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;attackForm&#x27;</span>).<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="방어-확인-방법"><a href="#방어-확인-방법" class="headerlink" title="방어 확인 방법"></a>방어 확인 방법</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. CSRF 토큰 없이 요청</span></span><br><span class="line">curl -X POST https://bank.com/api/transfer \</span><br><span class="line">  -H <span class="string">&quot;Cookie: session_id=abc123&quot;</span> \</span><br><span class="line">  -d <span class="string">&quot;to=attacker&amp;amount=10000&quot;</span></span><br><span class="line"><span class="comment"># 기대 결과: 403 Forbidden</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 잘못된 CSRF 토큰으로 요청</span></span><br><span class="line">curl -X POST https://bank.com/api/transfer \</span><br><span class="line">  -H <span class="string">&quot;Cookie: session_id=abc123&quot;</span> \</span><br><span class="line">  -H <span class="string">&quot;X-CSRF-TOKEN: invalid_token&quot;</span> \</span><br><span class="line">  -d <span class="string">&quot;to=attacker&amp;amount=10000&quot;</span></span><br><span class="line"><span class="comment"># 기대 결과: 403 Forbidden</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 올바른 CSRF 토큰으로 요청</span></span><br><span class="line">curl -X POST https://bank.com/api/transfer \</span><br><span class="line">  -H <span class="string">&quot;Cookie: session_id=abc123&quot;</span> \</span><br><span class="line">  -H <span class="string">&quot;X-CSRF-TOKEN: valid_token_xyz&quot;</span> \</span><br><span class="line">  -d <span class="string">&quot;to=recipient&amp;amount=1000&quot;</span></span><br><span class="line"><span class="comment"># 기대 결과: 200 OK</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="✅-체크리스트"><a href="#✅-체크리스트" class="headerlink" title="✅ 체크리스트"></a>✅ 체크리스트</h2><ul>
+<li><input disabled type="checkbox"> 모든 상태 변경 요청(POST&#x2F;PUT&#x2F;DELETE)에 CSRF 보호 적용</li>
+<li><input disabled type="checkbox"> SameSite 쿠키 속성 설정 (최소 Lax)</li>
+<li><input disabled type="checkbox"> HTTPS 사용 강제</li>
+<li><input disabled type="checkbox"> Referer&#x2F;Origin 헤더 검증</li>
+<li><input disabled type="checkbox"> CORS 정책 엄격히 설정</li>
+<li><input disabled type="checkbox"> GET 요청으로 상태 변경하지 않음</li>
+<li><input disabled type="checkbox"> 민감한 작업은 재인증 요구 (비밀번호 변경 등)</li>
+</ul>
+<h2 id="🎓-결론"><a href="#🎓-결론" class="headerlink" title="🎓 결론"></a>🎓 결론</h2><p>CSRF는 <strong>브라우저의 쿠키 자동 전송 특성</strong>을 악용한 공격입니다.</p>
+<p><strong>핵심 방어 전략:</strong></p>
+<ol>
+<li>CSRF Token 또는 Double Submit Cookie 사용</li>
+<li>SameSite 쿠키 속성 설정</li>
+<li>CORS 정책 엄격히 관리</li>
+<li>GET 요청으로 상태 변경 금지</li>
+</ol>
+<p>단일 방어 기법보다는 <strong>여러 기법을 조합</strong>하여 다층 방어(Defense in Depth)를 구축하는 것이 가장 안전합니다.</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/12/04/security/csrf/" data-id="cmo6upc6n00ele0ut3izyexqk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "[Web Security] CSRF 공격과 방어 기법 완벽 가이드",
+        "image": "https://ckck803.github.io",
+        "keywords": "CSRF Web Security XSS Token",
+        "genre": "CS Network Security",
+        "datePublished": "2025-12-04",
+        "dateCreated": "2025-12-04",
+        "dateModified": "2026-02-12",
+        "url": "https://ckck803.github.io/2025/12/04/security/csrf/",
+        "description": "🎯 CSRF(Cross-Site Request Forgery)란?CSRF는 사용자가 의도하지 않은 요청을 공격자가 만든 웹사이트를 통해 실행시키는 공격입니다.사용자가 이미 로그인되어 있는 사이트에서, 공격자가 조작한 요청을 사용자 몰래 전송하게 만듭니다.
+공격 시나리오 예시
+사용자가 은행 사이트(bank.com)에 로그인되어 있음
+공격자가 만든 악성 사이",
+        "wordCount": 2499
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/12/11/java/graceful-shutdown/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            우아한 종료 (Graceful Shutdown)
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/12/04/security/xss/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">[Web Security] XSS 공격과 방어 기법 완벽 가이드</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">217</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/">NestJS</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Advanced/">Advanced</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Controller/">Controller</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Database/">Database</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Module/">Module</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Service/">Service</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/12/04/security/csrf/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

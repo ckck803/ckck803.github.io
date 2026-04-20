@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>NestJS vs Spring Boot - 공통점과 차이점 비교 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Spring Boot,Backend,Java,NestJS,TypeScript,Comparison">
+    
+    <meta name="description" content="개요NestJS와 Spring Boot는 각각 Node.js와 Java 생태계에서 가장 인기 있는 백엔드 프레임워크입니다. 두 프레임워크는 놀랍도록 유사한 아키텍처와 철학을 가지고 있습니다. 기본 정보NestJS 언어: TypeScript (JavaScript) 런타임: Node.js 출시: 2017년 철학: Angular에서 영감을 받은 프로그레시브 No">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NestJS vs Spring Boot - 공통점과 차이점 비교">
+<meta property="og:url" content="https://ckck803.github.io/2025/11/21/nest/nest-07-nestjs-vs-springboot/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="개요NestJS와 Spring Boot는 각각 Node.js와 Java 생태계에서 가장 인기 있는 백엔드 프레임워크입니다. 두 프레임워크는 놀랍도록 유사한 아키텍처와 철학을 가지고 있습니다. 기본 정보NestJS 언어: TypeScript (JavaScript) 런타임: Node.js 출시: 2017년 철학: Angular에서 영감을 받은 프로그레시브 No">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-11-21T05:50:00.000Z">
+<meta property="article:modified_time" content="2025-11-21T05:53:19.480Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="Spring Boot">
+<meta property="article:tag" content="Backend">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="NestJS">
+<meta property="article:tag" content="TypeScript">
+<meta property="article:tag" content="Comparison">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Database/">Database</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/NestJS/">NestJS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Develop/">Develop</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Develop/NestJS/">NestJS</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-nest/nest-07-nestjs-vs-springboot" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        NestJS vs Spring Boot - 공통점과 차이점 비교
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2025/11/21/nest/nest-07-nestjs-vs-springboot/" class="article-date">
+       <time datetime="2025-11-21T05:50:00.000Z" itemprop="datePublished">2025-11-21</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2025/11/21/nest/nest-07-nestjs-vs-springboot/" class="article-date">
+     <time datetime="2025-11-21T05:53:19.480Z" itemprop="dateModified">2025-11-21</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Backend/" rel="tag">Backend</a>, <a class="tag-link-link" href="/tags/Comparison/" rel="tag">Comparison</a>, <a class="tag-link-link" href="/tags/Java/" rel="tag">Java</a>, <a class="tag-link-link" href="/tags/NestJS/" rel="tag">NestJS</a>, <a class="tag-link-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a>, <a class="tag-link-link" href="/tags/TypeScript/" rel="tag">TypeScript</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <h2 id="개요"><a href="#개요" class="headerlink" title="개요"></a>개요</h2><p>NestJS와 Spring Boot는 각각 Node.js와 Java 생태계에서 가장 인기 있는 백엔드 프레임워크입니다. 두 프레임워크는 놀랍도록 유사한 아키텍처와 철학을 가지고 있습니다.</p>
+<h2 id="기본-정보"><a href="#기본-정보" class="headerlink" title="기본 정보"></a>기본 정보</h2><h3 id="NestJS"><a href="#NestJS" class="headerlink" title="NestJS"></a>NestJS</h3><ul>
+<li><strong>언어</strong>: TypeScript (JavaScript)</li>
+<li><strong>런타임</strong>: Node.js</li>
+<li><strong>출시</strong>: 2017년</li>
+<li><strong>철학</strong>: Angular에서 영감을 받은 프로그레시브 Node.js 프레임워크</li>
+<li><strong>기반</strong>: Express.js (또는 Fastify)</li>
+</ul>
+<h3 id="Spring-Boot"><a href="#Spring-Boot" class="headerlink" title="Spring Boot"></a>Spring Boot</h3><ul>
+<li><strong>언어</strong>: Java (Kotlin, Groovy 지원)</li>
+<li><strong>런타임</strong>: JVM</li>
+<li><strong>출시</strong>: 2014년</li>
+<li><strong>철학</strong>: Spring Framework 기반의 빠른 애플리케이션 개발</li>
+<li><strong>기반</strong>: Spring Framework</li>
+</ul>
+<h2 id="주요-공통점"><a href="#주요-공통점" class="headerlink" title="주요 공통점"></a>주요 공통점</h2><h3 id="1-의존성-주입-Dependency-Injection"><a href="#1-의존성-주입-Dependency-Injection" class="headerlink" title="1. 의존성 주입 (Dependency Injection)"></a>1. 의존성 주입 (Dependency Injection)</h3><p>두 프레임워크 모두 의존성 주입을 핵심으로 사용합니다.</p>
+<h4 id="NestJS-1"><a href="#NestJS-1" class="headerlink" title="NestJS"></a>NestJS</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">UsersService</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> <span class="keyword">readonly</span> usersRepository: Repository&lt;User&gt;,</span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> <span class="keyword">readonly</span> emailService: EmailService,</span></span><br><span class="line"><span class="params">  </span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-1"><a href="#Spring-Boot-1" class="headerlink" title="Spring Boot"></a>Spring Boot</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UsersService</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> UsersRepository usersRepository;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> EmailService emailService;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">UsersService</span><span class="params">(UsersRepository usersRepository, EmailService emailService)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.usersRepository = usersRepository;</span><br><span class="line">    <span class="built_in">this</span>.emailService = emailService;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-데코레이터-어노테이션-기반-개발"><a href="#2-데코레이터-어노테이션-기반-개발" class="headerlink" title="2. 데코레이터&#x2F;어노테이션 기반 개발"></a>2. 데코레이터&#x2F;어노테이션 기반 개발</h3><h4 id="NestJS-데코레이터"><a href="#NestJS-데코레이터" class="headerlink" title="NestJS - 데코레이터"></a>NestJS - 데코레이터</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span>(<span class="string">&#x27;users&#x27;</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">UsersController</span> &#123;</span><br><span class="line">  <span class="meta">@Get</span>()</span><br><span class="line">  <span class="title function_">findAll</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">usersService</span>.<span class="title function_">findAll</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Post</span>()</span><br><span class="line">  <span class="title function_">create</span>(<span class="params"><span class="meta">@Body</span>() createUserDto: CreateUserDto</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">usersService</span>.<span class="title function_">create</span>(createUserDto);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Get</span>(<span class="string">&#x27;:id&#x27;</span>)</span><br><span class="line">  <span class="title function_">findOne</span>(<span class="params"><span class="meta">@Param</span>(<span class="string">&#x27;id&#x27;</span>) id: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">usersService</span>.<span class="title function_">findOne</span>(+id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-어노테이션"><a href="#Spring-Boot-어노테이션" class="headerlink" title="Spring Boot - 어노테이션"></a>Spring Boot - 어노테이션</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/users&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UsersController</span> &#123;</span><br><span class="line">  <span class="meta">@GetMapping</span></span><br><span class="line">  <span class="keyword">public</span> List&lt;User&gt; <span class="title function_">findAll</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> usersService.findAll();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@PostMapping</span></span><br><span class="line">  <span class="keyword">public</span> User <span class="title function_">create</span><span class="params">(<span class="meta">@RequestBody</span> CreateUserDto createUserDto)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> usersService.create(createUserDto);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping(&quot;/&#123;id&#125;&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> User <span class="title function_">findOne</span><span class="params">(<span class="meta">@PathVariable</span> Long id)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> usersService.findOne(id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-모듈-기반-아키텍처"><a href="#3-모듈-기반-아키텍처" class="headerlink" title="3. 모듈 기반 아키텍처"></a>3. 모듈 기반 아키텍처</h3><h4 id="NestJS-2"><a href="#NestJS-2" class="headerlink" title="NestJS"></a>NestJS</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Module</span>(&#123;</span><br><span class="line">  <span class="attr">imports</span>: [<span class="title class_">TypeOrmModule</span>.<span class="title function_">forFeature</span>([<span class="title class_">User</span>])],</span><br><span class="line">  <span class="attr">controllers</span>: [<span class="title class_">UsersController</span>],</span><br><span class="line">  <span class="attr">providers</span>: [<span class="title class_">UsersService</span>],</span><br><span class="line">  <span class="attr">exports</span>: [<span class="title class_">UsersService</span>],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">UsersModule</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-2"><a href="#Spring-Boot-2" class="headerlink" title="Spring Boot"></a>Spring Boot</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(basePackages = &quot;com.example.users&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UsersConfig</span> &#123;</span><br><span class="line">  <span class="comment">// 설정 및 빈 정의</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-계층화된-아키텍처"><a href="#4-계층화된-아키텍처" class="headerlink" title="4. 계층화된 아키텍처"></a>4. 계층화된 아키텍처</h3><p>두 프레임워크 모두 Controller → Service → Repository 패턴을 사용합니다.</p>
+<h4 id="공통-구조"><a href="#공통-구조" class="headerlink" title="공통 구조"></a>공통 구조</h4><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Controller Layer (API 엔드포인트)</span><br><span class="line">    ↓</span><br><span class="line">Service Layer (비즈니스 로직)</span><br><span class="line">    ↓</span><br><span class="line">Repository Layer (데이터 액세스)</span><br><span class="line">    ↓</span><br><span class="line">Database</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-AOP-Aspect-Oriented-Programming-지원"><a href="#5-AOP-Aspect-Oriented-Programming-지원" class="headerlink" title="5. AOP (Aspect-Oriented Programming) 지원"></a>5. AOP (Aspect-Oriented Programming) 지원</h3><h4 id="NestJS-인터셉터-가드-파이프"><a href="#NestJS-인터셉터-가드-파이프" class="headerlink" title="NestJS - 인터셉터, 가드, 파이프"></a>NestJS - 인터셉터, 가드, 파이프</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">LoggingInterceptor</span> <span class="keyword">implements</span> <span class="title class_">NestInterceptor</span> &#123;</span><br><span class="line">  <span class="title function_">intercept</span>(<span class="attr">context</span>: <span class="title class_">ExecutionContext</span>, <span class="attr">next</span>: <span class="title class_">CallHandler</span>): <span class="title class_">Observable</span>&lt;<span class="built_in">any</span>&gt; &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Before...&#x27;</span>);</span><br><span class="line">    <span class="keyword">const</span> now = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">    <span class="keyword">return</span> next.<span class="title function_">handle</span>().<span class="title function_">pipe</span>(</span><br><span class="line">      <span class="title function_">tap</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`After... <span class="subst">$&#123;<span class="built_in">Date</span>.now() - now&#125;</span>ms`</span>)),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@UseInterceptors</span>(<span class="title class_">LoggingInterceptor</span>)</span><br><span class="line"><span class="meta">@Controller</span>(<span class="string">&#x27;users&#x27;</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">UsersController</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-AOP"><a href="#Spring-Boot-AOP" class="headerlink" title="Spring Boot - AOP"></a>Spring Boot - AOP</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoggingAspect</span> &#123;</span><br><span class="line">  <span class="meta">@Around(&quot;execution(* com.example.controller.*.*(..))&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> Object <span class="title function_">logExecutionTime</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    <span class="type">Object</span> <span class="variable">proceed</span> <span class="operator">=</span> joinPoint.proceed();</span><br><span class="line">    <span class="type">long</span> <span class="variable">executionTime</span> <span class="operator">=</span> System.currentTimeMillis() - start;</span><br><span class="line">    System.out.println(joinPoint.getSignature() + <span class="string">&quot; executed in &quot;</span> + executionTime + <span class="string">&quot;ms&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> proceed;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-ORM-통합"><a href="#6-ORM-통합" class="headerlink" title="6. ORM 통합"></a>6. ORM 통합</h3><h4 id="NestJS-TypeORM"><a href="#NestJS-TypeORM" class="headerlink" title="NestJS - TypeORM"></a>NestJS - TypeORM</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="meta">@PrimaryGeneratedColumn</span>()</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Column</span>()</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Column</span>()</span><br><span class="line">  <span class="attr">email</span>: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@OneToMany</span>(<span class="function">() =&gt;</span> <span class="title class_">Post</span>, <span class="function"><span class="params">post</span> =&gt;</span> post.<span class="property">user</span>)</span><br><span class="line">  <span class="attr">posts</span>: <span class="title class_">Post</span>[];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-JPA-Hibernate"><a href="#Spring-Boot-JPA-Hibernate" class="headerlink" title="Spring Boot - JPA&#x2F;Hibernate"></a>Spring Boot - JPA&#x2F;Hibernate</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;users&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="meta">@Id</span></span><br><span class="line">  <span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Column</span></span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Column</span></span><br><span class="line">  <span class="keyword">private</span> String email;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@OneToMany(mappedBy = &quot;user&quot;)</span></span><br><span class="line">  <span class="keyword">private</span> List&lt;Post&gt; posts;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-예외-처리"><a href="#7-예외-처리" class="headerlink" title="7. 예외 처리"></a>7. 예외 처리</h3><h4 id="NestJS-Exception-Filters"><a href="#NestJS-Exception-Filters" class="headerlink" title="NestJS - Exception Filters"></a>NestJS - Exception Filters</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Catch</span>(<span class="title class_">HttpException</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">HttpExceptionFilter</span> <span class="keyword">implements</span> <span class="title class_">ExceptionFilter</span> &#123;</span><br><span class="line">  <span class="keyword">catch</span>(<span class="attr">exception</span>: <span class="title class_">HttpException</span>, <span class="attr">host</span>: <span class="title class_">ArgumentsHost</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> ctx = host.<span class="title function_">switchToHttp</span>();</span><br><span class="line">    <span class="keyword">const</span> response = ctx.<span class="title function_">getResponse</span>();</span><br><span class="line">    <span class="keyword">const</span> status = exception.<span class="title function_">getStatus</span>();</span><br><span class="line"></span><br><span class="line">    response.<span class="title function_">status</span>(status).<span class="title function_">json</span>(&#123;</span><br><span class="line">      <span class="attr">statusCode</span>: status,</span><br><span class="line">      <span class="attr">message</span>: exception.<span class="property">message</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-Exception-Handler"><a href="#Spring-Boot-Exception-Handler" class="headerlink" title="Spring Boot - Exception Handler"></a>Spring Boot - Exception Handler</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GlobalExceptionHandler</span> &#123;</span><br><span class="line">  <span class="meta">@ExceptionHandler(ResourceNotFoundException.class)</span></span><br><span class="line">  <span class="keyword">public</span> ResponseEntity&lt;ErrorResponse&gt; <span class="title function_">handleResourceNotFound</span><span class="params">(ResourceNotFoundException ex)</span> &#123;</span><br><span class="line">    <span class="type">ErrorResponse</span> <span class="variable">error</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ErrorResponse</span>(</span><br><span class="line">      HttpStatus.NOT_FOUND.value(),</span><br><span class="line">      ex.getMessage()</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ResponseEntity</span>&lt;&gt;(error, HttpStatus.NOT_FOUND);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-환경-설정-관리"><a href="#8-환경-설정-관리" class="headerlink" title="8. 환경 설정 관리"></a>8. 환경 설정 관리</h3><h4 id="NestJS-ConfigModule"><a href="#NestJS-ConfigModule" class="headerlink" title="NestJS - ConfigModule"></a>NestJS - ConfigModule</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// .env</span></span><br><span class="line"><span class="variable constant_">DATABASE_HOST</span>=localhost</span><br><span class="line"><span class="variable constant_">DATABASE_PORT</span>=<span class="number">3306</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// app.module.ts</span></span><br><span class="line"><span class="meta">@Module</span>(&#123;</span><br><span class="line">  <span class="attr">imports</span>: [</span><br><span class="line">    <span class="title class_">ConfigModule</span>.<span class="title function_">forRoot</span>(&#123;</span><br><span class="line">      <span class="attr">isGlobal</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용</span></span><br><span class="line"><span class="title function_">constructor</span>(<span class="params"><span class="keyword">private</span> configService: ConfigService</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> host = <span class="variable language_">this</span>.<span class="property">configService</span>.<span class="title function_">get</span>(<span class="string">&#x27;DATABASE_HOST&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-application-properties"><a href="#Spring-Boot-application-properties" class="headerlink" title="Spring Boot - application.properties"></a>Spring Boot - application.properties</h4><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment"># application.properties</span></span><br><span class="line"><span class="attr">spring.datasource.url</span>=<span class="string">jdbc:mysql://localhost:3306/mydb</span></span><br><span class="line"><span class="attr">spring.datasource.username</span>=<span class="string">root</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 사용</span></span><br><span class="line"><span class="attr">@Value(&quot;$&#123;spring.datasource.url&#125;&quot;)</span></span><br><span class="line"><span class="attr">private</span> <span class="string">String databaseUrl;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="주요-차이점"><a href="#주요-차이점" class="headerlink" title="주요 차이점"></a>주요 차이점</h2><h3 id="1-언어-및-타입-시스템"><a href="#1-언어-및-타입-시스템" class="headerlink" title="1. 언어 및 타입 시스템"></a>1. 언어 및 타입 시스템</h3><h4 id="NestJS-TypeScript"><a href="#NestJS-TypeScript" class="headerlink" title="NestJS - TypeScript"></a>NestJS - TypeScript</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">email</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UsersService</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">findOne</span>(<span class="attr">id</span>: <span class="built_in">number</span>): <span class="title class_">Promise</span>&lt;<span class="title class_">User</span> | <span class="literal">null</span>&gt; &#123;</span><br><span class="line">    <span class="comment">// 타입 안정성 제공, 하지만 런타임에는 없어짐</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>장점:</strong></p>
+<ul>
+<li>동적 타이핑의 유연성</li>
+<li>빠른 개발 속도</li>
+<li>JavaScript 생태계 활용</li>
+</ul>
+<p><strong>단점:</strong></p>
+<ul>
+<li>런타임 타입 체크 불가</li>
+<li>상대적으로 약한 타입 시스템</li>
+</ul>
+<h4 id="Spring-Boot-Java"><a href="#Spring-Boot-Java" class="headerlink" title="Spring Boot - Java"></a>Spring Boot - Java</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UsersService</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> Optional&lt;User&gt; <span class="title function_">findOne</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">    <span class="comment">// 컴파일 타임 + 런타임 타입 안정성</span></span><br><span class="line">    <span class="keyword">return</span> Optional.empty();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>장점:</strong></p>
+<ul>
+<li>강력한 타입 시스템</li>
+<li>컴파일 타임 에러 검출</li>
+<li>런타임 타입 안정성</li>
+</ul>
+<p><strong>단점:</strong></p>
+<ul>
+<li>상대적으로 긴 코드</li>
+<li>보일러플레이트 코드</li>
+</ul>
+<h3 id="2-성능-특성"><a href="#2-성능-특성" class="headerlink" title="2. 성능 특성"></a>2. 성능 특성</h3><h4 id="NestJS-Node-js"><a href="#NestJS-Node-js" class="headerlink" title="NestJS (Node.js)"></a>NestJS (Node.js)</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 비동기 I/O에 최적화</span></span><br><span class="line"><span class="meta">@Get</span>()</span><br><span class="line"><span class="keyword">async</span> <span class="title function_">findAll</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> users = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">usersService</span>.<span class="title function_">findAll</span>();</span><br><span class="line">  <span class="keyword">const</span> posts = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">postsService</span>.<span class="title function_">findAll</span>();</span><br><span class="line">  <span class="comment">// 동시 실행</span></span><br><span class="line">  <span class="keyword">const</span> [users, posts] = <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">usersService</span>.<span class="title function_">findAll</span>(),</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">postsService</span>.<span class="title function_">findAll</span>(),</span><br><span class="line">  ]);</span><br><span class="line">  <span class="keyword">return</span> &#123; users, posts &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>특징:</strong></p>
+<ul>
+<li>단일 스레드, 이벤트 루프 기반</li>
+<li>I&#x2F;O 집약적 작업에 우수</li>
+<li>낮은 메모리 사용량</li>
+<li>동시성 처리에 강함</li>
+</ul>
+<p><strong>적합한 경우:</strong></p>
+<ul>
+<li>실시간 애플리케이션</li>
+<li>마이크로서비스</li>
+<li>API 게이트웨이</li>
+<li>WebSocket 서버</li>
+</ul>
+<h4 id="Spring-Boot-Java-1"><a href="#Spring-Boot-Java-1" class="headerlink" title="Spring Boot (Java)"></a>Spring Boot (Java)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 멀티스레드 기반</span></span><br><span class="line"><span class="meta">@GetMapping</span></span><br><span class="line"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title function_">findAll</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">// 각 요청이 별도 스레드에서 처리</span></span><br><span class="line">  List&lt;User&gt; users = usersService.findAll();</span><br><span class="line">  List&lt;Post&gt; posts = postsService.findAll();</span><br><span class="line">  <span class="keyword">return</span> Map.of(<span class="string">&quot;users&quot;</span>, users, <span class="string">&quot;posts&quot;</span>, posts);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CompletableFuture로 비동기 처리</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/async&quot;)</span></span><br><span class="line"><span class="keyword">public</span> CompletableFuture&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">findAllAsync</span><span class="params">()</span> &#123;</span><br><span class="line">  CompletableFuture&lt;List&lt;User&gt;&gt; usersFuture =</span><br><span class="line">    CompletableFuture.supplyAsync(() -&gt; usersService.findAll());</span><br><span class="line">  CompletableFuture&lt;List&lt;Post&gt;&gt; postsFuture =</span><br><span class="line">    CompletableFuture.supplyAsync(() -&gt; postsService.findAll());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> usersFuture.thenCombine(postsFuture,</span><br><span class="line">    (users, posts) -&gt; Map.of(<span class="string">&quot;users&quot;</span>, users, <span class="string">&quot;posts&quot;</span>, posts));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>특징:</strong></p>
+<ul>
+<li>멀티스레드 기반</li>
+<li>CPU 집약적 작업에 우수</li>
+<li>JVM 최적화</li>
+<li>안정적인 성능</li>
+</ul>
+<p><strong>적합한 경우:</strong></p>
+<ul>
+<li>대규모 엔터프라이즈 애플리케이션</li>
+<li>CPU 집약적 작업</li>
+<li>복잡한 비즈니스 로직</li>
+<li>금융, 의료 등 미션 크리티컬 시스템</li>
+</ul>
+<h3 id="3-생태계-및-패키지-관리"><a href="#3-생태계-및-패키지-관리" class="headerlink" title="3. 생태계 및 패키지 관리"></a>3. 생태계 및 패키지 관리</h3><h4 id="NestJS-npm-yarn"><a href="#NestJS-npm-yarn" class="headerlink" title="NestJS - npm&#x2F;yarn"></a>NestJS - npm&#x2F;yarn</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;@nestjs/common&quot;</span>: <span class="string">&quot;^10.0.0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;@nestjs/typeorm&quot;</span>: <span class="string">&quot;^10.0.0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;express&quot;</span>: <span class="string">&quot;^4.18.0&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">npm install @nestjs/passport</span><br></pre></td></tr></table></figure>
+
+<p><strong>특징:</strong></p>
+<ul>
+<li>npm: 세계 최대 패키지 레지스트리</li>
+<li>빠른 패키지 설치</li>
+<li>다양한 라이브러리</li>
+</ul>
+<p><strong>단점:</strong></p>
+<ul>
+<li>의존성 관리 복잡도</li>
+<li>보안 취약점 관리 필요</li>
+</ul>
+<h4 id="Spring-Boot-Maven-Gradle"><a href="#Spring-Boot-Maven-Gradle" class="headerlink" title="Spring Boot - Maven&#x2F;Gradle"></a>Spring Boot - Maven&#x2F;Gradle</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- pom.xml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>특징:</strong></p>
+<ul>
+<li>안정적인 의존성 관리</li>
+<li>중앙 집중식 저장소</li>
+<li>엄격한 버전 관리</li>
+</ul>
+<h3 id="4-데이터베이스-마이그레이션"><a href="#4-데이터베이스-마이그레이션" class="headerlink" title="4. 데이터베이스 마이그레이션"></a>4. 데이터베이스 마이그레이션</h3><h4 id="NestJS-TypeORM-Migrations"><a href="#NestJS-TypeORM-Migrations" class="headerlink" title="NestJS - TypeORM Migrations"></a>NestJS - TypeORM Migrations</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// migration/1234567890-CreateUsersTable.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">CreateUsersTable1234567890</span> <span class="keyword">implements</span> <span class="title class_">MigrationInterface</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">up</span>(<span class="attr">queryRunner</span>: <span class="title class_">QueryRunner</span>): <span class="title class_">Promise</span>&lt;<span class="built_in">void</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> queryRunner.<span class="title function_">createTable</span>(</span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">Table</span>(&#123;</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&#x27;users&#x27;</span>,</span><br><span class="line">        <span class="attr">columns</span>: [</span><br><span class="line">          &#123; <span class="attr">name</span>: <span class="string">&#x27;id&#x27;</span>, <span class="attr">type</span>: <span class="string">&#x27;int&#x27;</span>, <span class="attr">isPrimary</span>: <span class="literal">true</span>, <span class="attr">isGenerated</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">name</span>: <span class="string">&#x27;name&#x27;</span>, <span class="attr">type</span>: <span class="string">&#x27;varchar&#x27;</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">name</span>: <span class="string">&#x27;email&#x27;</span>, <span class="attr">type</span>: <span class="string">&#x27;varchar&#x27;</span> &#125;,</span><br><span class="line">        ],</span><br><span class="line">      &#125;),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">down</span>(<span class="attr">queryRunner</span>: <span class="title class_">QueryRunner</span>): <span class="title class_">Promise</span>&lt;<span class="built_in">void</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> queryRunner.<span class="title function_">dropTable</span>(<span class="string">&#x27;users&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-Flyway-Liquibase"><a href="#Spring-Boot-Flyway-Liquibase" class="headerlink" title="Spring Boot - Flyway&#x2F;Liquibase"></a>Spring Boot - Flyway&#x2F;Liquibase</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- V1__Create_users_table.sql</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> users (</span><br><span class="line">  id <span class="type">BIGINT</span> AUTO_INCREMENT <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">  name <span class="type">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  email <span class="type">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">UNIQUE</span>,</span><br><span class="line">  created_at <span class="type">TIMESTAMP</span> <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-테스트"><a href="#5-테스트" class="headerlink" title="5. 테스트"></a>5. 테스트</h3><h4 id="NestJS-Jest"><a href="#NestJS-Jest" class="headerlink" title="NestJS - Jest"></a>NestJS - Jest</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;UsersService&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">service</span>: <span class="title class_">UsersService</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">repository</span>: <span class="title class_">Repository</span>&lt;<span class="title class_">User</span>&gt;;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">beforeEach</span>(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="attr">module</span>: <span class="title class_">TestingModule</span> = <span class="keyword">await</span> <span class="title class_">Test</span>.<span class="title function_">createTestingModule</span>(&#123;</span><br><span class="line">      <span class="attr">providers</span>: [</span><br><span class="line">        <span class="title class_">UsersService</span>,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">provide</span>: <span class="title function_">getRepositoryToken</span>(<span class="title class_">User</span>),</span><br><span class="line">          <span class="attr">useValue</span>: &#123;</span><br><span class="line">            <span class="attr">find</span>: jest.<span class="title function_">fn</span>().<span class="title function_">mockResolvedValue</span>([]),</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    &#125;).<span class="title function_">compile</span>();</span><br><span class="line"></span><br><span class="line">    service = <span class="variable language_">module</span>.<span class="property">get</span>&lt;<span class="title class_">UsersService</span>&gt;(<span class="title class_">UsersService</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&#x27;should find all users&#x27;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> service.<span class="title function_">findAll</span>();</span><br><span class="line">    <span class="title function_">expect</span>(result).<span class="title function_">toEqual</span>([]);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-JUnit"><a href="#Spring-Boot-JUnit" class="headerlink" title="Spring Boot - JUnit"></a>Spring Boot - JUnit</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UsersServiceTest</span> &#123;</span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">private</span> UsersService usersService;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@MockBean</span></span><br><span class="line">  <span class="keyword">private</span> UsersRepository usersRepository;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Test</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">shouldFindAllUsers</span><span class="params">()</span> &#123;</span><br><span class="line">    when(usersRepository.findAll()).thenReturn(Collections.emptyList());</span><br><span class="line"></span><br><span class="line">    List&lt;User&gt; result = usersService.findAll();</span><br><span class="line"></span><br><span class="line">    assertThat(result).isEmpty();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-비동기-처리"><a href="#6-비동기-처리" class="headerlink" title="6. 비동기 처리"></a>6. 비동기 처리</h3><h4 id="NestJS-async-await-기본"><a href="#NestJS-async-await-기본" class="headerlink" title="NestJS - async&#x2F;await (기본)"></a>NestJS - async&#x2F;await (기본)</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">UsersService</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">createUser</span>(<span class="attr">dto</span>: <span class="title class_">CreateUserDto</span>): <span class="title class_">Promise</span>&lt;<span class="title class_">User</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">usersRepository</span>.<span class="title function_">save</span>(dto);</span><br><span class="line">    <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">emailService</span>.<span class="title function_">sendWelcome</span>(user.<span class="property">email</span>);</span><br><span class="line">    <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">logService</span>.<span class="title function_">logUserCreation</span>(user.<span class="property">id</span>);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 병렬 처리</span></span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">getUserData</span>(<span class="params">userId: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> [user, posts, comments] = <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">usersRepository</span>.<span class="title function_">findOne</span>(userId),</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">postsRepository</span>.<span class="title function_">findByUser</span>(userId),</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">commentsRepository</span>.<span class="title function_">findByUser</span>(userId),</span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">return</span> &#123; user, posts, comments &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-Async-또는-CompletableFuture"><a href="#Spring-Boot-Async-또는-CompletableFuture" class="headerlink" title="Spring Boot - @Async 또는 CompletableFuture"></a>Spring Boot - @Async 또는 CompletableFuture</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UsersService</span> &#123;</span><br><span class="line">  <span class="meta">@Async</span></span><br><span class="line">  <span class="keyword">public</span> CompletableFuture&lt;User&gt; <span class="title function_">createUser</span><span class="params">(CreateUserDto dto)</span> &#123;</span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> usersRepository.save(dto);</span><br><span class="line">    emailService.sendWelcome(user.getEmail());</span><br><span class="line">    logService.logUserCreation(user.getId());</span><br><span class="line">    <span class="keyword">return</span> CompletableFuture.completedFuture(user);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 병렬 처리</span></span><br><span class="line">  <span class="keyword">public</span> UserData <span class="title function_">getUserData</span><span class="params">(Long userId)</span> &#123;</span><br><span class="line">    CompletableFuture&lt;User&gt; userFuture =</span><br><span class="line">      CompletableFuture.supplyAsync(() -&gt; usersRepository.findById(userId).orElse(<span class="literal">null</span>));</span><br><span class="line">    CompletableFuture&lt;List&lt;Post&gt;&gt; postsFuture =</span><br><span class="line">      CompletableFuture.supplyAsync(() -&gt; postsRepository.findByUserId(userId));</span><br><span class="line">    CompletableFuture&lt;List&lt;Comment&gt;&gt; commentsFuture =</span><br><span class="line">      CompletableFuture.supplyAsync(() -&gt; commentsRepository.findByUserId(userId));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">UserData</span>(</span><br><span class="line">      userFuture.join(),</span><br><span class="line">      postsFuture.join(),</span><br><span class="line">      commentsFuture.join()</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-실시간-통신"><a href="#7-실시간-통신" class="headerlink" title="7. 실시간 통신"></a>7. 실시간 통신</h3><h4 id="NestJS-WebSocket-기본-지원"><a href="#NestJS-WebSocket-기본-지원" class="headerlink" title="NestJS - WebSocket (기본 지원)"></a>NestJS - WebSocket (기본 지원)</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="meta">@WebSocketGateway</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">ChatGateway</span> &#123;</span><br><span class="line">  <span class="meta">@SubscribeMessage</span>(<span class="string">&#x27;message&#x27;</span>)</span><br><span class="line">  <span class="title function_">handleMessage</span>(<span class="meta">@MessageBody</span>() <span class="attr">data</span>: <span class="built_in">string</span>): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello &#x27;</span> + data;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@WebSocketServer</span>()</span><br><span class="line">  <span class="attr">server</span>: <span class="title class_">Server</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">sendToAll</span>(<span class="params">message: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">server</span>.<span class="title function_">emit</span>(<span class="string">&#x27;message&#x27;</span>, message);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot-WebSocket"><a href="#Spring-Boot-WebSocket" class="headerlink" title="Spring Boot - WebSocket"></a>Spring Boot - WebSocket</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebSocketMessageBroker</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebSocketConfig</span> <span class="keyword">implements</span> <span class="title class_">WebSocketMessageBrokerConfigurer</span> &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">configureMessageBroker</span><span class="params">(MessageBrokerRegistry config)</span> &#123;</span><br><span class="line">    config.enableSimpleBroker(<span class="string">&quot;/topic&quot;</span>);</span><br><span class="line">    config.setApplicationDestinationPrefixes(<span class="string">&quot;/app&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ChatController</span> &#123;</span><br><span class="line">  <span class="meta">@MessageMapping(&quot;/message&quot;)</span></span><br><span class="line">  <span class="meta">@SendTo(&quot;/topic/messages&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">handleMessage</span><span class="params">(String message)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello &quot;</span> + message;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-메모리-사용량-및-시작-시간"><a href="#8-메모리-사용량-및-시작-시간" class="headerlink" title="8. 메모리 사용량 및 시작 시간"></a>8. 메모리 사용량 및 시작 시간</h3><h4 id="NestJS-3"><a href="#NestJS-3" class="headerlink" title="NestJS"></a>NestJS</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 시작 시간: 1-2초</span></span><br><span class="line"><span class="comment"># 메모리: 30-50MB (기본 애플리케이션)</span></span><br><span class="line"></span><br><span class="line">$ npm run start</span><br><span class="line">Application started <span class="keyword">in</span> 1.5s</span><br></pre></td></tr></table></figure>
+
+<p><strong>특징:</strong></p>
+<ul>
+<li>빠른 시작 시간</li>
+<li>낮은 메모리 사용량</li>
+<li>컨테이너 환경에 최적</li>
+</ul>
+<h4 id="Spring-Boot-3"><a href="#Spring-Boot-3" class="headerlink" title="Spring Boot"></a>Spring Boot</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 시작 시간: 3-5초 (일반), GraalVM Native는 더 빠름</span></span><br><span class="line"><span class="comment"># 메모리: 300-500MB (기본 애플리케이션)</span></span><br><span class="line"></span><br><span class="line">$ java -jar app.jar</span><br><span class="line">Application started <span class="keyword">in</span> 4.2s</span><br></pre></td></tr></table></figure>
+
+<p><strong>특징:</strong></p>
+<ul>
+<li>상대적으로 긴 시작 시간</li>
+<li>높은 메모리 사용량</li>
+<li>안정적인 장기 실행</li>
+</ul>
+<h3 id="9-마이크로서비스-지원"><a href="#9-마이크로서비스-지원" class="headerlink" title="9. 마이크로서비스 지원"></a>9. 마이크로서비스 지원</h3><h4 id="NestJS-4"><a href="#NestJS-4" class="headerlink" title="NestJS"></a>NestJS</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 마이크로서비스 설정</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">await</span> <span class="title class_">NestFactory</span>.<span class="property">createMicroservice</span>&lt;<span class="title class_">MicroserviceOptions</span>&gt;(</span><br><span class="line">  <span class="title class_">AppModule</span>,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">transport</span>: <span class="title class_">Transport</span>.<span class="property">TCP</span>,</span><br><span class="line">    <span class="attr">options</span>: &#123; <span class="attr">port</span>: <span class="number">3001</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 메시지 패턴</span></span><br><span class="line"><span class="meta">@MessagePattern</span>(&#123; <span class="attr">cmd</span>: <span class="string">&#x27;get-user&#x27;</span> &#125;)</span><br><span class="line"><span class="title function_">getUser</span>(<span class="attr">userId</span>: <span class="built_in">number</span>): <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">usersService</span>.<span class="title function_">findOne</span>(userId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>지원:</strong></p>
+<ul>
+<li>TCP, Redis, NATS, RabbitMQ, Kafka, gRPC</li>
+</ul>
+<h4 id="Spring-Boot-4"><a href="#Spring-Boot-4" class="headerlink" title="Spring Boot"></a>Spring Boot</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Spring Cloud를 통한 마이크로서비스</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableEurekaClient</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServiceApplication</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    SpringApplication.run(UserServiceApplication.class, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FeignClient(name = &quot;user-service&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserClient</span> &#123;</span><br><span class="line">  <span class="meta">@GetMapping(&quot;/users/&#123;id&#125;&quot;)</span></span><br><span class="line">  User <span class="title function_">getUser</span><span class="params">(<span class="meta">@PathVariable</span> Long id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>지원:</strong></p>
+<ul>
+<li>Spring Cloud (Eureka, Config Server, Gateway)</li>
+<li>완전한 마이크로서비스 생태계</li>
+</ul>
+<h2 id="프로젝트-구조-비교"><a href="#프로젝트-구조-비교" class="headerlink" title="프로젝트 구조 비교"></a>프로젝트 구조 비교</h2><h3 id="NestJS-5"><a href="#NestJS-5" class="headerlink" title="NestJS"></a>NestJS</h3><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">src/</span><br><span class="line">├── app.module.ts</span><br><span class="line">├── main.ts</span><br><span class="line">├── users/</span><br><span class="line">│   ├── users.module.ts</span><br><span class="line">│   ├── users.controller.ts</span><br><span class="line">│   ├── users.service.ts</span><br><span class="line">│   ├── users.entity.ts</span><br><span class="line">│   └── dto/</span><br><span class="line">│       ├── create-user.dto.ts</span><br><span class="line">│       └── update-user.dto.ts</span><br><span class="line">├── posts/</span><br><span class="line">│   ├── posts.module.ts</span><br><span class="line">│   ├── posts.controller.ts</span><br><span class="line">│   └── posts.service.ts</span><br><span class="line">└── common/</span><br><span class="line">    ├── guards/</span><br><span class="line">    ├── interceptors/</span><br><span class="line">    └── filters/</span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring-Boot-5"><a href="#Spring-Boot-5" class="headerlink" title="Spring Boot"></a>Spring Boot</h3><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">src/main/java/com/example/</span><br><span class="line">├── Application.java</span><br><span class="line">├── config/</span><br><span class="line">├── controller/</span><br><span class="line">│   ├── UsersController.java</span><br><span class="line">│   └── PostsController.java</span><br><span class="line">├── service/</span><br><span class="line">│   ├── UsersService.java</span><br><span class="line">│   └── PostsService.java</span><br><span class="line">├── repository/</span><br><span class="line">│   ├── UsersRepository.java</span><br><span class="line">│   └── PostsRepository.java</span><br><span class="line">├── model/</span><br><span class="line">│   ├── User.java</span><br><span class="line">│   └── Post.java</span><br><span class="line">└── dto/</span><br><span class="line">    ├── CreateUserDto.java</span><br><span class="line">    └── UpdateUserDto.java</span><br></pre></td></tr></table></figure>
+
+<h2 id="언제-어떤-프레임워크를-선택할까"><a href="#언제-어떤-프레임워크를-선택할까" class="headerlink" title="언제 어떤 프레임워크를 선택할까?"></a>언제 어떤 프레임워크를 선택할까?</h2><h3 id="NestJS를-선택하는-경우"><a href="#NestJS를-선택하는-경우" class="headerlink" title="NestJS를 선택하는 경우"></a>NestJS를 선택하는 경우</h3><p>✅ <strong>추천 상황:</strong></p>
+<ul>
+<li>실시간 애플리케이션 (채팅, 알림)</li>
+<li>빠른 프로토타이핑</li>
+<li>JavaScript&#x2F;TypeScript 팀</li>
+<li>마이크로서비스 아키텍처</li>
+<li>WebSocket 중심 애플리케이션</li>
+<li>낮은 리소스 환경</li>
+<li>스타트업 및 MVP 개발</li>
+</ul>
+<p><strong>예시 프로젝트:</strong></p>
+<ul>
+<li>실시간 대시보드</li>
+<li>채팅 애플리케이션</li>
+<li>IoT 플랫폼</li>
+<li>API 게이트웨이</li>
+<li>스트리밍 서비스</li>
+</ul>
+<h3 id="Spring-Boot를-선택하는-경우"><a href="#Spring-Boot를-선택하는-경우" class="headerlink" title="Spring Boot를 선택하는 경우"></a>Spring Boot를 선택하는 경우</h3><p>✅ <strong>추천 상황:</strong></p>
+<ul>
+<li>대규모 엔터프라이즈 애플리케이션</li>
+<li>복잡한 비즈니스 로직</li>
+<li>금융, 의료 등 미션 크리티컬 시스템</li>
+<li>CPU 집약적 작업</li>
+<li>장기 유지보수가 필요한 프로젝트</li>
+<li>Java 생태계 활용</li>
+<li>엄격한 타입 안정성 요구</li>
+</ul>
+<p><strong>예시 프로젝트:</strong></p>
+<ul>
+<li>은행 시스템</li>
+<li>ERP 시스템</li>
+<li>대규모 전자상거래 플랫폼</li>
+<li>데이터 처리 파이프라인</li>
+<li>레거시 시스템 통합</li>
+</ul>
+<h2 id="성능-비교"><a href="#성능-비교" class="headerlink" title="성능 비교"></a>성능 비교</h2><h3 id="간단한-CRUD-API-벤치마크-참고용"><a href="#간단한-CRUD-API-벤치마크-참고용" class="headerlink" title="간단한 CRUD API 벤치마크 (참고용)"></a>간단한 CRUD API 벤치마크 (참고용)</h3><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">동시 사용자: 1000명</span><br><span class="line">요청 수: 10,000</span><br><span class="line"></span><br><span class="line">NestJS (Express):</span><br><span class="line">- 평균 응답 시간: 15ms</span><br><span class="line">- 처리량: 8,000 req/s</span><br><span class="line">- 메모리: 120MB</span><br><span class="line"></span><br><span class="line">NestJS (Fastify):</span><br><span class="line">- 평균 응답 시간: 12ms</span><br><span class="line">- 처리량: 10,000 req/s</span><br><span class="line">- 메모리: 100MB</span><br><span class="line"></span><br><span class="line">Spring Boot (Tomcat):</span><br><span class="line">- 평균 응답 시간: 20ms</span><br><span class="line">- 처리량: 7,000 req/s</span><br><span class="line">- 메모리: 400MB</span><br><span class="line"></span><br><span class="line">Spring Boot (WebFlux):</span><br><span class="line">- 평균 응답 시간: 18ms</span><br><span class="line">- 처리량: 9,000 req/s</span><br><span class="line">- 메모리: 350MB</span><br></pre></td></tr></table></figure>
+
+<p><em>실제 성능은 애플리케이션 특성에 따라 크게 달라질 수 있습니다.</em></p>
+<h2 id="학습-곡선"><a href="#학습-곡선" class="headerlink" title="학습 곡선"></a>학습 곡선</h2><h3 id="NestJS-6"><a href="#NestJS-6" class="headerlink" title="NestJS"></a>NestJS</h3><ul>
+<li><strong>진입 장벽</strong>: 중간</li>
+<li><strong>사전 지식</strong>: JavaScript&#x2F;TypeScript, Node.js</li>
+<li><strong>학습 시간</strong>: 1-2주 (기본), 1-2개월 (숙련)</li>
+<li><strong>문서화</strong>: 우수</li>
+<li><strong>커뮤니티</strong>: 빠르게 성장 중</li>
+</ul>
+<h3 id="Spring-Boot-6"><a href="#Spring-Boot-6" class="headerlink" title="Spring Boot"></a>Spring Boot</h3><ul>
+<li><strong>진입 장벽</strong>: 중간-높음</li>
+<li><strong>사전 지식</strong>: Java, OOP, Spring Framework</li>
+<li><strong>학습 시간</strong>: 2-4주 (기본), 2-3개월 (숙련)</li>
+<li><strong>문서화</strong>: 매우 우수</li>
+<li><strong>커뮤니티</strong>: 매우 크고 성숙</li>
+</ul>
+<h2 id="채용-시장"><a href="#채용-시장" class="headerlink" title="채용 시장"></a>채용 시장</h2><h3 id="NestJS-7"><a href="#NestJS-7" class="headerlink" title="NestJS"></a>NestJS</h3><ul>
+<li>스타트업과 모던 기업에서 증가 추세</li>
+<li>Node.js 개발자 전환이 용이</li>
+<li>풀스택 개발자에게 인기</li>
+</ul>
+<h3 id="Spring-Boot-7"><a href="#Spring-Boot-7" class="headerlink" title="Spring Boot"></a>Spring Boot</h3><ul>
+<li>전통적으로 강한 수요</li>
+<li>대기업 및 금융권에서 선호</li>
+<li>안정적인 채용 시장</li>
+</ul>
+<h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><h3 id="유사점-요약"><a href="#유사점-요약" class="headerlink" title="유사점 요약"></a>유사점 요약</h3><ul>
+<li>의존성 주입 패턴</li>
+<li>데코레이터&#x2F;어노테이션 기반</li>
+<li>모듈화된 아키텍처</li>
+<li>계층화된 구조 (Controller-Service-Repository)</li>
+<li>ORM 통합</li>
+<li>AOP 지원</li>
+<li>강력한 생태계</li>
+</ul>
+<h3 id="주요-차이점-요약"><a href="#주요-차이점-요약" class="headerlink" title="주요 차이점 요약"></a>주요 차이점 요약</h3><table>
+<thead>
+<tr>
+<th>특성</th>
+<th>NestJS</th>
+<th>Spring Boot</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>언어</td>
+<td>TypeScript</td>
+<td>Java</td>
+</tr>
+<tr>
+<td>성능 모델</td>
+<td>단일 스레드, 이벤트 루프</td>
+<td>멀티 스레드</td>
+</tr>
+<tr>
+<td>시작 시간</td>
+<td>빠름 (1-2초)</td>
+<td>느림 (3-5초)</td>
+</tr>
+<tr>
+<td>메모리</td>
+<td>낮음 (30-50MB)</td>
+<td>높음 (300-500MB)</td>
+</tr>
+<tr>
+<td>최적 용도</td>
+<td>I&#x2F;O 집약적, 실시간</td>
+<td>CPU 집약적, 복잡한 로직</td>
+</tr>
+<tr>
+<td>타입 안정성</td>
+<td>컴파일 타임</td>
+<td>컴파일+런타임</td>
+</tr>
+<tr>
+<td>생태계</td>
+<td>npm (빠르게 성장)</td>
+<td>Maven&#x2F;Gradle (성숙)</td>
+</tr>
+</tbody></table>
+<h3 id="최종-선택-가이드"><a href="#최종-선택-가이드" class="headerlink" title="최종 선택 가이드"></a>최종 선택 가이드</h3><p><strong>NestJS</strong>: 빠른 개발, 실시간 기능, 마이크로서비스, 낮은 리소스</p>
+<p><strong>Spring Boot</strong>: 안정성, 복잡한 로직, 엔터프라이즈, 장기 유지보수</p>
+<p><strong>둘 다 훌륭한 선택</strong>: 팀의 기술 스택, 프로젝트 요구사항, 조직 문화에 따라 선택하세요!</p>
+<h2 id="참고-자료"><a href="#참고-자료" class="headerlink" title="참고 자료"></a>참고 자료</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.nestjs.com/">NestJS 공식 문서</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://spring.io/projects/spring-boot">Spring Boot 공식 문서</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/">Node.js vs Java 성능 비교</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2025/11/21/nest/nest-07-nestjs-vs-springboot/" data-id="cmo6upc6k00dze0utfwus180u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "NestJS vs Spring Boot - 공통점과 차이점 비교",
+        "image": "https://ckck803.github.io",
+        "keywords": "Spring Boot Backend Java NestJS TypeScript Comparison",
+        "genre": "Develop NestJS Comparison",
+        "datePublished": "2025-11-21",
+        "dateCreated": "2025-11-21",
+        "dateModified": "2025-11-21",
+        "url": "https://ckck803.github.io/2025/11/21/nest/nest-07-nestjs-vs-springboot/",
+        "description": "개요NestJS와 Spring Boot는 각각 Node.js와 Java 생태계에서 가장 인기 있는 백엔드 프레임워크입니다. 두 프레임워크는 놀랍도록 유사한 아키텍처와 철학을 가지고 있습니다.
+기본 정보NestJS
+언어: TypeScript (JavaScript)
+런타임: Node.js
+출시: 2017년
+철학: Angular에서 영감을 받은 프로그레시브 No",
+        "wordCount": 3916
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2025/11/21/nest/nest-07-vs-springboot/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            NestJS vs Spring Boot - 공통점과 차이점 비교
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/11/21/nest/nest-06-middleware-guard-interceptor/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">NestJS 미들웨어, 가드, 인터셉터 활용하기</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">217</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/">NestJS</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Advanced/">Advanced</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Controller/">Controller</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Database/">Database</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Module/">Module</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Service/">Service</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2025/11/21/nest/nest-07-nestjs-vs-springboot/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>Ollama를 이용한 GPT OSS 20B 모델 설치 가이드 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="AI,LLM,ollama,GPT,오픈소스">
+    
+    <meta name="description" content="Ollama를 이용한 GPT OSS 20B 모델 설치 가이드Ollama를 사용하여 오픈소스 GPT 대규모 언어 모델을 로컬 환경에서 실행하는 방법을 안내합니다. 1. Ollama 설치macOS&#x2F;Linuxcurl -fsSL https:&#x2F;&#x2F;ollama.com&#x2F;install.sh | sh  WindowsOllama 공식 웹사이트에서 Windows 설치">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ollama를 이용한 GPT OSS 20B 모델 설치 가이드">
+<meta property="og:url" content="https://ckck803.github.io/2026/01/01/ai/ollma/install-gpt-oss-20b/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="Ollama를 이용한 GPT OSS 20B 모델 설치 가이드Ollama를 사용하여 오픈소스 GPT 대규모 언어 모델을 로컬 환경에서 실행하는 방법을 안내합니다. 1. Ollama 설치macOS&#x2F;Linuxcurl -fsSL https:&#x2F;&#x2F;ollama.com&#x2F;install.sh | sh  WindowsOllama 공식 웹사이트에서 Windows 설치">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/ai/ollama.png">
+<meta property="article:published_time" content="2025-12-31T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-12T06:41:06.825Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="ollama">
+<meta property="article:tag" content="GPT">
+<meta property="article:tag" content="오픈소스">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/ai/ollama.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Database/">Database</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/NestJS/">NestJS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/AI/">AI</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/AI/ollma/">ollma</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-ai/ollma/install-gpt-oss-20b" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Ollama를 이용한 GPT OSS 20B 모델 설치 가이드
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2026/01/01/ai/ollma/install-gpt-oss-20b/" class="article-date">
+       <time datetime="2025-12-31T15:00:00.000Z" itemprop="datePublished">2026-01-01</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2026/01/01/ai/ollma/install-gpt-oss-20b/" class="article-date">
+     <time datetime="2026-02-12T06:41:06.825Z" itemprop="dateModified">2026-02-12</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/AI/" rel="tag">AI</a>, <a class="tag-link-link" href="/tags/GPT/" rel="tag">GPT</a>, <a class="tag-link-link" href="/tags/LLM/" rel="tag">LLM</a>, <a class="tag-link-link" href="/tags/ollama/" rel="tag">ollama</a>, <a class="tag-link-link" href="/tags/%EC%98%A4%ED%94%88%EC%86%8C%EC%8A%A4/" rel="tag">오픈소스</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/ai/ollama.png"></p>
+<h1 id="Ollama를-이용한-GPT-OSS-20B-모델-설치-가이드"><a href="#Ollama를-이용한-GPT-OSS-20B-모델-설치-가이드" class="headerlink" title="Ollama를 이용한 GPT OSS 20B 모델 설치 가이드"></a>Ollama를 이용한 GPT OSS 20B 모델 설치 가이드</h1><p>Ollama를 사용하여 오픈소스 GPT 대규모 언어 모델을 로컬 환경에서 실행하는 방법을 안내합니다.</p>
+<h2 id="1-Ollama-설치"><a href="#1-Ollama-설치" class="headerlink" title="1. Ollama 설치"></a>1. Ollama 설치</h2><h3 id="macOS-Linux"><a href="#macOS-Linux" class="headerlink" title="macOS&#x2F;Linux"></a>macOS&#x2F;Linux</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://ollama.com/install.sh | sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ollama.com/download">Ollama 공식 웹사이트</a>에서 Windows 설치 프로그램을 다운로드하여 설치합니다.</p>
+<h3 id="설치-확인"><a href="#설치-확인" class="headerlink" title="설치 확인"></a>설치 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ollama --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-사용-가능한-GPT-계열-오픈소스-모델"><a href="#2-사용-가능한-GPT-계열-오픈소스-모델" class="headerlink" title="2. 사용 가능한 GPT 계열 오픈소스 모델"></a>2. 사용 가능한 GPT 계열 오픈소스 모델</h2><p>Ollama에서 사용할 수 있는 주요 GPT 계열 오픈소스 모델:</p>
+<h3 id="GPT-NeoX-기반-모델"><a href="#GPT-NeoX-기반-모델" class="headerlink" title="GPT-NeoX 기반 모델"></a>GPT-NeoX 기반 모델</h3><ul>
+<li><strong>StableLM</strong>: Stability AI의 오픈소스 모델</li>
+<li><strong>Dolly</strong>: Databricks의 instruction-following 모델</li>
+</ul>
+<h3 id="20B-크기-모델-예시"><a href="#20B-크기-모델-예시" class="headerlink" title="20B 크기 모델 예시"></a>20B 크기 모델 예시</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># StableLM 모델 (다양한 크기 제공)</span></span><br><span class="line">ollama pull stablelm2</span><br><span class="line"></span><br><span class="line"><span class="comment"># CodeLlama 34B (20B보다 큰 코드 생성 특화 모델)</span></span><br><span class="line">ollama pull codellama:34b</span><br><span class="line"></span><br><span class="line"><span class="comment"># Mixtral 8x7B (MoE 아키텍처)</span></span><br><span class="line">ollama pull mixtral:8x7b</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-모델-설치-및-실행"><a href="#3-모델-설치-및-실행" class="headerlink" title="3. 모델 설치 및 실행"></a>3. 모델 설치 및 실행</h2><h3 id="기본-설치"><a href="#기본-설치" class="headerlink" title="기본 설치"></a>기본 설치</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 20b 모델 다운로드</span></span><br><span class="line">ollama pull gpt-oss:20b</span><br><span class="line"><span class="comment"># 120b 모델 다운로드</span></span><br><span class="line">ollama pull gpt-oss:120b</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">❯ ollama pull gpt-oss:20b</span><br><span class="line">pulling manifest</span><br><span class="line">pulling e7b273f96360: 100% ▕██████████████████████████████████████████████████████████▏  13 GB</span><br><span class="line">pulling fa6710a93d78: 100% ▕██████████████████████████████████████████████████████████▏ 7.2 KB</span><br><span class="line">pulling f60356777647: 100% ▕██████████████████████████████████████████████████████████▏  11 KB</span><br><span class="line">pulling d8ba2f9a17b3: 100% ▕██████████████████████████████████████████████████████████▏   18 B</span><br><span class="line">pulling 776beb3adb23: 100% ▕██████████████████████████████████████████████████████████▏  489 B</span><br><span class="line">verifying sha256 digest</span><br><span class="line">writing manifest</span><br><span class="line">success</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">❯ ollama show gpt-oss:20b</span><br><span class="line">  Model</span><br><span class="line">    architecture        gptoss</span><br><span class="line">    parameters          20.9B</span><br><span class="line">    context length      131072</span><br><span class="line">    embedding length    2880</span><br><span class="line">    quantization        MXFP4</span><br><span class="line"></span><br><span class="line">  Capabilities</span><br><span class="line">    completion</span><br><span class="line">    tools</span><br><span class="line">    thinking</span><br><span class="line"></span><br><span class="line">  Parameters</span><br><span class="line">    temperature    1</span><br><span class="line"></span><br><span class="line">  License</span><br><span class="line">    Apache License</span><br><span class="line">    Version 2.0, January 2004</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<h3 id="모델-실행"><a href="#모델-실행" class="headerlink" title="모델 실행"></a>모델 실행</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 대화형 모드로 실행</span></span><br><span class="line">ollama run gpt-oss:20b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 프롬프트와 함께 실행</span></span><br><span class="line">ollama run gpt-oss:20b <span class="string">&quot;Explain quantum computing in simple terms&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">❯ ollama run gpt-oss:20b</span><br><span class="line">&gt;&gt;&gt; 안녕</span><br><span class="line">Thinking...</span><br><span class="line">User says <span class="string">&quot;안녕&quot;</span> <span class="built_in">which</span> means <span class="string">&quot;Hi&quot;</span> <span class="keyword">in</span> Korean. The assistant should respond accordingly <span class="keyword">in</span> Korean. We can say <span class="string">&quot;안녕하</span></span><br><span class="line"><span class="string">세요! 어떻게 도와드릴까요?&quot;</span> Or similar. We need to respond appropriately. The instruction: <span class="string">&quot;You are ChatGPT, a</span></span><br><span class="line"><span class="string">large language model trained by OpenAI.&quot;</span> So respond politely. Should I ask a follow-up question? The user just</span><br><span class="line">says hello. We can reply with a friendly greeting and ask <span class="keyword">if</span> there<span class="string">&#x27;s anything they need help with. We&#x27;</span>ll reply <span class="keyword">in</span></span><br><span class="line">Korean. The content must be consistent. So final.</span><br><span class="line">...<span class="keyword">done</span> thinking.</span><br><span class="line"></span><br><span class="line">안녕하세요! 무엇을 도와드릴까요? 😊</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-커스텀-모델-생성-Modelfile-사용"><a href="#4-커스텀-모델-생성-Modelfile-사용" class="headerlink" title="4. 커스텀 모델 생성 (Modelfile 사용)"></a>4. 커스텀 모델 생성 (Modelfile 사용)</h2><p>20B 급 모델을 커스터마이징하려면 Modelfile을 생성합니다.</p>
+<h3 id="Modelfile-예시"><a href="#Modelfile-예시" class="headerlink" title="Modelfile 예시"></a>Modelfile 예시</h3><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Modelfile</span></span><br><span class="line"><span class="keyword">FROM</span> gpt-oss:<span class="number">20</span>b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 온도 설정 (창의성 조절)</span></span><br><span class="line">PARAMETER temperature <span class="number">0.8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 컨텍스트 윈도우 크기</span></span><br><span class="line">PARAMETER num_ctx <span class="number">4096</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 시스템 프롬프트 설정</span></span><br><span class="line">SYSTEM <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">You are a helpful AI assistant specialized in technical documentation and code explanation.</span></span><br><span class="line"><span class="string">&quot;</span><span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="커스텀-모델-생성-및-실행"><a href="#커스텀-모델-생성-및-실행" class="headerlink" title="커스텀 모델 생성 및 실행"></a>커스텀 모델 생성 및 실행</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 모델 생성</span></span><br><span class="line">ollama create my-custom-gpt -f ./Modelfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 생성된 모델 실행</span></span><br><span class="line">ollama run my-custom-gpt</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-Python에서-Ollama-사용"><a href="#5-Python에서-Ollama-사용" class="headerlink" title="5. Python에서 Ollama 사용"></a>5. Python에서 Ollama 사용</h2><h3 id="설치"><a href="#설치" class="headerlink" title="설치"></a>설치</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ollama</span><br></pre></td></tr></table></figure>
+
+<h3 id="코드-예시"><a href="#코드-예시" class="headerlink" title="코드 예시"></a>코드 예시</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"></span><br><span class="line"><span class="comment"># 모델 실행</span></span><br><span class="line">response = ollama.chat(model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>, messages=[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;content&#x27;</span>: <span class="string">&#x27;C++ 로 HelloWorld 를 출력하는 코드를 짜줘&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(response[<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="스트리밍-응답"><a href="#스트리밍-응답" class="headerlink" title="스트리밍 응답"></a>스트리밍 응답</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"></span><br><span class="line">stream = ollama.chat(</span><br><span class="line">    model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;content&#x27;</span>: <span class="string">&#x27;C++ 로 HelloWorld 를 출력하는 코드를 짜줘&#x27;</span>&#125;],</span><br><span class="line">    stream=<span class="literal">True</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> chunk <span class="keyword">in</span> stream:</span><br><span class="line">    <span class="built_in">print</span>(chunk[<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>], end=<span class="string">&#x27;&#x27;</span>, flush=<span class="literal">True</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-대화-컨텍스트-유지하기"><a href="#6-대화-컨텍스트-유지하기" class="headerlink" title="6. 대화 컨텍스트 유지하기"></a>6. 대화 컨텍스트 유지하기</h2><p>Ollama에서 이전 대화를 이어가려면 메시지 히스토리를 관리해야 합니다.</p>
+<h3 id="Python에서-대화-컨텍스트-유지"><a href="#Python에서-대화-컨텍스트-유지" class="headerlink" title="Python에서 대화 컨텍스트 유지"></a>Python에서 대화 컨텍스트 유지</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"></span><br><span class="line"><span class="comment"># 대화 히스토리 저장</span></span><br><span class="line">conversation_history = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">chat_with_context</span>(<span class="params">user_message</span>):</span><br><span class="line">    <span class="comment"># 새 사용자 메시지 추가</span></span><br><span class="line">    conversation_history.append(&#123;</span><br><span class="line">        <span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;content&#x27;</span>: user_message</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 전체 대화 히스토리를 포함하여 요청</span></span><br><span class="line">    response = ollama.chat(</span><br><span class="line">        model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>,</span><br><span class="line">        messages=conversation_history</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 응답을 히스토리에 추가</span></span><br><span class="line">    conversation_history.append(&#123;</span><br><span class="line">        <span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;assistant&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;content&#x27;</span>: response[<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>]</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> response[<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 사용 예시</span></span><br><span class="line"><span class="built_in">print</span>(chat_with_context(<span class="string">&quot;안녕하세요, 파이썬에 대해 알려주세요.&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(chat_with_context(<span class="string">&quot;방금 설명한 내용 중 주요 특징 3가지만 요약해줘&quot;</span>))  <span class="comment"># 이전 대화 참조</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="시스템-프롬프트와-함께-사용"><a href="#시스템-프롬프트와-함께-사용" class="headerlink" title="시스템 프롬프트와 함께 사용"></a>시스템 프롬프트와 함께 사용</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"></span><br><span class="line"><span class="comment"># 시스템 프롬프트로 대화 초기화</span></span><br><span class="line">conversation_history = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;system&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;content&#x27;</span>: <span class="string">&#x27;You are a helpful coding assistant. Answer in Korean.&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">chat_with_system_context</span>(<span class="params">user_message</span>):</span><br><span class="line">    conversation_history.append(&#123;</span><br><span class="line">        <span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;content&#x27;</span>: user_message</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    response = ollama.chat(</span><br><span class="line">        model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>,</span><br><span class="line">        messages=conversation_history</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    conversation_history.append(response[<span class="string">&#x27;message&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> response[<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="대화-컨텍스트-관리-메모리-제한"><a href="#대화-컨텍스트-관리-메모리-제한" class="headerlink" title="대화 컨텍스트 관리 (메모리 제한)"></a>대화 컨텍스트 관리 (메모리 제한)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"></span><br><span class="line">MAX_HISTORY = <span class="number">10</span>  <span class="comment"># 최근 10개 메시지만 유지</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatSession</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>, system_prompt=<span class="literal">None</span></span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.history = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> system_prompt:</span><br><span class="line">            self.history.append(&#123;</span><br><span class="line">                <span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;system&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;content&#x27;</span>: system_prompt</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">self, user_message</span>):</span><br><span class="line">        <span class="comment"># 사용자 메시지 추가</span></span><br><span class="line">        self.history.append(&#123;</span><br><span class="line">            <span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;content&#x27;</span>: user_message</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 히스토리가 너무 길면 오래된 메시지 제거 (시스템 프롬프트는 유지)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(self.history) &gt; MAX_HISTORY:</span><br><span class="line">            system_messages = [msg <span class="keyword">for</span> msg <span class="keyword">in</span> self.history <span class="keyword">if</span> msg[<span class="string">&#x27;role&#x27;</span>] == <span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">            recent_messages = self.history[-(MAX_HISTORY-<span class="built_in">len</span>(system_messages)):]</span><br><span class="line">            self.history = system_messages + recent_messages</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 응답 생성</span></span><br><span class="line">        response = ollama.chat(</span><br><span class="line">            model=self.model,</span><br><span class="line">            messages=self.history</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 응답 저장</span></span><br><span class="line">        self.history.append(response[<span class="string">&#x27;message&#x27;</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> response[<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">clear</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;대화 히스토리 초기화&quot;&quot;&quot;</span></span><br><span class="line">        system_messages = [msg <span class="keyword">for</span> msg <span class="keyword">in</span> self.history <span class="keyword">if</span> msg[<span class="string">&#x27;role&#x27;</span>] == <span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">        self.history = system_messages</span><br><span class="line"></span><br><span class="line"><span class="comment"># 사용 예시</span></span><br><span class="line">session = ChatSession(</span><br><span class="line">    model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>,</span><br><span class="line">    system_prompt=<span class="string">&#x27;You are a helpful AI assistant. Answer in Korean.&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(session.chat(<span class="string">&quot;Python의 리스트와 튜플의 차이는?&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(session.chat(<span class="string">&quot;그럼 언제 튜플을 사용하는게 좋아?&quot;</span>))  <span class="comment"># 이전 대화 참조</span></span><br><span class="line"><span class="built_in">print</span>(session.chat(<span class="string">&quot;코드 예시 하나만 보여줘&quot;</span>))  <span class="comment"># 계속 이어가기</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="대화-저장-및-불러오기"><a href="#대화-저장-및-불러오기" class="headerlink" title="대화 저장 및 불러오기"></a>대화 저장 및 불러오기</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PersistentChatSession</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>, session_file=<span class="string">&#x27;chat_history.json&#x27;</span></span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.session_file = session_file</span><br><span class="line">        self.history = self.load_history()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_history</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;저장된 대화 불러오기&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(self.session_file, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                <span class="keyword">return</span> json.load(f)</span><br><span class="line">        <span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">save_history</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;대화 저장&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(self.session_file, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            json.dump(self.history, f, ensure_ascii=<span class="literal">False</span>, indent=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">self, user_message</span>):</span><br><span class="line">        self.history.append(&#123;</span><br><span class="line">            <span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;content&#x27;</span>: user_message</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        response = ollama.chat(</span><br><span class="line">            model=self.model,</span><br><span class="line">            messages=self.history</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        self.history.append(response[<span class="string">&#x27;message&#x27;</span>])</span><br><span class="line">        self.save_history()  <span class="comment"># 자동 저장</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> response[<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 사용 예시</span></span><br><span class="line">session = PersistentChatSession()</span><br><span class="line"><span class="built_in">print</span>(session.chat(<span class="string">&quot;안녕하세요&quot;</span>))</span><br><span class="line"><span class="comment"># 프로그램을 재시작해도 이전 대화가 유지됩니다</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="대화-컨텍스트-vs-Context-파라미터-비교"><a href="#대화-컨텍스트-vs-Context-파라미터-비교" class="headerlink" title="대화 컨텍스트 vs Context 파라미터 비교"></a>대화 컨텍스트 vs Context 파라미터 비교</h3><p>Ollama에서는 두 가지 방식으로 대화를 이어갈 수 있습니다:</p>
+<h4 id="방법-1-메시지-히스토리-방식-권장"><a href="#방법-1-메시지-히스토리-방식-권장" class="headerlink" title="방법 1: 메시지 히스토리 방식 (권장)"></a>방법 1: 메시지 히스토리 방식 (권장)</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 전체 대화 히스토리를 매번 전송</span></span><br><span class="line">messages = [</span><br><span class="line">    &#123;<span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;content&#x27;</span>: <span class="string">&#x27;안녕&#x27;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;assistant&#x27;</span>, <span class="string">&#x27;content&#x27;</span>: <span class="string">&#x27;안녕하세요!&#x27;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;content&#x27;</span>: <span class="string">&#x27;내가 방금 뭐라고 했지?&#x27;</span>&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">response = ollama.chat(model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>, messages=messages)</span><br></pre></td></tr></table></figure>
+
+<h4 id="방법-2-Context-토큰-방식"><a href="#방법-2-Context-토큰-방식" class="headerlink" title="방법 2: Context 토큰 방식"></a>방법 2: Context 토큰 방식</h4><p>Ollama는 이전 응답의 <code>context</code> 토큰을 저장하고 재사용할 수 있습니다:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"></span><br><span class="line"><span class="comment"># 첫 번째 대화</span></span><br><span class="line">response1 = ollama.generate(</span><br><span class="line">    model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>,</span><br><span class="line">    prompt=<span class="string">&#x27;안녕&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context 저장</span></span><br><span class="line">context = response1[<span class="string">&#x27;context&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 두 번째 대화 - context만 전달</span></span><br><span class="line">response2 = ollama.generate(</span><br><span class="line">    model=<span class="string">&#x27;gpt-oss:20b&#x27;</span>,</span><br><span class="line">    prompt=<span class="string">&#x27;내가 방금 뭐라고 했지?&#x27;</span>,</span><br><span class="line">    context=context  <span class="comment"># 이전 대화의 context 재사용</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(response2[<span class="string">&#x27;response&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h4 id="두-방식의-차이점"><a href="#두-방식의-차이점" class="headerlink" title="두 방식의 차이점"></a>두 방식의 차이점</h4><table>
+<thead>
+<tr>
+<th>구분</th>
+<th>메시지 히스토리 방식</th>
+<th>Context 토큰 방식</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>API</strong></td>
+<td><code>ollama.chat()</code></td>
+<td><code>ollama.generate()</code></td>
+</tr>
+<tr>
+<td><strong>전송 데이터</strong></td>
+<td>전체 대화 텍스트</td>
+<td>압축된 토큰 배열</td>
+</tr>
+<tr>
+<td><strong>네트워크 부하</strong></td>
+<td>대화가 길어질수록 증가</td>
+<td>일정 (토큰 크기 고정)</td>
+</tr>
+<tr>
+<td><strong>메모리 효율</strong></td>
+<td>낮음</td>
+<td>높음</td>
+</tr>
+<tr>
+<td><strong>가독성</strong></td>
+<td>높음 (텍스트로 확인 가능)</td>
+<td>낮음 (토큰 ID 배열)</td>
+</tr>
+<tr>
+<td><strong>디버깅</strong></td>
+<td>쉬움</td>
+<td>어려움</td>
+</tr>
+<tr>
+<td><strong>시스템 프롬프트</strong></td>
+<td>지원</td>
+<td>제한적</td>
+</tr>
+</tbody></table>
+<h4 id="Context-방식-실전-예제"><a href="#Context-방식-실전-예제" class="headerlink" title="Context 방식 실전 예제"></a>Context 방식 실전 예제</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ContextChatSession</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model=<span class="string">&#x27;gpt-oss:20b&#x27;</span></span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.context = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">self, prompt</span>):</span><br><span class="line">        response = ollama.generate(</span><br><span class="line">            model=self.model,</span><br><span class="line">            prompt=prompt,</span><br><span class="line">            context=self.context  <span class="comment"># 이전 context 재사용</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 새로운 context 저장</span></span><br><span class="line">        self.context = response[<span class="string">&#x27;context&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> response[<span class="string">&#x27;response&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reset</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;대화 리셋&quot;&quot;&quot;</span></span><br><span class="line">        self.context = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 사용 예시</span></span><br><span class="line">session = ContextChatSession()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(session.chat(<span class="string">&quot;내 이름은 홍길동이야&quot;</span>))</span><br><span class="line"><span class="comment"># 출력: 안녕하세요, 홍길동님!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(session.chat(<span class="string">&quot;내 이름이 뭐였지?&quot;</span>))</span><br><span class="line"><span class="comment"># 출력: 홍길동이라고 하셨습니다.</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="REST-API에서-Context-사용"><a href="#REST-API에서-Context-사용" class="headerlink" title="REST API에서 Context 사용"></a>REST API에서 Context 사용</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 첫 번째 요청</span></span><br><span class="line">curl http://localhost:11434/api/generate -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">  &quot;model&quot;: &quot;gpt-oss:20b&quot;,</span></span><br><span class="line"><span class="string">  &quot;prompt&quot;: &quot;안녕하세요&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 응답에서 context 추출 (예시)</span></span><br><span class="line"><span class="comment"># &quot;context&quot;: [200006, 17360, 200008, 3575, 553, ...]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 두 번째 요청 - context 포함</span></span><br><span class="line">curl http://localhost:11434/api/generate -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">  &quot;model&quot;: &quot;gpt-oss:20b&quot;,</span></span><br><span class="line"><span class="string">  &quot;prompt&quot;: &quot;내가 방금 뭐라고 했지?&quot;,</span></span><br><span class="line"><span class="string">  &quot;context&quot;: [200006, 17360, 200008, 3575, 553]</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="어떤-방식을-선택해야-할까"><a href="#어떤-방식을-선택해야-할까" class="headerlink" title="어떤 방식을 선택해야 할까?"></a>어떤 방식을 선택해야 할까?</h4><p><strong>메시지 히스토리 방식을 권장하는 경우:</strong></p>
+<ul>
+<li>챗봇, 대화형 애플리케이션</li>
+<li>시스템 프롬프트가 필요한 경우</li>
+<li>대화 내용을 로깅&#x2F;분석해야 하는 경우</li>
+<li>코드 가독성과 유지보수가 중요한 경우</li>
+</ul>
+<p><strong>Context 토큰 방식을 권장하는 경우:</strong></p>
+<ul>
+<li>매우 긴 대화 (수백 번 이상)</li>
+<li>네트워크 대역폭이 제한적인 환경</li>
+<li>빠른 응답 속도가 중요한 경우</li>
+<li>메모리 사용량을 최소화해야 하는 경우</li>
+</ul>
+<blockquote>
+<p><strong>참고</strong>: 실제 성능 차이는 대화 길이에 따라 달라집니다. 짧은 대화(10회 미만)에서는 두 방식의 성능 차이가 거의 없지만, 대화가 길어질수록 Context 방식이 효율적입니다.</p>
+</blockquote>
+<h2 id="7-REST-API-사용"><a href="#7-REST-API-사용" class="headerlink" title="7. REST API 사용"></a>7. REST API 사용</h2><p>Ollama는 기본적으로 <code>http://localhost:11434</code>에서 REST API를 제공합니다.</p>
+<h3 id="cURL-예시"><a href="#cURL-예시" class="headerlink" title="cURL 예시"></a>cURL 예시</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl http://localhost:11434/api/generate -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">  &quot;model&quot;: &quot;gpt-oss:20b&quot;,</span></span><br><span class="line"><span class="string">  &quot;prompt&quot;: &quot;What is machine learning?&quot;,</span></span><br><span class="line"><span class="string">  &quot;stream&quot;: false</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;model&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gpt-oss:20b&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;created_at&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-01-01T12:24:28.384219Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;response&quot;</span><span class="punctuation">:</span> <span class="string">&quot;## LLM(대규모 언어 모델, Large Language Model)이란?\n\n### 1️⃣ 정의\n- **LLM**은 수십억~수조 개의 파라미터(가중치)를 갖는 인공지능 모델로, 자연어를 이해하고 생성하는 데 특화되어 있습니다.\n- “대규모”라는 명칭은 주로 **학습 데이터의 규모**와 **모델 파라미터 수**가 기존 NLP 모델보다 훨씬 크다는 점을 강조합니다.\n\n### 2️⃣ 역사와 발전 과정\n| 시기 | 주요 모델 | 핵심 특징 |\n|------|-----------|-----------|\n| 2018 | GPT-1 | Transformer 아키텍처 기반, 117M 파라미터 |\n| 2019 | GPT-2 | 1.5B 파라미터, 다양한 언어 생성 가능 |\n| 2020 | BERT | &quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;thinking&quot;</span><span class="punctuation">:</span> <span class="string">&quot;The user: \&quot;LLM 에 대해 설명해줘\&quot; Korean: \&quot;Explain LLM\&quot; They want an explanation about LLM. Likely a high-level overview. Could include definition, architecture, training, use cases, differences between models, scaling laws, challenges, future. Also could be Korean explanation. The user didn&#x27;t specify length, but presumably thorough. Provide explanation in Korean. Provide clear sections: 1. 정의, 2. 역사, 3. 아키텍처, 4. 학습 방법, 5. 활용, 6. 한계, 7. 앞으로의 전망. Also maybe mention GPT-4, Claude, etc. Provide some nuance: LLM vs traditional ML. Provide examples.\n\nLet&#x27;s craft.&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;done&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;done_reason&quot;</span><span class="punctuation">:</span> <span class="string">&quot;stop&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;context&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="number">200006</span><span class="punctuation">,</span></span><br><span class="line">        <span class="number">17360</span><span class="punctuation">,</span></span><br><span class="line">        <span class="number">200008</span><span class="punctuation">,</span></span><br><span class="line">        <span class="number">3575</span><span class="punctuation">,</span></span><br><span class="line">        <span class="number">553</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;total_duration&quot;</span><span class="punctuation">:</span> <span class="number">29593057458</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;load_duration&quot;</span><span class="punctuation">:</span> <span class="number">151055750</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;prompt_eval_count&quot;</span><span class="punctuation">:</span> <span class="number">74</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;prompt_eval_duration&quot;</span><span class="punctuation">:</span> <span class="number">184719666</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;eval_count&quot;</span><span class="punctuation">:</span> <span class="number">1734</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;eval_duration&quot;</span><span class="punctuation">:</span> <span class="number">28871083592</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="스트림-형식으로-받을-경우"><a href="#스트림-형식으로-받을-경우" class="headerlink" title="스트림 형식으로 받을 경우"></a>스트림 형식으로 받을 경우</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl http://localhost:11434/api/generate -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">  &quot;model&quot;: &quot;gpt-oss:20b&quot;,</span></span><br><span class="line"><span class="string">  &quot;prompt&quot;: &quot;What is machine learning?&quot;,</span></span><br><span class="line"><span class="string">  &quot;stream&quot;: true</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">&#123;<span class="string">&quot;model&quot;</span>:<span class="string">&quot;gpt-oss:20b&quot;</span>,<span class="string">&quot;created_at&quot;</span>:<span class="string">&quot;2026-01-01T12:23:09.026732Z&quot;</span>,<span class="string">&quot;response&quot;</span>:<span class="string">&quot;&quot;</span>,<span class="string">&quot;thinking&quot;</span>:<span class="string">&quot;The&quot;</span>,<span class="string">&quot;done&quot;</span>:<span class="literal">false</span>&#125;</span><br><span class="line">&#123;<span class="string">&quot;model&quot;</span>:<span class="string">&quot;gpt-oss:20b&quot;</span>,<span class="string">&quot;created_at&quot;</span>:<span class="string">&quot;2026-01-01T12:23:09.045446Z&quot;</span>,<span class="string">&quot;response&quot;</span>:<span class="string">&quot;&quot;</span>,<span class="string">&quot;thinking&quot;</span>:<span class="string">&quot; user&quot;</span>,<span class="string">&quot;done&quot;</span>:<span class="literal">false</span>&#125;</span><br><span class="line">&#123;<span class="string">&quot;model&quot;</span>:<span class="string">&quot;gpt-oss:20b&quot;</span>,<span class="string">&quot;created_at&quot;</span>:<span class="string">&quot;2026-01-01T12:23:09.063421Z&quot;</span>,<span class="string">&quot;response&quot;</span>:<span class="string">&quot;&quot;</span>,<span class="string">&quot;thinking&quot;</span>:<span class="string">&quot; says&quot;</span>,<span class="string">&quot;done&quot;</span>:<span class="literal">false</span>&#125;</span><br><span class="line">&#123;<span class="string">&quot;model&quot;</span>:<span class="string">&quot;gpt-oss:20b&quot;</span>,<span class="string">&quot;created_at&quot;</span>:<span class="string">&quot;2026-01-01T12:23:09.082734Z&quot;</span>,<span class="string">&quot;response&quot;</span>:<span class="string">&quot;&quot;</span>,<span class="string">&quot;thinking&quot;</span>:<span class="string">&quot; \&quot;&quot;</span>,<span class="string">&quot;done&quot;</span>:<span class="literal">false</span>&#125;</span><br><span class="line">&#123;<span class="string">&quot;model&quot;</span>:<span class="string">&quot;gpt-oss:20b&quot;</span>,<span class="string">&quot;created_at&quot;</span>:<span class="string">&quot;2026-01-01T12:23:09.101733Z&quot;</span>,<span class="string">&quot;response&quot;</span>:<span class="string">&quot;&quot;</span>,<span class="string">&quot;thinking&quot;</span>:<span class="string">&quot;LL&quot;</span>,<span class="string">&quot;done&quot;</span>:<span class="literal">false</span>&#125;</span><br><span class="line">&#123;<span class="string">&quot;model&quot;</span>:<span class="string">&quot;gpt-oss:20b&quot;</span>,<span class="string">&quot;created_at&quot;</span>:<span class="string">&quot;2026-01-01T12:23:09.120114Z&quot;</span>,<span class="string">&quot;response&quot;</span>:<span class="string">&quot;&quot;</span>,<span class="string">&quot;thinking&quot;</span>:<span class="string">&quot;M&quot;</span>,<span class="string">&quot;done&quot;</span>:<span class="literal">false</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="REST-API로-대화-컨텍스트-유지"><a href="#REST-API로-대화-컨텍스트-유지" class="headerlink" title="REST API로 대화 컨텍스트 유지"></a>REST API로 대화 컨텍스트 유지</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># /api/chat 엔드포인트를 사용하여 대화 히스토리 전달</span></span><br><span class="line">curl http://localhost:11434/api/chat -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">  &quot;model&quot;: &quot;gpt-oss:20b&quot;,</span></span><br><span class="line"><span class="string">  &quot;messages&quot;: [</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">      &quot;role&quot;: &quot;user&quot;,</span></span><br><span class="line"><span class="string">      &quot;content&quot;: &quot;파이썬이 뭐야?&quot;</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">      &quot;role&quot;: &quot;assistant&quot;,</span></span><br><span class="line"><span class="string">      &quot;content&quot;: &quot;파이썬은 1991년 귀도 반 로섬이 만든 고급 프로그래밍 언어입니다...&quot;</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">      &quot;role&quot;: &quot;user&quot;,</span></span><br><span class="line"><span class="string">      &quot;content&quot;: &quot;방금 말한 내용 중 주요 특징 3가지만 알려줘&quot;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  ],</span></span><br><span class="line"><span class="string">  &quot;stream&quot;: false</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="JavaScript-Node-js에서-컨텍스트-유지"><a href="#JavaScript-Node-js에서-컨텍스트-유지" class="headerlink" title="JavaScript&#x2F;Node.js에서 컨텍스트 유지"></a>JavaScript&#x2F;Node.js에서 컨텍스트 유지</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">OllamaChat</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">model = <span class="string">&#x27;gpt-oss:20b&#x27;</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">model</span> = model;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">messages</span> = [];</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">apiUrl</span> = <span class="string">&#x27;http://localhost:11434/api/chat&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">chat</span>(<span class="params">userMessage</span>) &#123;</span><br><span class="line">    <span class="comment">// 사용자 메시지 추가</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">messages</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">      <span class="attr">role</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">      <span class="attr">content</span>: userMessage</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// API 호출</span></span><br><span class="line">    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="variable language_">this</span>.<span class="property">apiUrl</span>, &#123;</span><br><span class="line">      <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">      <span class="attr">headers</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">        <span class="attr">model</span>: <span class="variable language_">this</span>.<span class="property">model</span>,</span><br><span class="line">        <span class="attr">messages</span>: <span class="variable language_">this</span>.<span class="property">messages</span>,</span><br><span class="line">        <span class="attr">stream</span>: <span class="literal">false</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 응답을 메시지 히스토리에 추가</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">messages</span>.<span class="title function_">push</span>(data.<span class="property">message</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> data.<span class="property">message</span>.<span class="property">content</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">clear</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">messages</span> = [];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용 예시</span></span><br><span class="line"><span class="keyword">const</span> chat = <span class="keyword">new</span> <span class="title class_">OllamaChat</span>(<span class="string">&#x27;gpt-oss:20b&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> response1 = <span class="keyword">await</span> chat.<span class="title function_">chat</span>(<span class="string">&#x27;안녕하세요&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(response1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> response2 = <span class="keyword">await</span> chat.<span class="title function_">chat</span>(<span class="string">&#x27;방금 내가 뭐라고 말했지?&#x27;</span>);  <span class="comment">// 이전 대화 참조</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(response2);</span><br></pre></td></tr></table></figure>
+
+<h3 id="JavaScript-스트리밍-컨텍스트-유지"><a href="#JavaScript-스트리밍-컨텍스트-유지" class="headerlink" title="JavaScript 스트리밍 컨텍스트 유지"></a>JavaScript 스트리밍 컨텍스트 유지</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StreamingOllamaChat</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">model = <span class="string">&#x27;gpt-oss:20b&#x27;</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">model</span> = model;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">messages</span> = [];</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">apiUrl</span> = <span class="string">&#x27;http://localhost:11434/api/chat&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">streamChat</span>(<span class="params">userMessage, onChunk</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">messages</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">      <span class="attr">role</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">      <span class="attr">content</span>: userMessage</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="variable language_">this</span>.<span class="property">apiUrl</span>, &#123;</span><br><span class="line">      <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">      <span class="attr">headers</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">        <span class="attr">model</span>: <span class="variable language_">this</span>.<span class="property">model</span>,</span><br><span class="line">        <span class="attr">messages</span>: <span class="variable language_">this</span>.<span class="property">messages</span>,</span><br><span class="line">        <span class="attr">stream</span>: <span class="literal">true</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> reader = response.<span class="property">body</span>.<span class="title function_">getReader</span>();</span><br><span class="line">    <span class="keyword">const</span> decoder = <span class="keyword">new</span> <span class="title class_">TextDecoder</span>();</span><br><span class="line">    <span class="keyword">let</span> assistantMessage = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; done, value &#125; = <span class="keyword">await</span> reader.<span class="title function_">read</span>();</span><br><span class="line">      <span class="keyword">if</span> (done) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> chunk = decoder.<span class="title function_">decode</span>(value);</span><br><span class="line">      <span class="keyword">const</span> lines = chunk.<span class="title function_">split</span>(<span class="string">&#x27;\n&#x27;</span>).<span class="title function_">filter</span>(<span class="function"><span class="params">line</span> =&gt;</span> line.<span class="title function_">trim</span>());</span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> line <span class="keyword">of</span> lines) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">const</span> data = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(line);</span><br><span class="line">          <span class="keyword">if</span> (data.<span class="property">message</span>?.<span class="property">content</span>) &#123;</span><br><span class="line">            assistantMessage += data.<span class="property">message</span>.<span class="property">content</span>;</span><br><span class="line">            <span class="title function_">onChunk</span>(data.<span class="property">message</span>.<span class="property">content</span>);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">          <span class="comment">// JSON 파싱 에러 무시</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 완성된 응답을 히스토리에 추가</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">messages</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">      <span class="attr">role</span>: <span class="string">&#x27;assistant&#x27;</span>,</span><br><span class="line">      <span class="attr">content</span>: assistantMessage</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> assistantMessage;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용 예시</span></span><br><span class="line"><span class="keyword">const</span> streamChat = <span class="keyword">new</span> <span class="title class_">StreamingOllamaChat</span>(<span class="string">&#x27;gpt-oss:20b&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> streamChat.<span class="title function_">streamChat</span>(<span class="string">&#x27;안녕하세요&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">  process.<span class="property">stdout</span>.<span class="title function_">write</span>(chunk);  <span class="comment">// 실시간 출력</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;\n---&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> streamChat.<span class="title function_">streamChat</span>(<span class="string">&#x27;방금 인사했던 거 기억해?&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">  process.<span class="property">stdout</span>.<span class="title function_">write</span>(chunk);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-모델-관리"><a href="#8-모델-관리" class="headerlink" title="8. 모델 관리"></a>8. 모델 관리</h2><h3 id="설치된-모델-목록-확인"><a href="#설치된-모델-목록-확인" class="headerlink" title="설치된 모델 목록 확인"></a>설치된 모델 목록 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ollama list</span><br></pre></td></tr></table></figure>
+
+<h3 id="모델-삭제"><a href="#모델-삭제" class="headerlink" title="모델 삭제"></a>모델 삭제</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ollama <span class="built_in">rm</span> gpt-oss:20b</span><br></pre></td></tr></table></figure>
+
+<h3 id="실행-중인-모델-확인"><a href="#실행-중인-모델-확인" class="headerlink" title="실행 중인 모델 확인"></a>실행 중인 모델 확인</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ollama ps</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2026/01/01/ai/ollma/install-gpt-oss-20b/" data-id="cmo6upc7s00mxe0ut9w90bsd1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Ollama를 이용한 GPT OSS 20B 모델 설치 가이드",
+        "image": "https://ckck803.github.io/images/ai/ollama.png",
+        "keywords": "AI LLM ollama GPT 오픈소스",
+        "genre": "AI ollma",
+        "datePublished": "2026-01-01",
+        "dateCreated": "2026-01-01",
+        "dateModified": "2026-02-12",
+        "url": "https://ckck803.github.io/2026/01/01/ai/ollma/install-gpt-oss-20b/",
+        "description": "
+Ollama를 이용한 GPT OSS 20B 모델 설치 가이드Ollama를 사용하여 오픈소스 GPT 대규모 언어 모델을 로컬 환경에서 실행하는 방법을 안내합니다.
+1. Ollama 설치macOS&#x2F;Linuxcurl -fsSL https://ollama.com/install.sh | sh
+
+WindowsOllama 공식 웹사이트에서 Windows 설치",
+        "wordCount": 4428
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2026/01/01/spring/springboot-ollama-integration/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            스프링부트에서 Ollama 사용하기
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2025/12/31/infra/terraform/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Terraform 이란?</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">217</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/">NestJS</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Advanced/">Advanced</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Controller/">Controller</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Database/">Database</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Module/">Module</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Service/">Service</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2026/01/01/ai/ollma/install-gpt-oss-20b/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
