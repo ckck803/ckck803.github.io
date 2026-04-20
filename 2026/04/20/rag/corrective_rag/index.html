@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>Corrective RAG (CRAG) 개념 정리 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="RAG,AI,LLM,CRAG,Retrieval">
+    
+    <meta name="description" content="Corrective RAG란Corrective RAG(CRAG)는 기존 RAG 파이프라인에 “검색 결과 검증 및 보정 단계”를 추가한 방식입니다. 일반적인 RAG는 아래 흐름으로 동작합니다.  사용자 질문 입력 벡터 DB 또는 검색 시스템에서 관련 문서 검색 검색된 문서를 컨텍스트로 LLM이 답변 생성  문제는 검색 결과가 부정확하거나, 애매하거나, 일부">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Corrective RAG (CRAG) 개념 정리">
+<meta property="og:url" content="https://ckck803.github.io/2026/04/20/rag/corrective_rag/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="Corrective RAG란Corrective RAG(CRAG)는 기존 RAG 파이프라인에 “검색 결과 검증 및 보정 단계”를 추가한 방식입니다. 일반적인 RAG는 아래 흐름으로 동작합니다.  사용자 질문 입력 벡터 DB 또는 검색 시스템에서 관련 문서 검색 검색된 문서를 컨텍스트로 LLM이 답변 생성  문제는 검색 결과가 부정확하거나, 애매하거나, 일부">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/ai/rag.png">
+<meta property="article:published_time" content="2026-04-20T09:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-20T08:15:48.903Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="RAG">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="CRAG">
+<meta property="article:tag" content="Retrieval">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/ai/rag.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Database/">Database</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/NestJS/">NestJS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/AI/">AI</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/AI/RAG/">RAG</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-rag/corrective_rag" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Corrective RAG (CRAG) 개념 정리
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2026/04/20/rag/corrective_rag/" class="article-date">
+       <time datetime="2026-04-20T09:00:00.000Z" itemprop="datePublished">2026-04-20</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2026/04/20/rag/corrective_rag/" class="article-date">
+     <time datetime="2026-04-20T08:15:48.903Z" itemprop="dateModified">2026-04-20</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/AI/" rel="tag">AI</a>, <a class="tag-link-link" href="/tags/CRAG/" rel="tag">CRAG</a>, <a class="tag-link-link" href="/tags/LLM/" rel="tag">LLM</a>, <a class="tag-link-link" href="/tags/RAG/" rel="tag">RAG</a>, <a class="tag-link-link" href="/tags/Retrieval/" rel="tag">Retrieval</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/ai/rag.png"></p>
+<h2 id="Corrective-RAG란"><a href="#Corrective-RAG란" class="headerlink" title="Corrective RAG란"></a>Corrective RAG란</h2><p>Corrective RAG(CRAG)는 <strong>기존 RAG 파이프라인에 “검색 결과 검증 및 보정 단계”를 추가한 방식</strong>입니다.</p>
+<p>일반적인 RAG는 아래 흐름으로 동작합니다.</p>
+<ol>
+<li>사용자 질문 입력</li>
+<li>벡터 DB 또는 검색 시스템에서 관련 문서 검색</li>
+<li>검색된 문서를 컨텍스트로 LLM이 답변 생성</li>
+</ol>
+<p>문제는 <strong>검색 결과가 부정확하거나, 애매하거나, 일부만 맞는 경우에도 그대로 답변 생성에 사용된다는 점</strong>입니다.<br>즉, RAG는 hallucination을 줄여주지만, retrieval 자체가 잘못되면 오히려 잘못된 문서를 근거로 그럴듯한 답을 만들 수 있습니다.</p>
+<p>CRAG는 이 문제를 해결하기 위해, <strong>검색 결과의 품질을 먼저 평가한 뒤 결과를 그대로 쓸지, 보정할지, 외부 검색으로 보강할지 결정</strong>합니다.</p>
+<h2 id="왜-필요한가"><a href="#왜-필요한가" class="headerlink" title="왜 필요한가"></a>왜 필요한가</h2><p>기본 RAG가 자주 겪는 문제는 아래와 같습니다.</p>
+<ul>
+<li>질문과 겉보기로만 비슷한 문서를 가져옴</li>
+<li>문서 일부는 맞지만 핵심 답변에는 부족함</li>
+<li>내부 지식베이스에 최신 정보가 없음</li>
+<li>irrelevant chunk가 섞여 답변 품질이 흔들림</li>
+</ul>
+<p>CRAG는 이런 상황에서 “검색했으니 믿고 생성한다”가 아니라,<br>**”검색 결과가 믿을 만한지 먼저 판단하고, 부족하면 보정한 뒤 생성한다”**는 관점으로 접근합니다.</p>
+<h2 id="핵심-아이디어"><a href="#핵심-아이디어" class="headerlink" title="핵심 아이디어"></a>핵심 아이디어</h2><p>CRAG의 핵심은 아래 4가지입니다.</p>
+<ol>
+<li><p><strong>Retrieval Evaluator</strong></p>
+<ul>
+<li>검색된 문서가 질문에 얼마나 적절한지 평가</li>
+</ul>
+</li>
+<li><p><strong>Corrective Action</strong></p>
+<ul>
+<li>평가 결과에 따라 다음 행동을 분기</li>
+</ul>
+</li>
+<li><p><strong>Web Search Augmentation</strong></p>
+<ul>
+<li>내부 검색이 부족하면 웹 검색으로 보강</li>
+</ul>
+</li>
+<li><p><strong>Knowledge Refinement</strong></p>
+<ul>
+<li>가져온 문서 전체를 그대로 쓰지 않고, 핵심 정보만 추려서 재구성</li>
+</ul>
+</li>
+</ol>
+<p>즉, CRAG는 <strong>검색 -&gt; 평가 -&gt; 보정 -&gt; 생성</strong> 구조를 갖습니다.</p>
+<h2 id="동작-흐름"><a href="#동작-흐름" class="headerlink" title="동작 흐름"></a>동작 흐름</h2><p>CRAG를 단순화하면 아래처럼 볼 수 있습니다.</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">사용자 질문</span><br><span class="line">  -&gt;</span><br><span class="line">내부 지식베이스 검색</span><br><span class="line">  -&gt;</span><br><span class="line">검색 결과 품질 평가</span><br><span class="line">  -&gt;</span><br><span class="line">  [좋음]      검색 결과 정제 후 사용</span><br><span class="line">  [애매함]    내부 검색 + 웹 검색 결합</span><br><span class="line">  [나쁨]      웹 검색으로 대체/보강</span><br><span class="line">  -&gt;</span><br><span class="line">정제된 컨텍스트로 답변 생성</span><br></pre></td></tr></table></figure>
+
+<p>기본 RAG와의 가장 큰 차이는 <strong>검색 결과를 바로 생성 단계로 넘기지 않는다는 점</strong>입니다.</p>
+<h2 id="Retrieval-Evaluator"><a href="#Retrieval-Evaluator" class="headerlink" title="Retrieval Evaluator"></a>Retrieval Evaluator</h2><p>CRAG 논문에서 가장 중요한 구성 요소는 <code>retrieval evaluator</code>입니다.</p>
+<p>이 모듈은 질문과 검색된 문서들을 보고, <strong>현재 검색 결과가 답변 생성에 쓸 만한지 신뢰도(confidence)를 판단</strong>합니다.</p>
+<p>평가 결과는 대략 아래 3가지 상황으로 볼 수 있습니다.</p>
+<ul>
+<li><strong>Correct</strong>: 검색 결과가 충분히 좋음</li>
+<li><strong>Incorrect</strong>: 검색 결과가 부정확하거나 거의 쓸 수 없음</li>
+<li><strong>Ambiguous</strong>: 일부는 맞지만 확신하기 어려움</li>
+</ul>
+<p>이 평가 결과에 따라 다음 액션이 달라집니다.</p>
+<h2 id="Correct-Incorrect-Ambiguous"><a href="#Correct-Incorrect-Ambiguous" class="headerlink" title="Correct &#x2F; Incorrect &#x2F; Ambiguous"></a>Correct &#x2F; Incorrect &#x2F; Ambiguous</h2><h3 id="1-Correct"><a href="#1-Correct" class="headerlink" title="1. Correct"></a>1. Correct</h3><p>검색 결과가 충분히 관련성이 높다면, 바로 버리지 않고 <strong>정제(refinement)</strong> 해서 사용합니다.</p>
+<ul>
+<li>불필요한 문장 제거</li>
+<li>핵심 정보만 추출</li>
+<li>중복되거나 잡음이 많은 부분 제거</li>
+</ul>
+<p>즉, 좋은 검색 결과라도 그대로 넣는 것이 아니라, <strong>LLM이 쓰기 좋은 형태로 다듬어 전달</strong>합니다.</p>
+<h3 id="2-Incorrect"><a href="#2-Incorrect" class="headerlink" title="2. Incorrect"></a>2. Incorrect</h3><p>검색 결과가 전반적으로 틀렸거나 품질이 낮다면, 내부 검색 결과를 신뢰하지 않고 <strong>외부 웹 검색으로 보강</strong>합니다.</p>
+<p>이 단계는 특히 아래 같은 상황에서 의미가 있습니다.</p>
+<ul>
+<li>내부 문서 저장소에 최신 정보가 없는 경우</li>
+<li>질문이 롱테일 주제인 경우</li>
+<li>벡터 검색이 엉뚱한 chunk를 가져온 경우</li>
+</ul>
+<p>즉, CRAG는 “검색 실패”를 그냥 받아들이지 않고, <strong>다른 검색 채널로 재시도</strong>합니다.</p>
+<h3 id="3-Ambiguous"><a href="#3-Ambiguous" class="headerlink" title="3. Ambiguous"></a>3. Ambiguous</h3><p>검색 결과가 완전히 틀린 것은 아니지만 애매한 경우에는, <strong>내부 검색 결과와 외부 웹 검색 결과를 함께 활용</strong>합니다.</p>
+<p>이 경우가 실무적으로 가장 중요합니다.</p>
+<ul>
+<li>내부 문서에는 일부 정보가 있음</li>
+<li>하지만 질문 전체를 커버하기에는 부족함</li>
+<li>최신성이나 보충 설명이 더 필요함</li>
+</ul>
+<p>즉, CRAG는 애매한 상황을 실패로 보지 않고, <strong>혼합형 보정 전략</strong>으로 처리합니다.</p>
+<h2 id="Knowledge-Refinement"><a href="#Knowledge-Refinement" class="headerlink" title="Knowledge Refinement"></a>Knowledge Refinement</h2><p>CRAG는 검색된 문서를 통째로 넣는 대신, 논문에서 말하는 <strong>decompose-then-recompose</strong> 방식을 사용합니다.</p>
+<p>이 개념은 아래처럼 이해하면 됩니다.</p>
+<ol>
+<li>검색 문서를 더 작은 정보 단위로 분해</li>
+<li>그중 질문과 관련 있는 부분만 선택</li>
+<li>선택된 정보만 다시 묶어서 컨텍스트 구성</li>
+</ol>
+<p>기존 RAG에서는 관련 없는 문장이 섞인 채로 프롬프트에 들어가서 LLM이 노이즈를 함께 읽는 경우가 많습니다.<br>CRAG는 이 문제를 줄이기 위해 <strong>“문서를 가져오는 것”보다 “쓸 만한 정보만 재조합하는 것”</strong> 에 더 집중합니다.</p>
+<h2 id="기존-RAG와-비교"><a href="#기존-RAG와-비교" class="headerlink" title="기존 RAG와 비교"></a>기존 RAG와 비교</h2><table>
+<thead>
+<tr>
+<th>구분</th>
+<th>기본 RAG</th>
+<th>Corrective RAG</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>검색 결과 사용 방식</td>
+<td>바로 생성에 사용</td>
+<td>먼저 평가 후 사용</td>
+</tr>
+<tr>
+<td>검색 실패 대응</td>
+<td>별도 대응 없음</td>
+<td>웹 검색&#x2F;보정 수행</td>
+</tr>
+<tr>
+<td>노이즈 처리</td>
+<td>chunk 품질에 의존</td>
+<td>refinement 단계로 정제</td>
+</tr>
+<tr>
+<td>강점</td>
+<td>구조 단순, 구현 쉬움</td>
+<td>검색 오류에 더 강함</td>
+</tr>
+<tr>
+<td>단점</td>
+<td>잘못된 retrieval에 취약</td>
+<td>파이프라인이 더 복잡함</td>
+</tr>
+</tbody></table>
+<p>정리하면, CRAG는 <strong>기본 RAG의 약점인 retrieval quality 불안정성</strong>을 보완하는 방향입니다.</p>
+<h2 id="실무-관점에서의-장점"><a href="#실무-관점에서의-장점" class="headerlink" title="실무 관점에서의 장점"></a>실무 관점에서의 장점</h2><h3 id="1-검색-실패를-그대로-두지-않는다"><a href="#1-검색-실패를-그대로-두지-않는다" class="headerlink" title="1. 검색 실패를 그대로 두지 않는다"></a>1. 검색 실패를 그대로 두지 않는다</h3><p>기본 RAG는 검색이 잘못되면 답변 품질이 급격히 무너질 수 있습니다.<br>CRAG는 검색 자체를 검토하고, 필요하면 대체 경로를 사용합니다.</p>
+<h3 id="2-최신-정보-대응력이-좋아진다"><a href="#2-최신-정보-대응력이-좋아진다" class="headerlink" title="2. 최신 정보 대응력이 좋아진다"></a>2. 최신 정보 대응력이 좋아진다</h3><p>내부 지식베이스만으로 부족한 경우 웹 검색을 이용해 보강할 수 있으므로,<br>정적 문서 저장소만 쓰는 RAG보다 최신성 대응이 좋습니다.</p>
+<h3 id="3-노이즈를-줄일-수-있다"><a href="#3-노이즈를-줄일-수-있다" class="headerlink" title="3. 노이즈를 줄일 수 있다"></a>3. 노이즈를 줄일 수 있다</h3><p>관련 없는 chunk가 일부 섞여도 refinement 단계에서 걸러낼 수 있어,<br>LLM이 덜 혼란스러운 컨텍스트를 받게 됩니다.</p>
+<h3 id="4-기존-RAG-위에-붙이기-쉽다"><a href="#4-기존-RAG-위에-붙이기-쉽다" class="headerlink" title="4. 기존 RAG 위에 붙이기 쉽다"></a>4. 기존 RAG 위에 붙이기 쉽다</h3><p>논문에서도 강조하는 부분인데, CRAG는 <strong>plug-and-play</strong> 성격이 강합니다.<br>즉, 기존 RAG를 완전히 버리는 것이 아니라 중간에 평가&#x2F;보정 레이어를 추가하는 형태로 설계할 수 있습니다.</p>
+<h2 id="한계와-비용"><a href="#한계와-비용" class="headerlink" title="한계와 비용"></a>한계와 비용</h2><p>CRAG가 항상 공짜로 좋은 것은 아닙니다.</p>
+<ul>
+<li>retrieval evaluator가 추가되므로 구조가 복잡해짐</li>
+<li>웹 검색을 붙이면 latency가 증가함</li>
+<li>외부 검색 사용 시 비용 및 보안 이슈가 생길 수 있음</li>
+<li>refinement 단계가 잘못 설계되면 오히려 중요한 정보를 버릴 수 있음</li>
+</ul>
+<p>즉, CRAG는 <strong>정확도와 견고성을 위해 복잡도와 응답 시간을 더 지불하는 방식</strong>이라고 볼 수 있습니다.</p>
+<h2 id="언제-쓰면-좋은가"><a href="#언제-쓰면-좋은가" class="headerlink" title="언제 쓰면 좋은가"></a>언제 쓰면 좋은가</h2><p>CRAG는 아래 같은 상황에서 특히 유용합니다.</p>
+<ul>
+<li>검색 품질 편차가 큰 RAG 시스템</li>
+<li>최신 정보가 중요해 웹 검색 보강이 필요한 서비스</li>
+<li>단순 Q&amp;A보다 정확도와 근거 품질이 더 중요한 시스템</li>
+<li>내부 문서 + 외부 공개 정보 둘 다 활용해야 하는 경우</li>
+</ul>
+<p>반대로 아래 경우에는 기본 RAG가 더 단순하고 실용적일 수 있습니다.</p>
+<ul>
+<li>문서 품질이 매우 좋고 검색 정확도도 높은 경우</li>
+<li>초저지연 응답이 중요한 경우</li>
+<li>외부 검색을 붙일 수 없는 보안 환경</li>
+</ul>
+<h2 id="예제-코드"><a href="#예제-코드" class="headerlink" title="예제 코드"></a>예제 코드</h2><p>아래 코드는 CRAG의 핵심 흐름을 단순화해서 보여주는 Python 예제입니다.</p>
+<ul>
+<li>내부 문서 검색</li>
+<li>검색 결과 품질 평가</li>
+<li>결과에 따라 <code>correct / ambiguous / incorrect</code> 분기</li>
+<li>필요하면 웹 검색 보강</li>
+<li>최종 컨텍스트로 답변 생성</li>
+</ul>
+<p>실제 서비스에서는 벡터 DB, reranker, evaluator 모델, 웹 검색 API를 각각 교체해서 사용하면 됩니다.</p>
+<h3 id="1-가장-단순한-CRAG-파이프라인"><a href="#1-가장-단순한-CRAG-파이프라인" class="headerlink" title="1. 가장 단순한 CRAG 파이프라인"></a>1. 가장 단순한 CRAG 파이프라인</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> dataclasses <span class="keyword">import</span> dataclass</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Literal</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ConfidenceLabel = <span class="type">Literal</span>[<span class="string">&quot;correct&quot;</span>, <span class="string">&quot;ambiguous&quot;</span>, <span class="string">&quot;incorrect&quot;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@dataclass</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Document</span>:</span><br><span class="line">    content: <span class="built_in">str</span></span><br><span class="line">    source: <span class="built_in">str</span></span><br><span class="line">    score: <span class="built_in">float</span> = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">retrieve_from_kb</span>(<span class="params">query: <span class="built_in">str</span></span>) -&gt; <span class="type">List</span>[Document]:</span><br><span class="line">    <span class="comment"># 예시: vector db에서 top-k 검색</span></span><br><span class="line">    <span class="keyword">return</span> [</span><br><span class="line">        Document(<span class="string">&quot;CRAG adds a retrieval evaluator before generation.&quot;</span>, <span class="string">&quot;kb://rag-paper&quot;</span>, <span class="number">0.88</span>),</span><br><span class="line">        Document(<span class="string">&quot;CRAG may use web search when retrieval quality is low.&quot;</span>, <span class="string">&quot;kb://rag-notes&quot;</span>, <span class="number">0.81</span>),</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">retrieval_evaluator</span>(<span class="params">query: <span class="built_in">str</span>, docs: <span class="type">List</span>[Document]</span>) -&gt; ConfidenceLabel:</span><br><span class="line">    <span class="comment"># 실제로는 cross-encoder, T5 계열 evaluator, 또는 별도 classifier를 사용</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> docs:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;incorrect&quot;</span></span><br><span class="line"></span><br><span class="line">    avg_score = <span class="built_in">sum</span>(doc.score <span class="keyword">for</span> doc <span class="keyword">in</span> docs) / <span class="built_in">len</span>(docs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> avg_score &gt;= <span class="number">0.8</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;correct&quot;</span></span><br><span class="line">    <span class="keyword">if</span> avg_score &gt;= <span class="number">0.5</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;ambiguous&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;incorrect&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">refine_documents</span>(<span class="params">query: <span class="built_in">str</span>, docs: <span class="type">List</span>[Document]</span>) -&gt; <span class="type">List</span>[Document]:</span><br><span class="line">    <span class="comment"># 실제로는 chunk filtering, sentence extraction, reranking 등을 수행</span></span><br><span class="line">    refined = []</span><br><span class="line">    <span class="keyword">for</span> doc <span class="keyword">in</span> docs:</span><br><span class="line">        <span class="keyword">if</span> query.lower().split()[<span class="number">0</span>] <span class="keyword">in</span> doc.content.lower() <span class="keyword">or</span> doc.score &gt;= <span class="number">0.75</span>:</span><br><span class="line">            refined.append(doc)</span><br><span class="line">    <span class="keyword">return</span> refined</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">web_search</span>(<span class="params">query: <span class="built_in">str</span></span>) -&gt; <span class="type">List</span>[Document]:</span><br><span class="line">    <span class="comment"># 실제로는 Tavily, SerpAPI, Bing Search API 등을 붙일 수 있음</span></span><br><span class="line">    <span class="keyword">return</span> [</span><br><span class="line">        Document(<span class="string">&quot;Web result: CRAG evaluates retrieved documents before generation.&quot;</span>, <span class="string">&quot;web://result-1&quot;</span>, <span class="number">0.77</span>),</span><br><span class="line">        Document(<span class="string">&quot;Web result: CRAG uses decompose-then-recompose to refine knowledge.&quot;</span>, <span class="string">&quot;web://result-2&quot;</span>, <span class="number">0.74</span>),</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_answer</span>(<span class="params">query: <span class="built_in">str</span>, docs: <span class="type">List</span>[Document]</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    context = <span class="string">&quot;\n&quot;</span>.join(<span class="string">f&quot;- <span class="subst">&#123;doc.content&#125;</span> (<span class="subst">&#123;doc.source&#125;</span>)&quot;</span> <span class="keyword">for</span> doc <span class="keyword">in</span> docs)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;&quot;&quot;질문: <span class="subst">&#123;query&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">참고 컨텍스트:</span></span><br><span class="line"><span class="string"><span class="subst">&#123;context&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">답변:</span></span><br><span class="line"><span class="string">CRAG는 검색 결과의 품질을 먼저 평가하고, 필요 시 웹 검색과 정제 과정을 거쳐 더 신뢰도 높은 컨텍스트로 답변을 생성하는 방식입니다.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_crag</span>(<span class="params">query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    retrieved_docs = retrieve_from_kb(query)</span><br><span class="line">    label = retrieval_evaluator(query, retrieved_docs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> label == <span class="string">&quot;correct&quot;</span>:</span><br><span class="line">        final_docs = refine_documents(query, retrieved_docs)</span><br><span class="line">    <span class="keyword">elif</span> label == <span class="string">&quot;ambiguous&quot;</span>:</span><br><span class="line">        refined_docs = refine_documents(query, retrieved_docs)</span><br><span class="line">        external_docs = web_search(query)</span><br><span class="line">        final_docs = refined_docs + external_docs</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        final_docs = web_search(query)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> generate_answer(query, final_docs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    answer = run_crag(<span class="string">&quot;What is Corrective RAG?&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(answer)</span><br></pre></td></tr></table></figure>
+
+<p>이 예제에서 중요한 부분은 <code>retrieval_evaluator()</code>가 전체 흐름을 분기한다는 점입니다.</p>
+<ul>
+<li><code>correct</code>: 내부 검색 결과를 정제해서 사용</li>
+<li><code>ambiguous</code>: 내부 검색 + 웹 검색을 결합</li>
+<li><code>incorrect</code>: 내부 검색을 버리고 외부 검색으로 대체</li>
+</ul>
+<h3 id="2-LangChain-스타일로-보면-이런-구조다"><a href="#2-LangChain-스타일로-보면-이런-구조다" class="headerlink" title="2. LangChain 스타일로 보면 이런 구조다"></a>2. LangChain 스타일로 보면 이런 구조다</h3><p>실무에서는 보통 아래처럼 각 컴포넌트를 나눠서 생각합니다.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">crag_pipeline</span>(<span class="params">query, retriever, evaluator, web_search_tool, llm</span>):</span><br><span class="line">    docs = retriever.invoke(query)</span><br><span class="line">    confidence = evaluator.evaluate(query, docs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> confidence == <span class="string">&quot;correct&quot;</span>:</span><br><span class="line">        final_docs = evaluator.refine(query, docs)</span><br><span class="line">    <span class="keyword">elif</span> confidence == <span class="string">&quot;ambiguous&quot;</span>:</span><br><span class="line">        final_docs = evaluator.refine(query, docs) + web_search_tool.search(query)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        final_docs = web_search_tool.search(query)</span><br><span class="line"></span><br><span class="line">    prompt = build_prompt(query, final_docs)</span><br><span class="line">    <span class="keyword">return</span> llm.invoke(prompt)</span><br></pre></td></tr></table></figure>
+
+<p>이 패턴으로 구현하면 아래를 각각 독립적으로 교체할 수 있습니다.</p>
+<ul>
+<li>retriever: BM25 &#x2F; vector &#x2F; hybrid retrieval</li>
+<li>evaluator: classifier &#x2F; cross-encoder &#x2F; small LLM</li>
+<li>web_search_tool: 외부 검색 API</li>
+<li>llm: 최종 답변 생성 모델</li>
+</ul>
+<h3 id="3-실무-구현-시-체크-포인트"><a href="#3-실무-구현-시-체크-포인트" class="headerlink" title="3. 실무 구현 시 체크 포인트"></a>3. 실무 구현 시 체크 포인트</h3><p>예제 코드를 실제 서비스로 확장할 때는 아래를 같이 고려해야 합니다.</p>
+<ul>
+<li>evaluator score threshold를 고정값으로 둘지, 도메인별로 다르게 둘지</li>
+<li><code>ambiguous</code>일 때 내부 검색과 웹 검색의 가중치를 어떻게 줄지</li>
+<li>웹 검색 결과를 그대로 쓰지 않고, 추가 filtering &#x2F; reranking을 할지</li>
+<li>최종 프롬프트에 source citation을 어떻게 넣을지</li>
+<li>latency 증가를 줄이기 위해 evaluator와 web search를 어떻게 최적화할지</li>
+</ul>
+<h2 id="한-줄-요약"><a href="#한-줄-요약" class="headerlink" title="한 줄 요약"></a>한 줄 요약</h2><p>Corrective RAG(CRAG)는 <strong>검색 결과를 그대로 믿지 않고, 먼저 평가하고 필요하면 보정한 뒤 생성하는 RAG</strong>입니다.</p>
+<p>즉, RAG를 더 “똑똑하게 검색”하게 만드는 것이 아니라,<br><strong>“검색 결과가 틀릴 수도 있다는 전제를 두고 더 견고하게 답변하게 만드는 방법”</strong> 이라고 볼 수 있습니다.</p>
+<h2 id="참고"><a href="#참고" class="headerlink" title="참고"></a>참고</h2><ul>
+<li>논문: Corrective Retrieval Augmented Generation</li>
+<li>arXiv: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://arxiv.org/abs/2401.15884">https://arxiv.org/abs/2401.15884</a></li>
+<li>Hugging Face Papers: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://huggingface.co/papers/2401.15884">https://huggingface.co/papers/2401.15884</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2026/04/20/rag/corrective_rag/" data-id="cmo6x5hbe0000rgut52h4b882" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "Corrective RAG (CRAG) 개념 정리",
+        "image": "https://ckck803.github.io/images/ai/rag.png",
+        "keywords": "RAG AI LLM CRAG Retrieval",
+        "genre": "AI RAG",
+        "datePublished": "2026-04-20",
+        "dateCreated": "2026-04-20",
+        "dateModified": "2026-04-20",
+        "url": "https://ckck803.github.io/2026/04/20/rag/corrective_rag/",
+        "description": "
+Corrective RAG란Corrective RAG(CRAG)는 기존 RAG 파이프라인에 “검색 결과 검증 및 보정 단계”를 추가한 방식입니다.
+일반적인 RAG는 아래 흐름으로 동작합니다.
+
+사용자 질문 입력
+벡터 DB 또는 검색 시스템에서 관련 문서 검색
+검색된 문서를 컨텍스트로 LLM이 답변 생성
+
+문제는 검색 결과가 부정확하거나, 애매하거나, 일부",
+        "wordCount": 1843
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2026/04/20/rag/agentic_rag/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            Agentic RAG 개념 정리
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2026/04/20/k8s/istio/istio-ambient-mesh/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Istio Ambient Mesh</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">217</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/">NestJS</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Advanced/">Advanced</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Controller/">Controller</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Database/">Database</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Module/">Module</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Service/">Service</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2026/04/20/rag/corrective_rag/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
