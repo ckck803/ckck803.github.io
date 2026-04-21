@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>OpenFeign QueryDSL 사용하는 방법과 5.0.0 이후 변경점 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="JPA,Spring Boot,QueryDSL,OpenFeign,Hibernate">
+    
+    <meta name="description" content="개요요즘 QueryDSL을 찾다 보면 OpenFeign QueryDSL이라는 표현을 자주 보게 됩니다. 정확히 말하면, 기존 QueryDSL 프로젝트의 유지보수 체감이 한동안 약했고, 그 흐름 속에서 OpenFeign 조직 아래의 querydsl 포크가 더 활발하게 릴리즈를 이어가고 있는 상태입니다. 즉:  OpenFeign이 QueryDSL을 공식 승계">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenFeign QueryDSL 사용하는 방법과 5.0.0 이후 변경점">
+<meta property="og:url" content="https://ckck803.github.io/2026/04/21/spring/openfeign-querydsl/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="개요요즘 QueryDSL을 찾다 보면 OpenFeign QueryDSL이라는 표현을 자주 보게 됩니다. 정확히 말하면, 기존 QueryDSL 프로젝트의 유지보수 체감이 한동안 약했고, 그 흐름 속에서 OpenFeign 조직 아래의 querydsl 포크가 더 활발하게 릴리즈를 이어가고 있는 상태입니다. 즉:  OpenFeign이 QueryDSL을 공식 승계">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ckck803.github.io/images/JPA/querydsl/querydsl.png">
+<meta property="article:published_time" content="2026-04-21T01:30:00.000Z">
+<meta property="article:modified_time" content="2026-04-21T01:59:27.027Z">
+<meta property="article:author" content="ckck803">
+<meta property="article:tag" content="JPA">
+<meta property="article:tag" content="Spring Boot">
+<meta property="article:tag" content="QueryDSL">
+<meta property="article:tag" content="OpenFeign">
+<meta property="article:tag" content="Hibernate">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ckck803.github.io/images/JPA/querydsl/querydsl.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Database/">Database</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/NestJS/">NestJS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Spring/">Spring</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-spring/openfeign-querydsl" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        OpenFeign QueryDSL 사용하는 방법과 5.0.0 이후 변경점
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2026/04/21/spring/openfeign-querydsl/" class="article-date">
+       <time datetime="2026-04-21T01:30:00.000Z" itemprop="datePublished">2026-04-21</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2026/04/21/spring/openfeign-querydsl/" class="article-date">
+     <time datetime="2026-04-21T01:59:27.027Z" itemprop="dateModified">2026-04-21</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Hibernate/" rel="tag">Hibernate</a>, <a class="tag-link-link" href="/tags/JPA/" rel="tag">JPA</a>, <a class="tag-link-link" href="/tags/OpenFeign/" rel="tag">OpenFeign</a>, <a class="tag-link-link" href="/tags/QueryDSL/" rel="tag">QueryDSL</a>, <a class="tag-link-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/images/JPA/querydsl/querydsl.png"></p>
+<h2 id="개요"><a href="#개요" class="headerlink" title="개요"></a>개요</h2><p>요즘 QueryDSL을 찾다 보면 <code>OpenFeign QueryDSL</code>이라는 표현을 자주 보게 됩니다.</p>
+<p>정확히 말하면, 기존 QueryDSL 프로젝트의 유지보수 체감이 한동안 약했고, 그 흐름 속에서 <strong>OpenFeign 조직 아래의 <code>querydsl</code> 포크가 더 활발하게 릴리즈를 이어가고 있는 상태</strong>입니다.</p>
+<p>즉:</p>
+<ul>
+<li><code>OpenFeign이 QueryDSL을 공식 승계했다</code>고 단정하기보다는</li>
+<li><code>실무에서는 OpenFeign 포크를 적극 유지보수 중인 QueryDSL 배포판처럼 사용한다</code></li>
+</ul>
+<p>고 이해하는 편이 더 정확합니다.</p>
+<h2 id="먼저-결론"><a href="#먼저-결론" class="headerlink" title="먼저 결론"></a>먼저 결론</h2><p>Spring Boot + JPA 기준으로 보면 보통 아래처럼 정리할 수 있습니다.</p>
+<table>
+<thead>
+<tr>
+<th>환경</th>
+<th>추천 방향</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Spring Boot 2.x &#x2F; <code>javax</code></td>
+<td>구 QueryDSL 설정과 더 가까움</td>
+</tr>
+<tr>
+<td>Spring Boot 3.x &#x2F; <code>jakarta</code></td>
+<td><code>io.github.openfeign.querydsl</code> + <code>jakarta</code> classifier</td>
+</tr>
+<tr>
+<td>Hibernate 6.x</td>
+<td>OpenFeign QueryDSL 6.x</td>
+</tr>
+<tr>
+<td>Hibernate 7.x &#x2F; JPA 3.2</td>
+<td>QueryDSL 7.x 검토</td>
+</tr>
+</tbody></table>
+<p>지금 실무에서 가장 많이 쓰는 조합은 대체로 아래입니다.</p>
+<ul>
+<li>Spring Boot 3.x</li>
+<li>JDK 17</li>
+<li>Hibernate 6.x</li>
+<li>OpenFeign QueryDSL 6.x</li>
+</ul>
+<h2 id="핵심-차이"><a href="#핵심-차이" class="headerlink" title="핵심 차이"></a>핵심 차이</h2><p>실무에서 말하는 “OpenFeign QueryDSL”은 보통 아래를 의미합니다.</p>
+<ul>
+<li>GitHub 저장소: <code>OpenFeign/querydsl</code></li>
+<li>Maven 좌표: <code>io.github.openfeign.querydsl:*</code></li>
+</ul>
+<p>기존 좌표와 차이는 이것입니다.</p>
+<ul>
+<li>예전: <code>com.querydsl</code></li>
+<li>포크: <code>io.github.openfeign.querydsl</code></li>
+</ul>
+<p>즉, 업그레이드할 때는 <strong>버전만이 아니라 groupId도 같이 확인</strong>해야 합니다.</p>
+<h2 id="Spring-Boot-3에서-사용하는-방법"><a href="#Spring-Boot-3에서-사용하는-방법" class="headerlink" title="Spring Boot 3에서 사용하는 방법"></a>Spring Boot 3에서 사용하는 방법</h2><p>여기서는 <strong>Spring Boot 3 + JPA + Hibernate 6 + Jakarta</strong> 기준으로 정리합니다.</p>
+<h3 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h3><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    implementation <span class="string">&quot;io.github.openfeign.querydsl:querydsl-jpa:6.12:jakarta&quot;</span></span><br><span class="line"></span><br><span class="line">    annotationProcessor <span class="string">&quot;io.github.openfeign.querydsl:querydsl-apt:6.12:jakarta&quot;</span></span><br><span class="line">    annotationProcessor <span class="string">&quot;jakarta.persistence:jakarta.persistence-api:3.1.0&quot;</span></span><br><span class="line">    annotationProcessor <span class="string">&quot;jakarta.annotation:jakarta.annotation-api:2.1.1&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">sourceSets</span> &#123;</span><br><span class="line">    main.java.srcDirs += [<span class="string">&quot;build/generated/sources/annotationProcessor/java/main&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Maven"><a href="#Maven" class="headerlink" title="Maven"></a>Maven</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.openfeign.querydsl<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>querydsl-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">classifier</span>&gt;</span>jakarta<span class="tag">&lt;/<span class="name">classifier</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.13.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">generatedSourcesDirectory</span>&gt;</span></span><br><span class="line">                    target/generated-sources/java</span><br><span class="line">                <span class="tag">&lt;/<span class="name">generatedSourcesDirectory</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">annotationProcessorPaths</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">path</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.openfeign.querydsl<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>querydsl-apt<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">classifier</span>&gt;</span>jakarta<span class="tag">&lt;/<span class="name">classifier</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">path</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jakarta.persistence<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jakarta.persistence-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">path</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jakarta.annotation<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jakarta.annotation-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">annotationProcessorPaths</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>여기서 핵심은 두 가지입니다.</p>
+<ul>
+<li><code>querydsl-jpa</code>에 <code>jakarta</code> classifier 사용</li>
+<li><code>querydsl-apt</code>에도 <code>jakarta</code> classifier 사용</li>
+</ul>
+<p>Spring Boot 3는 <code>javax.persistence</code>가 아니라 <code>jakarta.persistence</code> 기반이므로, classifier를 잘못 고르면 QClass 생성이나 import가 꼬이기 쉽습니다.</p>
+<h2 id="기본-설정"><a href="#기본-설정" class="headerlink" title="기본 설정"></a>기본 설정</h2><p>엔티티가 아래처럼 있다고 가정해보겠습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Member</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>빌드가 정상적으로 끝나면 <code>QMember</code>가 생성됩니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">QMember</span> <span class="variable">member</span> <span class="operator">=</span> QMember.member;</span><br></pre></td></tr></table></figure>
+
+<p>Spring Boot에서는 보통 <code>JPAQueryFactory</code>를 Bean으로 등록해서 사용합니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">QuerydslConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PersistenceContext</span></span><br><span class="line">    <span class="keyword">private</span> EntityManager entityManager;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> JPAQueryFactory <span class="title function_">jpaQueryFactory</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JPAQueryFactory</span>(entityManager);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="실무-예제"><a href="#실무-예제" class="headerlink" title="실무 예제"></a>실무 예제</h2><h3 id="1-동적-검색"><a href="#1-동적-검색" class="headerlink" title="1. 동적 검색"></a>1. 동적 검색</h3><p>가장 기본적인 사용 패턴입니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.example.domain.QMember.member;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> List&lt;Member&gt; <span class="title function_">search</span><span class="params">(String username, Integer ageLoe)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> queryFactory</span><br><span class="line">        .selectFrom(member)</span><br><span class="line">        .where(</span><br><span class="line">            usernameEq(username),</span><br><span class="line">            ageLoe(ageLoe)</span><br><span class="line">        )</span><br><span class="line">        .orderBy(member.username.asc())</span><br><span class="line">        .fetch();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> BooleanExpression <span class="title function_">usernameEq</span><span class="params">(String username)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> username != <span class="literal">null</span> &amp;&amp; !username.isBlank()</span><br><span class="line">        ? member.username.eq(username)</span><br><span class="line">        : <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> BooleanExpression <span class="title function_">ageLoe</span><span class="params">(Integer ageLoe)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> ageLoe != <span class="literal">null</span></span><br><span class="line">        ? member.age.loe(ageLoe)</span><br><span class="line">        : <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 패턴의 장점은 아래와 같습니다.</p>
+<ul>
+<li>문자열 기반 JPQL보다 안전함</li>
+<li>null 조건 조합이 자연스러움</li>
+<li>정렬, 페이징, join으로 확장하기 쉬움</li>
+</ul>
+<h3 id="2-QueryProjection-기반-DTO-조회"><a href="#2-QueryProjection-기반-DTO-조회" class="headerlink" title="2. @QueryProjection 기반 DTO 조회"></a>2. <code>@QueryProjection</code> 기반 DTO 조회</h3><p>DTO 생성자를 QueryDSL projection 대상으로 쓰고 싶다면 <code>@QueryProjection</code>을 사용할 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> com.querydsl.core.annotations.QueryProjection;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberDto</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String username;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Integer age;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@QueryProjection</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MemberDto</span><span class="params">(Long id, String username, Integer age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">        <span class="built_in">this</span>.username = username;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Long <span class="title function_">getId</span><span class="params">()</span> &#123; <span class="keyword">return</span> id; &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getUsername</span><span class="params">()</span> &#123; <span class="keyword">return</span> username; &#125;</span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">getAge</span><span class="params">()</span> &#123; <span class="keyword">return</span> age; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>빌드 후에는 <code>QMemberDto</code>가 생성됩니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.example.domain.QMember.member;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> List&lt;MemberDto&gt; <span class="title function_">findMemberDtos</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> queryFactory</span><br><span class="line">        .select(<span class="keyword">new</span> <span class="title class_">QMemberDto</span>(</span><br><span class="line">            member.id,</span><br><span class="line">            member.username,</span><br><span class="line">            member.age</span><br><span class="line">        ))</span><br><span class="line">        .from(member)</span><br><span class="line">        .fetch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>장점은 생성자 파라미터 타입이 컴파일 타임에 검증된다는 점입니다. 반면 DTO가 QueryDSL에 의존하게 된다는 단점도 있습니다.</p>
+<h3 id="3-Pageable-projection"><a href="#3-Pageable-projection" class="headerlink" title="3. Pageable + projection"></a>3. Pageable + projection</h3><p>목록 API에서는 <code>content query</code>와 <code>count query</code>를 분리하는 방식이 가장 실용적입니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberPageDto</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String username;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Integer age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MemberPageDto</span><span class="params">(Long id, String username, Integer age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">        <span class="built_in">this</span>.username = username;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Long <span class="title function_">getId</span><span class="params">()</span> &#123; <span class="keyword">return</span> id; &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getUsername</span><span class="params">()</span> &#123; <span class="keyword">return</span> username; &#125;</span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">getAge</span><span class="params">()</span> &#123; <span class="keyword">return</span> age; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberSearchCondition</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> Integer ageGoe;</span><br><span class="line">    <span class="keyword">private</span> Integer ageLoe;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getUsername</span><span class="params">()</span> &#123; <span class="keyword">return</span> username; &#125;</span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">getAgeGoe</span><span class="params">()</span> &#123; <span class="keyword">return</span> ageGoe; &#125;</span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">getAgeLoe</span><span class="params">()</span> &#123; <span class="keyword">return</span> ageLoe; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> com.querydsl.core.types.Projections;</span><br><span class="line"><span class="keyword">import</span> com.querydsl.core.types.dsl.BooleanExpression;</span><br><span class="line"><span class="keyword">import</span> com.querydsl.jpa.impl.JPAQuery;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.domain.Page;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.domain.PageImpl;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.domain.Pageable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.example.domain.QMember.member;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Page&lt;MemberPageDto&gt; <span class="title function_">searchPage</span><span class="params">(MemberSearchCondition condition, Pageable pageable)</span> &#123;</span><br><span class="line">    List&lt;MemberPageDto&gt; content = queryFactory</span><br><span class="line">        .select(Projections.constructor(</span><br><span class="line">            MemberPageDto.class,</span><br><span class="line">            member.id,</span><br><span class="line">            member.username,</span><br><span class="line">            member.age</span><br><span class="line">        ))</span><br><span class="line">        .from(member)</span><br><span class="line">        .where(</span><br><span class="line">            usernameEq(condition.getUsername()),</span><br><span class="line">            ageGoe(condition.getAgeGoe()),</span><br><span class="line">            ageLoe(condition.getAgeLoe())</span><br><span class="line">        )</span><br><span class="line">        .offset(pageable.getOffset())</span><br><span class="line">        .limit(pageable.getPageSize())</span><br><span class="line">        .orderBy(member.id.desc())</span><br><span class="line">        .fetch();</span><br><span class="line"></span><br><span class="line">    JPAQuery&lt;Long&gt; countQuery = queryFactory</span><br><span class="line">        .select(member.count())</span><br><span class="line">        .from(member)</span><br><span class="line">        .where(</span><br><span class="line">            usernameEq(condition.getUsername()),</span><br><span class="line">            ageGoe(condition.getAgeGoe()),</span><br><span class="line">            ageLoe(condition.getAgeLoe())</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">    <span class="type">Long</span> <span class="variable">total</span> <span class="operator">=</span> countQuery.fetchOne();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">PageImpl</span>&lt;&gt;(content, pageable, total == <span class="literal">null</span> ? <span class="number">0</span> : total);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 패턴이 많이 쓰이는 이유는 분명합니다.</p>
+<ul>
+<li>조회용 projection과 count query를 분리해 성능 제어가 쉬움</li>
+<li>복잡한 join이 들어가도 content query와 count query를 따로 최적화 가능</li>
+<li>Spring Data <code>Pageable</code>과 자연스럽게 연결 가능</li>
+</ul>
+<h2 id="5-0-0-이후-변경점-정리"><a href="#5-0-0-이후-변경점-정리" class="headerlink" title="5.0.0 이후 변경점 정리"></a>5.0.0 이후 변경점 정리</h2><h3 id="5-0-0"><a href="#5-0-0" class="headerlink" title="5.0.0"></a>5.0.0</h3><p>2021-07-22 공개된 QueryDSL 5.0.0은 큰 전환점이었습니다.</p>
+<ul>
+<li>최소 Java 8 기준으로 정리</li>
+<li><code>joda-time</code>, <code>guava</code>, <code>jsr305</code> 필수 런타임 의존성 제거</li>
+<li><code>Fetchable#stream()</code> 추가</li>
+<li>Java 8 date&#x2F;time API 사용 기본화</li>
+<li><code>jakarta.*</code> 지원 추가</li>
+<li>Kotlin code generation 지원</li>
+<li>Java Record 지원</li>
+</ul>
+<p>즉, 5.0.0은 <strong>현대 Java&#x2F;Jakarta 환경에서 다시 쓰기 좋게 정리된 메이저 릴리즈</strong>라고 볼 수 있습니다.</p>
+<h3 id="6-0"><a href="#6-0" class="headerlink" title="6.0"></a>6.0</h3><p>2024-01-25 공개된 OpenFeign QueryDSL 6.0의 핵심은 아래입니다.</p>
+<ul>
+<li>Hibernate 6.4 fully integrated</li>
+<li>Querydsl JPA &lt;-&gt; Spring Data repository integration</li>
+<li>CGLIB 제거, ByteBuddy 사용</li>
+<li>Java record projection 생성 개선</li>
+<li>native query 처리 정리</li>
+</ul>
+<p>즉, <strong>Spring Boot 3 + Hibernate 6 사용자들이 OpenFeign 포크를 더 강하게 보게 된 이유</strong>가 여기서 분명해졌습니다.</p>
+<h3 id="6-9"><a href="#6-9" class="headerlink" title="6.9"></a>6.9</h3><p>2024-11-22 공개된 6.9에서는 Kotlin 진영에 의미 있는 변화가 들어왔습니다.</p>
+<ul>
+<li>KSP module 추가</li>
+<li>KSP example 추가</li>
+<li>incremental processing support 추가</li>
+</ul>
+<p>즉, QueryDSL code generation을 KAPT 대신 <strong>KSP 기반으로 가져갈 수 있는 길</strong>이 열렸습니다.</p>
+<h3 id="6-12"><a href="#6-12" class="headerlink" title="6.12"></a>6.12</h3><p>2025-06-09 공개된 6.12에서는 실무 체감이 큰 기능 보강이 들어갔습니다.</p>
+<ul>
+<li><code>@QueryProjection</code>의 <strong>builder-based Q class generation 지원</strong></li>
+<li><code>querydsl-ksp-codegen</code>에서 <strong><code>@JdbcTypeCode</code> 지원</strong></li>
+<li><code>@Converter</code>로 basic type에 매핑된 JPA collection의 <strong><code>contains()</code> 처리 개선</strong></li>
+<li>Querydsl Aggregations에 <code>TypeWrapperFactoryExpression</code> 추가</li>
+</ul>
+<p>여기서 중요한 건 표현입니다.</p>
+<ul>
+<li><code>QClass Builder가 새로 생겼다</code>라고 넓게 쓰기보다는</li>
+<li><code>@QueryProjection의 builder 기반 Q class generation 지원이 추가됐다</code></li>
+</ul>
+<p>라고 쓰는 편이 더 정확합니다.</p>
+<p>추가로 릴리즈 노트에 있는 아래 두 항목은 이름만 보면 조금 추상적으로 느껴질 수 있습니다.</p>
+<ul>
+<li><code>TypeWrapperFactoryExpression</code></li>
+<li><code>likeToRegex / regexToLike</code> 처리 보정</li>
+</ul>
+<h3 id="TypeWrapperFactoryExpression은-무슨-의미인가"><a href="#TypeWrapperFactoryExpression은-무슨-의미인가" class="headerlink" title="TypeWrapperFactoryExpression은 무슨 의미인가"></a><code>TypeWrapperFactoryExpression</code>은 무슨 의미인가</h3><p>이 항목은 Querydsl Aggregations에서 <strong>집계 결과를 커스텀 숫자 타입으로 더 타입 안전하게 감싸기 위한 기능</strong>으로 이해하면 됩니다.</p>
+<p>예를 들어 집계 결과는 보통 아래처럼 기본 숫자 타입으로 많이 나옵니다.</p>
+<ul>
+<li><code>Long</code></li>
+<li><code>Integer</code></li>
+<li><code>BigDecimal</code></li>
+</ul>
+<p>하지만 도메인에서는 아래처럼 래퍼 타입으로 다루고 싶을 수 있습니다.</p>
+<ul>
+<li><code>Money</code></li>
+<li><code>Score</code></li>
+<li><code>Quantity</code></li>
+</ul>
+<p>즉, 예전에는 집계 결과를 먼저 기본 숫자 타입으로 받은 뒤, 애플리케이션 코드에서 다시 값 객체로 감싸는 코드가 필요했다면, 이 영역을 더 타입 안전하게 다루기 위한 기반 기능이 추가된 것으로 보면 됩니다.</p>
+<p>실무적으로는 아래 같은 경우에 의미가 있습니다.</p>
+<ul>
+<li>통계&#x2F;리포트 조회 결과를 도메인 값 객체로 감싸고 싶은 경우</li>
+<li>집계 결과의 타입 변환을 DTO 생성 시점에 더 명확하게 가져가고 싶은 경우</li>
+<li>숫자 타입 변환 실수를 줄이고 싶은 경우</li>
+</ul>
+<h4 id="예시"><a href="#예시" class="headerlink" title="예시"></a>예시</h4><p>예를 들어 집계 결과를 단순 <code>Long</code>으로 받는 대신, <code>Score</code>라는 값 객체로 감싸고 싶다고 가정해보겠습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Score</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">long</span> value;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Score</span><span class="params">(<span class="type">long</span> value)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">long</span> <span class="title function_">getValue</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>집계 결과를 그냥 받으면 보통 아래처럼 처리하게 됩니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Long</span> <span class="variable">totalScore</span> <span class="operator">=</span> queryFactory</span><br><span class="line">    .select(member.score.sum())</span><br><span class="line">    .from(member)</span><br><span class="line">    .fetchOne();</span><br><span class="line"></span><br><span class="line"><span class="type">Score</span> <span class="variable">score</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Score</span>(totalScore == <span class="literal">null</span> ? <span class="number">0L</span> : totalScore);</span><br></pre></td></tr></table></figure>
+
+<p>이런 종류의 코드는 단순해 보이지만, 집계 결과가 많아질수록 매번 기본 숫자 타입을 받아서 다시 값 객체로 감싸는 코드가 반복됩니다.</p>
+<p>즉, <code>TypeWrapperFactoryExpression</code>이 의미 있는 지점은 아래처럼 볼 수 있습니다.</p>
+<ul>
+<li>집계 결과를 단순 숫자가 아니라 도메인 타입으로 다루고 싶을 때</li>
+<li>숫자 타입 변환을 더 타입 안전하게 가져가고 싶을 때</li>
+<li>Aggregation 결과 projection을 더 깔끔하게 만들고 싶을 때</li>
+</ul>
+<h3 id="likeToRegex-regexToLike-처리-보정은-무슨-의미인가"><a href="#likeToRegex-regexToLike-처리-보정은-무슨-의미인가" class="headerlink" title="likeToRegex / regexToLike 처리 보정은 무슨 의미인가"></a><code>likeToRegex / regexToLike</code> 처리 보정은 무슨 의미인가</h3><p>이 항목은 새 기능이라기보다 <strong>문자열 패턴 변환의 정확도를 높이는 수정</strong>에 가깝습니다.</p>
+<p>이름 그대로 아래 변환과 관련 있습니다.</p>
+<ul>
+<li>SQL <code>LIKE</code> 패턴 -&gt; 정규식 변환</li>
+<li>정규식 패턴 -&gt; <code>LIKE</code> 패턴 변환</li>
+</ul>
+<p>문제가 생기기 쉬운 부분은 보통 아래입니다.</p>
+<ul>
+<li><code>%</code>, <code>_</code> 같은 LIKE 와일드카드</li>
+<li><code>\</code> escape 문자</li>
+<li><code>^</code>, <code>$</code> 같은 regex anchor</li>
+</ul>
+<p>이 처리가 잘못되면 아래 같은 일이 생길 수 있습니다.</p>
+<ul>
+<li>의도보다 더 많은 문자열이 매칭됨</li>
+<li>반대로 매칭돼야 할 문자열이 빠짐</li>
+<li>escape가 깨져서 검색 결과가 달라짐</li>
+</ul>
+<p>즉, 이 변경은 QueryDSL 내부의 패턴 변환 정확도를 보정한 것으로 보면 됩니다.</p>
+<h4 id="예시-1"><a href="#예시-1" class="headerlink" title="예시"></a>예시</h4><p>예를 들어 사용자가 검색어 패턴을 입력한다고 가정해보겠습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">keyword</span> <span class="operator">=</span> <span class="string">&quot;admin_%&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>이 값을 LIKE 검색 조건에 그대로 넣으면 <code>_</code>와 <code>%</code>가 와일드카드로 해석될 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">queryFactory</span><br><span class="line">    .selectFrom(member)</span><br><span class="line">    .where(member.username.like(keyword))</span><br><span class="line">    .fetch();</span><br></pre></td></tr></table></figure>
+
+<p>이 경우 의도는 <code>&quot;admin_%&quot;</code>라는 문자열 자체를 찾는 것인데, 실제로는 아래처럼 동작이 달라질 수 있습니다.</p>
+<ul>
+<li><code>%</code>는 임의 길이 문자열</li>
+<li><code>_</code>는 한 글자 와일드카드</li>
+</ul>
+<p>반대로 내부적으로 LIKE 패턴을 regex로 바꾸거나, regex 성격의 패턴을 LIKE로 바꾸는 과정에서 escape와 anchor 처리가 잘못되면 아래 같은 문제가 생깁니다.</p>
+<ul>
+<li><code>&quot;admin_1&quot;</code>이 매칭돼야 하는데 안 됨</li>
+<li><code>&quot;adminXYZ&quot;</code>가 의도치 않게 매칭됨</li>
+<li>시작&#x2F;끝 anchor가 잘못 적용되어 범위가 달라짐</li>
+</ul>
+<p>즉, <code>likeToRegex / regexToLike</code> 보정은 이런 문자열 패턴 변환의 미세한 오류를 줄여주는 변경이라고 보면 됩니다.</p>
+<h3 id="6-12-관련-예제"><a href="#6-12-관련-예제" class="headerlink" title="6.12 관련 예제"></a>6.12 관련 예제</h3><p>6.12에서 많이 이야기되는 부분은 아래 3가지입니다.</p>
+<ul>
+<li><code>@QueryProjection</code>의 builder-based Q class generation</li>
+<li>KSP codegen 개선</li>
+<li>JPA collection <code>contains()</code> 처리 개선</li>
+</ul>
+<h4 id="1-builder-기반-projection-예시"><a href="#1-builder-기반-projection-예시" class="headerlink" title="1. builder 기반 projection 예시"></a>1. builder 기반 projection 예시</h4><p>아래처럼 builder 패턴을 쓰는 DTO가 있다고 가정해보겠습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberSummaryDto</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String username;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Integer age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">MemberSummaryDto</span><span class="params">(Builder builder)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = builder.id;</span><br><span class="line">        <span class="built_in">this</span>.username = builder.username;</span><br><span class="line">        <span class="built_in">this</span>.age = builder.age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Builder <span class="title function_">builder</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Builder</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> Long id;</span><br><span class="line">        <span class="keyword">private</span> String username;</span><br><span class="line">        <span class="keyword">private</span> Integer age;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">id</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.id = id;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">username</span><span class="params">(String username)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.username = username;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">age</span><span class="params">(Integer age)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.age = age;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> MemberSummaryDto <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">MemberSummaryDto</span>(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>실무에서는 여전히 아래처럼 <code>Projections.constructor()</code>를 많이 사용합니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;MemberSummaryDto&gt; <span class="title function_">findMemberSummaries</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> queryFactory</span><br><span class="line">        .select(Projections.constructor(</span><br><span class="line">            MemberSummaryDto.class,</span><br><span class="line">            member.id,</span><br><span class="line">            member.username,</span><br><span class="line">            member.age</span><br><span class="line">        ))</span><br><span class="line">        .from(member)</span><br><span class="line">        .fetch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>또는 조회 후 builder로 직접 변환할 수도 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;MemberSummaryDto&gt; <span class="title function_">findMemberSummaries</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> queryFactory</span><br><span class="line">        .select(member.id, member.username, member.age)</span><br><span class="line">        .from(member)</span><br><span class="line">        .fetch()</span><br><span class="line">        .stream()</span><br><span class="line">        .map(tuple -&gt; MemberSummaryDto.builder()</span><br><span class="line">            .id(tuple.get(member.id))</span><br><span class="line">            .username(tuple.get(member.username))</span><br><span class="line">            .age(tuple.get(member.age))</span><br><span class="line">            .build()</span><br><span class="line">        )</span><br><span class="line">        .toList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>즉, 6.12의 의미는 “builder 스타일 DTO와 QueryProjection&#x2F;code generation 쪽 결합이 더 좋아졌다”는 데 있습니다.</p>
+<h4 id="2-KSP-codegen-예시"><a href="#2-KSP-codegen-예시" class="headerlink" title="2. KSP codegen 예시"></a>2. KSP codegen 예시</h4><p>Kotlin 프로젝트라면 6.9부터 KSP 기반 codegen을 사용할 수 있고, 6.12에서는 KSP 쪽 기능이 더 보강되었습니다.</p>
+<p>예를 들어 Kotlin + JPA 엔티티가 아래처럼 있다고 가정해보겠습니다.</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Member</span>(</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line">    <span class="keyword">val</span> id: <span class="built_in">Long</span>? = <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> username: String,</span><br><span class="line">    <span class="keyword">val</span> age: <span class="built_in">Int</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>KSP 설정은 보통 이런 식으로 가져갑니다.</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation(<span class="string">&quot;io.github.openfeign.querydsl:querydsl-jpa:6.12:jakarta&quot;</span>)</span><br><span class="line">    ksp(<span class="string">&quot;io.github.openfeign.querydsl:querydsl-ksp-codegen:6.12&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>즉, Java 프로젝트가 <code>annotationProcessor</code>를 쓴다면 Kotlin 프로젝트는 <code>ksp(...)</code>로 code generation을 붙이는 흐름으로 이해하면 됩니다.</p>
+<h4 id="3-JPA-collection-contains-예시"><a href="#3-JPA-collection-contains-예시" class="headerlink" title="3. JPA collection contains() 예시"></a>3. JPA collection <code>contains()</code> 예시</h4><p>6.12 릴리즈 노트에는 <code>@Converter</code>로 basic type에 매핑된 JPA collection의 <code>contains()</code> 처리 개선도 포함되어 있습니다.</p>
+<p>예를 들어 태그 리스트를 converter로 저장하는 엔티티가 있다고 가정해보겠습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Article</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Convert(converter = StringListConverter.class)</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; tags;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이런 경우 QueryDSL에서 아래처럼 조건을 구성할 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.example.domain.QArticle.article;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> List&lt;Article&gt; <span class="title function_">findByTag</span><span class="params">(String tag)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> queryFactory</span><br><span class="line">        .selectFrom(article)</span><br><span class="line">        .where(article.tags.contains(tag))</span><br><span class="line">        .fetch();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 부분은 JPA provider와 매핑 방식에 따라 차이가 있을 수 있는데, 6.12에서는 이런 <code>contains()</code> 처리 쪽이 개선됐다는 점이 실무적으로 의미가 있습니다.</p>
+<h3 id="5-6-1-6-10-1"><a href="#5-6-1-6-10-1" class="headerlink" title="5.6.1 &#x2F; 6.10.1"></a>5.6.1 &#x2F; 6.10.1</h3><p>2024-12-15 공개된 5.6.1과 6.10.1에서는 <code>CVE-2024-49203</code> 수정이 들어갔습니다.</p>
+<p>OpenFeign 보안 공지 기준 영향 범위는 아래였습니다.</p>
+<ul>
+<li>affected: <code>&lt;= 6.8.0</code></li>
+<li>patched: <code>5.6.1</code>, <code>6.10.1</code>, <code>7.0</code></li>
+</ul>
+<p>즉, 오래된 5.x &#x2F; 6.x를 계속 쓰고 있다면 최소한 이 패치 버전 이상으로는 올리는 것이 안전합니다.</p>
+<h3 id="7-0"><a href="#7-0" class="headerlink" title="7.0"></a>7.0</h3><p>2025-06-09 공개된 7.0은 또 하나의 메이저 전환점입니다.</p>
+<ul>
+<li>JPA 3.2.0</li>
+<li>Hibernate 7.0</li>
+<li>EclipseLink 5.0</li>
+<li>Java 17 중심 정리</li>
+<li><code>mysema.lang</code> dependency 제거</li>
+<li>obsolete code &#x2F; dropped feature 정리</li>
+</ul>
+<p>즉, 7.0은 <strong>Hibernate 7 + Java 17 시대를 겨냥한 메이저 릴리즈</strong>입니다.</p>
+<h2 id="선택-가이드"><a href="#선택-가이드" class="headerlink" title="선택 가이드"></a>선택 가이드</h2><p>실무적으로는 아래만 기억해도 충분합니다.</p>
+<ol>
+<li>Spring Boot 3라면 <code>jakarta</code> classifier를 쓴다</li>
+<li>좌표는 <code>io.github.openfeign.querydsl</code>로 본다</li>
+<li>Hibernate 6이면 QueryDSL 6.x를 우선 고려한다</li>
+<li>보안 때문에라도 5.6.1 &#x2F; 6.10.1 &#x2F; 7.0 미만의 오래된 버전은 피한다</li>
+<li>QueryDSL을 올릴 때는 Hibernate &#x2F; Spring Boot &#x2F; JPA 버전을 같이 본다</li>
+</ol>
+<h2 id="한-줄-요약"><a href="#한-줄-요약" class="headerlink" title="한 줄 요약"></a>한 줄 요약</h2><p>OpenFeign QueryDSL은 <strong>기존 QueryDSL의 적극 유지보수 포크</strong>로 보는 것이 맞고, Spring Boot 3 환경에서는 보통 <strong><code>io.github.openfeign.querydsl</code> + <code>jakarta</code> classifier + 6.x 계열</strong> 조합이 가장 현실적인 선택입니다.</p>
+<h2 id="참고"><a href="#참고" class="headerlink" title="참고"></a>참고</h2><ul>
+<li>OpenFeign QueryDSL README: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/OpenFeign/querydsl">https://github.com/OpenFeign/querydsl</a></li>
+<li>OpenFeign QueryDSL 6.0 Release: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/OpenFeign/querydsl/releases/tag/6.0">https://github.com/OpenFeign/querydsl/releases/tag/6.0</a></li>
+<li>OpenFeign QueryDSL 6.9 Release: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/OpenFeign/querydsl/releases/tag/6.9">https://github.com/OpenFeign/querydsl/releases/tag/6.9</a></li>
+<li>OpenFeign QueryDSL 6.10.1 Release: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/OpenFeign/querydsl/releases/tag/6.10.1">https://github.com/OpenFeign/querydsl/releases/tag/6.10.1</a></li>
+<li>OpenFeign QueryDSL 6.12 Release: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/OpenFeign/querydsl/releases/tag/6.12">https://github.com/OpenFeign/querydsl/releases/tag/6.12</a></li>
+<li>OpenFeign QueryDSL 5.6.1 Release: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/OpenFeign/querydsl/releases/tag/5.6.1">https://github.com/OpenFeign/querydsl/releases/tag/5.6.1</a></li>
+<li>OpenFeign QueryDSL 7.0 Release: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/OpenFeign/querydsl/releases/tag/7.0">https://github.com/OpenFeign/querydsl/releases/tag/7.0</a></li>
+<li>QueryDSL 5.0 Release History: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://querydsl.com/releases.html">https://querydsl.com/releases.html</a></li>
+<li>QueryDSL Security Advisory CVE-2024-49203: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/OpenFeign/querydsl/security/advisories/GHSA-6q3q-6v5j-h6vg">https://github.com/OpenFeign/querydsl/security/advisories/GHSA-6q3q-6v5j-h6vg</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2026/04/21/spring/openfeign-querydsl/" data-id="cmo7zb7wk00004wut0gbmegql" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "OpenFeign QueryDSL 사용하는 방법과 5.0.0 이후 변경점",
+        "image": "https://ckck803.github.io/images/JPA/querydsl/querydsl.png",
+        "keywords": "JPA Spring Boot QueryDSL OpenFeign Hibernate",
+        "genre": "Spring QueryDSL JPA",
+        "datePublished": "2026-04-21",
+        "dateCreated": "2026-04-21",
+        "dateModified": "2026-04-21",
+        "url": "https://ckck803.github.io/2026/04/21/spring/openfeign-querydsl/",
+        "description": "
+개요요즘 QueryDSL을 찾다 보면 OpenFeign QueryDSL이라는 표현을 자주 보게 됩니다.
+정확히 말하면, 기존 QueryDSL 프로젝트의 유지보수 체감이 한동안 약했고, 그 흐름 속에서 OpenFeign 조직 아래의 querydsl 포크가 더 활발하게 릴리즈를 이어가고 있는 상태입니다.
+즉:
+
+OpenFeign이 QueryDSL을 공식 승계",
+        "wordCount": 4162
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2026/04/20/rag/agentic_rag/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Agentic RAG 개념 정리</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">217</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/">NestJS</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Advanced/">Advanced</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Controller/">Controller</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Database/">Database</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Module/">Module</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Service/">Service</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">283</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2026/04/21/spring/openfeign-querydsl/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
