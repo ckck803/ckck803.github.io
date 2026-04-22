@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>JavaScript - 웹앱 브릿지 패턴 완벽 정리 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content>
+    
+    <meta name="description" content="브릿지(Bridge)란?웹앱에서 브릿지는 서로 다른 실행 컨텍스트 간의 통신을 추상화한 레이어입니다. postMessage나 네이티브 API는 저수준(low-level)이라 메시지 타입 관리, 요청-응답 매핑, 에러 처리를 직접 구현해야 합니다.브릿지 패턴을 적용하면 이를 추상화하여 RPC(Remote Procedure Call)처럼 쉽게 사용할 수 있습니">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript - 웹앱 브릿지 패턴 완벽 정리">
+<meta property="og:url" content="https://ckck803.github.io/2026/04/22/javascript/web-bridge/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="브릿지(Bridge)란?웹앱에서 브릿지는 서로 다른 실행 컨텍스트 간의 통신을 추상화한 레이어입니다. postMessage나 네이티브 API는 저수준(low-level)이라 메시지 타입 관리, 요청-응답 매핑, 에러 처리를 직접 구현해야 합니다.브릿지 패턴을 적용하면 이를 추상화하여 RPC(Remote Procedure Call)처럼 쉽게 사용할 수 있습니">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-04-21T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-22T10:22:17.608Z">
+<meta property="article:author" content="ckck803">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Database/">Database</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/NestJS/">NestJS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JavaScript/">JavaScript</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JavaScript/Web/">Web</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/JavaScript/">JavaScript</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/JavaScript/Web/">Web</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-javascript/web-bridge" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        JavaScript - 웹앱 브릿지 패턴 완벽 정리
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2026/04/22/javascript/web-bridge/" class="article-date">
+       <time datetime="2026-04-21T15:00:00.000Z" itemprop="datePublished">2026-04-22</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2026/04/22/javascript/web-bridge/" class="article-date">
+     <time datetime="2026-04-22T10:22:17.608Z" itemprop="dateModified">2026-04-22</time>
+  </a>
+</div>
+
+
+                
+
+                
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <h2 id="브릿지-Bridge-란"><a href="#브릿지-Bridge-란" class="headerlink" title="브릿지(Bridge)란?"></a>브릿지(Bridge)란?</h2><p>웹앱에서 브릿지는 <strong>서로 다른 실행 컨텍스트 간의 통신을 추상화한 레이어</strong>입니다.</p>
+<p><code>postMessage</code>나 네이티브 API는 저수준(low-level)이라 메시지 타입 관리, 요청-응답 매핑, 에러 처리를 직접 구현해야 합니다.<br>브릿지 패턴을 적용하면 이를 추상화하여 <strong>RPC(Remote Procedure Call)처럼</strong> 쉽게 사용할 수 있습니다.</p>
+<h3 id="브릿지가-필요한-대표적인-상황"><a href="#브릿지가-필요한-대표적인-상황" class="headerlink" title="브릿지가 필요한 대표적인 상황"></a>브릿지가 필요한 대표적인 상황</h3><table>
+<thead>
+<tr>
+<th>상황</th>
+<th>통신 대상</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iframe 내부 ↔ 부모 페이지</td>
+<td>다른 origin의 window</td>
+</tr>
+<tr>
+<td>웹뷰(WebView) ↔ 네이티브 앱</td>
+<td>React Native, iOS, Android</td>
+</tr>
+<tr>
+<td>Web Worker ↔ 메인 스레드</td>
+<td>백그라운드 스레드</td>
+</tr>
+<tr>
+<td>브라우저 확장(Extension) ↔ 웹 페이지</td>
+<td>확장 콘텐츠 스크립트</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="1-기본-브릿지-패턴-iframe-↔-부모"><a href="#1-기본-브릿지-패턴-iframe-↔-부모" class="headerlink" title="1. 기본 브릿지 패턴 (iframe ↔ 부모)"></a>1. 기본 브릿지 패턴 (iframe ↔ 부모)</h2><p>요청마다 고유한 <code>id</code>를 부여하고, 응답이 오면 해당 <code>id</code>의 Promise를 resolve하는 방식입니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bridge.js (부모 페이지와 iframe 양쪽에서 공유)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">IframeBridge</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">targetWindow, targetOrigin</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">targetWindow</span> = targetWindow;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">targetOrigin</span> = targetOrigin;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">pendingRequests</span> = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">handlers</span> = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="variable language_">this</span>.<span class="property">targetOrigin</span>) <span class="keyword">return</span>;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">_handleMessage</span>(event.<span class="property">data</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 메시지 전송 후 응답을 Promise로 반환</span></span><br><span class="line">  <span class="title function_">request</span>(<span class="params">type, payload</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> id = crypto.<span class="title function_">randomUUID</span>();</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">set</span>(id, &#123; resolve, reject &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">targetWindow</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">        &#123; id, type, payload &#125;,</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">targetOrigin</span></span><br><span class="line">      );</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 타임아웃 처리 (5초)</span></span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">has</span>(id)) &#123;</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">delete</span>(id);</span><br><span class="line">          <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">`Request timeout: <span class="subst">$&#123;type&#125;</span>`</span>));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, <span class="number">5000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 특정 메시지 타입에 핸들러 등록</span></span><br><span class="line">  <span class="title function_">on</span>(<span class="params">type, handler</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">handlers</span>.<span class="title function_">set</span>(type, handler);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">_handleMessage</span>(<span class="params">message</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; id, type, payload, error, isResponse &#125; = message;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 응답 메시지 처리</span></span><br><span class="line">    <span class="keyword">if</span> (isResponse &amp;&amp; <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">has</span>(id)) &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; resolve, reject &#125; = <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">get</span>(id);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">delete</span>(id);</span><br><span class="line">      error ? <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(error)) : <span class="title function_">resolve</span>(payload);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 요청 메시지 처리 → 핸들러 실행 후 응답 전송</span></span><br><span class="line">    <span class="keyword">const</span> handler = <span class="variable language_">this</span>.<span class="property">handlers</span>.<span class="title function_">get</span>(type);</span><br><span class="line">    <span class="keyword">if</span> (handler) &#123;</span><br><span class="line">      <span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line">        .<span class="title function_">then</span>(<span class="function">() =&gt;</span> <span class="title function_">handler</span>(payload))</span><br><span class="line">        .<span class="title function_">then</span>(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">targetWindow</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">            &#123; id, type, <span class="attr">payload</span>: result, <span class="attr">isResponse</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">targetOrigin</span></span><br><span class="line">          );</span><br><span class="line">        &#125;)</span><br><span class="line">        .<span class="title function_">catch</span>(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">targetWindow</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">            &#123; id, type, <span class="attr">error</span>: err.<span class="property">message</span>, <span class="attr">isResponse</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">targetOrigin</span></span><br><span class="line">          );</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="부모-페이지에서-사용"><a href="#부모-페이지에서-사용" class="headerlink" title="부모 페이지에서 사용"></a>부모 페이지에서 사용</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> iframe = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myFrame&#x27;</span>);</span><br><span class="line"></span><br><span class="line">iframe.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> bridge = <span class="keyword">new</span> <span class="title class_">IframeBridge</span>(</span><br><span class="line">    iframe.<span class="property">contentWindow</span>,</span><br><span class="line">    <span class="string">&#x27;https://child-domain.com&#x27;</span></span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="comment">// iframe에 데이터 요청</span></span><br><span class="line">  bridge.<span class="title function_">request</span>(<span class="string">&#x27;GET_USER_INFO&#x27;</span>, &#123; <span class="attr">userId</span>: <span class="number">42</span> &#125;)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function">(<span class="params">user</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;사용자 정보:&#x27;</span>, user))</span><br><span class="line">    .<span class="title function_">catch</span>(<span class="function">(<span class="params">err</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(err));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// iframe에서 오는 이벤트 수신</span></span><br><span class="line">  bridge.<span class="title function_">on</span>(<span class="string">&#x27;CART_UPDATED&#x27;</span>, <span class="function">(<span class="params">payload</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;장바구니 변경:&#x27;</span>, payload);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="iframe-내부에서-사용"><a href="#iframe-내부에서-사용" class="headerlink" title="iframe 내부에서 사용"></a>iframe 내부에서 사용</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> bridge = <span class="keyword">new</span> <span class="title class_">IframeBridge</span>(<span class="variable language_">window</span>.<span class="property">parent</span>, <span class="string">&#x27;https://parent-domain.com&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 부모가 요청한 &#x27;GET_USER_INFO&#x27; 처리</span></span><br><span class="line">bridge.<span class="title function_">on</span>(<span class="string">&#x27;GET_USER_INFO&#x27;</span>, <span class="keyword">async</span> (&#123; userId &#125;) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="title function_">fetchUser</span>(userId); <span class="comment">// 내부 API 호출</span></span><br><span class="line">  <span class="keyword">return</span> user; <span class="comment">// 반환값이 부모의 Promise로 전달됨</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 부모에게 이벤트 발송 (응답 불필요)</span></span><br><span class="line">bridge.<span class="title function_">request</span>(<span class="string">&#x27;CART_UPDATED&#x27;</span>, &#123; <span class="attr">itemCount</span>: <span class="number">3</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-WebView-브릿지-하이브리드-앱"><a href="#2-WebView-브릿지-하이브리드-앱" class="headerlink" title="2. WebView 브릿지 (하이브리드 앱)"></a>2. WebView 브릿지 (하이브리드 앱)</h2><p>React Native, Cordova 등 <strong>하이브리드 앱</strong>에서는 네이티브 코드와 웹뷰(WebView) 간 통신에 브릿지를 사용합니다.<br>웹 측에서는 <code>window.ReactNativeWebView.postMessage</code> 또는 <code>webkit.messageHandlers</code>를 통해 네이티브로 메시지를 보냅니다.</p>
+<h3 id="React-Native-WebView-브릿지"><a href="#React-Native-WebView-브릿지" class="headerlink" title="React Native WebView 브릿지"></a>React Native WebView 브릿지</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 웹 측 (WebView 안에서 실행되는 코드)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ReactNativeBridge</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">pendingRequests</span> = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 네이티브에서 웹으로 보내는 메시지 수신</span></span><br><span class="line">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> message = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(event.<span class="property">data</span>);</span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">_handleNativeMessage</span>(message);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="comment">// 파싱 실패 무시</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 네이티브로 메시지 전송 후 Promise 반환</span></span><br><span class="line">  <span class="title function_">call</span>(<span class="params">action, params = &#123;&#125;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> id = crypto.<span class="title function_">randomUUID</span>();</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">set</span>(id, &#123; resolve, reject &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> message = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; id, action, params &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Android / iOS 공통 처리</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="variable language_">window</span>.<span class="property">ReactNativeWebView</span>) &#123;</span><br><span class="line">        <span class="variable language_">window</span>.<span class="property">ReactNativeWebView</span>.<span class="title function_">postMessage</span>(message);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;ReactNativeWebView not available&#x27;</span>));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">_handleNativeMessage</span>(<span class="params">&#123; id, result, error &#125;</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">has</span>(id)) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">const</span> &#123; resolve, reject &#125; = <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">get</span>(id);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">delete</span>(id);</span><br><span class="line">    error ? <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(error)) : <span class="title function_">resolve</span>(result);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용 예시</span></span><br><span class="line"><span class="keyword">const</span> bridge = <span class="keyword">new</span> <span class="title class_">ReactNativeBridge</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 네이티브 카메라 열기 요청</span></span><br><span class="line">bridge.<span class="title function_">call</span>(<span class="string">&#x27;openCamera&#x27;</span>, &#123; <span class="attr">quality</span>: <span class="string">&#x27;high&#x27;</span> &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">photoUri</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;촬영된 사진:&#x27;</span>, photoUri))</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">(<span class="params">err</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;카메라 실패:&#x27;</span>, err));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 네이티브 저장소에서 값 읽기</span></span><br><span class="line">bridge.<span class="title function_">call</span>(<span class="string">&#x27;getStorageItem&#x27;</span>, &#123; <span class="attr">key</span>: <span class="string">&#x27;authToken&#x27;</span> &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">token</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;토큰:&#x27;</span>, token));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 네이티브 측 (React Native)</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">WebView</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react-native-webview&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">AppWebView</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> webViewRef = <span class="title function_">useRef</span>(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">handleMessage</span> = <span class="keyword">async</span> (<span class="params">event</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; id, action, params &#125; = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(event.<span class="property">nativeEvent</span>.<span class="property">data</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> result, error;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (action === <span class="string">&#x27;openCamera&#x27;</span>) &#123;</span><br><span class="line">        result = <span class="keyword">await</span> <span class="title function_">openNativeCamera</span>(params);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (action === <span class="string">&#x27;getStorageItem&#x27;</span>) &#123;</span><br><span class="line">        result = <span class="keyword">await</span> <span class="title class_">AsyncStorage</span>.<span class="title function_">getItem</span>(params.<span class="property">key</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      error = e.<span class="property">message</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 웹으로 응답 전송</span></span><br><span class="line">    <span class="keyword">const</span> response = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; id, result, error &#125;);</span><br><span class="line">    webViewRef.<span class="property">current</span>.<span class="title function_">injectJavaScript</span>(</span><br><span class="line">      <span class="string">`window.dispatchEvent(new MessageEvent(&#x27;message&#x27;, &#123; data: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(response)&#125;</span> &#125;));`</span></span><br><span class="line">    );</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">WebView</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">ref</span>=<span class="string">&#123;webViewRef&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">source</span>=<span class="string">&#123;&#123;</span> <span class="attr">uri:</span> &#x27;<span class="attr">https:</span>//<span class="attr">my-webapp.com</span>&#x27; &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">onMessage</span>=<span class="string">&#123;handleMessage&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    /&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Android-WebView-브릿지"><a href="#Android-WebView-브릿지" class="headerlink" title="Android WebView 브릿지"></a>Android WebView 브릿지</h3><p>Android에서는 <code>@JavascriptInterface</code> 어노테이션이 붙은 Kotlin&#x2F;Java 객체를 WebView에 주입하면, 웹에서 <code>window.AndroidBridge.메서드명()</code>으로 직접 호출할 수 있습니다.</p>
+<h4 id="Android-통신-흐름"><a href="#Android-통신-흐름" class="headerlink" title="Android 통신 흐름"></a>Android 통신 흐름</h4><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">웹 → 네이티브: window.AndroidBridge.postMessage(json)</span><br><span class="line">네이티브 → 웹: webView.evaluateJavascript(&quot;window.__callback(json)&quot;, null)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Android-웹-측-코드"><a href="#Android-웹-측-코드" class="headerlink" title="Android 웹 측 코드"></a>Android 웹 측 코드</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 웹 측 - Android WebView</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AndroidBridgeClient</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">pendingRequests</span> = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">call</span>(<span class="params">action, params = &#123;&#125;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> id = crypto.<span class="title function_">randomUUID</span>();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 네이티브 응답 수신용 전역 콜백 등록</span></span><br><span class="line">      <span class="variable language_">window</span>[<span class="string">`__bridge_<span class="subst">$&#123;id&#125;</span>`</span>] = <span class="function">(<span class="params">jsonStr</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">delete</span> <span class="variable language_">window</span>[<span class="string">`__bridge_<span class="subst">$&#123;id&#125;</span>`</span>];</span><br><span class="line">        <span class="keyword">const</span> &#123; result, error &#125; = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(jsonStr);</span><br><span class="line">        error ? <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(error)) : <span class="title function_">resolve</span>(result);</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!<span class="variable language_">window</span>.<span class="property">AndroidBridge</span>) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;AndroidBridge is not available&#x27;</span>));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="variable language_">window</span>.<span class="property">AndroidBridge</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">        <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; id, action, params &#125;)</span><br><span class="line">      );</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용 예시</span></span><br><span class="line"><span class="keyword">const</span> bridge = <span class="keyword">new</span> <span class="title class_">AndroidBridgeClient</span>();</span><br><span class="line"></span><br><span class="line">bridge.<span class="title function_">call</span>(<span class="string">&#x27;getDeviceInfo&#x27;</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">info</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;디바이스 정보:&#x27;</span>, info));</span><br><span class="line"></span><br><span class="line">bridge.<span class="title function_">call</span>(<span class="string">&#x27;openCamera&#x27;</span>, &#123; <span class="attr">quality</span>: <span class="string">&#x27;high&#x27;</span> &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">uri</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;사진 경로:&#x27;</span>, uri));</span><br></pre></td></tr></table></figure>
+
+<h4 id="네이티브-측-코드-Kotlin"><a href="#네이티브-측-코드-Kotlin" class="headerlink" title="네이티브 측 코드 (Kotlin)"></a>네이티브 측 코드 (Kotlin)</h4><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">// AndroidBridge.kt</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AndroidBridge</span>(</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> context: Context,</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> webView: WebView</span><br><span class="line">) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JavascriptInterface</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">postMessage</span><span class="params">(jsonStr: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">val</span> json = JSONObject(jsonStr)</span><br><span class="line">        <span class="keyword">val</span> id = json.getString(<span class="string">&quot;id&quot;</span>)</span><br><span class="line">        <span class="keyword">val</span> action = json.getString(<span class="string">&quot;action&quot;</span>)</span><br><span class="line">        <span class="keyword">val</span> params = json.optJSONObject(<span class="string">&quot;params&quot;</span>) ?: JSONObject()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 백그라운드 스레드에서 실행되므로 Main 스레드로 전환</span></span><br><span class="line">        CoroutineScope(Dispatchers.IO).launch &#123;</span><br><span class="line">            <span class="keyword">val</span> (result, error) = <span class="keyword">try</span> &#123;</span><br><span class="line">                handleAction(action, params) to <span class="literal">null</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (e: Exception) &#123;</span><br><span class="line">                <span class="literal">null</span> to e.message</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">val</span> response = JSONObject().apply &#123;</span><br><span class="line">                put(<span class="string">&quot;result&quot;</span>, result)</span><br><span class="line">                put(<span class="string">&quot;error&quot;</span>, error)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 웹으로 응답 전송 (반드시 Main 스레드에서 호출)</span></span><br><span class="line">            withContext(Dispatchers.Main) &#123;</span><br><span class="line">                webView.evaluateJavascript(</span><br><span class="line">                    <span class="string">&quot;window.__bridge_<span class="subst">$&#123;id&#125;</span>(&#x27;<span class="subst">$&#123;response&#125;</span>&#x27;)&quot;</span>,</span><br><span class="line">                    <span class="literal">null</span></span><br><span class="line">                )</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">handleAction</span><span class="params">(action: <span class="type">String</span>, params: <span class="type">JSONObject</span>)</span></span>: Any? &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">when</span> (action) &#123;</span><br><span class="line">            <span class="string">&quot;getDeviceInfo&quot;</span> -&gt; JSONObject().apply &#123;</span><br><span class="line">                put(<span class="string">&quot;os&quot;</span>, <span class="string">&quot;Android&quot;</span>)</span><br><span class="line">                put(<span class="string">&quot;version&quot;</span>, Build.VERSION.RELEASE)</span><br><span class="line">                put(<span class="string">&quot;model&quot;</span>, Build.MODEL)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="string">&quot;openCamera&quot;</span> -&gt; &#123;</span><br><span class="line">                <span class="comment">// 카메라 열기 로직</span></span><br><span class="line">                <span class="string">&quot;/storage/emulated/0/DCIM/photo.jpg&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> -&gt; <span class="keyword">throw</span> IllegalArgumentException(<span class="string">&quot;Unknown action: <span class="variable">$action</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">// MainActivity.kt - WebView 설정</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MainActivity</span> : <span class="type">AppCompatActivity</span>() &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> webView: WebView</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">        webView = WebView(<span class="keyword">this</span>).apply &#123;</span><br><span class="line">            settings.javaScriptEnabled = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// JavaScript Interface 등록</span></span><br><span class="line">            <span class="comment">// 두 번째 인자가 웹에서 접근할 window 객체 이름</span></span><br><span class="line">            addJavascriptInterface(</span><br><span class="line">                AndroidBridge(<span class="keyword">this</span><span class="symbol">@MainActivity</span>, <span class="keyword">this</span>),</span><br><span class="line">                <span class="string">&quot;AndroidBridge&quot;</span></span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">            loadUrl(<span class="string">&quot;https://my-webapp.com&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        setContentView(webView)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>보안 주의</strong>: <code>@JavascriptInterface</code>는 앱 내 신뢰된 URL에만 사용해야 합니다.<br>Android 4.2(API 17) 미만에서는 모든 public 메서드가 노출되는 취약점이 있었으므로 최소 <code>minSdk = 17</code>을 설정하세요.</p>
+</blockquote>
+<hr>
+<h3 id="iOS-WKWebView-브릿지"><a href="#iOS-WKWebView-브릿지" class="headerlink" title="iOS WKWebView 브릿지"></a>iOS WKWebView 브릿지</h3><p>iOS에서는 <code>webkit.messageHandlers</code>를 통해 네이티브로 메시지를 보냅니다.<br>Android와 달리 JavaScript 객체를 직접 주입하는 방식이 아니라 <strong>메시지 핸들러</strong> 방식으로 동작합니다.</p>
+<h4 id="iOS-통신-흐름"><a href="#iOS-통신-흐름" class="headerlink" title="iOS 통신 흐름"></a>iOS 통신 흐름</h4><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">웹 → 네이티브: webkit.messageHandlers.bridge.postMessage(json)</span><br><span class="line">네이티브 → 웹: webView.evaluateJavaScript(&quot;window.__callback(json)&quot;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="iOS-웹-측-코드"><a href="#iOS-웹-측-코드" class="headerlink" title="iOS 웹 측 코드"></a>iOS 웹 측 코드</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 웹 측 - iOS WKWebView</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">IOSBridgeClient</span> &#123;</span><br><span class="line">  <span class="title function_">call</span>(<span class="params">action, params = &#123;&#125;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> id = crypto.<span class="title function_">randomUUID</span>();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 네이티브 응답 수신용 전역 콜백 등록</span></span><br><span class="line">      <span class="variable language_">window</span>[<span class="string">`__bridge_<span class="subst">$&#123;id&#125;</span>`</span>] = <span class="function">(<span class="params">jsonStr</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">delete</span> <span class="variable language_">window</span>[<span class="string">`__bridge_<span class="subst">$&#123;id&#125;</span>`</span>];</span><br><span class="line">        <span class="keyword">const</span> &#123; result, error &#125; = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(jsonStr);</span><br><span class="line">        error ? <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(error)) : <span class="title function_">resolve</span>(result);</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!<span class="variable language_">window</span>.<span class="property">webkit</span>?.<span class="property">messageHandlers</span>?.<span class="property">bridge</span>) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;iOS WebKit bridge is not available&#x27;</span>));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      webkit.<span class="property">messageHandlers</span>.<span class="property">bridge</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">        <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; id, action, params &#125;)</span><br><span class="line">      );</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용 예시</span></span><br><span class="line"><span class="keyword">const</span> bridge = <span class="keyword">new</span> <span class="title class_">IOSBridgeClient</span>();</span><br><span class="line"></span><br><span class="line">bridge.<span class="title function_">call</span>(<span class="string">&#x27;getDeviceInfo&#x27;</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">info</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;디바이스 정보:&#x27;</span>, info));</span><br><span class="line"></span><br><span class="line">bridge.<span class="title function_">call</span>(<span class="string">&#x27;getLocation&#x27;</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">&#123; lat, lng &#125;</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;현재 위치:&#x27;</span>, lat, lng));</span><br></pre></td></tr></table></figure>
+
+<h4 id="네이티브-측-코드-Swift"><a href="#네이티브-측-코드-Swift" class="headerlink" title="네이티브 측 코드 (Swift)"></a>네이티브 측 코드 (Swift)</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// BridgeHandler.swift</span></span><br><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BridgeHandler</span>: <span class="title class_">NSObject</span>, <span class="title class_">WKScriptMessageHandler</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">weak</span> <span class="keyword">var</span> webView: <span class="type">WKWebView</span>?</span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">userContentController</span>(</span><br><span class="line">        <span class="keyword">_</span> <span class="params">userContentController</span>: <span class="type">WKUserContentController</span>,</span><br><span class="line">        <span class="params">didReceive</span> <span class="params">message</span>: <span class="type">WKScriptMessage</span></span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="keyword">guard</span></span><br><span class="line">            <span class="keyword">let</span> body <span class="operator">=</span> message.body <span class="keyword">as?</span> <span class="type">String</span>,</span><br><span class="line">            <span class="keyword">let</span> data <span class="operator">=</span> body.data(using: .utf8),</span><br><span class="line">            <span class="keyword">let</span> json <span class="operator">=</span> <span class="keyword">try?</span> <span class="type">JSONSerialization</span>.jsonObject(with: data) <span class="keyword">as?</span> [<span class="type">String</span>: <span class="keyword">Any</span>],</span><br><span class="line">            <span class="keyword">let</span> id <span class="operator">=</span> json[<span class="string">&quot;id&quot;</span>] <span class="keyword">as?</span> <span class="type">String</span>,</span><br><span class="line">            <span class="keyword">let</span> action <span class="operator">=</span> json[<span class="string">&quot;action&quot;</span>] <span class="keyword">as?</span> <span class="type">String</span></span><br><span class="line">        <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> params <span class="operator">=</span> json[<span class="string">&quot;params&quot;</span>] <span class="keyword">as?</span> [<span class="type">String</span>: <span class="keyword">Any</span>] <span class="operator">??</span> [:]</span><br><span class="line"></span><br><span class="line">        <span class="type">Task</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> (result, error): (<span class="keyword">Any</span><span class="operator">?</span>, <span class="type">String</span>?)</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                result <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> handleAction(action, params: params)</span><br><span class="line">                error <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">                result <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line">                error <span class="operator">=</span> error.localizedDescription</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> response: [<span class="type">String</span>: <span class="keyword">Any</span>] <span class="operator">=</span> [</span><br><span class="line">                <span class="string">&quot;result&quot;</span>: result <span class="keyword">as</span> <span class="keyword">Any</span>,</span><br><span class="line">                <span class="string">&quot;error&quot;</span>: error <span class="keyword">as</span> <span class="keyword">Any</span></span><br><span class="line">            ]</span><br><span class="line">            <span class="keyword">let</span> responseData <span class="operator">=</span> <span class="keyword">try!</span> <span class="type">JSONSerialization</span>.data(withJSONObject: response)</span><br><span class="line">            <span class="keyword">let</span> responseStr <span class="operator">=</span> <span class="type">String</span>(data: responseData, encoding: .utf8)<span class="operator">!</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 메인 스레드에서 웹으로 응답 전송</span></span><br><span class="line">            <span class="keyword">await</span> <span class="type">MainActor</span>.run &#123;</span><br><span class="line">                webView<span class="operator">?</span>.evaluateJavaScript(</span><br><span class="line">                    <span class="string">&quot;window.__bridge_<span class="subst">\(id)</span>(&#x27;<span class="subst">\(responseStr)</span>&#x27;)&quot;</span></span><br><span class="line">                )</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">handleAction</span>(<span class="keyword">_</span> <span class="params">action</span>: <span class="type">String</span>, <span class="params">params</span>: [<span class="params">String</span>: <span class="keyword">Any</span>]) <span class="keyword">async</span> <span class="keyword">throws</span> -&gt; <span class="keyword">Any</span><span class="operator">?</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> action &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;getDeviceInfo&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> [</span><br><span class="line">                <span class="string">&quot;os&quot;</span>: <span class="string">&quot;iOS&quot;</span>,</span><br><span class="line">                <span class="string">&quot;version&quot;</span>: <span class="type">UIDevice</span>.current.systemVersion,</span><br><span class="line">                <span class="string">&quot;model&quot;</span>: <span class="type">UIDevice</span>.current.model</span><br><span class="line">            ]</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;getLocation&quot;</span>:</span><br><span class="line">            <span class="comment">// CLLocationManager를 통해 위치 가져오는 로직</span></span><br><span class="line">            <span class="keyword">return</span> [<span class="string">&quot;lat&quot;</span>: <span class="number">37.5665</span>, <span class="string">&quot;lng&quot;</span>: <span class="number">126.9780</span>]</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">throw</span> <span class="type">NSError</span>(</span><br><span class="line">                domain: <span class="string">&quot;BridgeError&quot;</span>,</span><br><span class="line">                code: <span class="operator">-</span><span class="number">1</span>,</span><br><span class="line">                userInfo: [NSLocalizedDescriptionKey: <span class="string">&quot;Unknown action: <span class="subst">\(action)</span>&quot;</span>]</span><br><span class="line">            )</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ViewController.swift - WKWebView 설정</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ViewController</span>: <span class="title class_">UIViewController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> webView: <span class="type">WKWebView</span>!</span><br><span class="line">    <span class="keyword">let</span> bridgeHandler <span class="operator">=</span> <span class="type">BridgeHandler</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">viewDidLoad</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> config <span class="operator">=</span> <span class="type">WKWebViewConfiguration</span>()</span><br><span class="line">        <span class="keyword">let</span> contentController <span class="operator">=</span> <span class="type">WKUserContentController</span>()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 메시지 핸들러 등록 (&quot;bridge&quot; 이름으로 webkit.messageHandlers.bridge 접근 가능)</span></span><br><span class="line">        contentController.add(bridgeHandler, name: <span class="string">&quot;bridge&quot;</span>)</span><br><span class="line">        config.userContentController <span class="operator">=</span> contentController</span><br><span class="line"></span><br><span class="line">        webView <span class="operator">=</span> <span class="type">WKWebView</span>(frame: view.bounds, configuration: config)</span><br><span class="line">        bridgeHandler.webView <span class="operator">=</span> webView</span><br><span class="line"></span><br><span class="line">        view.addSubview(webView)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;https://my-webapp.com&quot;</span>) &#123;</span><br><span class="line">            webView.load(<span class="type">URLRequest</span>(url: url))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">deinit</span> &#123;</span><br><span class="line">        <span class="comment">// 메모리 누수 방지: 반드시 핸들러 제거</span></span><br><span class="line">        webView.configuration.userContentController.removeScriptMessageHandler(forName: <span class="string">&quot;bridge&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>주의</strong>: <code>deinit</code>에서 <code>removeScriptMessageHandler</code>를 호출하지 않으면 <code>WKUserContentController</code>가 <code>BridgeHandler</code>를 strong reference로 유지해 메모리 누수가 발생합니다.</p>
+</blockquote>
+<hr>
+<h3 id="Android-vs-iOS-브릿지-비교"><a href="#Android-vs-iOS-브릿지-비교" class="headerlink" title="Android vs iOS 브릿지 비교"></a>Android vs iOS 브릿지 비교</h3><table>
+<thead>
+<tr>
+<th>항목</th>
+<th>Android</th>
+<th>iOS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>웹 → 네이티브</strong></td>
+<td><code>window.AndroidBridge.postMessage()</code></td>
+<td><code>webkit.messageHandlers.bridge.postMessage()</code></td>
+</tr>
+<tr>
+<td><strong>네이티브 → 웹</strong></td>
+<td><code>webView.evaluateJavascript()</code></td>
+<td><code>webView.evaluateJavaScript()</code></td>
+</tr>
+<tr>
+<td><strong>주입 방식</strong></td>
+<td>JS Interface 객체 직접 주입</td>
+<td>메시지 핸들러 등록</td>
+</tr>
+<tr>
+<td><strong>스레드</strong></td>
+<td><code>@JavascriptInterface</code> 호출은 별도 스레드</td>
+<td>기본 메인 스레드에서 처리</td>
+</tr>
+<tr>
+<td><strong>보안 설정</strong></td>
+<td><code>minSdk &gt;= 17</code> 필수</td>
+<td><code>deinit</code>에서 핸들러 제거 필수</td>
+</tr>
+<tr>
+<td><strong>인터페이스 이름</strong></td>
+<td><code>addJavascriptInterface(obj, &quot;이름&quot;)</code></td>
+<td><code>add(handler, name: &quot;이름&quot;)</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-Web-Worker-브릿지"><a href="#3-Web-Worker-브릿지" class="headerlink" title="3. Web Worker 브릿지"></a>3. Web Worker 브릿지</h2><p>CPU 집약적인 작업을 Web Worker로 분리할 때도 동일한 브릿지 패턴을 적용할 수 있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.js (메인 스레드)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WorkerBridge</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">workerPath</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">worker</span> = <span class="keyword">new</span> <span class="title class_">Worker</span>(workerPath);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">pendingRequests</span> = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">worker</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">&#123; data &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; id, result, error &#125; = data;</span><br><span class="line">      <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">has</span>(id)) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> &#123; resolve, reject &#125; = <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">get</span>(id);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">delete</span>(id);</span><br><span class="line">      error ? <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(error)) : <span class="title function_">resolve</span>(result);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">call</span>(<span class="params">action, payload</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> id = crypto.<span class="title function_">randomUUID</span>();</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">pendingRequests</span>.<span class="title function_">set</span>(id, &#123; resolve, reject &#125;);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">worker</span>.<span class="title function_">postMessage</span>(&#123; id, action, payload &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">terminate</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">worker</span>.<span class="title function_">terminate</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용</span></span><br><span class="line"><span class="keyword">const</span> bridge = <span class="keyword">new</span> <span class="title class_">WorkerBridge</span>(<span class="string">&#x27;./worker.js&#x27;</span>);</span><br><span class="line"></span><br><span class="line">bridge.<span class="title function_">call</span>(<span class="string">&#x27;heavyCompute&#x27;</span>, &#123; <span class="attr">data</span>: largeArray &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">result</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;계산 완료:&#x27;</span>, result));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// worker.js (Worker 스레드)</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="keyword">async</span> (&#123; data &#125;) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; id, action, payload &#125; = data;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> result;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (action === <span class="string">&#x27;heavyCompute&#x27;</span>) &#123;</span><br><span class="line">      result = payload.<span class="property">data</span>.<span class="title function_">reduce</span>(<span class="function">(<span class="params">acc, val</span>) =&gt;</span> acc + val, <span class="number">0</span>); <span class="comment">// 예시</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    self.<span class="title function_">postMessage</span>(&#123; id, result &#125;);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    self.<span class="title function_">postMessage</span>(&#123; id, <span class="attr">error</span>: e.<span class="property">message</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-TypeScript로-타입-안전한-브릿지-만들기"><a href="#4-TypeScript로-타입-안전한-브릿지-만들기" class="headerlink" title="4. TypeScript로 타입 안전한 브릿지 만들기"></a>4. TypeScript로 타입 안전한 브릿지 만들기</h2><p>메시지 타입을 명시적으로 정의하면 실수를 컴파일 타임에 잡을 수 있습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bridge-types.ts</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">BridgeMessageMap</span> = &#123;</span><br><span class="line">  <span class="attr">GET_USER_INFO</span>: &#123;</span><br><span class="line">    <span class="attr">request</span>: &#123; <span class="attr">userId</span>: <span class="built_in">number</span> &#125;;</span><br><span class="line">    <span class="attr">response</span>: &#123; <span class="attr">id</span>: <span class="built_in">number</span>; <span class="attr">name</span>: <span class="built_in">string</span>; <span class="attr">email</span>: <span class="built_in">string</span> &#125;;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="attr">CART_UPDATED</span>: &#123;</span><br><span class="line">    <span class="attr">request</span>: &#123; <span class="attr">itemCount</span>: <span class="built_in">number</span> &#125;;</span><br><span class="line">    <span class="attr">response</span>: <span class="built_in">void</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="attr">OPEN_CAMERA</span>: &#123;</span><br><span class="line">    <span class="attr">request</span>: &#123; <span class="attr">quality</span>: <span class="string">&#x27;low&#x27;</span> | <span class="string">&#x27;high&#x27;</span> &#125;;</span><br><span class="line">    <span class="attr">response</span>: &#123; <span class="attr">uri</span>: <span class="built_in">string</span> &#125;;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">BridgeMessage</span>&lt;T <span class="keyword">extends</span> keyof <span class="title class_">BridgeMessageMap</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">type</span>: T;</span><br><span class="line">  <span class="attr">payload</span>: <span class="title class_">BridgeMessageMap</span>[T][<span class="string">&#x27;request&#x27;</span>];</span><br><span class="line">  isResponse?: <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">BridgeResponse</span>&lt;T <span class="keyword">extends</span> keyof <span class="title class_">BridgeMessageMap</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">type</span>: T;</span><br><span class="line">  <span class="attr">payload</span>: <span class="title class_">BridgeMessageMap</span>[T][<span class="string">&#x27;response&#x27;</span>];</span><br><span class="line">  <span class="attr">isResponse</span>: <span class="literal">true</span>;</span><br><span class="line">  error?: <span class="built_in">string</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 타입 안전한 브릿지 클래스</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TypedBridge</span> &#123;</span><br><span class="line">  request&lt;T <span class="keyword">extends</span> keyof <span class="title class_">BridgeMessageMap</span>&gt;(</span><br><span class="line">    <span class="attr">type</span>: T,</span><br><span class="line">    <span class="attr">payload</span>: <span class="title class_">BridgeMessageMap</span>[T][<span class="string">&#x27;request&#x27;</span>]</span><br><span class="line">  ): <span class="title class_">Promise</span>&lt;<span class="title class_">BridgeMessageMap</span>[T][<span class="string">&#x27;response&#x27;</span>]&gt; &#123;</span><br><span class="line">    <span class="comment">// ... 구현</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  on&lt;T <span class="keyword">extends</span> keyof <span class="title class_">BridgeMessageMap</span>&gt;(</span><br><span class="line">    <span class="attr">type</span>: T,</span><br><span class="line">    <span class="attr">handler</span>: <span class="function">(<span class="params">payload: BridgeMessageMap[T][<span class="string">&#x27;request&#x27;</span>]</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="title class_">BridgeMessageMap</span>[T][<span class="string">&#x27;response&#x27;</span>]&gt;</span><br><span class="line">  ): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="comment">// ... 구현</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용 시 타입 자동 추론</span></span><br><span class="line"><span class="keyword">const</span> bridge = <span class="keyword">new</span> <span class="title class_">TypedBridge</span>(<span class="comment">/* ... */</span>);</span><br><span class="line"></span><br><span class="line">bridge.<span class="title function_">request</span>(<span class="string">&#x27;GET_USER_INFO&#x27;</span>, &#123; <span class="attr">userId</span>: <span class="number">1</span> &#125;); <span class="comment">// OK</span></span><br><span class="line">bridge.<span class="title function_">request</span>(<span class="string">&#x27;GET_USER_INFO&#x27;</span>, &#123; <span class="attr">userId</span>: <span class="string">&#x27;wrong&#x27;</span> &#125;); <span class="comment">// 컴파일 에러</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-브릿지-설계-시-고려사항"><a href="#5-브릿지-설계-시-고려사항" class="headerlink" title="5. 브릿지 설계 시 고려사항"></a>5. 브릿지 설계 시 고려사항</h2><table>
+<thead>
+<tr>
+<th>항목</th>
+<th>권장 사항</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>메시지 식별</strong></td>
+<td>요청마다 고유 <code>id</code> (UUID) 부여하여 응답 매핑</td>
+</tr>
+<tr>
+<td><strong>타임아웃</strong></td>
+<td>응답 없는 요청에 타임아웃 설정 (메모리 누수 방지)</td>
+</tr>
+<tr>
+<td><strong>출처 검증</strong></td>
+<td><code>event.origin</code> 또는 호출 환경 검증 필수</td>
+</tr>
+<tr>
+<td><strong>직렬화</strong></td>
+<td>메시지는 반드시 JSON 직렬화 가능한 값만 사용</td>
+</tr>
+<tr>
+<td><strong>에러 전파</strong></td>
+<td>핸들러 예외를 catch하여 요청 측에 error 필드로 전달</td>
+</tr>
+<tr>
+<td><strong>타입 정의</strong></td>
+<td>TypeScript로 메시지 타입을 명시적으로 정의</td>
+</tr>
+<tr>
+<td><strong>메모리 관리</strong></td>
+<td>이벤트 리스너 등록&#x2F;해제를 명확히 관리</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="요약"><a href="#요약" class="headerlink" title="요약"></a>요약</h2><ul>
+<li>브릿지는 <code>postMessage</code>와 같은 저수준 통신 API 위에 요청-응답 추상화 레이어를 제공한다.</li>
+<li>요청마다 고유 <code>id</code>를 부여하고 <code>Map</code>으로 pending 요청을 관리하면 Promise 기반 API로 구현할 수 있다.</li>
+<li>iframe 브릿지는 <code>event.origin</code> 검증, WebView 브릿지는 플랫폼별 API(<code>ReactNativeWebView</code>, <code>webkit.messageHandlers</code>)를 사용한다.</li>
+<li>TypeScript의 제네릭 타입 맵으로 메시지 타입을 정의하면 컴파일 타임에 타입 안전성을 확보할 수 있다.</li>
+<li>타임아웃 처리와 에러 전파를 반드시 구현해 메모리 누수와 무한 대기를 방지한다.</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2026/04/22/javascript/web-bridge/" data-id="cmo9wuso5000co4utc3y65cyv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "JavaScript - 웹앱 브릿지 패턴 완벽 정리",
+        "image": "https://ckck803.github.io",
+        "keywords": "",
+        "genre": "JavaScript Web",
+        "datePublished": "2026-04-22",
+        "dateCreated": "2026-04-22",
+        "dateModified": "2026-04-22",
+        "url": "https://ckck803.github.io/2026/04/22/javascript/web-bridge/",
+        "description": "브릿지(Bridge)란?웹앱에서 브릿지는 서로 다른 실행 컨텍스트 간의 통신을 추상화한 레이어입니다.
+postMessage나 네이티브 API는 저수준(low-level)이라 메시지 타입 관리, 요청-응답 매핑, 에러 처리를 직접 구현해야 합니다.브릿지 패턴을 적용하면 이를 추상화하여 RPC(Remote Procedure Call)처럼 쉽게 사용할 수 있습니",
+        "wordCount": 5813
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2026/04/22/javascript/deep-link/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            JavaScript - 딥링크(Deep Link), 앱링크(App Link), 웹링크(Web Link) 완벽 정리
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2026/04/20/rag/agentic_rag/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Agentic RAG 개념 정리</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">218</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/">NestJS</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Advanced/">Advanced</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Controller/">Controller</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Database/">Database</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Module/">Module</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Service/">Service</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/Web/">Web</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/Web/Mobile/">Mobile</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">53</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2026/04/22/javascript/web-bridge/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
