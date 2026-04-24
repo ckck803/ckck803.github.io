@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google" value="notranslate">
+
+    
+
+    
+    <title>JavaScript - postMessage 완벽 정리 | ddanzit</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content>
+    
+    <meta name="description" content="postMessage란?window.postMessage()는 서로 다른 origin을 가진 window 객체 사이에서 안전하게 메시지를 주고받을 수 있는 Web API입니다. 브라우저의 동일 출처 정책(Same-Origin Policy)은 iframe, 팝업, 다른 탭의 JavaScript가 서로 직접 접근하는 것을 막습니다. postMessage는 이">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript - postMessage 완벽 정리">
+<meta property="og:url" content="https://ckck803.github.io/2026/04/23/javascript/post-message/index.html">
+<meta property="og:site_name" content="ddanzit">
+<meta property="og:description" content="postMessage란?window.postMessage()는 서로 다른 origin을 가진 window 객체 사이에서 안전하게 메시지를 주고받을 수 있는 Web API입니다. 브라우저의 동일 출처 정책(Same-Origin Policy)은 iframe, 팝업, 다른 탭의 JavaScript가 서로 직접 접근하는 것을 막습니다. postMessage는 이">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-04-22T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-23T00:52:40.390Z">
+<meta property="article:author" content="ckck803">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon/favicon.ico">
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+
+    
+<link rel="stylesheet" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.css">
+	
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/rss2.xml" title="ddanzit" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">딴짓하는 개발자</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/">AI</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/Hugging-Face/">Hugging Face</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LLM/">LLM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LangChain/">LangChain</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/LangGraph/">LangGraph</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/RAG/">RAG</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AI/ollma/">ollma</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/">AWS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/AWS/EKS/">EKS</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/">CS</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/DataBase/">DataBase</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Network/">Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/Process/">Process</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/">DevOps</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/CICD/">CICD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Kiali/">Kiali</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Maven/">Maven</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/Repository/">Repository</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/">Develop</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Cpp/">Cpp</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Database/">Database</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Django/">Django</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/JPA/">JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Kafka/">Kafka</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/NestJS/">NestJS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Oracle/">Oracle</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/">Frontend</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Login/">Login</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React/">React</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/React-Query/">React Query</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Redux/">Redux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/To-do-List/">To do List</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vite/">Vite</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue/">Vue</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/Vue3/">Vue3</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/">Infrastructure</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JavaScript/">JavaScript</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JavaScript/Android/">Android</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JavaScript/Web/">Web</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/">Kubernetes</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Config/">Config</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Custom/">Custom</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Helm/">Helm</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/Istio/">Istio</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/">Spring</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a></li></ul></li></ul>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/JavaScript/">JavaScript</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/JavaScript/Web/">Web</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-javascript/post-message" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        JavaScript - postMessage 완벽 정리
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2026/04/23/javascript/post-message/" class="article-date">
+       <time datetime="2026-04-22T15:00:00.000Z" itemprop="datePublished">2026-04-23</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2026/04/23/javascript/post-message/" class="article-date">
+     <time datetime="2026-04-23T00:52:40.390Z" itemprop="dateModified">2026-04-23</time>
+  </a>
+</div>
+
+
+                
+
+                
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <h2 id="postMessage란"><a href="#postMessage란" class="headerlink" title="postMessage란?"></a>postMessage란?</h2><p><code>window.postMessage()</code>는 <strong>서로 다른 origin을 가진 window 객체 사이에서 안전하게 메시지를 주고받을 수 있는 Web API</strong>입니다.</p>
+<p>브라우저의 동일 출처 정책(Same-Origin Policy)은 <code>iframe</code>, 팝업, 다른 탭의 JavaScript가 서로 직접 접근하는 것을 막습니다. <code>postMessage</code>는 이 정책을 우회하지 않고, <strong>명시적으로 허용된 출처 간에만 안전하게 통신하는 채널</strong>을 제공합니다.</p>
+<h3 id="postMessage를-사용하는-주요-상황"><a href="#postMessage를-사용하는-주요-상황" class="headerlink" title="postMessage를 사용하는 주요 상황"></a>postMessage를 사용하는 주요 상황</h3><table>
+<thead>
+<tr>
+<th>상황</th>
+<th>송신 측</th>
+<th>수신 측</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iframe ↔ 부모 페이지</td>
+<td><code>iframe.contentWindow</code> &#x2F; <code>window.parent</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>팝업 ↔ 오프너 페이지</td>
+<td><code>window.opener</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>다른 탭 ↔ 현재 탭</td>
+<td><code>BroadcastChannel</code> 또는 <code>window.open</code> 반환값</td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>메인 스레드 ↔ Web Worker</td>
+<td><code>worker</code> 인스턴스</td>
+<td><code>self</code> (Worker 내부)</td>
+</tr>
+<tr>
+<td>메인 스레드 ↔ Service Worker</td>
+<td><code>navigator.serviceWorker</code></td>
+<td><code>self</code> (SW 내부)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="1-기본-사용법"><a href="#1-기본-사용법" class="headerlink" title="1. 기본 사용법"></a>1. 기본 사용법</h2><h3 id="메시지-보내기"><a href="#메시지-보내기" class="headerlink" title="메시지 보내기"></a>메시지 보내기</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">targetWindow.<span class="title function_">postMessage</span>(message, targetOrigin, [transfer]);</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>파라미터</th>
+<th>타입</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>message</code></td>
+<td>any</td>
+<td>전송할 데이터. 구조화 복제 알고리즘으로 직렬화됨</td>
+</tr>
+<tr>
+<td><code>targetOrigin</code></td>
+<td>string</td>
+<td>수신 대상의 origin. <code>&#39;*&#39;</code>이면 모든 origin 허용 (비권장)</td>
+</tr>
+<tr>
+<td><code>transfer</code></td>
+<td>Transferable[]</td>
+<td>(선택) 소유권을 이전할 객체 목록 (ArrayBuffer 등)</td>
+</tr>
+</tbody></table>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// iframe에 메시지 보내기</span></span><br><span class="line"><span class="keyword">const</span> iframe = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myFrame&#x27;</span>);</span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">  &#123; <span class="attr">type</span>: <span class="string">&#x27;GREET&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;홍길동&#x27;</span> &#125;,</span><br><span class="line">  <span class="string">&#x27;https://child-app.com&#x27;</span>  <span class="comment">// 이 origin의 iframe만 수신 가능</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 부모 페이지에 메시지 보내기 (iframe 내부에서)</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="property">parent</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">  &#123; <span class="attr">type</span>: <span class="string">&#x27;READY&#x27;</span> &#125;,</span><br><span class="line">  <span class="string">&#x27;https://parent-app.com&#x27;</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 팝업에 메시지 보내기</span></span><br><span class="line"><span class="keyword">const</span> popup = <span class="variable language_">window</span>.<span class="title function_">open</span>(<span class="string">&#x27;https://popup-app.com&#x27;</span>);</span><br><span class="line">popup.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;INIT&#x27;</span> &#125;, <span class="string">&#x27;https://popup-app.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="메시지-받기"><a href="#메시지-받기" class="headerlink" title="메시지 받기"></a>메시지 받기</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 1. 반드시 origin을 검증해야 합니다</span></span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://trusted-app.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. 메시지 처리</span></span><br><span class="line">  <span class="keyword">const</span> &#123; type, payload &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">&#x27;GREET&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`안녕하세요, <span class="subst">$&#123;payload.name&#125;</span>님!`</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. 발신자에게 응답 보내기</span></span><br><span class="line">  event.<span class="property">source</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;GREET_RESPONSE&#x27;</span>, <span class="attr">message</span>: <span class="string">&#x27;반갑습니다!&#x27;</span> &#125;,</span><br><span class="line">    event.<span class="property">origin</span></span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-MessageEvent-객체"><a href="#2-MessageEvent-객체" class="headerlink" title="2. MessageEvent 객체"></a>2. MessageEvent 객체</h2><p><code>message</code> 이벤트 핸들러가 받는 <code>MessageEvent</code> 객체의 주요 속성입니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">data</span>);     <span class="comment">// 전송된 데이터</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">origin</span>);   <span class="comment">// 발신자 origin: &quot;https://sender.com&quot;</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">source</span>);   <span class="comment">// 발신자 window 참조 (응답에 사용)</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">ports</span>);    <span class="comment">// MessageChannel 포트 배열 (고급 사용)</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">lastEventId</span>); <span class="comment">// Server-Sent Events에서 사용</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="event-origin-vs-event-source"><a href="#event-origin-vs-event-source" class="headerlink" title="event.origin vs event.source"></a>event.origin vs event.source</h3><table>
+<thead>
+<tr>
+<th>속성</th>
+<th>타입</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>event.origin</code></td>
+<td>string</td>
+<td>발신자 origin 검증 (<code>&quot;https://example.com&quot;</code> 형태)</td>
+</tr>
+<tr>
+<td><code>event.source</code></td>
+<td>WindowProxy</td>
+<td>발신자에게 응답 전송 (<code>event.source.postMessage(...)</code>)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><code>event.origin</code>이 <code>&quot;null&quot;</code>인 경우: <code>file://</code> 프로토콜, sandbox된 iframe, 일부 리다이렉트 상황에서 발생합니다. 이 경우 검증이 어려우므로 신뢰하지 않는 것이 안전합니다.</p>
+</blockquote>
+<hr>
+<h2 id="3-보안-origin-검증"><a href="#3-보안-origin-검증" class="headerlink" title="3. 보안: origin 검증"></a>3. 보안: origin 검증</h2><p><code>postMessage</code>를 쓸 때 <strong>가장 중요한 원칙은 수신 측에서 반드시 origin을 검증</strong>하는 것입니다.</p>
+<h3 id="잘못된-코드-취약"><a href="#잘못된-코드-취약" class="headerlink" title="잘못된 코드 (취약)"></a>잘못된 코드 (취약)</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 위험: origin 검증 없이 모든 메시지를 처리</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;output&#x27;</span>).<span class="property">innerHTML</span> = event.<span class="property">data</span>; <span class="comment">// XSS 위험!</span></span><br><span class="line">  <span class="built_in">eval</span>(event.<span class="property">data</span>); <span class="comment">// 절대 안 됨</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="올바른-코드-안전"><a href="#올바른-코드-안전" class="headerlink" title="올바른 코드 (안전)"></a>올바른 코드 (안전)</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 허용할 origin을 명시적으로 선언</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">ALLOWED_ORIGINS</span> = <span class="keyword">new</span> <span class="title class_">Set</span>([</span><br><span class="line">  <span class="string">&#x27;https://app.example.com&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;https://admin.example.com&#x27;</span>,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 1. origin 화이트리스트 검사</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="variable constant_">ALLOWED_ORIGINS</span>.<span class="title function_">has</span>(event.<span class="property">origin</span>)) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">warn</span>(<span class="string">`허용되지 않은 origin: <span class="subst">$&#123;event.origin&#125;</span>`</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. 데이터 구조 검증 (타입/스키마 확인)</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> event.<span class="property">data</span> !== <span class="string">&#x27;object&#x27;</span> || !event.<span class="property">data</span>.<span class="property">type</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> &#123; type, payload &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. 메시지 타입별 처리 (허용된 타입만)</span></span><br><span class="line">  <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;UPDATE_THEME&#x27;</span>:</span><br><span class="line">      <span class="title function_">applyTheme</span>(payload.<span class="property">theme</span>); <span class="comment">// 안전한 처리</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="attr">default</span>:</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">warn</span>(<span class="string">`알 수 없는 메시지 타입: <span class="subst">$&#123;type&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="보내는-쪽에서도-targetOrigin-지정"><a href="#보내는-쪽에서도-targetOrigin-지정" class="headerlink" title="보내는 쪽에서도 targetOrigin 지정"></a>보내는 쪽에서도 targetOrigin 지정</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 나쁜 예: &#x27;*&#x27;는 어느 사이트에서도 메시지를 가로챌 수 있음</span></span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(sensitiveData, <span class="string">&#x27;*&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 좋은 예: 특정 origin만 수신 가능</span></span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(sensitiveData, <span class="string">&#x27;https://trusted-child.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-활용-예제"><a href="#4-활용-예제" class="headerlink" title="4. 활용 예제"></a>4. 활용 예제</h2><h3 id="예제-1-iframe-↔-부모-페이지-통신"><a href="#예제-1-iframe-↔-부모-페이지-통신" class="headerlink" title="예제 1: iframe ↔ 부모 페이지 통신"></a>예제 1: iframe ↔ 부모 페이지 통신</h3><p>마이크로 프론트엔드나 써드파티 위젯을 iframe으로 임베드하고 통신하는 패턴입니다.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 부모 페이지 (https://parent.com) --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">id</span>=<span class="string">&quot;widget&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://widget.com/embed&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> iframe = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;widget&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// iframe이 로드된 후 메시지 전송</span></span></span><br><span class="line"><span class="language-javascript">  iframe.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(</span></span><br><span class="line"><span class="language-javascript">      &#123; <span class="attr">type</span>: <span class="string">&#x27;INIT&#x27;</span>, <span class="attr">userId</span>: <span class="string">&#x27;user-123&#x27;</span>, <span class="attr">theme</span>: <span class="string">&#x27;dark&#x27;</span> &#125;,</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&#x27;https://widget.com&#x27;</span></span></span><br><span class="line"><span class="language-javascript">    );</span></span><br><span class="line"><span class="language-javascript">  &#125;);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// iframe으로부터 이벤트 수신</span></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://widget.com&#x27;</span>) <span class="keyword">return</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> &#123; type, payload &#125; = event.<span class="property">data</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">if</span> (type === <span class="string">&#x27;PURCHASE_COMPLETE&#x27;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 위젯에서 결제가 완료되었을 때 부모가 처리</span></span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">updateOrderSummary</span>(payload.<span class="property">orderId</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">trackAnalyticsEvent</span>(<span class="string">&#x27;purchase&#x27;</span>, payload);</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// iframe 내부 (https://widget.com/embed)</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://parent.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> &#123; type, payload &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">&#x27;INIT&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">initializeWidget</span>(payload.<span class="property">userId</span>, payload.<span class="property">theme</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 부모에게 이벤트 알림</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">onPurchaseComplete</span>(<span class="params">orderId</span>) &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="property">parent</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;PURCHASE_COMPLETE&#x27;</span>, <span class="attr">payload</span>: &#123; orderId &#125; &#125;,</span><br><span class="line">    <span class="string">&#x27;https://parent.com&#x27;</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="예제-2-팝업-↔-오프너-통신-OAuth-흐름"><a href="#예제-2-팝업-↔-오프너-통신-OAuth-흐름" class="headerlink" title="예제 2: 팝업 ↔ 오프너 통신 (OAuth 흐름)"></a>예제 2: 팝업 ↔ 오프너 통신 (OAuth 흐름)</h3><p>OAuth 같은 인증 플로우에서 팝업 창에서 결과를 받아 원본 창에 전달하는 패턴입니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 오프너 페이지 (https://myapp.com)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">loginWithOAuth</span>(<span class="params">provider</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> popup = <span class="variable language_">window</span>.<span class="title function_">open</span>(</span><br><span class="line">    <span class="string">`https://auth.myapp.com/oauth/<span class="subst">$&#123;provider&#125;</span>`</span>,</span><br><span class="line">    <span class="string">&#x27;oauthPopup&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;width=500,height=600&#x27;</span></span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">handler</span> = (<span class="params">event</span>) =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://auth.myapp.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line">      <span class="keyword">if</span> (event.<span class="property">source</span> !== popup) <span class="keyword">return</span>; <span class="comment">// 이 팝업에서 온 메시지만 처리</span></span><br><span class="line"></span><br><span class="line">      <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (event.<span class="property">data</span>.<span class="property">type</span> === <span class="string">&#x27;OAUTH_SUCCESS&#x27;</span>) &#123;</span><br><span class="line">        <span class="title function_">resolve</span>(event.<span class="property">data</span>.<span class="property">token</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (event.<span class="property">data</span>.<span class="property">type</span> === <span class="string">&#x27;OAUTH_FAILURE&#x27;</span>) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(event.<span class="property">data</span>.<span class="property">error</span>));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 팝업이 닫히면 reject</span></span><br><span class="line">    <span class="keyword">const</span> timer = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (popup.<span class="property">closed</span>) &#123;</span><br><span class="line">        <span class="built_in">clearInterval</span>(timer);</span><br><span class="line">        <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line">        <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;팝업이 닫혔습니다&#x27;</span>));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, <span class="number">500</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용</span></span><br><span class="line"><span class="title function_">loginWithOAuth</span>(<span class="string">&#x27;google&#x27;</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">token</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;로그인 성공, 토큰:&#x27;</span>, token);</span><br><span class="line">    <span class="title function_">initUserSession</span>(token);</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">(<span class="params">err</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;로그인 실패:&#x27;</span>, err));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 팝업 창 내부 (https://auth.myapp.com/oauth/google)</span></span><br><span class="line"><span class="comment">// 인증 완료 후 결과를 오프너에 전달하고 팝업 닫기</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sendResultAndClose</span>(<span class="params">token</span>) &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="property">opener</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;OAUTH_SUCCESS&#x27;</span>, token &#125;,</span><br><span class="line">    <span class="string">&#x27;https://myapp.com&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">close</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sendErrorAndClose</span>(<span class="params">error</span>) &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="property">opener</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;OAUTH_FAILURE&#x27;</span>, error &#125;,</span><br><span class="line">    <span class="string">&#x27;https://myapp.com&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">close</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="예제-3-Web-Worker-통신"><a href="#예제-3-Web-Worker-통신" class="headerlink" title="예제 3: Web Worker 통신"></a>예제 3: Web Worker 통신</h3><p>CPU를 많이 쓰는 작업을 Web Worker로 분리할 때 <code>postMessage</code>로 데이터를 주고받습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.js (메인 스레드)</span></span><br><span class="line"><span class="keyword">const</span> worker = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&#x27;./image-processor.worker.js&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Worker로부터 결과 수신</span></span><br><span class="line">worker.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; type, payload &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">&#x27;PROCESS_COMPLETE&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">displayProcessedImage</span>(payload.<span class="property">imageData</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;PROGRESS&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">updateProgressBar</span>(payload.<span class="property">percent</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Worker에 작업 요청</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">processImage</span>(<span class="params">file</span>) &#123;</span><br><span class="line">  <span class="comment">// ArrayBuffer로 변환 후 Worker에 전달</span></span><br><span class="line">  <span class="keyword">const</span> buffer = <span class="keyword">await</span> file.<span class="title function_">arrayBuffer</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// transfer: 복사 없이 소유권을 Worker로 이전 (성능 최적화)</span></span><br><span class="line">  worker.<span class="title function_">postMessage</span>(</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;PROCESS_IMAGE&#x27;</span>, buffer, <span class="attr">filter</span>: <span class="string">&#x27;grayscale&#x27;</span> &#125;,</span><br><span class="line">    [buffer] <span class="comment">// transfer 목록: 이후 메인 스레드에서 buffer 접근 불가</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// image-processor.worker.js (Worker 스레드)</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; type, buffer, filter &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">&#x27;PROCESS_IMAGE&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// 무거운 이미지 처리 (메인 스레드 블로킹 없음)</span></span><br><span class="line">    <span class="keyword">const</span> result = <span class="title function_">applyFilter</span>(buffer, filter);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 처리 완료 후 결과를 메인 스레드로 전달</span></span><br><span class="line">    <span class="comment">// 마찬가지로 transfer로 소유권 이전</span></span><br><span class="line">    self.<span class="title function_">postMessage</span>(</span><br><span class="line">      &#123; <span class="attr">type</span>: <span class="string">&#x27;PROCESS_COMPLETE&#x27;</span>, <span class="attr">imageData</span>: result &#125;,</span><br><span class="line">      [result.<span class="property">buffer</span>]</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">applyFilter</span>(<span class="params">buffer, filter</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">new</span> <span class="title class_">Uint8ClampedArray</span>(buffer);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (filter === <span class="string">&#x27;grayscale&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i += <span class="number">4</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> avg = (data[i] + data[i + <span class="number">1</span>] + data[i + <span class="number">2</span>]) / <span class="number">3</span>;</span><br><span class="line">      data[i] = data[i + <span class="number">1</span>] = data[i + <span class="number">2</span>] = avg;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 진행률 보고</span></span><br><span class="line">  self.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;PROGRESS&#x27;</span>, <span class="attr">payload</span>: &#123; <span class="attr">percent</span>: <span class="number">100</span> &#125; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ImageData</span>(data, <span class="number">1920</span>, <span class="number">1080</span>); <span class="comment">// 예시</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="예제-4-Service-Worker-통신"><a href="#예제-4-Service-Worker-통신" class="headerlink" title="예제 4: Service Worker 통신"></a>예제 4: Service Worker 통신</h3><p>Service Worker와 페이지 간에 캐시 상태, 업데이트 알림, 백그라운드 동기화 결과 등을 주고받을 때 사용합니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 페이지 측 (app.js)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Service Worker에 메시지 보내기</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">sendToServiceWorker</span>(<span class="params">message</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!navigator.<span class="property">serviceWorker</span>.<span class="property">controller</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  navigator.<span class="property">serviceWorker</span>.<span class="property">controller</span>.<span class="title function_">postMessage</span>(message);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Service Worker로부터 메시지 받기</span></span><br><span class="line">navigator.<span class="property">serviceWorker</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; type, payload &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;SW_UPDATED&#x27;</span>:</span><br><span class="line">      <span class="comment">// 새 Service Worker가 활성화됨 → 새로고침 유도</span></span><br><span class="line">      <span class="title function_">showUpdateBanner</span>(<span class="string">&#x27;새 버전이 있습니다. 새로고침 해주세요.&#x27;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;SYNC_COMPLETE&#x27;</span>:</span><br><span class="line">      <span class="comment">// 백그라운드 동기화 완료</span></span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;오프라인 중 저장된 데이터가 서버에 동기화됐습니다&#x27;</span>);</span><br><span class="line">      <span class="title function_">refreshDataFromServer</span>();</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;CACHE_STATUS&#x27;</span>:</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`캐시된 리소스: <span class="subst">$&#123;payload.count&#125;</span>개`</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 캐시 상태 조회</span></span><br><span class="line"><span class="title function_">sendToServiceWorker</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;GET_CACHE_STATUS&#x27;</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// service-worker.js</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; type &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">&#x27;GET_CACHE_STATUS&#x27;</span>) &#123;</span><br><span class="line">    caches.<span class="title function_">keys</span>().<span class="title function_">then</span>(<span class="function">(<span class="params">cacheNames</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 메시지를 보낸 클라이언트에게만 응답</span></span><br><span class="line">      event.<span class="property">source</span>.<span class="title function_">postMessage</span>(&#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;CACHE_STATUS&#x27;</span>,</span><br><span class="line">        <span class="attr">payload</span>: &#123; <span class="attr">count</span>: cacheNames.<span class="property">length</span>, <span class="attr">names</span>: cacheNames &#125;,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">&#x27;SKIP_WAITING&#x27;</span>) &#123;</span><br><span class="line">    self.<span class="title function_">skipWaiting</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 모든 클라이언트(페이지)에 브로드캐스트</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">notifyAllClients</span>(<span class="params">message</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> clients = <span class="keyword">await</span> self.<span class="property">clients</span>.<span class="title function_">matchAll</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;window&#x27;</span> &#125;);</span><br><span class="line">  clients.<span class="title function_">forEach</span>(<span class="function">(<span class="params">client</span>) =&gt;</span> client.<span class="title function_">postMessage</span>(message));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 활성화 시 모든 탭에 알림</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;activate&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  event.<span class="title function_">waitUntil</span>(</span><br><span class="line">    self.<span class="property">clients</span>.<span class="title function_">claim</span>().<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">notifyAllClients</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;SW_UPDATED&#x27;</span> &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="예제-5-MessageChannel로-직접-채널-연결"><a href="#예제-5-MessageChannel로-직접-채널-연결" class="headerlink" title="예제 5: MessageChannel로 직접 채널 연결"></a>예제 5: MessageChannel로 직접 채널 연결</h3><p><code>MessageChannel</code>을 사용하면 두 컨텍스트 사이에 **전용 통신 채널(포트)**을 만들 수 있습니다. 여러 iframe이 있을 때 특정 iframe과만 통신하거나, Worker끼리 직접 통신할 때 유용합니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 부모 페이지</span></span><br><span class="line"><span class="keyword">const</span> iframe = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myFrame&#x27;</span>);</span><br><span class="line"></span><br><span class="line">iframe.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> channel = <span class="keyword">new</span> <span class="title class_">MessageChannel</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// port1은 부모가 보유, port2는 iframe에 전달</span></span><br><span class="line">  <span class="keyword">const</span> port1 = channel.<span class="property">port1</span>;</span><br><span class="line">  <span class="keyword">const</span> port2 = channel.<span class="property">port2</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// port1으로 메시지 수신</span></span><br><span class="line">  port1.<span class="property">onmessage</span> = <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;iframe으로부터:&#x27;</span>, event.<span class="property">data</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// port2를 iframe에 전달 (transfer로 소유권 이전)</span></span><br><span class="line">  iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;INIT_CHANNEL&#x27;</span> &#125;,</span><br><span class="line">    <span class="string">&#x27;https://child.com&#x27;</span>,</span><br><span class="line">    [port2]</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 이제 port1으로 바로 메시지 전송 (origin 지정 불필요)</span></span><br><span class="line">  port1.<span class="title function_">postMessage</span>(&#123; <span class="attr">text</span>: <span class="string">&#x27;포트로 직접 보내는 메시지&#x27;</span> &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// iframe 내부</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://parent.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">data</span>.<span class="property">type</span> !== <span class="string">&#x27;INIT_CHANNEL&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 전달받은 port2로 통신</span></span><br><span class="line">  <span class="keyword">const</span> port = event.<span class="property">ports</span>[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  port.<span class="property">onmessage</span> = <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;부모로부터:&#x27;</span>, event.<span class="property">data</span>);</span><br><span class="line">    port.<span class="title function_">postMessage</span>(&#123; <span class="attr">reply</span>: <span class="string">&#x27;응답입니다&#x27;</span> &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  port.<span class="title function_">start</span>(); <span class="comment">// onmessage 대신 addEventListener를 쓸 경우 필요</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-구조화-복제-알고리즘-Structured-Clone"><a href="#5-구조화-복제-알고리즘-Structured-Clone" class="headerlink" title="5. 구조화 복제 알고리즘 (Structured Clone)"></a>5. 구조화 복제 알고리즘 (Structured Clone)</h2><p><code>postMessage</code>는 데이터를 <strong>구조화 복제 알고리즘(Structured Clone Algorithm)</strong> 으로 직렬화합니다. <code>JSON.stringify</code>보다 더 많은 타입을 지원하지만, 복사본이 만들어지므로 성능에 주의해야 합니다.</p>
+<h3 id="전송-가능한-타입"><a href="#전송-가능한-타입" class="headerlink" title="전송 가능한 타입"></a>전송 가능한 타입</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 기본 타입</span></span><br><span class="line"><span class="title function_">postMessage</span>(<span class="number">42</span>);</span><br><span class="line"><span class="title function_">postMessage</span>(<span class="string">&#x27;hello&#x27;</span>);</span><br><span class="line"><span class="title function_">postMessage</span>(<span class="literal">true</span>);</span><br><span class="line"><span class="title function_">postMessage</span>(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 복합 타입 (깊은 복사로 전달됨)</span></span><br><span class="line"><span class="title function_">postMessage</span>(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: [<span class="number">2</span>, <span class="number">3</span>] &#125;);</span><br><span class="line"><span class="title function_">postMessage</span>([<span class="number">1</span>, <span class="number">2</span>, &#123; <span class="attr">x</span>: <span class="number">3</span> &#125;]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 특수 타입 (JSON으로 표현 불가능한 것들도 지원)</span></span><br><span class="line"><span class="title function_">postMessage</span>(<span class="keyword">new</span> <span class="title class_">Date</span>());</span><br><span class="line"><span class="title function_">postMessage</span>(<span class="keyword">new</span> <span class="title class_">Map</span>([[<span class="string">&#x27;key&#x27;</span>, <span class="string">&#x27;value&#x27;</span>]]));</span><br><span class="line"><span class="title function_">postMessage</span>(<span class="keyword">new</span> <span class="title class_">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]));</span><br><span class="line"><span class="title function_">postMessage</span>(<span class="keyword">new</span> <span class="title class_">Uint8Array</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]));</span><br><span class="line"><span class="title function_">postMessage</span>(<span class="regexp">/regex/g</span>); <span class="comment">// RegExp</span></span><br><span class="line"><span class="title function_">postMessage</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;에러&#x27;</span>)); <span class="comment">// Error 객체</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ArrayBuffer - 복사 또는 이전(transfer) 가능</span></span><br><span class="line"><span class="keyword">const</span> buffer = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(<span class="number">1024</span>);</span><br><span class="line"><span class="title function_">postMessage</span>(buffer);         <span class="comment">// 복사</span></span><br><span class="line"><span class="title function_">postMessage</span>(buffer, [buffer]); <span class="comment">// 이전 (원본 무효화됨)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="전송-불가능한-타입"><a href="#전송-불가능한-타입" class="headerlink" title="전송 불가능한 타입"></a>전송 불가능한 타입</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 함수는 전송할 수 없음</span></span><br><span class="line"><span class="title function_">postMessage</span>(<span class="function">() =&gt;</span> &#123;&#125;); <span class="comment">// 에러 발생</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// DOM 노드는 전송할 수 없음</span></span><br><span class="line"><span class="title function_">postMessage</span>(<span class="variable language_">document</span>.<span class="property">body</span>); <span class="comment">// 에러 발생</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Symbol은 전송할 수 없음</span></span><br><span class="line"><span class="title function_">postMessage</span>(<span class="title class_">Symbol</span>(<span class="string">&#x27;key&#x27;</span>)); <span class="comment">// 에러 발생</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 순환 참조는 전송할 수 없음 (JSON.stringify와 동일)</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;&#125;;</span><br><span class="line">obj.<span class="property">self</span> = obj;</span><br><span class="line"><span class="title function_">postMessage</span>(obj); <span class="comment">// 에러 발생</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Transfer-vs-Copy-성능-비교"><a href="#Transfer-vs-Copy-성능-비교" class="headerlink" title="Transfer vs Copy 성능 비교"></a>Transfer vs Copy 성능 비교</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> largeBuffer = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(<span class="number">100</span> * <span class="number">1024</span> * <span class="number">1024</span>); <span class="comment">// 100MB</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 복사 전송: 메모리 사용량 2배, 시간 오래 걸림</span></span><br><span class="line">worker.<span class="title function_">postMessage</span>(&#123; <span class="attr">buffer</span>: largeBuffer &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 이전 전송: 메모리 복사 없음, 거의 즉시 완료</span></span><br><span class="line"><span class="comment">// 단, 이전 후 largeBuffer는 byteLength === 0 이 됨 (무효화)</span></span><br><span class="line">worker.<span class="title function_">postMessage</span>(&#123; <span class="attr">buffer</span>: largeBuffer &#125;, [largeBuffer]);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(largeBuffer.<span class="property">byteLength</span>); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-주의사항-및-트러블슈팅"><a href="#6-주의사항-및-트러블슈팅" class="headerlink" title="6. 주의사항 및 트러블슈팅"></a>6. 주의사항 및 트러블슈팅</h2><h3 id="origin이-null인-경우"><a href="#origin이-null인-경우" class="headerlink" title="origin이 null인 경우"></a>origin이 null인 경우</h3><p><code>event.origin === &#39;null&#39;</code>(문자열) 인 경우가 있습니다. <code>null</code>(값)과 다르므로 주의하세요.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// null origin은 file://, sandbox iframe, 일부 리다이렉트에서 발생</span></span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> === <span class="string">&#x27;null&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// 신뢰할 수 없으므로 무시</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="iframe이-로드되기-전에-postMessage를-보내는-경우"><a href="#iframe이-로드되기-전에-postMessage를-보내는-경우" class="headerlink" title="iframe이 로드되기 전에 postMessage를 보내는 경우"></a>iframe이 로드되기 전에 postMessage를 보내는 경우</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> iframe = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myFrame&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 잘못된 예: iframe 로드 전에 메시지를 보내면 수신되지 않음</span></span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;INIT&#x27;</span> &#125;, <span class="string">&#x27;*&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 올바른 예: load 이벤트 이후 또는 준비 완료 메시지를 기다림</span></span><br><span class="line">iframe.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;INIT&#x27;</span> &#125;, <span class="string">&#x27;https://child.com&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 또는 iframe 측에서 준비됐을 때 먼저 알림을 보내는 방식</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://child.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">data</span>.<span class="property">type</span> === <span class="string">&#x27;IFRAME_READY&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// iframe이 준비됐다고 알려줬을 때 초기화 메시지 전송</span></span><br><span class="line">    event.<span class="property">source</span>.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;INIT&#x27;</span>, config &#125;, event.<span class="property">origin</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="이벤트-리스너-중복-등록"><a href="#이벤트-리스너-중복-등록" class="headerlink" title="이벤트 리스너 중복 등록"></a>이벤트 리스너 중복 등록</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 잘못된 예: 리렌더링/재호출 시마다 리스너가 누적됨</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">setupListener</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 올바른 예 1: 플래그로 중복 방지</span></span><br><span class="line"><span class="keyword">let</span> listenerRegistered = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">setupListener</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (listenerRegistered) <span class="keyword">return</span>;</span><br><span class="line">  listenerRegistered = <span class="literal">true</span>;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 올바른 예 2: 기존 리스너를 먼저 제거 후 등록</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">setupListener</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 올바른 예 3: AbortController로 일괄 제거</span></span><br><span class="line"><span class="keyword">const</span> controller = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler, &#123; <span class="attr">signal</span>: controller.<span class="property">signal</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 필요 없어지면 한 번에 제거</span></span><br><span class="line">controller.<span class="title function_">abort</span>();</span><br></pre></td></tr></table></figure>
+
+<h3 id="React에서-이벤트-리스너-관리"><a href="#React에서-이벤트-리스너-관리" class="headerlink" title="React에서 이벤트 리스너 관리"></a>React에서 이벤트 리스너 관리</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// useEffect로 컴포넌트 생명주기에 맞춰 등록/해제</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">PaymentWidget</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [status, setStatus] = <span class="title function_">useState</span>(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">handler</span> = (<span class="params">event</span>) =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://payment.example.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line">      <span class="keyword">if</span> (event.<span class="property">data</span>.<span class="property">type</span> === <span class="string">&#x27;PAYMENT_RESULT&#x27;</span>) &#123;</span><br><span class="line">        <span class="title function_">setStatus</span>(event.<span class="property">data</span>.<span class="property">payload</span>.<span class="property">status</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 컴포넌트 언마운트 시 자동 해제</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler);</span><br><span class="line">  &#125;, []); <span class="comment">// 빈 배열: 마운트/언마운트 시에만 실행</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>결제 상태: &#123;status&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="7-BroadcastChannel-같은-origin-내-탭-간-통신"><a href="#7-BroadcastChannel-같은-origin-내-탭-간-통신" class="headerlink" title="7. BroadcastChannel: 같은 origin 내 탭 간 통신"></a>7. BroadcastChannel: 같은 origin 내 탭 간 통신</h2><p>같은 origin의 여러 탭&#x2F;윈도우끼리 통신할 때는 <code>postMessage</code> 대신 <code>BroadcastChannel</code>이 더 편리합니다.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 모든 탭에서 동일한 채널 이름으로 연결</span></span><br><span class="line"><span class="keyword">const</span> channel = <span class="keyword">new</span> <span class="title class_">BroadcastChannel</span>(<span class="string">&#x27;app-channel&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 같은 origin의 다른 탭들에 브로드캐스트 (자신 제외)</span></span><br><span class="line">channel.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;USER_LOGGED_OUT&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 다른 탭으로부터 메시지 수신</span></span><br><span class="line">channel.<span class="property">onmessage</span> = <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">data</span>.<span class="property">type</span> === <span class="string">&#x27;USER_LOGGED_OUT&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">clearLocalSession</span>();</span><br><span class="line">    <span class="title function_">redirectToLogin</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 더 이상 필요 없을 때 채널 닫기</span></span><br><span class="line">channel.<span class="title function_">close</span>();</span><br></pre></td></tr></table></figure>
+
+<h3 id="postMessage-vs-BroadcastChannel"><a href="#postMessage-vs-BroadcastChannel" class="headerlink" title="postMessage vs BroadcastChannel"></a>postMessage vs BroadcastChannel</h3><table>
+<thead>
+<tr>
+<th>항목</th>
+<th><code>postMessage</code></th>
+<th><code>BroadcastChannel</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>대상</strong></td>
+<td>특정 window 참조 필요</td>
+<td>이름만 알면 됨</td>
+</tr>
+<tr>
+<td><strong>origin</strong></td>
+<td>다른 origin 간 통신 가능</td>
+<td>같은 origin만</td>
+</tr>
+<tr>
+<td><strong>자기 자신</strong></td>
+<td>자신에게도 전송 가능</td>
+<td>자신은 수신 제외</td>
+</tr>
+<tr>
+<td><strong>활용</strong></td>
+<td>iframe, 팝업, Worker</td>
+<td>같은 사이트 내 다른 탭</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="요약"><a href="#요약" class="headerlink" title="요약"></a>요약</h2><ul>
+<li><code>postMessage</code>는 다른 origin 간 안전한 통신을 위한 Web API로, iframe·팝업·Worker 등 다양한 컨텍스트에서 사용된다.</li>
+<li>수신 측에서 <strong>반드시 <code>event.origin</code>을 검증</strong>해야 하며, 발신 측도 <code>&#39;*&#39;</code> 대신 구체적인 <code>targetOrigin</code>을 지정해야 한다.</li>
+<li>데이터는 구조화 복제 알고리즘으로 직렬화되어 <strong>깊은 복사본</strong>으로 전달되며, <code>ArrayBuffer</code>는 <code>transfer</code>로 소유권을 이전하면 복사 비용을 없앨 수 있다.</li>
+<li><code>MessageChannel</code>을 사용하면 두 컨텍스트 사이에 전용 포트를 만들어 더 구조화된 통신이 가능하다.</li>
+<li>같은 origin의 여러 탭 간 통신에는 <code>BroadcastChannel</code>이 더 적합하다.</li>
+<li>이벤트 리스너는 사용이 끝나면 반드시 제거해 메모리 누수를 방지한다.</li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ckck803.github.io/2026/04/23/javascript/post-message/" data-id="cmoc63anp000230ut5z31eoki" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ckck803"
+        },
+        "headline": "JavaScript - postMessage 완벽 정리",
+        "image": "https://ckck803.github.io",
+        "keywords": "",
+        "genre": "JavaScript Web",
+        "datePublished": "2026-04-23",
+        "dateCreated": "2026-04-23",
+        "dateModified": "2026-04-23",
+        "url": "https://ckck803.github.io/2026/04/23/javascript/post-message/",
+        "description": "postMessage란?window.postMessage()는 서로 다른 origin을 가진 window 객체 사이에서 안전하게 메시지를 주고받을 수 있는 Web API입니다.
+브라우저의 동일 출처 정책(Same-Origin Policy)은 iframe, 팝업, 다른 탭의 JavaScript가 서로 직접 접근하는 것을 막습니다. postMessage는 이 ",
+        "wordCount": 4176
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ckck803" target="_blank" rel="external nofollow noopener noreferrer">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2026/04/23/javascript/android-webview-bridge/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            Android WebView 브릿지 통신 완벽 정리
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2026/04/22/jpa/querydsl/querydsl-16-builder-based-queryprojection/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">QueryDSL - OpenFeign Querydsl 6.12의 builder 기반 @QueryProjection</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/Hugging-Face/">Hugging Face</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LLM/">LLM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LangChain/">LangChain</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LangChain/LangGraph/">LangGraph</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/LangGraph/">LangGraph</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/RAG/">RAG</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/AI/ollma/">ollma</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/">AWS</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/AWS/EKS/">EKS</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">64</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/">DataBase</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/SQL/">SQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Scan/">Scan</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/DataBase/Transaction/">Transaction</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/">Network</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/HTTP/">HTTP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Network/Security/">Security</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Process/">Process</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/">운영체제</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/">컴퓨터 구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0/%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">메모리 관리</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/">프로그래밍 언어</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%96%B8%EC%96%B4/JAVA/">JAVA</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/">DevOps</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/">CICD</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Jenkins/">Jenkins</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/CICD/Repository/">Repository</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Jmeter/">Jmeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/KeyCloak/">KeyCloak</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Kiali/">Kiali</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Maven/">Maven</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/OpenSearch/">OpenSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/">Repository</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/Repository/Gitea/">Gitea</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/DevOps/SonarQube/">SonarQube</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/">Develop</a><span class="category-list-count">218</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/">Beakjoon</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/BFS/">BFS</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/DFS/">DFS</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/">SAMSUNG</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/SAMSUNG/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EA%B7%B8%EB%9E%98%ED%94%84/">그래프</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC/">다익스트라</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98/">시뮬레이션</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9D%B4%EB%B6%84%ED%83%90%EC%83%89/">이분탐색</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/List/">List</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Beakjoon/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC/">카테고리</a><span class="category-list-count">14</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/">Cpp</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Cpp/STL/">STL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/">Database</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Django/">Django</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/">Docker</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Docker/Docker-Compose/">Docker Compose</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Git/">Git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/">JAVA</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Collection/">Collection</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/REST/">REST</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JAVA/Rest/">Rest</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/">JPA</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/JPA-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B3%B8%ED%8E%B8/">JPA 프로그래밍(기본편)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/JPA/%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84/">연관관계</a><span class="category-list-count">13</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Kafka/">Kafka</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/">NestJS</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Advanced/">Advanced</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Comparison/">Comparison</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Controller/">Controller</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Database/">Database</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Module/">Module</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/NestJS/Service/">Service</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/">Nuxt.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Nuxt-js/Getting-Started/">Getting Started</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Oracle/">Oracle</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/PostgreSQL/">PostgreSQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/QueryDSL/">QueryDSL</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/">프로그래머스</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/">경우의 수</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EA%B2%BD%EC%9A%B0%EC%9D%98-%EC%88%98/%EC%A4%91%EB%B3%B5-%EC%88%9C%EC%97%B4/">중복 순열</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/">문자열</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EB%AC%B8%EC%9E%90%EC%97%B4/%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D/">정규 표현식</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/">자료구조</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/SET/">SET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Develop/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EC%8A%A4%ED%83%9D/">스택</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Login/">Login</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/">React</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/React-Query/">React Query</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Redux/">Redux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/To-do-List/">To do List</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/ToastUI/">ToastUI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vite/">Vite</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/">Vue</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue/Tailwind/">Tailwind</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Vue3/">Vue3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%A1%9C%EA%B7%B8%EC%9D%B8/">로그인</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/%EB%B8%94%EB%A1%9C%EA%B7%B8/">블로그</a><span class="category-list-count">15</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/">Infrastructure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Infrastructure/DevOps/">DevOps</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/Android/">Android</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/Android/Web/">Web</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/Web/">Web</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/Web/Mobile/">Mobile</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">55</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Autoscaler/">Autoscaler</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Config/">Config</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Custom/">Custom</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Helm/">Helm</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/Istio/">Istio</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C/">구성요소</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%84%9C%EB%B9%84%EC%8A%A4/">서비스</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C/">워크로드</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/%EC%9D%B8%EC%A6%9D-%EC%9D%B8%EA%B0%80/">인증/인가</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">282</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/">QueryDSL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/QueryDSL/JPA/">JPA</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/">Spring AOP</a><span class="category-list-count">30</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AOP-Aspect/">AOP Aspect</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/AspectJ/">AspectJ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Bean-Post-Processor/">Bean Post Processor</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/Spring-Proxy/">Spring Proxy</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7/">포인트컷</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-AOP/%ED%8F%AC%EC%9D%B8%ED%8A%B8%EC%BB%B7-%ED%91%9C%ED%98%84%EC%8B%9D/">포인트컷 표현식</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/">Spring Batch</a><span class="category-list-count">36</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Job/">Job</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/">Step</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Batch/Step/Chunk/">Chunk</a><span class="category-list-count">7</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/">Spring Boot</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/File/">File</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Redis/">Redis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Boot/Spring-Framework/">Spring Framework</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/">Spring Cloud</a><span class="category-list-count">34</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Config/">Config</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Feign-Client/">Feign Client</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Gateway/">Gateway</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Kafka/">Kafka</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Cloud/Service-Discovery/">Service Discovery</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Core/">Spring Core</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-DB/">Spring DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Data-JPA/">Spring Data JPA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/">Spring Framework</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Framework/lifecycle/">lifecycle</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-MVC/">Spring MVC</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Rest/">Spring Rest</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/">Spring Security</a><span class="category-list-count">29</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Filter/">Filter</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Form-login/">Form login</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/JWT/">JWT</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Oauth2/">Oauth2</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/">Security</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/Security/Config/">Config</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Security/%EC%9D%B8%EC%A6%9D-%EA%B3%BC%EC%A0%95/">인증 과정</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-Test/">Spring Test</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-WebSocket/">Spring WebSocket</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/">Spring 고급편</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/CGLIB/">CGLIB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Decorator-%ED%8C%A8%ED%84%B4/">Decorator 패턴</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Dynamic-Proxy/">Dynamic Proxy</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Proxy-%ED%8C%A8%ED%84%B4/">Proxy 패턴</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Strategy-%ED%8C%A8%ED%84%B4/">Strategy 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Callback-%ED%8C%A8%ED%84%B4/">Template Callback 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/Template-Method-%ED%8C%A8%ED%84%B4/">Template Method 패턴</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/Spring-%EA%B3%A0%EA%B8%89%ED%8E%B8/ThreadLocal/">ThreadLocal</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/">강의</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B0%95%EC%9D%98/%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91-%EC%98%88%EC%95%BD-%EC%82%AC%EC%9D%B4%ED%8A%B8/">레스토랑 예약 사이트</a><span class="category-list-count">19</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0/">게시판 만들기</a><span class="category-list-count">22</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2026 ckck803</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank" rel="external nofollow noopener noreferrer">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ckck803.github.io/2026/04/23/javascript/post-message/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
