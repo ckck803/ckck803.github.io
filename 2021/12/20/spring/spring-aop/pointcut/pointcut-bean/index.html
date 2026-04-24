@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/springboot/advanced/aspect/aop.jpg">
 <meta property="article:published_time" content="2021-12-20T04:31:07.000Z">
-<meta property="article:modified_time" content="2025-04-08T03:35:36.730Z">
+<meta property="article:modified_time" content="2026-04-24T09:32:50.422Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/springboot/advanced/aspect/aop.jpg">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-bean/" class="article-date">
-     <time datetime="2025-04-08T03:35:36.730Z" itemprop="dateModified">2025-04-08</time>
+     <time datetime="2026-04-24T09:32:50.422Z" itemprop="dateModified">2026-04-24</time>
   </a>
 </div>
 
@@ -225,11 +225,66 @@
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-execution/" title="[Spring AOP] 포인트컷 표현식 - execution">[Spring AOP] 포인트컷 표현식 - execution</a></li>
 <li><a href="/2021/12/20/spring/spring-aop/pointcut/pointcut/" title="[Spring AOP] 포인트컷">[Spring AOP] 포인트컷</a></li>
 </ul>
-<h2 id="bean"><a href="#bean" class="headerlink" title="bean"></a>bean</h2><p>bean 표현식은 스프링에서만 사용한 포인트컷 지시자로 Bean 이름으로 Advice 적용 여부를 판단합니다. </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Import(BeanTest.BeanAspect.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    OrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">success</span><span class="params">()</span>&#123;</span><br><span class="line">        orderService.orderItem(<span class="string">&quot;itemA&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Aspect</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">BeanAspect</span>&#123;</span><br><span class="line">        <span class="comment">// orderService 빈과 Repository 로 끝나는 빈들에 Advice 를 적용합니다.</span></span><br><span class="line">        <span class="meta">@Around(&quot;bean(orderService) || bean(*Repository)&quot;)</span></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">doLog</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">            log.info(<span class="string">&quot;[bean] &#123;&#125;&quot;</span>, joinPoint.getSignature());</span><br><span class="line">            <span class="keyword">return</span> joinPoint.proceed();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="bean"><a href="#bean" class="headerlink" title="bean"></a>bean</h2><blockquote>
+<p><code>bean</code> 표현식은 <strong>스프링 컨테이너에 등록된 Bean 이름</strong>을 기준으로 Advice 적용 여부를 판단합니다.</p>
+</blockquote>
+<p><code>bean</code>은 AspectJ 표준 지시자가 아닌 <strong>스프링 AOP에서만 사용 가능한 지시자</strong>입니다. 패키지나 타입 대신 Bean 이름을 기준으로 Advice를 적용하고 싶을 때 유용합니다.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bean(빈 이름 패턴)</span><br></pre></td></tr></table></figure>
 
+<p>와일드카드 <code>*</code>를 사용해 이름 패턴으로 여러 Bean을 한 번에 지정할 수 있습니다.</p>
+<h2 id="기본-사용-예시"><a href="#기본-사용-예시" class="headerlink" title="기본 사용 예시"></a>기본 사용 예시</h2><h3 id="특정-Bean-이름-지정"><a href="#특정-Bean-이름-지정" class="headerlink" title="특정 Bean 이름 지정"></a>특정 Bean 이름 지정</h3><p>Bean 이름을 정확히 명시하면 해당 Bean의 모든 메소드에 Advice가 적용됩니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// orderService 빈의 모든 메소드에 Advice 적용</span></span><br><span class="line">bean(orderService)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2021-12-21 00:13:43.463  INFO 35836 --- [    Test worker] com.example.aop.pointcut.BeanTest        : [bean] void com.example.aop.order.OrderService.orderItem(String)</span><br><span class="line">2021-12-21 00:13:43.474  INFO 35836 --- [    Test worker] com.example.aop.order.OrderService       : [orderService] 실행</span><br><span class="line">2021-12-21 00:13:43.475  INFO 35836 --- [    Test worker] com.example.aop.pointcut.BeanTest        : [bean] String com.example.aop.order.OrderRepository.save(String)</span><br><span class="line">2021-12-21 00:13:43.480  INFO 35836 --- [    Test worker] com.example.aop.order.OrderRepository    : [orderRepository] 실행</span><br></pre></td></tr></table></figure>
+<h3 id="와일드카드로-패턴-지정"><a href="#와일드카드로-패턴-지정" class="headerlink" title="와일드카드로 패턴 지정"></a>와일드카드로 패턴 지정</h3><p><code>*</code>를 사용해 이름이 특정 패턴과 일치하는 Bean들을 대상으로 지정할 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 이름이 Repository 로 끝나는 모든 빈에 Advice 적용</span></span><br><span class="line">bean(*Repository)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 이름이 Service 로 끝나는 모든 빈에 Advice 적용</span></span><br><span class="line">bean(*Service)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 이름에 Order 가 포함된 모든 빈에 Advice 적용</span></span><br><span class="line">bean(*Order*)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 스프링 컨테이너의 모든 빈에 Advice 적용</span></span><br><span class="line">bean(*)</span><br></pre></td></tr></table></figure>
+
+<h3 id="논리-연산자-조합"><a href="#논리-연산자-조합" class="headerlink" title="논리 연산자 조합"></a>논리 연산자 조합</h3><p><code>||</code>, <code>&amp;&amp;</code>, <code>!</code> 연산자를 사용해 여러 조건을 조합할 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// orderService 빈 또는 이름이 Repository 로 끝나는 빈에 Advice 적용</span></span><br><span class="line">bean(orderService) || bean(*Repository)</span><br><span class="line"></span><br><span class="line"><span class="comment">// orderService 가 아닌 빈에 Advice 적용</span></span><br><span class="line">!bean(orderService)</span><br></pre></td></tr></table></figure>
+
+<h2 id="예제-코드"><a href="#예제-코드" class="headerlink" title="예제 코드"></a>예제 코드</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Import(BeanTest.BeanAspect.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    OrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">success</span><span class="params">()</span>&#123;</span><br><span class="line">        orderService.orderItem(<span class="string">&quot;itemA&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Aspect</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">BeanAspect</span>&#123;</span><br><span class="line">        <span class="comment">// orderService 빈과 이름이 Repository 로 끝나는 빈에 Advice 를 적용합니다.</span></span><br><span class="line">        <span class="meta">@Around(&quot;bean(orderService) || bean(*Repository)&quot;)</span></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">doLog</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">            log.info(<span class="string">&quot;[bean] &#123;&#125;&quot;</span>, joinPoint.getSignature());</span><br><span class="line">            <span class="keyword">return</span> joinPoint.proceed();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>orderService.orderItem(&quot;itemA&quot;)</code>를 호출하면 내부에서 <code>OrderRepository.save()</code>도 함께 호출됩니다. <code>orderService</code> Bean과 <code>*Repository</code> 패턴에 해당하는 <code>orderRepository</code> Bean 모두 Advice 대상이므로, 두 메소드 모두에 로그가 출력됩니다.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2021-12-21 00:13:43.463  INFO 35836 --- [    Test worker] com.example.aop.pointcut.BeanTest        : [bean] void com.example.aop.order.OrderService.orderItem(String)</span><br><span class="line">2021-12-21 00:13:43.474  INFO 35836 --- [    Test worker] com.example.aop.order.OrderService       : [orderService] 실행</span><br><span class="line">2021-12-21 00:13:43.475  INFO 35836 --- [    Test worker] com.example.aop.pointcut.BeanTest        : [bean] String com.example.aop.order.OrderRepository.save(String)</span><br><span class="line">2021-12-21 00:13:43.480  INFO 35836 --- [    Test worker] com.example.aop.order.OrderRepository   : [orderRepository] 실행</span><br></pre></td></tr></table></figure>
+
+<h2 id="execution-within-과의-비교"><a href="#execution-within-과의-비교" class="headerlink" title="execution, within 과의 비교"></a>execution, within 과의 비교</h2><table>
+<thead>
+<tr>
+<th>지시자</th>
+<th>기준</th>
+<th>인터페이스 지원</th>
+<th>스프링 전용</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>execution</code></td>
+<td>메소드 시그니처 (반환 타입, 패키지, 클래스, 메소드명, 파라미터)</td>
+<td>O</td>
+<td>X</td>
+</tr>
+<tr>
+<td><code>within</code></td>
+<td>타입 (클래스&#x2F;패키지)</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td><code>bean</code></td>
+<td>스프링 Bean 이름</td>
+<td>-</td>
+<td>O</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>execution</code>, <code>within</code>은 <strong>타입&#x2F;메소드 구조</strong>를 기준으로 Advice를 적용합니다.</li>
+<li><code>bean</code>은 <strong>Bean 이름</strong>을 기준으로 Advice를 적용하므로, 타입 구조와 무관하게 Bean 등록 이름만으로 간단히 포인트컷을 설정할 수 있습니다.</li>
+<li>단, <code>bean</code>은 스프링 AOP에서만 동작하므로 AspectJ 위빙 방식으로 전환할 계획이 있다면 <code>execution</code>을 사용하는 것이 적합합니다.</li>
+</ul>
+<h2 id="주의사항"><a href="#주의사항" class="headerlink" title="주의사항"></a>주의사항</h2><ul>
+<li><code>bean</code> 지시자는 <strong>스프링 컨테이너에 등록된 Bean</strong>에만 적용됩니다. <code>new</code> 키워드로 직접 생성한 객체에는 적용되지 않습니다.</li>
+<li>Bean 이름은 기본적으로 클래스 이름의 첫 글자를 소문자로 변환한 값이므로 (<code>OrderService</code> → <code>orderService</code>), 와일드카드 패턴 작성 시 유의해야 합니다.</li>
+<li><code>@Bean</code> 등록 시 이름을 명시한 경우 (<code>@Bean(&quot;myService&quot;)</code>) 명시한 이름을 기준으로 매칭됩니다.</li>
+</ul>
+
         </div>
         <footer class="article-footer">
             
@@ -312,7 +367,7 @@
         "genre": "Spring Spring AOP 포인트컷 표현식",
         "datePublished": "2021-12-20",
         "dateCreated": "2021-12-20",
-        "dateModified": "2025-04-08",
+        "dateModified": "2026-04-24",
         "url": "https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-bean/",
         "description": "
 목차
@@ -322,7 +377,7 @@
 [Spring AOP] 포인트컷 표현식 - @args
 [Spring AOP] 포인트컷 표현식 - @annotation
 [Spring AOP] 포인트컷 표현식 -",
-        "wordCount": 415
+        "wordCount": 730
     }
 </script>
 

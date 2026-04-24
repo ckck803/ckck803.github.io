@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/springboot/advanced/aspect/aop.jpg">
 <meta property="article:published_time" content="2021-12-20T03:31:07.000Z">
-<meta property="article:modified_time" content="2026-04-24T00:22:48.579Z">
+<meta property="article:modified_time" content="2026-04-24T09:32:50.419Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/springboot/advanced/aspect/aop.jpg">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2021/12/20/spring/spring-aop/pointcut/annotation/pointcut-annotation/" class="article-date">
-     <time datetime="2026-04-24T00:22:48.579Z" itemprop="dateModified">2026-04-24</time>
+     <time datetime="2026-04-24T09:32:50.419Z" itemprop="dateModified">2026-04-24</time>
   </a>
 </div>
 
@@ -258,7 +258,6 @@
 <p><code>@MethodAop(&quot;test&quot;)</code> 와 같이 어노테이션에 지정한 값이 <code>methodAop.value()</code> 를 통해 그대로 전달됩니다.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[@annotation] String com.example.aop.member.MemberServiceImpl.hello(String), value=test</span><br></pre></td></tr></table></figure>
 
-<hr>
 <h2 id="annotation-vs-within"><a href="#annotation-vs-within" class="headerlink" title="@annotation vs @within"></a>@annotation vs @within</h2><p><code>@annotation</code> 과 <code>@within</code> 은 둘 다 어노테이션을 기반으로 포인트컷을 지정하지만, 어노테이션을 <strong>어디에 선언하느냐</strong>에 따라 동작 방식이 다릅니다.</p>
 <table>
 <thead>
@@ -279,9 +278,9 @@
 <td>해당 어노테이션이 붙은 클래스의 <strong>모든 메소드</strong> 매칭</td>
 </tr>
 </tbody></table>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// @within 예시 - 클래스에 어노테이션을 선언</span></span><br><span class="line"><span class="meta">@ClassAop</span>          <span class="comment">// 클래스에 선언 → 클래스 내 모든 메소드에 Advice 적용</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">MemberService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">(String param)</span> &#123; ... &#125;    <span class="comment">// Advice 적용</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">internal</span><span class="params">(String param)</span> &#123; ... &#125; <span class="comment">// Advice 적용</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="within-클래스에-선언"><a href="#within-클래스에-선언" class="headerlink" title="@within - 클래스에 선언"></a>@within - 클래스에 선언</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// @within 예시 - 클래스에 어노테이션을 선언</span></span><br><span class="line"><span class="meta">@ClassAop</span>          <span class="comment">// 클래스에 선언 → 클래스 내 모든 메소드에 Advice 적용</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">MemberService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">(String param)</span> &#123; ... &#125;    <span class="comment">// Advice 적용</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">internal</span><span class="params">(String param)</span> &#123; ... &#125; <span class="comment">// Advice 적용</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// @annotation 예시 - 메소드에 어노테이션을 선언</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">MemberService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@MethodAop(&quot;test&quot;)</span>  <span class="comment">// 메소드에 선언 → 이 메소드에만 Advice 적용</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">(String param)</span> &#123; ... &#125;    <span class="comment">// Advice 적용</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">internal</span><span class="params">(String param)</span> &#123; ... &#125; <span class="comment">// Advice 미적용</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="annotation-메소드에-선언"><a href="#annotation-메소드에-선언" class="headerlink" title="@annotation - 메소드에 선언"></a>@annotation - 메소드에 선언</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// @annotation 예시 - 메소드에 어노테이션을 선언</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">MemberService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@MethodAop(&quot;test&quot;)</span>  <span class="comment">// 메소드에 선언 → 이 메소드에만 Advice 적용</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">(String param)</span> &#123; ... &#125;    <span class="comment">// Advice 적용</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">internal</span><span class="params">(String param)</span> &#123; ... &#125; <span class="comment">// Advice 미적용</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>선택 기준:</strong></p>
 <ul>
@@ -397,7 +396,7 @@
 [Spring AOP] 포인트컷 표현식 - @args
 [Spring AOP] 포인트컷 표현식 - @annotation
 [Spring AOP] 포인트컷 표현식 -",
-        "wordCount": 1462
+        "wordCount": 1482
     }
 </script>
 

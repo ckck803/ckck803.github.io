@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ckck803.github.io/images/springboot/advanced/aspect/aop.jpg">
 <meta property="article:published_time" content="2021-12-20T01:31:07.000Z">
-<meta property="article:modified_time" content="2025-04-08T03:35:36.730Z">
+<meta property="article:modified_time" content="2026-04-24T09:32:50.421Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ckck803.github.io/images/springboot/advanced/aspect/aop.jpg">
@@ -190,7 +190,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2021/12/20/spring/spring-aop/pointcut/pointcut-args/" class="article-date">
-     <time datetime="2025-04-08T03:35:36.730Z" itemprop="dateModified">2025-04-08</time>
+     <time datetime="2026-04-24T09:32:50.421Z" itemprop="dateModified">2026-04-24</time>
   </a>
 </div>
 
@@ -229,13 +229,81 @@
 <p>args 는 메서드의 매개변수를 기준으로 AOP 를 적용</p>
 </blockquote>
 <p>args는 메서드의 매개변수를 기준으로 매칭하기 위한 표현식입니다. 메서드의 매개변수 타입이나 값을 기준으로 특정 메서드에만 AOP를 적용할 수 있습니다.</p>
+<h4 id="기본-문법"><a href="#기본-문법" class="headerlink" title="기본 문법"></a>기본 문법</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">args(타입1, 타입2, ...)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>표현식</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>args()</code></td>
+<td>파라미터가 없는 메서드</td>
+</tr>
+<tr>
+<td><code>args(*)</code></td>
+<td>파라미터가 정확히 1개인 메서드</td>
+</tr>
+<tr>
+<td><code>args(..)</code></td>
+<td>파라미터 개수 및 타입 제한 없음</td>
+</tr>
+<tr>
+<td><code>args(String)</code></td>
+<td>파라미터가 String 타입 1개인 메서드</td>
+</tr>
+<tr>
+<td><code>args(String,..)</code></td>
+<td>첫 번째 파라미터가 String 이고 나머지는 제한 없음</td>
+</tr>
+<tr>
+<td><code>args(Object)</code></td>
+<td>파라미터가 Object 또는 그 하위 타입 1개인 메서드 (런타임 판단)</td>
+</tr>
+</tbody></table>
 <h4 id="테스트를-위한-객체"><a href="#테스트를-위한-객체" class="headerlink" title="테스트를 위한 객체"></a>테스트를 위한 객체</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ClassAop</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">MemberService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="meta">@MethodAop(&quot;test value&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">(String param)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;ok&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">internal</span><span class="params">(String param)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;ok&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="args-를-이용해-적용-여부-판단"><a href="#args-를-이용해-적용-여부-판단" class="headerlink" title="args 를 이용해 적용 여부 판단"></a>args 를 이용해 적용 여부 판단</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@BeforeEach</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> <span class="keyword">throws</span> NoSuchMethodException &#123;</span><br><span class="line">    helloMethod = MemberServiceImpl.class.getMethod(<span class="string">&quot;hello&quot;</span>, String.class);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> AspectJExpressionPointcut <span class="title function_">pointcut</span><span class="params">(String expression)</span> &#123;</span><br><span class="line">    <span class="type">AspectJExpressionPointcut</span> <span class="variable">pointcut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AspectJExpressionPointcut</span>();</span><br><span class="line">    pointcut.setExpression(expression);</span><br><span class="line">    <span class="keyword">return</span> pointcut;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">args</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// hello(String)과 매칭</span></span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args(String)&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line">    <span class="comment">// Object 는 String 의 상위 타입      </span></span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args(Object)&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args()&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isFalse();</span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args(..)&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args(*)&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args(String,..)&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="execution-과-args-의-차이점"><a href="#execution-과-args-의-차이점" class="headerlink" title="execution 과 args 의 차이점"></a>execution 과 args 의 차이점</h2><p>execution 은 컴파일 시점에 적용 대상을 판단합니다. 따라서, 파라미터 타입이 정확하게 일치돼야 하며 클래스에 선언된 정보를 기반으로 AOP 를 적용합니다.</p>
 <p>args 는 런타임 시점에 전달받은 객체를 대상으로 적용여부를 판단합니다. 따라서 전달 받은 객체가 캐스팅이 될 경우 다시 말해, 포인트 컷 표현식이 객체의 상위 타입인 경우 AOP 를 적용할 수 있습니다.</p>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>execution</th>
+<th>args</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>판단 시점</td>
+<td>컴파일 시점 (정적)</td>
+<td>런타임 시점 (동적)</td>
+</tr>
+<tr>
+<td>타입 매칭</td>
+<td>선언된 타입과 정확히 일치</td>
+<td>상위 타입도 허용 (instanceof 방식)</td>
+</tr>
+<tr>
+<td>주요 용도</td>
+<td>메서드 시그니처 기반 포인트컷</td>
+<td>파라미터 타입 기반 포인트컷, 파라미터 바인딩</td>
+</tr>
+</tbody></table>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * execution(* *(java.io.Serializable)): 메서드의 시그니처로 판단 (정적)</span></span><br><span class="line"><span class="comment"> * args(java.io.Serializable): 런타임에 전달된 인수로 판단 (동적)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">argsVsExecution</span><span class="params">()</span> &#123;</span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args(String)&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line">    <span class="comment">// args 는 상위 타입도 허용합니다.</span></span><br><span class="line">    <span class="comment">// Serializable 는 String 의 상위 타입</span></span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args(java.io.Serializable)&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line">    <span class="comment">// Object 는 String 의 상위 타입</span></span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;args(Object)&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// execution 은 정확하게 매칭돼야 한다.</span></span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;execution(* *(String))&quot;</span>)</span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isTrue();</span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;execution(* *(java.io.Serializable))&quot;</span>) <span class="comment">//매칭 실패</span></span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isFalse();</span><br><span class="line">    assertThat(pointcut(<span class="string">&quot;execution(* *(Object))&quot;</span>) <span class="comment">//매칭 실패</span></span><br><span class="line">            .matches(helloMethod, MemberServiceImpl.class)).isFalse();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="args-를-이용한-파라미터-바인딩"><a href="#args-를-이용한-파라미터-바인딩" class="headerlink" title="args 를 이용한 파라미터 바인딩"></a>args 를 이용한 파라미터 바인딩</h2><p><code>args</code> 의 가장 강력한 기능 중 하나는 Advice 메서드에서 <strong>실제 전달된 파라미터 값을 직접 받아올 수 있다</strong>는 점입니다.</p>
+<p>포인트컷 표현식에서 타입 대신 변수명을 작성하고, Advice 메서드의 파라미터와 이름을 맞추면 됩니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberServiceAspect</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// args(arg,..) 에서 arg 는 변수명이며, Advice 메서드의 파라미터 이름과 일치해야 합니다.</span></span><br><span class="line">    <span class="meta">@Before(&quot;execution(* com.example.aop.member.MemberServiceImpl.*(..)) &amp;&amp; args(arg,..)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">logArgs</span><span class="params">(Object arg)</span> &#123;</span><br><span class="line">        log.info(<span class="string">&quot;[logArgs] arg=&#123;&#125;&quot;</span>, arg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 파라미터 타입을 명시하면 해당 타입의 메서드에만 매칭됩니다.</span></span><br><span class="line">    <span class="meta">@Before(&quot;execution(* com.example.aop.member.MemberServiceImpl.*(..)) &amp;&amp; args(arg,..)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">logStringArgs</span><span class="params">(String arg)</span> &#123;</span><br><span class="line">        log.info(<span class="string">&quot;[logStringArgs] arg=&#123;&#125;&quot;</span>, arg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@Around</code> Advice 에서도 동일하게 파라미터 바인딩을 사용할 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Around(&quot;execution(* com.example.aop.member.MemberServiceImpl.*(..)) &amp;&amp; args(arg,..)&quot;)</span></span><br><span class="line"><span class="keyword">public</span> Object <span class="title function_">aroundArgs</span><span class="params">(ProceedingJoinPoint joinPoint, Object arg)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">    log.info(<span class="string">&quot;[aroundArgs] arg=&#123;&#125;&quot;</span>, arg);</span><br><span class="line">    <span class="keyword">return</span> joinPoint.proceed();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="주의사항"><a href="#주의사항" class="headerlink" title="주의사항"></a>주의사항</h2><p><code>args</code> 단독으로는 스프링 빈에 등록된 메서드 이외의 호출에도 매칭될 수 있습니다. 실무에서는 보통 <code>execution</code> 과 함께 <code>&amp;&amp;</code> 로 조합해서 사용합니다.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// args 단독 사용 (범위가 너무 넓어질 수 있음)</span></span><br><span class="line"><span class="meta">@Before(&quot;args(String)&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">tooWide</span><span class="params">(String arg)</span> &#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// execution 과 함께 사용 (권장)</span></span><br><span class="line"><span class="meta">@Before(&quot;execution(* com.example.aop..*(..)) &amp;&amp; args(arg,..)&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">recommended</span><span class="params">(Object arg)</span> &#123; ... &#125;</span><br></pre></td></tr></table></figure>
         </div>
         <footer class="article-footer">
             
@@ -318,7 +386,7 @@
         "genre": "Spring Spring AOP 포인트컷 표현식",
         "datePublished": "2021-12-20",
         "dateCreated": "2021-12-20",
-        "dateModified": "2025-04-08",
+        "dateModified": "2026-04-24",
         "url": "https://ckck803.github.io/2021/12/20/spring/spring-aop/pointcut/pointcut-args/",
         "description": "
 목차
@@ -328,7 +396,7 @@
 [Spring AOP] 포인트컷 표현식 - @args
 [Spring AOP] 포인트컷 표현식 - @annotation
 [Spring AOP] 포인트컷 표현식 -",
-        "wordCount": 776
+        "wordCount": 1129
     }
 </script>
 

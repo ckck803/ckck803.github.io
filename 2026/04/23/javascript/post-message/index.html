@@ -21,7 +21,7 @@
 <meta property="og:description" content="postMessage란?window.postMessage()는 서로 다른 origin을 가진 window 객체 사이에서 안전하게 메시지를 주고받을 수 있는 Web API입니다. 브라우저의 동일 출처 정책(Same-Origin Policy)은 iframe, 팝업, 다른 탭의 JavaScript가 서로 직접 접근하는 것을 막습니다. postMessage는 이">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-04-22T15:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-23T00:52:40.390Z">
+<meta property="article:modified_time" content="2026-04-24T09:26:50.607Z">
 <meta property="article:author" content="ckck803">
 <meta name="twitter:card" content="summary">
     
@@ -188,7 +188,7 @@
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
   <a href="/2026/04/23/javascript/post-message/" class="article-date">
-     <time datetime="2026-04-23T00:52:40.390Z" itemprop="dateModified">2026-04-23</time>
+     <time datetime="2026-04-24T09:26:50.607Z" itemprop="dateModified">2026-04-24</time>
   </a>
 </div>
 
@@ -275,7 +275,85 @@
 </tbody></table>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// iframe에 메시지 보내기</span></span><br><span class="line"><span class="keyword">const</span> iframe = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myFrame&#x27;</span>);</span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">  &#123; <span class="attr">type</span>: <span class="string">&#x27;GREET&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;홍길동&#x27;</span> &#125;,</span><br><span class="line">  <span class="string">&#x27;https://child-app.com&#x27;</span>  <span class="comment">// 이 origin의 iframe만 수신 가능</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 부모 페이지에 메시지 보내기 (iframe 내부에서)</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="property">parent</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">  &#123; <span class="attr">type</span>: <span class="string">&#x27;READY&#x27;</span> &#125;,</span><br><span class="line">  <span class="string">&#x27;https://parent-app.com&#x27;</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 팝업에 메시지 보내기</span></span><br><span class="line"><span class="keyword">const</span> popup = <span class="variable language_">window</span>.<span class="title function_">open</span>(<span class="string">&#x27;https://popup-app.com&#x27;</span>);</span><br><span class="line">popup.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;INIT&#x27;</span> &#125;, <span class="string">&#x27;https://popup-app.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
-<h3 id="메시지-받기"><a href="#메시지-받기" class="headerlink" title="메시지 받기"></a>메시지 받기</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 1. 반드시 origin을 검증해야 합니다</span></span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://trusted-app.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. 메시지 처리</span></span><br><span class="line">  <span class="keyword">const</span> &#123; type, payload &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">&#x27;GREET&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`안녕하세요, <span class="subst">$&#123;payload.name&#125;</span>님!`</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. 발신자에게 응답 보내기</span></span><br><span class="line">  event.<span class="property">source</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;GREET_RESPONSE&#x27;</span>, <span class="attr">message</span>: <span class="string">&#x27;반갑습니다!&#x27;</span> &#125;,</span><br><span class="line">    event.<span class="property">origin</span></span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="메시지-받기"><a href="#메시지-받기" class="headerlink" title="메시지 받기"></a>메시지 받기</h3><p><code>postMessage</code>로 전송된 메시지는 수신 측 컨텍스트에 <code>message</code> 이벤트로 도달합니다. 이 이벤트를 처리하려면 <strong>미리 이벤트 리스너를 등록</strong>해두어야 합니다.</p>
+<h4 id="리스너를-등록하는-대상-컨텍스트별"><a href="#리스너를-등록하는-대상-컨텍스트별" class="headerlink" title="리스너를 등록하는 대상 (컨텍스트별)"></a>리스너를 등록하는 대상 (컨텍스트별)</h4><p>어떤 객체에 리스너를 붙이는지는 <strong>내가 누구인지(수신 컨텍스트)</strong> 에 따라 달라집니다.</p>
+<table>
+<thead>
+<tr>
+<th>수신 컨텍스트</th>
+<th>리스너 등록 대상</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>일반 페이지 (iframe·팝업으로부터)</td>
+<td><code>window</code></td>
+<td>브라우저 탭&#x2F;페이지의 전역 객체</td>
+</tr>
+<tr>
+<td>iframe 내부 (부모로부터)</td>
+<td><code>window</code></td>
+<td>iframe 안에서도 전역은 <code>window</code></td>
+</tr>
+<tr>
+<td>팝업 창 내부 (오프너로부터)</td>
+<td><code>window</code></td>
+<td>동일하게 <code>window</code></td>
+</tr>
+<tr>
+<td>Web Worker 내부</td>
+<td><code>self</code> (또는 <code>this</code>)</td>
+<td>Worker 내에는 <code>window</code>가 없음</td>
+</tr>
+<tr>
+<td>메인 스레드 (Worker 인스턴스로부터)</td>
+<td><code>worker</code> 인스턴스</td>
+<td><code>new Worker()</code>로 생성한 객체</td>
+</tr>
+<tr>
+<td>메인 스레드 (Service Worker로부터)</td>
+<td><code>navigator.serviceWorker</code></td>
+<td>SW 전용 이벤트 소스</td>
+</tr>
+</tbody></table>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">[부모 페이지]                [iframe / 팝업 / Worker]</span><br><span class="line">  window ──postMessage()──▶  window / self</span><br><span class="line">  window ◀──message event──  window.parent.postMessage()</span><br></pre></td></tr></table></figure>
+
+<h4 id="onmessage-vs-addEventListener"><a href="#onmessage-vs-addEventListener" class="headerlink" title="onmessage vs addEventListener"></a><code>onmessage</code> vs <code>addEventListener</code></h4><p>리스너를 등록하는 방식은 두 가지입니다. 동작 차이를 이해하고 상황에 맞게 선택하세요.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// onmessage: 속성에 직접 할당 — 하나의 핸들러만 유지됨</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="property">onmessage</span> = handler1;</span><br><span class="line"><span class="variable language_">window</span>.<span class="property">onmessage</span> = handler2; <span class="comment">// handler1은 제거되고 handler2만 남음</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// addEventListener: 여러 핸들러를 누적 등록 가능</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler1);</span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, handler2); <span class="comment">// 둘 다 호출됨</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th><code>onmessage</code></th>
+<th><code>addEventListener</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>복수 등록</td>
+<td>불가 (마지막 할당만 유효)</td>
+<td>가능</td>
+</tr>
+<tr>
+<td>제거 방법</td>
+<td><code>onmessage = null</code></td>
+<td><code>removeEventListener(handler)</code></td>
+</tr>
+<tr>
+<td><code>once</code> &#x2F; <code>signal</code> 옵션</td>
+<td>없음</td>
+<td>있음</td>
+</tr>
+<tr>
+<td>권장 사용처</td>
+<td>Worker 내부처럼 단순한 경우</td>
+<td>페이지, React 컴포넌트 등</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>등록 타이밍</strong>: 리스너는 <code>postMessage</code>를 호출하기 <strong>전</strong>에 등록되어 있어야 합니다. 특히 페이지 로드 직후에 메시지를 보내는 경우, 수신 측이 아직 준비되지 않았을 수 있으므로 iframe의 <code>load</code> 이벤트나 수신 측의 “준비 완료” 메시지를 기다리는 패턴을 사용합니다(아래 예제 참고).</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 1. 반드시 origin을 검증해야 합니다</span></span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://trusted-app.com&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. 메시지 처리</span></span><br><span class="line">  <span class="keyword">const</span> &#123; type, payload &#125; = event.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">&#x27;GREET&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`안녕하세요, <span class="subst">$&#123;payload.name&#125;</span>님!`</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. 발신자에게 응답 보내기</span></span><br><span class="line">  event.<span class="property">source</span>.<span class="title function_">postMessage</span>(</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;GREET_RESPONSE&#x27;</span>, <span class="attr">message</span>: <span class="string">&#x27;반갑습니다!&#x27;</span> &#125;,</span><br><span class="line">    event.<span class="property">origin</span></span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
 <hr>
 <h2 id="2-MessageEvent-객체"><a href="#2-MessageEvent-객체" class="headerlink" title="2. MessageEvent 객체"></a>2. MessageEvent 객체</h2><p><code>message</code> 이벤트 핸들러가 받는 <code>MessageEvent</code> 객체의 주요 속성입니다.</p>
@@ -484,11 +562,11 @@
         "genre": "JavaScript Web",
         "datePublished": "2026-04-23",
         "dateCreated": "2026-04-23",
-        "dateModified": "2026-04-23",
+        "dateModified": "2026-04-24",
         "url": "https://ckck803.github.io/2026/04/23/javascript/post-message/",
         "description": "postMessage란?window.postMessage()는 서로 다른 origin을 가진 window 객체 사이에서 안전하게 메시지를 주고받을 수 있는 Web API입니다.
 브라우저의 동일 출처 정책(Same-Origin Policy)은 iframe, 팝업, 다른 탭의 JavaScript가 서로 직접 접근하는 것을 막습니다. postMessage는 이 ",
-        "wordCount": 4176
+        "wordCount": 4417
     }
 </script>
 
